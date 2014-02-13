@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[10pt]{article}
 \usepackage{amsmath}
 \begin{document}
 
@@ -12,7 +12,7 @@
 
 
 
-\title{Singer-Chandler formula of the chemical potential}
+\title{Singer-Chandler formula for the chemical potential}
 \date{}
 \maketitle
 
@@ -20,12 +20,12 @@
 
 \section{Basic derivation}
 
-Here we give a detailed derivation of the chemical potential formula
-  by Singer and Chandler \cite{singer}.
+Here we give a detailed derivation of the Singer-Chandler formula
+  for the chemical potential\cite{singer}.
 For simplicity, we assume a simple classical liquid,
   with a single solute molecule, denoted by the subscript $u$,
   and a one-atom solvent denoted by the subscript $v$ below.
-Then, the chemical potential of adding the solute molecule into
+Then, the chemical potential of adding the solute into
   the system is given by
 %
 \begin{equation}
@@ -44,7 +44,7 @@ where $\rho_u$ is the solvent density,
   $h_{uv}(\vr) = g_{uv}(\vr) - 1$ is the total correlation function
   [with $g_{uv}(\vr)$ being the radial distribution function],
 and $c_{uv}(\vr)$ is the direct correlation function.
-We refer the reader to \cite{hansen}
+We refer the reader to Ref. \cite{hansen}
   for the basic concepts.
 %
 
@@ -80,7 +80,7 @@ satisfies
       U_1(\vrN, \lambda)
     \right\rangle_\lambda.
 \end{align*}
-In the final step, we have noticed that the term in the braces
+In the final step, note that the term in the braces
   is the normalized Boltzmann weight,
   and the integral is equal to an ensemble average
   $\langle \dots \rangle_\lambda$.
@@ -96,7 +96,7 @@ Equivalently, in terms of the free energy $\beta F = -\log Z$,
 
 Let the first atom be the solute $u = 0$,
   the next $n = N - 1$ atoms be the solvent atoms.
-Then,
+Also,
   let $U_0(\vrn)$ be the potential energy of the $n$ solvent atoms
   and $U_1(\vrN)$ be the interaction between the solute atom $u$
   and the solvent atoms $v = 1, 2, \dots, n$.
@@ -115,6 +115,7 @@ So the chemical potential $\mu_u = dF/dN$ is
     \left\langle
       U_1(\vrN, \lambda)
     \right\rangle_\lambda d\lambda.
+  \label{eq:muti0}
 \end{align}
 
 
@@ -122,7 +123,7 @@ So the chemical potential $\mu_u = dF/dN$ is
 
 In a simple liquid with pairwise interactions,
   $U_1(\vrN) = \sum_{v = 1}^{n} \phi(\vr_{uv})$,
-  where $\phi(\vr_{uv})$ mean the pair potential
+  where $\phi(\vr_{uv})$ means the pair potential
   between a solvent atom and a solute atom
   (which may be different from the solvent-solvent
   interaction).
@@ -137,18 +138,19 @@ So
       \phi(\vr_{u,1})
     \right\rangle_\lambda
     =
-    \rho_u \int \phi(\vr_{u1}) \, g_{u1}(\vr_{u1}, \lambda) \, d\vr_{u1},
+    \rho_u \int \phi(\vr_{u1}) \, g_{uv}(\vr_{u1}, \lambda) \, d\vr_{u1},
   \label{eq:uphig}
 \end{equation}
 %
 where in the second step, we have evaluated the average
-pairwise energy in terms of the radial distribution function.
-So
+pairwise energy in terms of the radial distribution function
+$g_{uv}(\vr, \lambda)$.
+Using \eqref{eq:uphig} in \eqref{eq:muti0} yields
 \begin{equation}
     \mu_u
     =
     \rho_u \int_0^1 d\lambda \,
-      \int \phi(\vr_{u1}) \, g_{u1}(\vr_{u1}, \lambda) \, d\vr_{u1}.
+      \int \phi(\vr_{u1}) \, g_{uv}(\vr_{u1}, \lambda) \, d\vr_{u1}.
   \label{eq:muti}
 \end{equation}
 Our objective below is to evaluate
@@ -171,7 +173,7 @@ we define the total correlation function $h(\vr)$ as
 %
 Next, the cavity function $y_{uv}(\vr)$ for a solute-solvent pair
 \begin{equation}
-  y_{uv}(\vr) = e^{ \beta \lambda \phi(\vr) } g_{uv}(\vr).
+  y_{uv}(\vr) \equiv e^{ \beta \lambda \phi(\vr) } g_{uv}(\vr).
   \label{eq:yr}
 \end{equation}
 %
@@ -185,11 +187,11 @@ is defined in the Ornstein-Zernike relation:
 \end{equation}
 where $[c*h](\vr) \equiv \int_{\vct{s}'} c(\vr') \, h(\vr - \vr') \, d\vr'$
   (convolution).
-We will give a broken-down version for pairs of solvent and solute later.
+We will give a broken-down version among solvents and/or solutes later.
 %
 %
 %
-Finally, we define the difference $t(r)$
+Finally, we define
 \begin{equation}
   t(\vr) \equiv h(\vr) - c(\vr).
   \label{eq:tr}
@@ -208,7 +210,7 @@ the above five equations permit a solution of $g(\vr)$.
 
 
 
-From \eqref{eq:yr}, we have [dropping ``$(\vr)$'' below]
+From \eqref{eq:yr}, we have [dropping ``$(\vr)$'' below for simplicity]
 \[
   \plam y_{uv}
   =
@@ -255,7 +257,7 @@ For the solute-solvent pair, we have
 where $\rho_v$ and $\rho_u$ means the density of
 solvent and solute, respectively.
 %
-But recall that we have a single solute atom and $n >> 1$ solvent atoms,
+Since we have a single solute and many $n >> 1$ solvent atoms,
 we can safely set $\rho_u = 0$:
 \begin{equation}
   h_{uv} = c_{uv} + \rho_v \, c_{uv}*h_{vv}.
@@ -273,16 +275,17 @@ From \eqref{eq:ozuv} and \eqref{eq:ozvv}, we know that
 %
 Thus,
 \begin{align}
-  \int d\vr \, c_{uv}(\vr) \, \plam h_{uv}
+  \int d\vr \, c_{uv}(\vr) \, \plam h_{uv}(\vr)
   &=
-  \int c_{uv}(\vr) \, \plam c_{uv}(\vr) d\vr
+  \int c_{uv}(\vr) \, \plam c_{uv}(\vr) d\vr \notag \\
+  & \;\;\;\;\;
     +
     \int d\vr \, d\vr'
     \, \rho_v
     \, c_{uv}(\vr)
     \, \plam c_{uv}(\vr') \, h_{vv}(\vr - \vr') \notag \\
-  &= \int d\vr \, h_{uv}(\vr) \, \plam c_{uv}(\vr)
-   = \int d\vr \plam
+  &= \int d\vr \, h_{uv}(\vr) \, \plam c_{uv}(\vr) \notag \\
+  &= \int d\vr \plam
     \left[
       \frac{1}{2} h_{uv}(\vr) \,  c_{uv}(\vr)
     \right].
@@ -291,19 +294,20 @@ Thus,
 %
 By using \eqref{eq:phig}, \eqref{eq:hc1} in \eqref{eq:uphig}, we get
 %
-\[
+\begin{align*}
+  n \,
   \langle
   \beta \phi(\vr)
   \rangle_\lambda
-  =
-  \int \beta \phi(\vr) \, g_{uv}(\vr) \, d \vr
-  =
-   \plam \int \left[
+  &=
+  \rho_u \, \int \beta \phi(\vr) \, g_{uv}(\vr) \, d \vr \\
+  &=
+   \rho_u \, \plam \int \left[
     - c_{uv}(\vr)
     + \frac{1}{2} h_{uv}^2(\vr)
     - \frac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
     \right] d \vr.
-\]
+  \end{align*}
 And by \eqref{eq:muti}, we get \eqref{eq:singer}.
 
 

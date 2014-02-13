@@ -12,19 +12,23 @@ $(pdf) : %.pdf: %.tex
 # compile to latex .dvi first to figure out references
 
 
-$(html) : %.html: %.tex
-	tth -i $<
-
 $(htmldir) : %_html : %.tex
 	if [ ! -d "$@" ] ; then mkdir "$@" ; fi
 	cd $@; ln -sf ../$<; htlatex $<
 
-#	tth -i $<
+# html versions by tth are more basic and have problems
+$(html) : %.html: %.tex
+	tth -i $<
+
 # -i: means to use italic font for equations
 
-Bossman:
-	rsync -avzr *.pdf *.tex *_html cz1@129.109.88.204:/Bossman/cz1/notes/
 
+Bossman: $(pdf) $(htmldir)
+	rsync -avzrL *.pdf *.tex *_html cz1@129.109.88.204:/Bossman/cz1/notes/
+
+# upload to github
+github:
+	git push origin master
 
 clean:
 	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg
