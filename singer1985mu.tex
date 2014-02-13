@@ -1,0 +1,327 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+
+
+\newcommand{\vct}[1]{\mathbf{#1}}
+\newcommand{\vr}{\vct{r}}
+\newcommand{\vrN}{\mathbf{r}^N}
+\newcommand{\vrn}{\mathbf{r}^n}
+\newcommand{\plam}{\partial_\lambda}
+
+
+
+\title{Singer-Chandler formula of the chemical potential}
+\date{}
+\maketitle
+
+
+
+\section{Basic derivation}
+
+Here we give a detailed derivation of the chemical potential formula
+  by Singer and Chandler \cite{singer}.
+For simplicity, we assume a simple classical liquid,
+  with a single solute molecule, denoted by the subscript $u$,
+  and a one-atom solvent denoted by the subscript $v$ below.
+Then, the chemical potential of adding the solute molecule into
+  the system is given by
+%
+\begin{equation}
+\beta \mu_u
+  =
+  \rho_u \int d\vr
+  \left[
+    - c_{uv}(\vr)
+    + \frac{1}{2} h_{uv}^2(\vr)
+    - \frac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
+  \right],
+  \label{eq:singer}
+\end{equation}
+%
+where $\rho_u$ is the solvent density,
+  $h_{uv}(\vr) = g_{uv}(\vr) - 1$ is the total correlation function
+  [with $g_{uv}(\vr)$ being the radial distribution function],
+and $c_{uv}(\vr)$ is the direct correlation function.
+We refer the reader to \cite{hansen}
+  for the basic concepts.
+%
+
+
+
+\subsection{Thermodynamic integration}
+
+We start with the thermodynamic integration formula.
+If the potential energy
+\[
+  U(\vrN, \lambda) = U_0(\vrN) + \lambda U_1(\vrN)
+\]
+depends on the parameter $\lambda$,
+then the partition function
+\[
+  Z(\lambda) = \int d\vrN \exp[-\beta U(\vrN, \lambda)].
+\]
+satisfies
+\begin{align*}
+  \frac{ Z'(\lambda) }{Z(\lambda)}
+  &=
+    -\beta \int d\vrN U_1(\vrN, \lambda)
+    \left\{
+      \frac{ \exp
+             \left[
+             -\beta U(\vrN, \lambda)
+             \right]}
+      { Z(\lambda) }
+    \right\} \\
+  &=
+    -\beta
+    \left\langle
+      U_1(\vrN, \lambda)
+    \right\rangle_\lambda.
+\end{align*}
+In the final step, we have noticed that the term in the braces
+  is the normalized Boltzmann weight,
+  and the integral is equal to an ensemble average
+  $\langle \dots \rangle_\lambda$.
+%
+Equivalently, in terms of the free energy $\beta F = -\log Z$,
+\begin{equation}
+  \beta F'(\lambda)
+  = \beta
+    \left\langle
+      U_1(\vrN, \lambda)
+    \right\rangle_\lambda.
+\end{equation}
+
+Let the first atom be the solute $u = 0$,
+  the next $n = N - 1$ atoms be the solvent atoms.
+Then,
+  let $U_0(\vrn)$ be the potential energy of the $n$ solvent atoms
+  and $U_1(\vrN)$ be the interaction between the solute atom $u$
+  and the solvent atoms $v = 1, 2, \dots, n$.
+By changing $\lambda$ from 0 to 1, we gradually turn on
+  the solute-solvent interaction.
+%
+So the chemical potential $\mu_u = dF/dN$ is
+\begin{align}
+  \mu_u
+  =
+  F(1) - F(0)
+  =
+  \int_0^1 F'(\lambda) \, d\lambda
+  =
+  \int_0^1
+    \left\langle
+      U_1(\vrN, \lambda)
+    \right\rangle_\lambda d\lambda.
+\end{align}
+
+
+
+
+In a simple liquid with pairwise interactions,
+  $U_1(\vrN) = \sum_{v = 1}^{n} \phi(\vr_{uv})$,
+  where $\phi(\vr_{uv})$ mean the pair potential
+  between a solvent atom and a solute atom
+  (which may be different from the solvent-solvent
+  interaction).
+So
+\begin{equation}
+    \left\langle
+      U_1(\vrN)
+    \right\rangle_\lambda
+    =
+    n
+    \left\langle
+      \phi(\vr_{u,1})
+    \right\rangle_\lambda
+    =
+    \rho_u \int \phi(\vr_{u1}) \, g_{u1}(\vr_{u1}, \lambda) \, d\vr_{u1},
+  \label{eq:uphig}
+\end{equation}
+%
+where in the second step, we have evaluated the average
+pairwise energy in terms of the radial distribution function.
+So
+\begin{equation}
+    \mu_u
+    =
+    \rho_u \int_0^1 d\lambda \,
+      \int \phi(\vr_{u1}) \, g_{u1}(\vr_{u1}, \lambda) \, d\vr_{u1}.
+  \label{eq:muti}
+\end{equation}
+Our objective below is to evaluate
+$\phi(\vr) \, g(\vr, \lambda)$
+by means of the integral equation.
+
+
+
+
+\subsection{Integral equation and the closure}
+
+First,
+we define the total correlation function $h(\vr)$ as
+\begin{equation}
+  h(\vr) \equiv g(\vr) - 1.
+  \label{eq:hr}
+\end{equation}
+%
+%
+%
+Next, the cavity function $y_{uv}(\vr)$ for a solute-solvent pair
+\begin{equation}
+  y_{uv}(\vr) = e^{ \beta \lambda \phi(\vr) } g_{uv}(\vr).
+  \label{eq:yr}
+\end{equation}
+%
+%
+%
+The direct correlation function $c(\vr)$
+is defined in the Ornstein-Zernike relation:
+\begin{equation}
+  h(\vr) = c(\vr) + \rho \, [c * h](\vr),
+  \label{eq:cr}
+\end{equation}
+where $[c*h](\vr) \equiv \int_{\vct{s}'} c(\vr') \, h(\vr - \vr') \, d\vr'$
+  (convolution).
+We will give a broken-down version for pairs of solvent and solute later.
+%
+%
+%
+Finally, we define the difference $t(r)$
+\begin{equation}
+  t(\vr) \equiv h(\vr) - c(\vr).
+  \label{eq:tr}
+\end{equation}
+%
+%
+%
+And $y(\vr)$ is approximated in the HNC closure as
+\begin{equation}
+  y(\vr) \approx \exp\left[ t(\vr) \right].
+  \label{eq:hnc}
+\end{equation}
+Since we have five variables
+  $g(\vr)$, $h(\vr)$, $c(\vr)$, $t(\vr)$ and $y(\vr)$,
+the above five equations permit a solution of $g(\vr)$.
+
+
+
+From \eqref{eq:yr}, we have [dropping ``$(\vr)$'' below]
+\[
+  \plam y_{uv}
+  =
+  \beta \phi \, e^{ \beta \lambda \phi } \, g_{uv}
+    +
+    e^{ \beta \lambda \phi } \, \plam g_{uv}.
+\]
+From \eqref{eq:hnc}, we have $\plam y = y \, \plam t$;
+and by \eqref{eq:hr}, $\plam g = \plam h$, So
+\[
+  y_{uv} \, \plam t = e^{\beta \lambda \phi }
+  ( \beta \phi g_{uv} + \plam h_{uv} ).
+\]
+Then by multiplying $e^{-\beta \lambda \phi}$ to both sides,
+and using
+\eqref{eq:yr}
+as $y_{uv} \, e^{-\beta \lambda \phi} \rightarrow 1 + h_{uv}$,
+\eqref{eq:tr}
+as $\plam t_{uv} \rightarrow \plam h_{uv} - \plam c_{uv}$,
+we have
+\begin{equation}
+  \beta \phi \, g_{uv}
+  =
+  - \plam c_{uv} + h_{uv} \, \plam h_{uv} - c_{uv} \, \plam h_{uv}.
+  \label{eq:hc1}
+\end{equation}
+
+
+
+Finally, we want to write the right side \eqref{eq:hc1} as
+a total differential $\plam(\dots)$.
+%
+Obviously $h_{uv} \plam h_{uv} = \plam ( h_{uv}^2/2 )$.
+%
+We argue below that $h_{uv} \plam c_{uv} = \plam ( h_{uv} c_{uv} /2) $
+in an \emph{average} sense.
+Let us look at \eqref{eq:cr} more carefully.
+%
+For the solute-solvent pair, we have
+\[
+  h_{uv} = c_{uv} + \rho_v \, c_{uv}*h_{vv}
+  + \rho_u \, c_{uu}*h_{uv},
+\]
+where $\rho_v$ and $\rho_u$ means the density of
+solvent and solute, respectively.
+%
+But recall that we have a single solute atom and $n >> 1$ solvent atoms,
+we can safely set $\rho_u = 0$:
+\begin{equation}
+  h_{uv} = c_{uv} + \rho_v \, c_{uv}*h_{vv}.
+  \label{eq:ozuv}
+\end{equation}
+Similarly, for the solvent-solvent version
+\begin{equation}
+  h_{vv} = c_{vv} + \rho_v \, c_{vv}*h_{vv}.
+  \label{eq:ozvv}
+\end{equation}
+From \eqref{eq:ozuv} and \eqref{eq:ozvv}, we know that
+  (i) $h_{vv}$ and $c_{vv}$ are independent of the solute,
+  and
+  (ii) $h_{uv}$ is a linear function with respect to $c_{uv}$.
+%
+Thus,
+\begin{align}
+  \int d\vr \, c_{uv}(\vr) \, \plam h_{uv}
+  &=
+  \int c_{uv}(\vr) \, \plam c_{uv}(\vr) d\vr
+    +
+    \int d\vr \, d\vr'
+    \, \rho_v
+    \, c_{uv}(\vr)
+    \, \plam c_{uv}(\vr') \, h_{vv}(\vr - \vr') \notag \\
+  &= \int d\vr \, h_{uv}(\vr) \, \plam c_{uv}(\vr)
+   = \int d\vr \plam
+    \left[
+      \frac{1}{2} h_{uv}(\vr) \,  c_{uv}(\vr)
+    \right].
+  \label{eq:phig}
+\end{align}
+%
+By using \eqref{eq:phig}, \eqref{eq:hc1} in \eqref{eq:uphig}, we get
+%
+\[
+  \langle
+  \beta \phi(\vr)
+  \rangle_\lambda
+  =
+  \int \beta \phi(\vr) \, g_{uv}(\vr) \, d \vr
+  =
+   \plam \int \left[
+    - c_{uv}(\vr)
+    + \frac{1}{2} h_{uv}^2(\vr)
+    - \frac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
+    \right] d \vr.
+\]
+And by \eqref{eq:muti}, we get \eqref{eq:singer}.
+
+
+
+\begin{thebibliography}{100}
+
+\bibitem{singer}
+  Sherwin J. Singer and David Chandler,
+  ``Free energy functions in the extended RISM approximation,''
+  Molecular Physics, Vol. 55, No. 3, 621-625,
+  1985.
+
+\bibitem{hansen}
+  J.-P. Hansen and I.R. McDonald,
+  {\it Theory of Simple Liquids}, 3rd ed.,
+  Academic Press, London, UK 2006.
+
+\end{thebibliography}
+
+\end{document}
+
