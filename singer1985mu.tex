@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass{article}
 \usepackage{amsmath}
 \begin{document}
 
@@ -80,7 +80,7 @@ satisfies
       U_1(\vrN, \lambda)
     \right\rangle_\lambda.
 \end{align*}
-In the final step, note that the term in the braces
+In the second step, note that the term in the braces
   is the normalized Boltzmann weight,
   and the integral is equal to an ensemble average
   $\langle \dots \rangle_\lambda$.
@@ -122,8 +122,8 @@ So the chemical potential $\mu_u = dF/dN$ is
 
 
 In a simple liquid with pairwise interactions,
-  $U_1(\vrN) = \sum_{s = 1}^{n} \phi(\vr_{0s})$,
-  where $\phi(\vr_{0s})$ means the pair potential
+  $U_1(\vrN) = \sum_{i = 1}^{n} \phi(\vr_{0i})$,
+  where $\phi(\vr_{0i})$ means the pair potential
   between a solvent atom and a solute atom
   (which may be different from the solvent-solvent
   interaction).
@@ -162,11 +162,9 @@ by means of the integral equation.
 
 
 
+\subsection{Integral equation and the HNC closure}
 
-\subsection{Integral equation and the closure}
-
-First,
-we define the total correlation function $h(\vr)$ as
+First, we define the total correlation function $h(\vr)$ as
 \begin{equation}
   h(\vr) \equiv g(\vr) - 1.
   \label{eq:hr}
@@ -202,7 +200,7 @@ We will give a broken-down version among solvents and/or solutes later.
 %
 %
 %
-Finally, $y(\vr)$ is approximated in the HNC closure as
+Finally, $y(\vr)$ is approximated in the hypernetted-chain (HNC) closure as
 \begin{equation}
   y(\vr) \approx \exp\left[ h(\vr) - c(\vr) \right].
   \label{eq:hnc}
@@ -262,7 +260,7 @@ For the solute-solvent pair, we have
 where $\rho_v$ and $\rho_u$ means the density of
 solvent and solute, respectively.
 %
-Since we have a single solute and many $n >> 1$ solvent atoms,
+Since we have a single solute and many $n \gg 1$ solvent atoms,
 we can safely set $\rho_u = 0$:
 \begin{equation}
   h_{uv} = c_{uv} + \rho_v \, c_{uv}*h_{vv}.
@@ -341,9 +339,69 @@ By \eqref{eq:muti}, we get \eqref{eq:singer}, or more explicitly,
 where
 $\chi_{vv}(\vr) = \delta_{vv}(r) + \rho_u \, h_{vv}(\vr)$.
 %
-This is the equivalent to (2.8) in \cite{singer} (note, however,
-the $\hat \omega_{\alpha\gamma}$ was missing in that paper,
-which handles the intra-solute interaction).
+This is the equivalent to (2.8) in \cite{singer}
+[note,
+(2.8) misses the $\omega_{\alpha\gamma}$ (for the intra-solute interaction)
+was missing in the last term].
+
+
+
+
+\subsection{KH closure}
+
+Note that the Singer-Chandler formula is valid
+  only under the assumption of infinite dilution
+  and the HNC closure.
+Under a general closure (like the Percus-Yevick one),
+  we may not have a compact expression for $\mu_u$.
+Fortunately, under the KH closure,
+\begin{equation}
+  g_{uv}(\vr) =
+  \begin{cases}
+    1 + d_{uv}(\vr)
+    & d_{uv}(\vr) > 0
+  \\
+    \exp[ d_{uv}(\vr) ]
+    & d_{uv}(\vr) \le 0,
+  \end{cases}
+  \label{eq:kh}
+\end{equation}
+where $d_{uv}(\vr) = -\beta \lambda \phi(\vr) + h_{uv}(\vr) - c_{uv}(\vr)$,
+we do have a counterpart of \eqref{eq:singer}.
+
+
+First, in \eqref{eq:kh}, the $d_{uv} \le 0$ case is equivalent to the HNC case.
+%
+If $d_{uv} > 0$, we have $c_{uv}(\vr) = \beta \lambda \phi(\vr)$, and
+\[
+  \plam c_{uv}(\vr) = -\beta \phi(\vr).
+\]
+Then
+\[
+  \beta \phi \, g_{uv}
+  = -\plam c_{uv} \, (1 + h_{uv}),
+\]
+which misses the $h_{uv}^2/2$ term in the HNC case
+  [cf. \eqref{eq:hc1}].
+Thus
+%
+\begin{equation}
+\beta \mu_u
+  =
+  \rho_u \int d\vr
+  \left\{
+    - c_{uv}(\vr)
+    + \frac{1}{2} h_{uv}^2(\vr) \, \Theta[ -d_{uv}(\vr) ]
+    - \frac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
+  \right\},
+  \label{eq:singer-kh}
+\end{equation}
+%
+where $\Theta(x)$ is the unit step function,
+which is 1.0 if $x \ge 0$ or 0 otherwise.
+%
+Finally, if we drop the $h_{uv}^2/2$ term entirely,
+it becomes the Gaussian density field theory mentioned in \cite{singer}.
 
 
 
