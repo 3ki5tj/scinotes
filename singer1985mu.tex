@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+\documentclass[12pt]{article}
 \usepackage{amsmath}
 \begin{document}
 
@@ -18,10 +18,10 @@
 
 
 
-\section{Basic derivation}
+\section{Derivation}
 
 Here we give a detailed derivation of the Singer-Chandler formula
-  for the chemical potential\cite{singer}.
+  for the chemical potential \cite{singer}.
 For simplicity, we assume a simple classical liquid,
   with a single solute molecule, denoted by the subscript $u$,
   and a one-atom solvent denoted by the subscript $v$ below.
@@ -122,8 +122,8 @@ So the chemical potential $\mu_u = dF/dN$ is
 
 
 In a simple liquid with pairwise interactions,
-  $U_1(\vrN) = \sum_{v = 1}^{n} \phi(\vr_{uv})$,
-  where $\phi(\vr_{uv})$ means the pair potential
+  $U_1(\vrN) = \sum_{s = 1}^{n} \phi(\vr_{0s})$,
+  where $\phi(\vr_{0s})$ means the pair potential
   between a solvent atom and a solute atom
   (which may be different from the solvent-solvent
   interaction).
@@ -135,10 +135,11 @@ So
     =
     n
     \left\langle
-      \phi(\vr_{u,1})
+      \phi(\vr_{01})
     \right\rangle_\lambda
     =
-    \rho_u \int \phi(\vr_{u1}) \, g_{uv}(\vr_{u1}, \lambda) \, d\vr_{u1},
+    \rho_u \int d\vr_{01} \,
+      \phi(\vr_{01}) \, g_{uv}(\vr_{01}, \lambda),
   \label{eq:uphig}
 \end{equation}
 %
@@ -149,11 +150,13 @@ Using \eqref{eq:uphig} in \eqref{eq:muti0} yields
 \begin{equation}
     \mu_u
     =
-    \rho_u \int_0^1 d\lambda \,
-      \int \phi(\vr_{u1}) \, g_{uv}(\vr_{u1}, \lambda) \, d\vr_{u1}.
+    \rho_u
+    \int_0^1 d\lambda \,
+      \int d\vr_{01} \,
+        \phi(\vr_{01}) \, g_{uv}(\vr_{01}, \lambda).
   \label{eq:muti}
 \end{equation}
-Our objective below is to evaluate
+Our aim below is to evaluate
 $\phi(\vr) \, g(\vr, \lambda)$
 by means of the integral equation.
 
@@ -191,22 +194,22 @@ We will give a broken-down version among solvents and/or solutes later.
 %
 %
 %
-Finally, we define
+%Finally, we define
+%\begin{equation}
+%  t(\vr) \equiv h(\vr) - c(\vr).
+%  \label{eq:tr}
+%\end{equation}
+%
+%
+%
+Finally, $y(\vr)$ is approximated in the HNC closure as
 \begin{equation}
-  t(\vr) \equiv h(\vr) - c(\vr).
-  \label{eq:tr}
-\end{equation}
-%
-%
-%
-And $y(\vr)$ is approximated in the HNC closure as
-\begin{equation}
-  y(\vr) \approx \exp\left[ t(\vr) \right].
+  y(\vr) \approx \exp\left[ h(\vr) - c(\vr) \right].
   \label{eq:hnc}
 \end{equation}
-Since we have five variables
-  $g(\vr)$, $h(\vr)$, $c(\vr)$, $t(\vr)$ and $y(\vr)$,
-the above five equations permit a solution of $g(\vr)$.
+Since we have four variables
+  $g(\vr)$, $h(\vr)$, $c(\vr)$, and $y(\vr)$,
+the above four equations permit a solution of $g(\vr)$.
 
 
 
@@ -218,18 +221,16 @@ From \eqref{eq:yr}, we have [dropping ``$(\vr)$'' below for simplicity]
     +
     e^{ \beta \lambda \phi } \, \plam g_{uv}.
 \]
-From \eqref{eq:hnc}, we have $\plam y = y \, \plam t$;
+From \eqref{eq:hnc}, we have $\plam y = y \, \plam (h - c)$;
 and by \eqref{eq:hr}, $\plam g = \plam h$, So
 \[
-  y_{uv} \, \plam t = e^{\beta \lambda \phi }
+  y_{uv} \, \plam (h - c) = e^{\beta \lambda \phi }
   ( \beta \phi g_{uv} + \plam h_{uv} ).
 \]
 Then by multiplying $e^{-\beta \lambda \phi}$ to both sides,
 and using
 \eqref{eq:yr}
 as $y_{uv} \, e^{-\beta \lambda \phi} \rightarrow 1 + h_{uv}$,
-\eqref{eq:tr}
-as $\plam t_{uv} \rightarrow \plam h_{uv} - \plam c_{uv}$,
 we have
 \begin{equation}
   \beta \phi \, g_{uv}
@@ -237,6 +238,10 @@ we have
   - \plam c_{uv} + h_{uv} \, \plam h_{uv} - c_{uv} \, \plam h_{uv}.
   \label{eq:hc1}
 \end{equation}
+
+
+
+\subsection{Internal energy as a total differential}
 
 
 
@@ -277,10 +282,11 @@ Thus,
 \begin{align}
   \int d\vr \, c_{uv}(\vr) \, \plam h_{uv}(\vr)
   &=
-  \int c_{uv}(\vr) \, \plam c_{uv}(\vr) d\vr \notag \\
+  \int d\vr \,
+  c_{uv}(\vr) \, \plam c_{uv}(\vr) \notag \\
   & \;\;\;\;\;
     +
-    \int d\vr \, d\vr'
+    \iint d\vr \, d\vr'
     \, \rho_v
     \, c_{uv}(\vr)
     \, \plam c_{uv}(\vr') \, h_{vv}(\vr - \vr') \notag \\
@@ -295,20 +301,50 @@ Thus,
 By using \eqref{eq:phig}, \eqref{eq:hc1} in \eqref{eq:uphig}, we get
 %
 \begin{align*}
-  n \,
   \langle
-  \beta \phi(\vr)
+  \beta U_1(\vr)
   \rangle_\lambda
   &=
-  \rho_u \, \int \beta \phi(\vr) \, g_{uv}(\vr) \, d \vr \\
+  \rho_u \,
+  \int d \vr
+  \, \beta \phi(\vr) \, g_{uv}(\vr) \\
   &=
-   \rho_u \, \plam \int \left[
+   \rho_u \, \plam \int d \vr \,
+   \left[
     - c_{uv}(\vr)
     + \frac{1}{2} h_{uv}^2(\vr)
     - \frac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
-    \right] d \vr.
+    \right].
   \end{align*}
-And by \eqref{eq:muti}, we get \eqref{eq:singer}.
+%
+%
+%
+By \eqref{eq:muti}, we get \eqref{eq:singer}, or more explicitly,
+\begin{align}
+  \beta \mu_u
+  &=
+   \rho_u \, \int
+    d \vr \,
+   \left[
+    - c_{uv}(\vr)
+    + \frac{1}{2} h_{uv}^2(\vr)
+    \right]
+  \notag \\
+  & \;\;\;\;\;
+    -
+    \rho_u \, \iint d\vr \, d\vr'
+    \, c_{uv}(\vr)
+    \, \chi_{vv}(\vr - \vr')
+    \, c_{uv}(\vr'),
+ \label{eq:muexpanded}
+\end{align}
+where
+$\chi_{vv}(\vr) = \delta_{vv}(r) + \rho_u \, h_{vv}(\vr)$.
+%
+This is the equivalent to (2.8) in \cite{singer} (note, however,
+the $\hat \omega_{\alpha\gamma}$ was missing in that paper,
+which handles the intra-solute interaction).
+
 
 
 

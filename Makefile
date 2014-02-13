@@ -30,10 +30,12 @@ Bossman: $(pdf) $(htmldir)
 github:
 	git push origin master
 
+push: github
+
 clean:
 	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg
 	rm -rf $(htmldir)
 	rstrip.py
 
-.PHONY: clean all debug build
+.PHONY: clean all
 
