@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage{amsmath}
 \begin{document}
 
@@ -186,7 +186,7 @@ is defined in the Ornstein-Zernike relation:
   h(\vr) = c(\vr) + \rho \, [c * h](\vr),
   \label{eq:cr}
 \end{equation}
-where $[c*h](\vr) \equiv \int_{\vct{s}'} c(\vr') \, h(\vr - \vr') \, d\vr'$
+where $[c*h](\vr) \equiv \int c(\vr') \, h(\vr - \vr') \, d\vr'$
   (convolution).
 We will give a broken-down version among solvents and/or solutes later.
 %
@@ -219,8 +219,9 @@ From \eqref{eq:yr}, we have [dropping ``$(\vr)$'' below for simplicity]
     +
     e^{ \beta \lambda \phi } \, \plam g_{uv}.
 \]
-From \eqref{eq:hnc}, we have $\plam y = y \, \plam (h - c)$;
-and by \eqref{eq:hr}, $\plam g = \plam h$, So
+From \eqref{eq:hnc}, we have
+  $\plam y_{uv} = y_{uv} \, \plam (h_{uv} - c_{uv})$;
+  and by \eqref{eq:hr}, $\plam g_{uv} = \plam h_{uv}$, So
 \[
   y_{uv} \, \plam (h - c) = e^{\beta \lambda \phi }
   ( \beta \phi g_{uv} + \plam h_{uv} ).
@@ -233,7 +234,7 @@ we have
 \begin{equation}
   \beta \phi \, g_{uv}
   =
-  - \plam c_{uv} + h_{uv} \, \plam h_{uv} - c_{uv} \, \plam h_{uv}.
+  - \plam c_{uv} + h_{uv} \, \plam h_{uv} - h_{uv} \, \plam c_{uv}.
   \label{eq:hc1}
 \end{equation}
 
@@ -249,7 +250,7 @@ a total differential $\plam(\dots)$.
 Obviously $h_{uv} \plam h_{uv} = \plam ( h_{uv}^2/2 )$.
 %
 We argue below that $h_{uv} \plam c_{uv} = \plam ( h_{uv} c_{uv} /2) $
-in an \emph{average} sense.
+in an \emph{average} sense under the condition of \emph{infinite dilution}.
 Let us look at \eqref{eq:cr} more carefully.
 %
 For the solute-solvent pair, we have
@@ -266,6 +267,7 @@ we can safely set $\rho_u = 0$:
   h_{uv} = c_{uv} + \rho_v \, c_{uv}*h_{vv}.
   \label{eq:ozuv}
 \end{equation}
+%
 Similarly, for the solvent-solvent version
 \begin{equation}
   h_{vv} = c_{vv} + \rho_v \, c_{vv}*h_{vv}.
@@ -278,7 +280,7 @@ From \eqref{eq:ozuv} and \eqref{eq:ozvv}, we know that
 %
 Thus,
 \begin{align}
-  \int d\vr \, c_{uv}(\vr) \, \plam h_{uv}(\vr)
+  \int d\vr \, h_{uv}(\vr) \, \plam c_{uv}(\vr)
   &=
   \int d\vr \,
   c_{uv}(\vr) \, \plam c_{uv}(\vr) \notag \\
@@ -286,9 +288,10 @@ Thus,
     +
     \iint d\vr \, d\vr'
     \, \rho_v
-    \, c_{uv}(\vr)
-    \, \plam c_{uv}(\vr') \, h_{vv}(\vr - \vr') \notag \\
-  &= \int d\vr \, h_{uv}(\vr) \, \plam c_{uv}(\vr) \notag \\
+    \, c_{uv}(\vr')
+    \, h_{vv}(\vr - \vr')
+    \, \plam c_{uv}(\vr) \notag \\
+  &= \int d\vr \, c_{uv}(\vr) \, \plam h_{uv}(\vr) \notag \\
   &= \int d\vr \plam
     \left[
       \frac{1}{2} h_{uv}(\vr) \,  c_{uv}(\vr)
@@ -342,7 +345,7 @@ $\chi_{vv}(\vr) = \delta_{vv}(r) + \rho_u \, h_{vv}(\vr)$.
 This is the equivalent to (2.8) in \cite{singer}
 [note,
 (2.8) misses the $\omega_{\alpha\gamma}$ (for the intra-solute interaction)
-was missing in the last term].
+in the last term].
 
 
 
@@ -350,8 +353,7 @@ was missing in the last term].
 \subsection{KH closure}
 
 Note that the Singer-Chandler formula is valid
-  only under the assumption of infinite dilution
-  and the HNC closure.
+  only under the HNC closure.
 Under a general closure (like the Percus-Yevick one),
   we may not have a compact expression for $\mu_u$.
 Fortunately, under the KH closure,
@@ -381,8 +383,8 @@ Then
   \beta \phi \, g_{uv}
   = -\plam c_{uv} \, (1 + h_{uv}),
 \]
-which misses the $h_{uv}^2/2$ term in the HNC case
-  [cf. \eqref{eq:hc1}].
+which differs from the HNC case [cf. \eqref{eq:hc1}]
+  only by the $h_{uv}^2/2$ term.
 Thus
 %
 \begin{equation}
@@ -404,6 +406,9 @@ Finally, if we drop the $h_{uv}^2/2$ term entirely,
 it becomes the Gaussian density field theory mentioned in \cite{singer}.
 
 
+
+\section*{Acknowledgement}
+It is a pleasure to thank C.-L. Lai for helpful discussions.
 
 
 \begin{thebibliography}{100}
