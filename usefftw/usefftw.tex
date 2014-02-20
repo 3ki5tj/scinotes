@@ -1,0 +1,748 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+%\usepackage{rotating}
+%\usepackage{booktabs}
+\newcommand{\vct}[1]{\mathbf{#1}}
+
+\begin{document}
+
+\title{Using FFTW3}
+\date{}
+\maketitle
+
+
+
+
+
+\tableofcontents
+
+
+
+
+\section{Getting started}
+
+The FFTW library is a C library that does fast Fourier transforms.
+%
+This is a brief introduction on how to use it.
+%
+The package can be downloaded from \url{http://www.fftw.org/download.html}.
+%
+In Ubuntu, simply type
+\begin{verbatim}
+  sudo apt-get install fftw3-dev
+\end{verbatim}
+to install it.
+%
+By default, FFTW uses double precision;
+so, e.g., the declaration
+\texttt{fftw\_complex z} below means \texttt{double z[2]}.
+
+
+
+We use FFTW in a typical program as
+%
+\begin{enumerate}
+  \item Allocate and initialize the input and output arrays.
+  \item Make an FFT plan, which specifies the input and output arrays and their sizes.
+  \item Execute the plan.
+\end{enumerate}
+
+So the code looks like this
+{\footnotesize
+\begin{verbatim}
+  fftw_complex *in = (fftw_complex *) fftw_malloc(sizeof(*in) * N);
+  fftw_complex *out = (fftw_complex *) fftw_malloc(sizeof(*out) * N);
+  ...
+  fftw_plan p = fftw_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+  ...
+  fftw_execute(p);
+\end{verbatim}
+}
+
+If you have written such a program, say \url{1d.c},
+then compile it by typing
+\begin{verbatim}
+  gcc 1d.c -lfftw3 -lm
+\end{verbatim}
+and run it by typing \texttt{./a.out}.
+%
+
+
+
+
+\section{Different types of FFTs}
+
+FFTW allows different types of fast Fourier transforms.
+For example, we have 1-, 2-, 3-dimensional transformations;
+the input array can be real or complex,
+and it may be symmetric, etc.
+%
+Thus, we need to create different FFT plans for different FFTs.
+%
+Plans are always executed by
+\texttt{fftw\_execute(p)}.
+
+The advantage of the two-step process---creating an FFT plan first
+  and then executing it
+  (instead of executing FFT directly)---is, I suppose,
+  to save time for multiple executions.
+
+The list of plans can be found in:
+
+\url{http://www.fftw.org/fftw3_doc/Basic-Interface.html}.
+
+The mathematical meaning of different plans:
+
+\url{http://www.fftw.org/fftw3_doc/What-FFTW-Really-Computes.html}
+
+The tutorial covers the most common plans with examples:
+
+\url{http://www.fftw.org/fftw3_doc/Tutorial.html}.
+
+
+Below we try to enumerate different classes of transformations
+and give an example code for each case,
+where we compare the fast version provided by the library
+with the straightforward version that follows directly from the definition.
+%
+The reader can use the code to
+  see precisely what each transform does.
+%
+The file \url{usefftw.zip} contains all example codes.
+
+
+
+
+\subsection{1D Fourier transform}
+
+The one-dimensional complex Fourier transform computes
+%
+\begin{equation}
+  Y_k = \sum_{j = 0}^{N - 1} X_j \exp(\mp 2 \pi j k i / N),
+  \label{eq:fft1d}
+\end{equation}
+%
+%
+
+
+The plan is created by
+\begin{verbatim}
+  fftw_plan_dft_1d(N, X, Y, FFTW_FORWARD, FFTW_ESTIMATE);
+\end{verbatim}
+Here, input \texttt{X} and output \texttt{Y} may be the same variable,
+  the flags \texttt{FFTW\_FORWORD} and \texttt{FFTW\_BACKWORD}
+  correspond to the minus and plus signs in (\ref{eq:fft1d}).
+%
+Example code: \url{1d.c}.
+%
+An even shorter example \url{1dmin.c} is shown below.
+Can you guess the output?
+{\footnotesize
+\begin{verbatim}
+#include <fftw3.h>
+int main(void) {
+  fftw_complex a[5] = {{0,0},{1,0},{2,0},{3,0},{4,0}}; int i;
+  fftw_plan p = fftw_plan_dft_1d(5, a, a, FFTW_FORWARD, FFTW_ESTIMATE);
+  fftw_execute(p); fftw_execute(p); /* execute p twice */
+  for (i = 0; i < 5; i++) printf("%d: %8.3f %8.3f\n", i, a[i][0], a[i][1]);
+  fftw_destroy_plan(p); fftw_cleanup(); return 0;
+}
+\end{verbatim}
+}
+%
+
+
+
+\subsection{1D real-to-complex Fourier transform}
+
+If the input array is real (e.g., \texttt{double X[N];}).
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_dft_r2c_1d(N, X, Y, FFTW_FORWARD, FFTW_ESTIMATE);
+\end{verbatim}
+%
+The output array needs to hold \texttt{N/2 + 1} complex elements,
+for $Y_{n - k} = Y_k^*$.
+%
+An example can be found in \url{1dr2c.c}.
+
+
+
+
+\subsection{1D cosine and sine transforms}
+
+The situation becomes complicated for cosine and sine transforms of
+  a real array,
+  and we have many different cases with subtle differences in definitions.
+%
+Fortunately they all share the same interface:
+\begin{verbatim}
+  fftw_plan_r2r_1d(N, X, Y, FFTW_REDFT00, FFTW_ESTIMATE);
+\end{verbatim}
+Here \texttt{N} is always the larger of
+  the numbers of elements in \texttt{X} and \texttt{Y},
+and
+\texttt{FFTW\_REDFT00} can be replaced by one of the following options.
+%
+The cases listed below differ subtly in details,
+  e.g. sometimes it's an $n$ instead of $n-1$,
+  and sometimes there is a $1/2$, etc.
+
+
+
+
+
+\subsubsection{Type-I cosine transform}
+The type-I discrete cosine transform (DCT) computes
+\begin{equation}
+  Y_k = X_0 + (-1)^k X_{n}
+  + 2 \sum_{j = 1}^{n - 1} X_j \cos(\pi j k / n)
+\end{equation}
+for $(X_0, \dots, X_n)$ and $(Y_0, \dots, Y_n)$.
+%
+The values $Y_{n+1}, \dots, Y_{2n}$ are unnecessary because $Y_{2n - k} = Y_k$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n + 1, X, Y, FFTW_REDFT00, FFTW_ESTIMATE);
+\end{verbatim}
+Example code: \url{1dc1.c}.
+
+This transform is its own inverse.
+%
+So the same transform on $(Y_0, \dots, Y_n)$
+  yields $2n$ times $(X_0, \dots, X_n)$.
+%
+The output is a single peak if the input is of the form of
+  $X_j = \cos(\pi k j/n)$
+  with an integer frequency $k$.
+
+
+
+
+
+\subsubsection{Type-II cosine transform}
+The type-II DCT computes
+\begin{equation}
+  Y_k = 2 \sum_{j = 0}^{n - 1} X_j \cos\big(  \pi (j + 1/2) k / n  \big)
+\end{equation}
+%
+for $(X_0, \dots, X_{n-1})$ and $(Y_0, \dots, Y_{n-1})$.
+%
+The values $Y_{n}, \dots, Y_{2n}$ are unnecessary because
+$Y_{2n - k} = -Y_k$
+and
+$Y_n = 0$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n, X, Y, FFTW_REDFT10, FFTW_ESTIMATE);
+\end{verbatim}
+Example code: \url{1dc2.c}.
+
+This is the inverse of the type-III DCT.
+%
+So applying the type-III DCT on $(Y_0, \dots, Y_{n-1})$
+  gives $2n$ times $(X_0, \dots, X_{n - 1})$.
+%
+The output is a single peak if the input is of the form of
+  $X_j = \cos(\pi k (j + 1/2)/n)$
+  with an integer frequency $k$.
+
+
+
+
+
+\subsubsection{Type-III cosine transform}
+The type-III DCT computes
+\begin{equation}
+  Y_k = X_0 + 2 \sum_{j = 1}^{n - 1} X_j \cos(\pi j (k + 1/2) / n)
+\end{equation}
+%
+for $(X_0, \dots, X_{n-1})$ and $(Y_0, \dots, Y_{n-1})$.
+%
+The values $Y_{n}, \dots, Y_{2n - 1}$ are unnecessary because
+$Y_{2n - 1 - k} = Y_k$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n, X, Y, FFTW_REDFT01, FFTW_ESTIMATE);
+\end{verbatim}
+Example code: \url{1dc3.c}.
+
+This is the inverse of the type-II DCT.
+%
+So applying the type-II DCT on $(Y_0, \dots, Y_{n-1})$
+  gives $2n$ times $(X_0, \dots, X_{n - 1})$.
+%
+The output is a single peak if the input is of the form of
+  $X_j = \cos(\pi (k + 1/2) j/n)$
+  with a half-integer frequency $k + 1/2$.
+
+
+
+
+
+\subsubsection{Type-IV cosine transform}
+The type-IV DCT computes
+\begin{equation}
+  Y_k = 2 \sum_{j = 0}^{n - 1} X_j \cos\big( \pi (j + 1/2) (k + 1/2) / n \big)
+\end{equation}
+%
+for $(X_0, \dots, X_{n-1})$ and $(Y_0, \dots, Y_{n-1})$.
+%
+The values $Y_{n}, \dots, Y_{2n - 1}$ are unnecessary because
+$Y_{2n - 1 - k} = -Y_k$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n, X, Y, FFTW_REDFT11, FFTW_ESTIMATE);
+\end{verbatim}
+Example code: \url{1dc4.c}.
+
+
+This transform is its own inverse.
+%
+So the same transform on $(Y_0, \dots, Y_{n-1})$
+  yields $2n$ times $(X_0, \dots, X_{n-1})$.
+The output is a single peak if the input is of the form of
+  $X_j = \cos(\pi (k + 1/2) (j + 1/2) / n)$
+  with a half-integer frequency $k + 1/2$.
+
+
+
+
+
+\subsubsection{Type-I sine transform}
+The type-I DST computes
+\begin{equation}
+  Y_k = 2 \sum_{j = 1}^{n - 1} X_j \sin\big( \pi j k / n \big)
+\end{equation}
+%
+for $(X_0 = 0, X_1, \dots, X_{n-1})$ and $(Y_0 = 0, Y_1, \dots, Y_{n-1})$.
+%
+The values $Y_{n}, \dots, Y_{2n}$ are unnecessary because
+$Y_{2n - k} = Y_k$ and $Y_n = 0$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n - 1, X + 1, Y + 1, FFTW_RODFT00, FFTW_ESTIMATE);
+\end{verbatim}
+where the offset ``+1'' skips the first zero elements.
+Example code: \url{1ds1.c}.
+
+
+This transform is its own inverse.
+%
+So the same transform on $(Y_0, \dots, Y_{n-1})$
+  yields $2n$ times $(X_0, \dots, X_{n-1})$.
+The output is a single peak if the input is of the form of
+  $X_j = \sin\big(\pi k j / n \big)$
+  with an integer frequency $k$.
+
+
+
+
+
+\subsubsection{Type-II sine transform}
+The type-II DST computes
+\begin{equation}
+  Y_k = 2 \sum_{j = 0}^{n - 1} X_j \sin\big( \pi (j + 1/2) k / n \big)
+\end{equation}
+%
+for $(X_0, \dots, X_{n-1})$ and $(Y_0 = 0, Y_1, \dots, Y_{n-1})$.
+%
+The values $Y_{n}, \dots, Y_{2n}$ are unnecessary because
+$Y_{2n - k} = -Y_k$ and $Y_n = 0$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n, X, Y + 1, FFTW_RODFT10, FFTW_ESTIMATE);
+\end{verbatim}
+Example code: \url{1ds2.c}.
+
+
+This transform is the inverse of the type-III DST.
+%
+So applying the type-III DST on $(Y_1, \dots, Y_{n-1})$
+  yields $2n$ times $(X_0, \dots, X_{n-1})$.
+The output is a single peak if the input is of the form of
+  $X_j = \sin\big(\pi k (j + 1/2) / n \big)$
+  with an integer frequency $k$.
+
+
+
+
+
+\subsubsection{Type-III sine transform}
+The type-III DST computes
+\begin{equation}
+  Y_k = (-1)^k X_n
+    + 2 \sum_{j = 1}^{n - 1} X_j \sin\big( \pi j (k + 1/2) / n \big)
+\end{equation}
+%
+for $(X_0 = 0, X_1, \dots, X_{n})$ and $(Y_0, \dots, Y_{n-1})$.
+%
+The values $Y_{n}, \dots, Y_{2n}$ are unnecessary because
+$Y_{2n - 1 - k} = -Y_k$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n, X + 1, Y, FFTW_RODFT01, FFTW_ESTIMATE);
+\end{verbatim}
+Example code: \url{1ds3.c}.
+
+
+This transform is the inverse of the type-II DST.
+%
+So applying the type-II DST on $(Y_0, \dots, Y_{n-1})$
+  yields $2n$ times $(X_1, \dots, X_{n})$.
+The output is a single peak if the input is of the form of
+  $X_j = \sin\big(\pi (k + 1/2) j / n \big)$
+  with a half-integer frequency $k + 1/2$.
+
+
+
+
+
+\subsubsection{Type-IV sine transform}
+The type-IV DST computes
+\begin{equation}
+  Y_k = 2 \sum_{j = 0}^{n - 1} X_j \sin\big( \pi (j + 1/2) (k + 1/2) / n \big)
+\end{equation}
+%
+for $(X_0, \dots, X_{n - 1})$ and $(Y_0, \dots, Y_{n-1})$.
+%
+The values $Y_{n}, \dots, Y_{2n}$ are unnecessary because
+$Y_{2n - 1 - k} = Y_k$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n, X, Y, FFTW_RODFT11, FFTW_ESTIMATE);
+\end{verbatim}
+Example code: \url{1ds4.c}.
+
+
+This transform is its own inverse,
+%
+and applying the same transform on $(Y_0, \dots, Y_{n-1})$
+  yields $2n$ times $(X_0, \dots, X_{n - 1})$.
+The output is a single peak if the input is of the form of
+  $X_j = \sin\big(\pi (k + 1/2) (j + 1/2) / n \big)$
+  with a half-integer frequency $k + 1/2$.
+
+
+
+
+
+\subsubsection{Hartley transform}
+The Hartley computes
+\begin{equation}
+  Y_k = \sum_{j = 0}^{n - 1} X_j
+    \left[
+      \sin\big( 2 \pi j k / n \big)
+      + \cos\big( 2 \pi j k / n \big)
+    \right]
+\end{equation}
+%
+for $(X_0, \dots, X_{n - 1})$ and $(Y_0, \dots, Y_{n-1})$.
+%
+The plan is created by
+\begin{verbatim}
+  fftw_plan_r2r_1d(n, X, Y, FFTW_DHT, FFTW_ESTIMATE);
+\end{verbatim}
+Example code: \url{1dh.c}.
+
+
+This transform is its own inverse,
+%
+and applying the same transform on $(Y_0, \dots, Y_{n-1})$,
+  yields $n$ times $(X_0, \dots, X_{n-1})$.
+The output is a single peak if the input is of the form of
+  $X_j = \sin\big(\pi k (j + \phi) / n \big)$
+  with an integer frequency $k$
+  and \emph{arbitrary} real phase $\phi$.
+
+
+
+
+
+\subsection{3D Fourier transform}
+
+The three-dimensional plan is created by
+\begin{verbatim}
+  fftw_plan_dft_3d(N0, N1, N2, &X[0][0][0], &Y[0][0][0],
+    FFTW_FORWARD, FFTW_ESTIMATE);
+\end{verbatim}
+where the two arrays are declared as
+\begin{verbatim}
+  fftw_complex X[N0][N1][N2], Y[N0][N1][N2];
+\end{verbatim}
+%
+Here, we use
+\texttt{\&X[0][0][0]} (the input)
+to get the one-dimensional address,
+which is equivalent to
+\texttt{(fftw\_complex *) X}.
+%
+Both arrays can be dynamically allocated
+to hold $\mathtt{N0} \times \mathtt{N1} \times \mathtt{N2}$
+complex elements.
+%
+See \url{3d.c} for an example.
+
+
+
+
+\section{Thread and OpenMP}
+
+There are two ways to parallelize your program.
+%
+One is to use threads.
+%
+Threads share the memory space,
+  but hopefully uses different CPU cores.
+%
+The other is to use MPI (message passing interface),
+%
+in which each core has its own memory space,
+%
+with only ``messages'' exchanged among cores.
+%
+We discuss the former case here.
+
+
+
+
+
+\subsection{Installation and compilation}
+
+First, you may need to compile and install FFTW
+  with \texttt{--enable-threads} and/or \texttt{--enable-openmp}.
+If the compilation is successful,
+  you should get \texttt{libfftw3\_threads.a}
+  and \texttt{libfftw3\_omp.a}.
+
+
+
+To compile your Pthread program with FFTW, type
+\begin{verbatim}
+  gcc a.c -lfftw3_threads -lm -lpthread
+\end{verbatim}
+%
+For OpenMP, change it to
+\begin{verbatim}
+  gcc -fopenmp a.c -lfftw3_omp -lm
+\end{verbatim}
+If you use the Intel C compiler,
+  substitute ``\texttt{icc -openmp}''
+  for ``\texttt{gcc -fopenmp}.''
+See also Sec. \ref{sec:install}.
+
+
+
+
+\subsection{Using threads}
+
+To use the thread version of FFTW, do the following three things.
+(these are well explained in
+\url{http://www.fftw.org/fftw3_doc/Usage-of-Multi_002dthreaded-FFTW.html}.)
+
+
+First, call
+\begin{verbatim}
+  fftw_init_threads();
+\end{verbatim}
+at the beginning of the program, before calling any other FFTW functions.
+
+Second, call
+\begin{verbatim}
+  fftw_plan_with_nthreads(nthreads);
+\end{verbatim}
+%
+All subsequent plans are made with this many \texttt{nthreads} threads.
+Setting \texttt{nthreads = 1} disables threads.
+In the OpenMP case, the function \texttt{omp\_get\_max\_threads()}
+can be used to obtain the number of threads.
+
+Last, when you are done, call
+\begin{verbatim}
+  fftw_cleanup_threads();
+\end{verbatim}
+instead of \texttt{fftw\_cleanup()}.
+
+The example code: \url{2d_t.c}.
+
+
+
+
+
+\section{Message passing interface (MPI)}
+
+An MPI program differs from a program using threads
+in that each CPU core owns a private memory space in the former case.
+%
+So if you want to Fourier transform an array of $N$ elements
+using $K$ processors.
+%
+Ideally each core should hold only $N/K$ elements.
+%
+Correspondingly, we have a different set functions,
+%
+and the reader should follow the documentation:
+\url{http://www.fftw.org/fftw3_doc/Distributed_002dmemory-FFTW-with-MPI.html}.
+%
+Here we only give an example \url{2d_mpi.c} adapted from there.
+
+
+
+
+
+
+\subsection{Installation and compilation}
+
+First, you may need to compile and install FFTW
+  with \texttt{--enable-mpi}
+  and preferably with \texttt{--program-suffix=\_mpi}.
+%
+If the compilation is successful,
+  you should get \texttt{libfftw3\_mpi.a}
+  and \texttt{libfftw3.a}.
+
+To compile your MPI program with FFTW, type
+\begin{verbatim}
+  mpicc 2d_mpi.c -lfftw3_mpi -lfftw3 -lm
+\end{verbatim}
+%
+Note
+1) Both ``\texttt{-lfftw3\_mpi}'' and ``\texttt{-lfftw3}''
+  and needed, and place them in this order.
+%
+2) ``\texttt{-lm}'' may not needed if
+``\texttt{mpicc}'' is not made of GCC (e.g., Intel C compiler).
+See also Sec. \ref{sec:install}.
+
+
+
+
+
+\section{\label{sec:install}Customized installation}
+
+
+%\subsection{Building}
+If you want a different setting than the default one,
+  you need to compile FFTW directly.
+Further, if you use FFTW on a supercomputer
+  without the superuser privilege,
+  you might want to install FFTW on a private directory.
+Here is an example.
+
+We want to compile the thread and OpenMP versions,
+  which are independent, using GCC (the default compiler),
+  and install them under \texttt{\$HOME/app}.
+
+
+First, download and unzip the package.
+\begin{verbatim}
+  tar -xvzf fftw-3.3.3.tar.gz
+  cd fftw-3.3.3
+\end{verbatim}
+
+Second, make a directory \texttt{build\_omp}, and build it there
+\begin{verbatim}
+  mkdir build_omp && cd build_omp
+  ../configure --enable-threads --enable-omp --prefix=$HOME/app
+  make install
+\end{verbatim}
+
+Now \texttt{ls \$HOME/app/lib} gives six files:
+\begin{verbatim}
+libfftw3.a  libfftw3_omp.a  libfftw3_threads.a
+libfftw3.la libfftw3_omp.la libfftw3_threads.la
+\end{verbatim}
+We also have a header \texttt{\$HOME/app/include/fftw3.h}.
+
+
+The MPI case is similar (we will make \texttt{libfftw3\_mpi.a}):
+\begin{verbatim}
+  mkdir build_mpi && cd build_mpi
+  ../configure MPICC=mpicc --enable-mpi --prefix=$HOME/app \
+      --program-suffix=_mpi
+  make install
+\end{verbatim}
+
+
+%\subsection{Compilation}
+
+Because the libraries are installed in a non-default directory,
+add the flag ``\texttt{-I\$HOME/app/include -L\$HOME/app/lib}''
+when compiling your program.
+\begin{verbatim}
+  mpicc your_mpi.c -lfftw3_mpi -lfftw3 -lm \
+      -I$HOME/app/include -L$HOME/app/lib
+\end{verbatim}
+Also add \texttt{\$HOME/app/lib} to the environment variable
+  ``\texttt{LD\_LIBRARY\_PATH}'':
+\begin{verbatim}
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/app/lib
+\end{verbatim}
+so that the resulting program can run smoothly.
+
+
+
+\section{Application: integral equation}
+
+
+As an application, consider the solution of
+  the integral equations in the liquid theory
+  under the Percus-Yevick closure:
+\begin{align}
+  t(\vct{k}) &= \frac{ \rho \, c^2(\vct{k}) } { 1 - \rho c(\vct{k}) } \notag \\
+  c(\vct{r}) &= f(r) \big[1 + t(\vct{r})\big],
+  \label{eq:PY}
+\end{align}
+%
+where $r = |\vct{r}|$, $f(r) = e^{-\beta u(r)} - 1$ is a known function,
+ and $A(\vct{k}) = \iiint A(\vct{r}) e^{-i\vct{k}\cdot\vct{r}} d\vct{r}$
+ is the Fourier transform of the function $A(\vct{r})$.
+
+To simply the calculation, we observe that
+  the 3D Fourier transform of a spherical potential
+  can be reduced to a 1D sine transform:
+\begin{equation}
+  \iiint A(\vct{r}) e^{-i\vct{k}\cdot\vct{r}} d\vct{r}
+  = \frac{4\pi}{k} \int_0^{+\infty} A(r) r \sin(kr) dr.
+\end{equation}
+%
+The following code implements this trick
+  and solves \eqref{eq:PY} by FFTW (type-I sine transform).
+%
+{\footnotesize
+\begin{verbatim}
+fftw_plan p = fftw_plan_r2r_1d(n-1, c+1, c+1, FFTW_RODFT00, FFTW_ESTIMATE);
+fftw_plan q = fftw_plan_r2r_1d(n-1, t+1, t+1, FFTW_RODFT00, FFTW_ESTIMATE);
+
+for ( iter = 0; iter < 1000; iter++ ) {
+  for ( i = 1; i < n; i++ ) c[i] *= i*dr; /* c(r) r */
+  fftw_execute(p); /* c(k) = 2 Pi/k Int 2r c(r) sin(kr) dr */
+  for ( i = 1; i < n; i++ ) {
+    c[i] *= 2*PI*dr/(i*dk); /* c(k) / k */
+    t[i] = rho*c[i]*c[i] / (1 - rho*c[i]) * (i*dk); /* t(k) k */
+  }
+  fftw_execute(q); /* t(r) = 1/(4 Pi^2 r) Int 2k t(k) sin(kr) dk */
+  for ( i = 1; i < n; i++ ) {
+    t[i] *= dk/(4*PI*PI*i*dr); /* t(r) / r */
+    c[i] = f[i] * (1 + t[i]); /* PY closure */
+  }
+}
+\end{verbatim}
+}
+%
+The full code: \url{inteq.c}.
+
+
+\end{document}
+

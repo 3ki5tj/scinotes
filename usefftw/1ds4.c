@@ -7,7 +7,7 @@
 
 
 /* brute-force calculation */
-void sint3(int n, double *in, double *out)
+void sint4(int n, double *in, double *out)
 {
   int j, k;
   double *s;
@@ -38,7 +38,7 @@ int main(void)
   for (i = 0; i < n; i++) in[i] = sin(2*M_PI*3.25*(i + .5)/n);
 
   fftw_execute(p);
-  sint3(n, in, out2);
+  sint4(n, in, out2);
 
   for (i = 0; i < 2*n; i++)
     printf("%6d %20.10f |  %20.10f\n", i, out[i], out2[i]);
