@@ -9,6 +9,7 @@
 \newcommand{\vrN}{\mathbf{r}^N}
 \newcommand{\vrn}{\mathbf{r}^n}
 \newcommand{\plam}{\partial_\lambda}
+\newcommand{\pbet}{\partial_\beta}
 
 
 
@@ -54,14 +55,18 @@ We refer the reader to Ref. \cite{hansen}
 
 We start with the thermodynamic integration formula.
 If the potential energy
-\[
+\begin{equation}
   U(\vrN, \lambda) = U_0(\vrN) + \lambda U_1(\vrN)
-\]
+  \label{eq:potene}
+\end{equation}
 depends on the parameter $\lambda$,
 then the partition function
-\[
+%
+\begin{equation}
   Z(\lambda) = \int d\vrN \exp[-\beta U(\vrN, \lambda)].
-\]
+  \label{eq:partfunc}
+\end{equation}
+%
 satisfies
 \begin{align*}
   \frac{ Z'(\lambda) }{Z(\lambda)}
@@ -162,7 +167,7 @@ by means of the integral equation.
 
 
 
-\subsection{Integral equation and the HNC closure}
+\subsection{\label{sec:funcs}Integral equation and the HNC closure}
 
 First, we define the total correlation function $h(\vr)$ as
 \begin{equation}
@@ -223,14 +228,19 @@ From \eqref{eq:hnc}, we have
   $\plam y_{uv} = y_{uv} \, \plam (h_{uv} - c_{uv})$;
   and by \eqref{eq:hr}, $\plam g_{uv} = \plam h_{uv}$, So
 \[
-  y_{uv} \, \plam (h - c) = e^{\beta \lambda \phi }
+  y_{uv} \, \plam (h_{uv} - c_{uv}) = e^{\beta \lambda \phi }
   ( \beta \phi g_{uv} + \plam h_{uv} ).
 \]
 Then by multiplying $e^{-\beta \lambda \phi}$ to both sides,
-and using
-\eqref{eq:yr}
-as $y_{uv} \, e^{-\beta \lambda \phi} \rightarrow 1 + h_{uv}$,
-we have
+and using \eqref{eq:hr}, we get
+\[
+  g_{uv} \, \plam (h_{uv} - c_{uv}) =
+  \beta \phi \, g_{uv} + \plam h_{uv}.
+\]
+Finally, with
+\eqref{eq:hr}
+as $g_{uv} \rightarrow 1 + h_{uv}$,
+we reach
 \begin{equation}
   \beta \phi \, g_{uv}
   =
@@ -407,7 +417,198 @@ it becomes the Gaussian density field theory mentioned in \cite{singer}.
 
 
 
-\section*{Acknowledgement}
+
+\section{Extension to the Helmholtz free energy}
+
+The same technique can be used to derive the Helmholtz free energy $F$ (or $A$).
+%
+In this case, we switch from $\lambda$ to $\beta$,
+and the partition function
+%
+\begin{equation}
+  Z(\beta) = \int d\vrN \exp[-\beta U(\vrN)].
+  \label{eq:partfunc_beta}
+\end{equation}
+%
+satisfies
+\begin{align*}
+  \frac{ d \left[ \beta F(\beta) \right] }
+  { d \beta }
+  = \frac{ Z'(\beta) }{Z(\beta)}
+  = \beta \left\langle
+      U(\vrN)
+    \right\rangle_\beta.
+\end{align*}
+%
+So, to obtain $F(\beta)$, we only need to integrate
+  the average potential energy
+  $\left\langle U(\vrN) \right\rangle_\beta$
+  from $\beta = 0$ to 1.
+%
+The rest derivation is very similar to that in Sec. \ref{sec:funcs},
+and we obtain a counterpart of \eqref{eq:hc1} as
+%
+\begin{equation}
+  \beta \phi \, g
+  =
+  - \pbet c + h \, \pbet h - h \, \pbet c.
+  \label{eq:hcall}
+\end{equation}
+
+The key difference here is that we are switching on the interaction
+  of all pairs of particles, whereas previously, we only switch on
+  the interaction with a single solute.
+%
+We have dropped the subscripts ``$u$'' and ``$v$'' for there is no
+  difference between solute and solvents.
+%
+Because of this difference, we will handle the term $h \pbet c$ differently.
+%
+First, observe
+\begin{align*}
+  \tilde{h}
+  &= \tilde{c} + \rho \tilde{c} \tilde{h} \\
+  &= \tilde{c} + \rho \tilde{c}^2
+               + \rho^2 \tilde{c}^3
+               + \dots
+\end{align*}
+%
+where $\tilde{c}(k) = \int d\vct{k} \, c(\vct{r}) \, \exp(-i \vct{k}\cdot\vct{r})$,
+%
+Let's now define a similar function,
+%
+\begin{align*}
+  \tilde{H}
+  &= \tilde{c}/2 + \rho \tilde{c}^2/3
+               + \rho^2 \tilde{c}^3/4
+               + \dots \\
+  &= -\left[
+      \rho \tilde{c} + \log(1 - \rho \tilde{c})
+      \right] / (\rho^2 \tilde{c}),
+\end{align*}
+%
+and we will show below that
+\begin{equation}
+  \pbet \int [H(\vct{r}) c(\vct{r})] d \vct{r}
+  = \int h(\vct{r}) \, \pbet c(\vct{r}) d \vct{r}.
+  \label{eq:bigH}
+\end{equation}
+
+
+
+
+Consider the $\rho \tilde{c}^2(k)$ term,
+  which is the Fourier transform of $c*c$
+we have
+\begin{align*}
+  &  \int
+    \frac{d \vct{k}}{(2\pi)^3}
+  \rho \tilde{c}^2(k) \tilde{c}(k) \\
+&=  \int
+    \frac{d \vct{k}}{(2\pi)^3}
+  \rho \tilde{c}^2(\vct{k}) \tilde{c}(-\vct{k}) \\
+&=
+  \int
+    \frac{d \vct{k}}{(2\pi)^3}
+    \rho
+    \int c(\vct{r}')  e^{ i \vct{k}\cdot \vct{r}'}   d \vct{r}'
+    \int c(\vct{r}'') e^{ i \vct{k}\cdot \vct{r}''}  d \vct{r}''
+    \int c(\vct{r})   e^{-i \vct{k}\cdot \vct{r}}    d \vct{r} \\
+&=
+    \rho
+    \iiint
+    c(\vct{r}')  c(\vct{r}'') c(\vct{r})
+    \, \delta(\vct{r}' + \vct{r}'' - \vct{r}) \,
+    d \vct{r}'
+    d \vct{r}''
+    d \vct{r} \\
+&=
+    \rho
+    \iint
+    c(\vct{r}')  c(\vct{r} - \vct{r}') c(\vct{r}) \,
+    d \vct{r}'
+    d \vct{r} \\
+&= \rho \int (c*c)(\vct{r}) \, c(\vct{r}) \,
+    d \vct{r},
+\end{align*}
+where we have exploited the spherical symmetry of $\tilde{c}(-\vct{k})$
+on the second line, and the identity
+$\int e^{i \vct{k}\cdot \vct{r}} d \vct{r} = (2\pi)^3 \delta(\vct{k})$.
+%
+Generally, we have
+%
+\begin{align*}
+  & \int
+    \frac{d \vct{k}}{(2\pi)^3}
+    \rho^{n-1} \tilde{c}^n(k)
+     \tilde{c}(k)
+  = \int \rho^{n-1} (c*\dots*c)(\vct{r}) \, c(\vct{r}) \,
+    d \vct{r}.
+\end{align*}
+%
+Note that the $n + 1$ $\tilde{c}(k)$'s are identical, then
+%
+\begin{align*}
+  \pbet  \int
+    \frac{d \vct{k}}{(2\pi)^3}
+  \frac{\rho^{n-1} \tilde{c}^n(k) }{n+1} \tilde{c}(k)
+  &= \int
+    \frac{d \vct{k}}{(2\pi)^3}
+  \rho^{n-1} \tilde{c}^n(k) \pbet \tilde{c}(k) \\
+  &=  \int \rho^{n-1} (c*\dots*c)(\vct{r}) \, \pbet c(\vct{r}) \,
+    d \vct{r}.
+\end{align*}
+%
+Summing over $n$ yields
+%
+\begin{align*}
+  \pbet  \int
+    \frac{d \vct{k}}{(2\pi)^3}
+    \tilde{H}(k) \, \tilde{c}(k)
+&= \int \sum_{n} \rho^{n-1}(c*\dots*c)(\vct{r}) \, \pbet c(\vct{r}) \,
+    d \vct{r} \\
+&= \int h(\vct{r}) \, \pbet c(\vct{r}) \,
+    d \vct{r}.
+\end{align*}
+%
+%
+
+Thus
+%
+\begin{align*}
+F
+&=
+  \frac{\rho^2}{2}
+  \int d\vr
+  \left[
+    - c(\vr)
+    + \tfrac{1}{2} h^2(\vr)
+    - H(\vr) \, c(\vr)
+  \right] \\
+  &=
+  \frac{\rho^2}{2}
+  \int d\vr
+  \left[
+    - c(\vr)
+    + \tfrac{1}{2} h^2(\vr)
+  \right]
+  +
+   \frac{1}{2}
+  \int \frac{ d \vct{k}  }{(2\pi)^3}
+   \left[
+      \rho \tilde{c} + \log(1 - \rho \tilde{c})
+      \right],
+  \label{eq:freeEnergy}
+\end{align*}
+%
+where we have used \eqref{eq:bigH} in the last step.
+%
+This is a simplified special case of (3.1) in the original paper.
+
+
+
+
+\section*{Acknowledgment}
 It is a pleasure to thank C.-L. Lai for helpful discussions.
 
 
