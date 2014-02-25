@@ -699,26 +699,45 @@ so that the resulting program can run smoothly.
 As an application, consider the solution of
   the integral equations in the liquid theory
   under the Percus-Yevick closure:
-\begin{align}
-  t(\vct{k}) &= \frac{ \rho \, c^2(\vct{k}) } { 1 - \rho c(\vct{k}) } \notag \\
-  c(\vct{r}) &= f(r) \big[1 + t(\vct{r})\big],
-  \label{eq:PY}
-\end{align}
 %
-where $r = |\vct{r}|$, $f(r) = e^{-\beta u(r)} - 1$ is a known function,
- and $A(\vct{k}) = \iiint A(\vct{r}) e^{-i\vct{k}\cdot\vct{r}} d\vct{r}$
- is the Fourier transform of the function $A(\vct{r})$.
+%
+%
+\newcommand{\FC}[1]{\tilde{#1}}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\vr}{\vct{r}}
+%
+%
+%
+\begin{equation}
+\begin{split}
+  \FC{t}(\vk)
+          &= \frac{ \rho \, \FC{c}^2(\vk) }
+                  { 1 - \rho \, \FC{c}(\vk) } \\
+  c(\vr)  &= f(r) \big[
+                    1 + t(\vr)
+                  \big],
+\end{split}
+\label{eq:PY}
+\end{equation}
+%
+%
+%
+where $r = |\vr|$, $f(r) = e^{-\beta u(r)} - 1$ is a known function,
+ and $A(\vk) \equiv \int A(\vr) e^{-i\vk\cdot\vr} d\vr$
+ is the Fourier transform of the function $A(\vr)$.
 
 To simply the calculation, we observe that
-  the 3D Fourier transform of a spherical potential
+  the 3D Fourier transform of a spherical function $A(r)$
   can be reduced to a 1D sine transform:
 \begin{equation}
-  \iiint A(\vct{r}) e^{-i\vct{k}\cdot\vct{r}} d\vct{r}
+  \int A(\vr) e^{-i\vk\cdot\vr} d\vr
   = \frac{4\pi}{k} \int_0^{+\infty} A(r) r \sin(kr) dr.
 \end{equation}
 %
 The following code implements this trick
   and solves \eqref{eq:PY} by FFTW (type-I sine transform).
+%
+%
 %
 {\footnotesize
 \begin{verbatim}
@@ -740,6 +759,8 @@ for ( iter = 0; iter < 1000; iter++ ) {
 }
 \end{verbatim}
 }
+%
+%
 %
 The full code: \url{inteq.c}.
 

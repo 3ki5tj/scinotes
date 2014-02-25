@@ -34,8 +34,8 @@ int main(void)
   out2 = (double *) fftw_malloc(sizeof(*out2) * n);
   p = fftw_plan_r2r_1d(n, in + 1, out, FFTW_RODFT01, FFTW_ESTIMATE);
 
-  // for n = 3: in[0] = 0; in[1] = 1; in[2] = 2;
-  for (i = 0; i <= n; i++) in[i] = sin(2*M_PI*3.25*i/n);
+  /* Note that the frequency is a half integer divided by n */
+  for (i = 0; i <= n; i++) in[i] = sin(M_PI*(2*3.25)*i/n);
 
   fftw_execute(p);
   sint3(n, in, out2);

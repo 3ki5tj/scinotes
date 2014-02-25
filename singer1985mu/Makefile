@@ -24,7 +24,7 @@ $(html) : %.html: %.tex
 
 
 Bossman: $(pdf) $(htmldir)
-	rsync -avzrL *.pdf *.tex *_html cz1@129.109.88.204:/Bossman/cz1/notes/
+	rsync -avzrL *.pdf *.tex *_html cz1@he.host.utmb.edu:/Bossman/cz1/notes/singer1985mu
 
 # upload to github
 github:

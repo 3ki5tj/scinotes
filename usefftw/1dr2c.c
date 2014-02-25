@@ -34,12 +34,13 @@ void ft(int n, double *in, fftw_complex *out)
 
 int main(void)
 {
-  double *in;
+  double *in, *in2;
   fftw_complex *out, *out2; /* double [2] */
-  fftw_plan p;
+  fftw_plan p, q;
   int i, N = 16;
 
   in = (double *) fftw_malloc(sizeof(*in) * N);
+  in2 = (double *) fftw_malloc(sizeof(*in2) * N);
   out = (fftw_complex *) fftw_malloc(sizeof(*out) * N);
   out2 = (fftw_complex *) fftw_malloc(sizeof(*out2) * N);
   /* http://www.fftw.org/fftw3_doc/Real_002ddata-DFTs.html */
@@ -55,8 +56,14 @@ int main(void)
     printf("%6d %20.10f %20.10f |  %20.10f %20.10f\n",
         i, out[i][0], out[i][1], out2[i][0], out2[i][1]);
 
+  printf("\nApplying the inverse transform...\n");
+  q = fftw_plan_dft_c2r_1d(N, out, in2, FFTW_ESTIMATE);
+  fftw_execute(q);
+  for (i = 0; i < N; i ++)
+    printf("%6d %20.10f %20.10f\n", i, in[i], in2[i]/N);
+
   fftw_destroy_plan(p); fftw_cleanup();
-  fftw_free(in); fftw_free(out); fftw_free(out2);
+  fftw_free(in); fftw_free(in2); fftw_free(out); fftw_free(out2);
   return 0;
 }
 

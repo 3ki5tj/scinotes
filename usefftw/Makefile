@@ -52,7 +52,7 @@ $(prj).zip: $(c) $(tex) Makefile
 zip: $(prj).zip
 
 Bossman: $(pdf) $(htmldir) $(c) $(prj).zip
-	rsync -avzrL *.pdf *.tex *_html *.c $(prj).zip cz1@129.109.88.204:/Bossman/cz1/notes/$(prj)
+	rsync -avzrL *.pdf *.tex *_html *.c $(prj).zip cz1@he.host.utmb.edu:/Bossman/cz1/notes/$(prj)
 
 # upload to github
 github:

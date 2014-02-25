@@ -34,7 +34,8 @@ int main(void)
   out2 = (double *) fftw_malloc(sizeof(*out2) * n);
   p = fftw_plan_r2r_1d(n, in, out + 1, FFTW_RODFT10, FFTW_ESTIMATE);
 
-  // for n = 3: in[0] = 0; in[1] = 1; in[2] = 2;
+  /* note the frequency is an integer
+   * but the sampling point is offset by a half bin size */
   for (i = 0; i < n; i++) in[i] = sin(2*M_PI*3*(i + .5)/n);
 
   fftw_execute(p);

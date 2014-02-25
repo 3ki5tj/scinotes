@@ -8,6 +8,13 @@
 \newcommand{\vr}{\vct{r}}
 \newcommand{\vrN}{\mathbf{r}^N}
 \newcommand{\vrn}{\mathbf{r}^n}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\dvk}{\frac{ d \vk  }{(2\pi)^3}}
+% Fourier transform
+\newcommand{\FT}[1]{\tilde{#1}}
+\newcommand{\FTc}{\FT{c}}
+\newcommand{\FTh}{\FT{h}}
+
 \newcommand{\plam}{\partial_\lambda}
 \newcommand{\pbet}{\partial_\beta}
 
@@ -32,7 +39,7 @@ Then, the chemical potential of adding the solute into
 \begin{equation}
 \beta \mu_u
   =
-  \rho_u \int d\vr
+  \rho_v \int d\vr
   \left[
     - c_{uv}(\vr)
     + \frac{1}{2} h_{uv}^2(\vr)
@@ -41,7 +48,7 @@ Then, the chemical potential of adding the solute into
   \label{eq:singer}
 \end{equation}
 %
-where $\rho_u$ is the solvent density,
+where $\rho_v$ is the solvent density,
   $h_{uv}(\vr) = g_{uv}(\vr) - 1$ is the total correlation function
   [with $g_{uv}(\vr)$ being the radial distribution function],
 and $c_{uv}(\vr)$ is the direct correlation function.
@@ -68,23 +75,23 @@ then the partition function
 \end{equation}
 %
 satisfies
-\begin{align*}
+\begin{align}
   \frac{ Z'(\lambda) }{Z(\lambda)}
   &=
-    -\beta \int d\vrN U_1(\vrN, \lambda)
+    -\beta \int d\vrN U_1(\vrN)
     \left\{
       \frac{ \exp
              \left[
              -\beta U(\vrN, \lambda)
              \right]}
       { Z(\lambda) }
-    \right\} \\
+    \right\} \notag \\
   &=
     -\beta
     \left\langle
-      U_1(\vrN, \lambda)
+      U_1(\vrN)
     \right\rangle_\lambda.
-\end{align*}
+\end{align}
 In the second step, note that the term in the braces
   is the normalized Boltzmann weight,
   and the integral is equal to an ensemble average
@@ -95,7 +102,7 @@ Equivalently, in terms of the free energy $\beta F = -\log Z$,
   \beta F'(\lambda)
   = \beta
     \left\langle
-      U_1(\vrN, \lambda)
+      U_1(\vrN)
     \right\rangle_\lambda.
 \end{equation}
 
@@ -118,7 +125,7 @@ So the chemical potential $\mu_u = dF/dN$ is
   =
   \int_0^1
     \left\langle
-      U_1(\vrN, \lambda)
+      U_1(\vrN)
     \right\rangle_\lambda d\lambda.
   \label{eq:muti0}
 \end{align}
@@ -143,7 +150,7 @@ So
       \phi(\vr_{01})
     \right\rangle_\lambda
     =
-    \rho_u \int d\vr_{01} \,
+    \rho_v \int d\vr_{01} \,
       \phi(\vr_{01}) \, g_{uv}(\vr_{01}, \lambda),
   \label{eq:uphig}
 \end{equation}
@@ -155,7 +162,7 @@ Using \eqref{eq:uphig} in \eqref{eq:muti0} yields
 \begin{equation}
     \mu_u
     =
-    \rho_u
+    \rho_v
     \int_0^1 d\lambda \,
       \int d\vr_{01} \,
         \phi(\vr_{01}) \, g_{uv}(\vr_{01}, \lambda).
@@ -189,11 +196,11 @@ The direct correlation function $c(\vr)$
 is defined in the Ornstein-Zernike relation:
 \begin{equation}
   h(\vr) = c(\vr) + \rho \, [c * h](\vr),
-  \label{eq:cr}
+  \label{eq:oz}
 \end{equation}
 where $[c*h](\vr) \equiv \int c(\vr') \, h(\vr - \vr') \, d\vr'$
-  (convolution).
-We will give a broken-down version among solvents and/or solutes later.
+  (``$*$'' means a convolution).
+We will attach the subscripts ``$u$'' (solute) and ``$v$'' (solvent) later.
 %
 %
 %
@@ -261,7 +268,7 @@ Obviously $h_{uv} \plam h_{uv} = \plam ( h_{uv}^2/2 )$.
 %
 We argue below that $h_{uv} \plam c_{uv} = \plam ( h_{uv} c_{uv} /2) $
 in an \emph{average} sense under the condition of \emph{infinite dilution}.
-Let us look at \eqref{eq:cr} more carefully.
+Let us look at \eqref{eq:oz} more carefully.
 %
 For the solute-solvent pair, we have
 \[
@@ -304,29 +311,29 @@ Thus,
   &= \int d\vr \, c_{uv}(\vr) \, \plam h_{uv}(\vr) \notag \\
   &= \int d\vr \plam
     \left[
-      \frac{1}{2} h_{uv}(\vr) \,  c_{uv}(\vr)
+      \tfrac{1}{2} h_{uv}(\vr) \,  c_{uv}(\vr)
     \right].
   \label{eq:phig}
 \end{align}
 %
 By using \eqref{eq:phig}, \eqref{eq:hc1} in \eqref{eq:uphig}, we get
 %
-\begin{align*}
+\begin{align}
   \langle
   \beta U_1(\vr)
   \rangle_\lambda
   &=
-  \rho_u \,
+  \rho_v \,
   \int d \vr
-  \, \beta \phi(\vr) \, g_{uv}(\vr) \\
+  \, \beta \phi(\vr) \, g_{uv}(\vr) \notag \\
   &=
-   \rho_u \, \plam \int d \vr \,
+   \rho_v \, \plam \int d \vr \,
    \left[
     - c_{uv}(\vr)
-    + \frac{1}{2} h_{uv}^2(\vr)
-    - \frac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
+    + \tfrac{1}{2} h_{uv}^2(\vr)
+    - \tfrac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
     \right].
-  \end{align*}
+\end{align}
 %
 %
 %
@@ -334,23 +341,23 @@ By \eqref{eq:muti}, we get \eqref{eq:singer}, or more explicitly,
 \begin{align}
   \beta \mu_u
   &=
-   \rho_u \, \int
+   \rho_v \, \int
     d \vr \,
    \left[
     - c_{uv}(\vr)
-    + \frac{1}{2} h_{uv}^2(\vr)
+    + \tfrac{1}{2} h_{uv}^2(\vr)
     \right]
   \notag \\
   & \;\;\;\;\;
     -
-    \rho_u \, \iint d\vr \, d\vr'
+    \rho_v \, \iint d\vr \, d\vr'
     \, c_{uv}(\vr)
     \, \chi_{vv}(\vr - \vr')
     \, c_{uv}(\vr'),
  \label{eq:muexpanded}
 \end{align}
 where
-$\chi_{vv}(\vr) = \delta_{vv}(r) + \rho_u \, h_{vv}(\vr)$.
+$\chi_{vv}(\vr) = \delta_{vv}(r) + \rho_v \, h_{vv}(\vr)$.
 %
 This is the equivalent to (2.8) in \cite{singer}
 [note,
@@ -400,7 +407,7 @@ Thus
 \begin{equation}
 \beta \mu_u
   =
-  \rho_u \int d\vr
+  \rho_v \int d\vr
   \left\{
     - c_{uv}(\vr)
     + \frac{1}{2} h_{uv}^2(\vr) \, \Theta[ -d_{uv}(\vr) ]
@@ -416,11 +423,13 @@ Finally, if we drop the $h_{uv}^2/2$ term entirely,
 it becomes the Gaussian density field theory mentioned in \cite{singer}.
 
 
-
+%\clearpage
 
 \section{Extension to the Helmholtz free energy}
 
 The same technique can be used to derive the Helmholtz free energy $F$ (or $A$).
+%
+Below we assume the HNC closure.
 %
 In this case, we switch from $\lambda$ to $\beta$,
 and the partition function
@@ -434,8 +443,8 @@ satisfies
 \begin{align*}
   \frac{ d \left[ \beta F(\beta) \right] }
   { d \beta }
-  = \frac{ Z'(\beta) }{Z(\beta)}
-  = \beta \left\langle
+  = -\frac{ Z'(\beta) }{Z(\beta)}
+  = \left\langle
       U(\vrN)
     \right\rangle_\beta.
 \end{align*}
@@ -443,140 +452,157 @@ satisfies
 So, to obtain $F(\beta)$, we only need to integrate
   the average potential energy
   $\left\langle U(\vrN) \right\rangle_\beta$
-  from $\beta = 0$ to 1.
+  over $\beta$.
 %
-The rest derivation is very similar to that in Sec. \ref{sec:funcs},
-and we obtain a counterpart of \eqref{eq:hc1} as
+The rest derivation is very similar to that in Sec. \ref{sec:funcs}.
+%
+Note that
 %
 \begin{equation}
-  \beta \phi \, g
+  \left\langle
+    U(\vrN)
+  \right\rangle_\beta
   =
-  - \pbet c + h \, \pbet h - h \, \pbet c.
+  \frac{\rho^2}{2} \int d \vr \, \phi \, g(\vr),
+\end{equation}
+%
+where, the factor $1/2$ is due to the double counting of pairs.
+%
+The counterpart of \eqref{eq:hc1} is
+%
+\begin{equation}
+  \phi \, g(\vr)
+  =
+  - \pbet c(\vr) + h(\vr) \, \pbet h(\vr) - h(\vr) \, \pbet c(\vr).
   \label{eq:hcall}
 \end{equation}
-
+%
 The key difference here is that we are switching on the interaction
-  of all pairs of particles, whereas previously, we only switch on
-  the interaction with a single solute.
+  of \emph{all} pairs of particles, whereas previously, we only switch on
+  the interaction with a single solute $u$.
 %
 We have dropped the subscripts ``$u$'' and ``$v$'' for there is no
   difference between solute and solvents.
+
+
+The last term $h(\vr) \, \pbet c(\vr)$, however,
+  is no longer $\pbet \big[ \frac{1}{2} h(\vr) c(\vr) \big]$.
 %
-Because of this difference, we will handle the term $h \pbet c$ differently.
-%
-First, observe
+First, from the $\vk$-space version of \eqref{eq:oz}
 \begin{align*}
-  \tilde{h}
-  &= \tilde{c} + \rho \tilde{c} \tilde{h} \\
-  &= \tilde{c} + \rho \tilde{c}^2
-               + \rho^2 \tilde{c}^3
+  \FTh(\vk)
+  &= \FTc(\vk) + \rho \, \FTc(\vk) \, \FTh(\vk) \\
+  &= \FTc(\vk) + \rho \, \FTc^2(\vk)
+               + \rho^2 \, \FTc^3(\vk)
                + \dots
 \end{align*}
 %
-where $\tilde{c}(k) = \int d\vct{k} \, c(\vct{r}) \, \exp(-i \vct{k}\cdot\vct{r})$,
+where $\FTc(\vk) = \int d\vk \, c(\vr) \, e^{-i \vk\cdot\vr}$.
 %
 Let's now define a similar function,
 %
 \begin{align*}
-  \tilde{H}
-  &= \tilde{c}/2 + \rho \tilde{c}^2/3
-               + \rho^2 \tilde{c}^3/4
-               + \dots \\
-  &= -\left[
-      \rho \tilde{c} + \log(1 - \rho \tilde{c})
-      \right] / (\rho^2 \tilde{c}),
+  \FT{H}(\vk)
+  &= \FTc(\vk)/2
+   + \rho \FTc^2(\vk)/3
+   + \rho^2 \FTc^3(\vk)/4
+    + \dots \\
+  &= -\left\{
+        \rho \FTc(\vk)
+        + \log[1 - \rho \FTc(\vk)]
+    \right\} / [\rho^2 \FTc(\vk)],
 \end{align*}
 %
 and we will show below that
 \begin{equation}
-  \pbet \int [H(\vct{r}) c(\vct{r})] d \vct{r}
-  = \int h(\vct{r}) \, \pbet c(\vct{r}) d \vct{r}.
+  \pbet \int H(\vr) c(\vr) \, d \vr
+  = \int h(\vr) \, \pbet c(\vr) \, d \vr.
   \label{eq:bigH}
 \end{equation}
 
 
 
 
-Consider the $\rho \tilde{c}^2(k)$ term,
-  which is the Fourier transform of $c*c$
-we have
+Consider the $\rho \, \FTc^2(\vk)$ term,
+  which is the Fourier transform of $\rho \, (c*c)(\vr)$.
+%
+We have
 \begin{align*}
-  &  \int
-    \frac{d \vct{k}}{(2\pi)^3}
-  \rho \tilde{c}^2(k) \tilde{c}(k) \\
-&=  \int
-    \frac{d \vct{k}}{(2\pi)^3}
-  \rho \tilde{c}^2(\vct{k}) \tilde{c}(-\vct{k}) \\
-&=
-  \int
-    \frac{d \vct{k}}{(2\pi)^3}
-    \rho
-    \int c(\vct{r}')  e^{ i \vct{k}\cdot \vct{r}'}   d \vct{r}'
-    \int c(\vct{r}'') e^{ i \vct{k}\cdot \vct{r}''}  d \vct{r}''
-    \int c(\vct{r})   e^{-i \vct{k}\cdot \vct{r}}    d \vct{r} \\
-&=
-    \rho
+&  \int \dvk \,
+  \rho \, \FTc^2(\vk) \, \FTc(-\vk) \\
+=&
+  \int \dvk \,
+    \rho \,
+    \int c(\vr')  e^{ i \vk\cdot \vr'}   d \vr'
+    \int c(\vr'') e^{ i \vk\cdot \vr''}  d \vr''
+    \int c(\vr)   e^{-i \vk\cdot \vr}    d \vr \\
+=&
     \iiint
-    c(\vct{r}')  c(\vct{r}'') c(\vct{r})
-    \, \delta(\vct{r}' + \vct{r}'' - \vct{r}) \,
-    d \vct{r}'
-    d \vct{r}''
-    d \vct{r} \\
-&=
-    \rho
+    \rho \,
+    c(\vr') c(\vr'') c(\vr)
+    \, \delta(\vr' + \vr'' - \vr) \,
+    d \vr'
+    d \vr''
+    d \vr \\
+=&
     \iint
-    c(\vct{r}')  c(\vct{r} - \vct{r}') c(\vct{r}) \,
-    d \vct{r}'
-    d \vct{r} \\
-&= \rho \int (c*c)(\vct{r}) \, c(\vct{r}) \,
-    d \vct{r},
+    \rho \,
+    c(\vr')  c(\vr - \vr') c(\vr) \,
+    d \vr'
+    d \vr \\
+=&  \int \rho \, (c*c)(\vr) \, c(\vr) \,
+    d \vr,
 \end{align*}
-where we have exploited the spherical symmetry of $\tilde{c}(-\vct{k})$
-on the second line, and the identity
-$\int e^{i \vct{k}\cdot \vct{r}} d \vct{r} = (2\pi)^3 \delta(\vct{k})$.
+where we have used the identity
+$\int e^{i \vk\cdot \vr} d \vr = (2\pi)^3 \delta(\vk)$.
 %
 Generally, we have
 %
 \begin{align*}
-  & \int
-    \frac{d \vct{k}}{(2\pi)^3}
-    \rho^{n-1} \tilde{c}^n(k)
-     \tilde{c}(k)
-  = \int \rho^{n-1} (c*\dots*c)(\vct{r}) \, c(\vct{r}) \,
-    d \vct{r}.
+  & \int \dvk
+    \rho^{n-1} \FTc^n(\vk)
+     \FTc(-\vk)
+  = \int d\vr \,
+  \rho^{n-1} (\underbrace{c*\dots*c}_n)(\vr) \, c(\vr).
 \end{align*}
 %
-Note that the $n + 1$ $\tilde{c}(k)$'s are identical, then
+If the function $c(\vr)$ is even, then so is $\FTc(\vk)$.
+We assume this case below.
+Then $\FTc^n(\vk) \, \FTc(-\vk) = \FTc^{n+1}(\vk)$,
+  and
+\[
+  \pbet \big[ \FTc^n(\vk) \, \FTc(-\vk) \big]
+  = (n+1) \FTc^n(\vk) \, \pbet \FTc(\vk)
+  = (n+1) \FTc^n(\vk) \, \pbet \FTc(-\vk)
+\]
+So
 %
 \begin{align*}
-  \pbet  \int
-    \frac{d \vct{k}}{(2\pi)^3}
-  \frac{\rho^{n-1} \tilde{c}^n(k) }{n+1} \tilde{c}(k)
-  &= \int
-    \frac{d \vct{k}}{(2\pi)^3}
-  \rho^{n-1} \tilde{c}^n(k) \pbet \tilde{c}(k) \\
-  &=  \int \rho^{n-1} (c*\dots*c)(\vct{r}) \, \pbet c(\vct{r}) \,
-    d \vct{r}.
+  \pbet  \int \dvk
+  \frac{\rho^{n-1} \FTc^n(\vk) }{n+1} \FTc(-\vk)
+  &= \int \dvk
+  \rho^{n-1} \FTc^n(\vk) \, \pbet \FTc(-\vk) \\
+  &=  \int d \vr \,
+  \rho^{n-1} (\underbrace{c*\dots*c}_n)(\vr) \, \pbet c(\vr).
 \end{align*}
 %
 Summing over $n$ yields
 %
 \begin{align*}
-  \pbet  \int
-    \frac{d \vct{k}}{(2\pi)^3}
-    \tilde{H}(k) \, \tilde{c}(k)
-&= \int \sum_{n} \rho^{n-1}(c*\dots*c)(\vct{r}) \, \pbet c(\vct{r}) \,
-    d \vct{r} \\
-&= \int h(\vct{r}) \, \pbet c(\vct{r}) \,
-    d \vct{r}.
+  \pbet  \int \dvk
+  \FT{H}(\vk) \, \FTc(-\vk)
+  &= \int \sum_{n} \rho^{n-1}(\underbrace{c*\dots*c}_n)(\vr) \, \pbet c(\vr) \,
+    d \vr \\
+  &= \int h(\vr) \, \pbet c(\vr) \,
+    d \vr.
 \end{align*}
 %
 %
 
 Thus
 %
-\begin{align*}
-F
+\begin{align}
+\beta F
 &=
   \frac{\rho^2}{2}
   \int d\vr
@@ -584,7 +610,7 @@ F
     - c(\vr)
     + \tfrac{1}{2} h^2(\vr)
     - H(\vr) \, c(\vr)
-  \right] \\
+  \right] \notag \\
   &=
   \frac{\rho^2}{2}
   \int d\vr
@@ -593,18 +619,41 @@ F
     + \tfrac{1}{2} h^2(\vr)
   \right]
   +
-   \frac{1}{2}
-  \int \frac{ d \vct{k}  }{(2\pi)^3}
-   \left[
-      \rho \tilde{c} + \log(1 - \rho \tilde{c})
-      \right],
+  \frac{1}{2}
+  \int \dvk
+    \Big\{
+      \rho \FTc(\vk)
+      + \log\big[ 1 - \rho \FTc(\vk)  \big]
+    \Big\},
   \label{eq:freeEnergy}
-\end{align*}
+\end{align}
 %
 where we have used \eqref{eq:bigH} in the last step.
 %
 This is a simplified special case of (3.1) in the original paper.
+%
+In terms of a real space series, we have
+%
+\begin{align}
+\beta F
+  &=
+  \frac{1}{2}
+  \int d\vr
+  \left\{
+    \rho^2
+    \left[
+      - c(\vr)
+      + \tfrac{1}{2} h^2(\vr)
+    \right]
+  -
+  \sum_{n = 1}^{\infty}
+    \frac{\rho^{n+1}}{n+1} \, (\underbrace{c*\dots*c}_{n})(\vr) \, c(\vr)
+  \right\}.
+\end{align}
+%
 
+
+For the KH closure, we simply attach a $\Theta[-d(\vr)]$ before $\tfrac{1}{2}h^2(\vr)$.
 
 
 
