@@ -22,9 +22,11 @@ $(html) : %.html: %.tex
 
 # -i: means to use italic font for equations
 
+IPO=cz1@129.109.88.204
+#IPO=cz1@he.host.utmb.edu
 
 Bossman: $(pdf) $(htmldir)
-	rsync -avzrL *.pdf *.tex *_html cz1@he.host.utmb.edu:/Bossman/cz1/notes/singer1985mu
+	rsync -avzrL *.pdf *.tex *_html $(IPO):/Bossman/cz1/notes/singer1985mu
 
 # upload to github
 github:

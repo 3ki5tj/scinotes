@@ -17,9 +17,13 @@
 int n = 512;
 double rho = 0.5;
 double tol = 1e-3;
-double rmax = 4.0;
+double rmax = 5.12;
 double beta = 1.0;
-fftw_plan p, q;
+
+fftw_plan plan;
+double *arr;
+
+
 
 #define newarr(x, n) x = (double *) fftw_malloc(sizeof(double) * n)
 #define delarr(x) fftw_free(x)
@@ -31,7 +35,7 @@ static double lj(double r) /* Lennard-Jones potential */
 int main(int argc, char **argv)
 {
   int i, iter, hnc = 0;
-  double *c, *cp, *t, *f;
+  double *c, *cp, *t, *f, *arr;
   double dr, dk, dc, dcmax = 1e9;
 
   if ( argc > 1 ) hnc = (argv[1][0] == 'H');
@@ -39,25 +43,27 @@ int main(int argc, char **argv)
   dr = rmax/n; dk = PI/n/dr;
   newarr(c, n); newarr(cp, n); newarr(t, n); newarr(f, n);
 
-  for ( i = 1; i < n; i++ ) /* initialize c as f */
-    c[i] = f[i] = exp( -beta*lj(i*dr) ) - 1;
-  p = fftw_plan_r2r_1d(n - 1, c + 1, c + 1, FFTW_RODFT00, FFTW_ESTIMATE);
-  q = fftw_plan_r2r_1d(n - 1, t + 1, t + 1, FFTW_RODFT00, FFTW_ESTIMATE);
+  for ( i = 0; i < n; i++ ) /* initialize c as f */
+    c[i] = f[i] = exp( -beta*lj((i + .5)*dr) ) - 1;
+
+  newarr(arr, n);
+  plan = fftw_plan_r2r_1d(n, arr, arr, FFTW_RODFT00, FFTW_ESTIMATE);
 
   /* main loop */
   for ( iter = 0; iter < 1000 && dcmax >= tol; iter++ ) {
-    for ( i = 1; i < n; i++ ) {
+    for ( i = 0; i < n; i++ ) {
       cp[i] = c[i]; /* make a copy */
-      c[i] *= i*dr; /* c(r) r */
+      arr[i] = c[i] * (i+.5)*dr; /* c(r) r */
     }
-    fftw_execute(p); /* c(k) = 2 Pi/k Int 2r c(r) sin(kr) dr */
-    for ( i = 1; i < n; i++ ) {
-      c[i] *= 2*PI*dr/(i*dk); /* c(k) / k */
-      t[i] = rho*c[i]*c[i] / (1 - rho*c[i]) * (i*dk); /* t(k) k */
+    fftw_execute(plan); /* c(k) = 2 Pi/k Int 2r c(r) sin(kr) dr */
+    for ( i = 0; i < n; i++ ) {
+      c[i] = arr[i] * 2*PI*dr/((i+.5)*dk); /* c(k) */
+      t[i] = rho*c[i]*c[i] / (1 - rho*c[i]);
+      arr[i] = t[i] * (i*dk); /* t(k) k */
     }
-    fftw_execute(q); /* t(r) = 1/(4 Pi^2 r) Int 2k t(k) sin(kr) dk */
-    for ( dcmax = 0, i = 1; i < n; i++ ) {
-      t[i] *= dk/(4*PI*PI*i*dr); /* t(r) / r */
+    fftw_execute(plan); /* t(r) = 1/(4 Pi^2 r) Int 2k t(k) sin(kr) dk */
+    for ( dcmax = 0, i = 0; i < n; i++ ) {
+      t[i] = arr[i] * dk/(4*PI*PI*(i+.5)*dr); /* t(r) */
       if ( hnc )
         c[i] = (1 + f[i])*exp(t[i]) - (1 + t[i]); /* HNC closure */
       else
@@ -65,11 +71,11 @@ int main(int argc, char **argv)
       if ( (dc = fabs(c[i] - cp[i])) > dcmax ) dcmax = dc;
     }
   }
-  for ( i = 1; i < n; i++ )
-    printf("%.4f %+14.6f %14.6f\n", i*dr, c[i], 1 + c[i] + t[i]);
+  for ( i = 0; i < n; i++ )
+    printf("%.4f %+14.6f %14.6f\n", (i+.5)*dr, c[i], 1 + c[i] + t[i]);
   fprintf(stderr, "%d iteration\n", iter);
 
-  fftw_destroy_plan(p); fftw_destroy_plan(q); fftw_cleanup();
+  delarr(arr); fftw_destroy_plan(plan); fftw_cleanup();
   delarr(c); delarr(cp); delarr(t); delarr(f);
   return 0;
 }

@@ -40,7 +40,7 @@ int main(void)
   fftw_execute(p);
   sint4(n, in, out2);
 
-  for (i = 0; i < 2*n; i++)
+  for (i = 0; i < n; i++)
     printf("%6d %20.10f |  %20.10f\n", i, out[i], out2[i]);
 
   printf("\nApplying the inverse transform:\n");

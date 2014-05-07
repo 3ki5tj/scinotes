@@ -30,10 +30,13 @@
 
 Here we give a detailed derivation of the Singer-Chandler formula
   for the chemical potential \cite{singer}.
+%
 For simplicity, we assume a simple classical liquid,
   with a single solute molecule, denoted by the subscript $u$,
   and a one-atom solvent denoted by the subscript $v$ below.
-Then, the chemical potential of adding the solute into
+%
+If we further assume the hypernetted-chain (HNC) approximation,
+then, the chemical potential of adding the solute into
   the system is given by
 %
 \begin{equation}
@@ -76,7 +79,7 @@ then the partition function
 %
 satisfies
 \begin{align}
-  \frac{ Z'(\lambda) }{Z(\lambda)}
+  \frac{ d Z(\lambda) / d\lambda }{Z(\lambda)}
   &=
     -\beta \int d\vrN U_1(\vrN)
     \left\{
@@ -99,7 +102,7 @@ In the second step, note that the term in the braces
 %
 Equivalently, in terms of the free energy $\beta F = -\log Z$,
 \begin{equation}
-  \beta F'(\lambda)
+  \beta d F(\lambda) / d\lambda
   = \beta
     \left\langle
       U_1(\vrN)
@@ -121,13 +124,13 @@ So the chemical potential $\mu_u = dF/dN$ is
   =
   F(1) - F(0)
   =
-  \int_0^1 F'(\lambda) \, d\lambda
+  \int_0^1 \frac{d F(\lambda)}{d \lambda} \, d\lambda
   =
   \int_0^1
     \left\langle
       U_1(\vrN)
     \right\rangle_\lambda d\lambda.
-  \label{eq:muti0}
+  \label{eq:mu_ti0}
 \end{align}
 
 
@@ -136,9 +139,7 @@ So the chemical potential $\mu_u = dF/dN$ is
 In a simple liquid with pairwise interactions,
   $U_1(\vrN) = \sum_{i = 1}^{n} \phi(\vr_{0i})$,
   where $\phi(\vr_{0i})$ means the pair potential
-  between a solvent atom and a solute atom
-  (which may be different from the solvent-solvent
-  interaction).
+  between the solute atom $0$ and a solute atom $i$.
 So
 \begin{equation}
     \left\langle
@@ -158,7 +159,7 @@ So
 where in the second step, we have evaluated the average
 pairwise energy in terms of the radial distribution function
 $g_{uv}(\vr, \lambda)$.
-Using \eqref{eq:uphig} in \eqref{eq:muti0} yields
+Using \eqref{eq:uphig} in \eqref{eq:mu_ti0} yields
 \begin{equation}
     \mu_u
     =
@@ -166,11 +167,15 @@ Using \eqref{eq:uphig} in \eqref{eq:muti0} yields
     \int_0^1 d\lambda \,
       \int d\vr_{01} \,
         \phi(\vr_{01}) \, g_{uv}(\vr_{01}, \lambda).
-  \label{eq:muti}
+  \label{eq:mu_ti}
 \end{equation}
 Our aim below is to evaluate
 $\phi(\vr) \, g(\vr, \lambda)$
 by means of the integral equation.
+%
+Below, we will show that the outer integral of $\lambda$
+  can be avoided by a clever algebraic manipulation,
+  if we assume the hypernetted-chain approximation.
 
 
 
@@ -212,7 +217,7 @@ We will attach the subscripts ``$u$'' (solute) and ``$v$'' (solvent) later.
 %
 %
 %
-Finally, $y(\vr)$ is approximated in the hypernetted-chain (HNC) closure as
+Finally, $y(\vr)$ is approximated in the hypernetted-chain closure as
 \begin{equation}
   y(\vr) \approx \exp\left[ h(\vr) - c(\vr) \right].
   \label{eq:hnc}
@@ -220,54 +225,71 @@ Finally, $y(\vr)$ is approximated in the hypernetted-chain (HNC) closure as
 Since we have four variables
   $g(\vr)$, $h(\vr)$, $c(\vr)$, and $y(\vr)$,
 the above four equations permit a solution of $g(\vr)$.
+%
+%
+%
+The functions, such as $g(\vr)$, depend on $\lambda$,
+although this dependence is not written explicitly for simplicity.
 
 
 
-From \eqref{eq:yr}, we have [dropping ``$(\vr)$'' below for simplicity]
+\subsection{Internal energy as a total differential (I)}
+
+
+We now try to simplify the right-hand side of \eqref{eq:mu_ti}, such that
+the inner integral, which represents the internal energy, can be written
+as a total differential of $\lambda$.
+%
+In this way the outer integral can be removed.
+
+Differentiating \eqref{eq:yr}, we have [dropping ``$(\vr)$'' below whenever convenient]
 \[
-  \plam y_{uv}
-  =
   \beta \phi \, e^{ \beta \lambda \phi } \, g_{uv}
-    +
+  =
+  \plam y_{uv}
+    -
     e^{ \beta \lambda \phi } \, \plam g_{uv}.
-\]
-From \eqref{eq:hnc}, we have
-  $\plam y_{uv} = y_{uv} \, \plam (h_{uv} - c_{uv})$;
-  and by \eqref{eq:hr}, $\plam g_{uv} = \plam h_{uv}$, So
-\[
-  y_{uv} \, \plam (h_{uv} - c_{uv}) = e^{\beta \lambda \phi }
-  ( \beta \phi g_{uv} + \plam h_{uv} ).
 \]
 Then by multiplying $e^{-\beta \lambda \phi}$ to both sides,
 and using \eqref{eq:hr}, we get
-\[
-  g_{uv} \, \plam (h_{uv} - c_{uv}) =
-  \beta \phi \, g_{uv} + \plam h_{uv}.
-\]
-Finally, with
-\eqref{eq:hr}
-as $g_{uv} \rightarrow 1 + h_{uv}$,
-we reach
 \begin{equation}
   \beta \phi \, g_{uv}
   =
-  - \plam c_{uv} + h_{uv} \, \plam h_{uv} - h_{uv} \, \plam c_{uv}.
+  e^{ -\beta \lambda \phi } \, \plam y_{uv}
+  - \, \plam h_{uv}.
+  \label{eq:phiguv}
+\end{equation}
+%
+Next we use the HNC approximation \eqref{eq:hnc}, such that
+%
+\begin{align*}
+  e^{ -\beta \lambda \phi} \plam y_{uv}
+  = e^{ -\beta \lambda \phi} y_{uv} \, \plam (h_{uv} - c_{uv})
+  = (h_{uv} + 1) \, \plam (h_{uv} - c_{uv})
+\end{align*}
+%
+Using this in \eqref{eq:phiguv} yields
+\begin{equation}
+  \beta \phi(\vr) \, g_{uv}(\vr)
+  =
+  - \plam c_{uv}(\vr) + h_{uv}(\vr) \, \plam h_{uv}(\vr) - h_{uv}(\vr) \, \plam c_{uv}(\vr).
   \label{eq:hc1}
 \end{equation}
 
 
 
-\subsection{Internal energy as a total differential}
+\subsection{Internal energy as a total differential (II)}
 
 
 
-Finally, we want to write the right side \eqref{eq:hc1} as
+We want to write the right-hand side \eqref{eq:hc1} as
 a total differential $\plam(\dots)$.
 %
 Obviously $h_{uv} \plam h_{uv} = \plam ( h_{uv}^2/2 )$.
 %
 We argue below that $h_{uv} \plam c_{uv} = \plam ( h_{uv} c_{uv} /2) $
-in an \emph{average} sense under the condition of \emph{infinite dilution}.
+in an \emph{average} sense, meaning after the integration $\int d\vr$,
+under the condition of \emph{infinite dilution}.
 Let us look at \eqref{eq:oz} more carefully.
 %
 For the solute-solvent pair, we have
@@ -290,10 +312,10 @@ Similarly, for the solvent-solvent version
   h_{vv} = c_{vv} + \rho_v \, c_{vv}*h_{vv}.
   \label{eq:ozvv}
 \end{equation}
-From \eqref{eq:ozuv} and \eqref{eq:ozvv}, we know that
-  (i) $h_{vv}$ and $c_{vv}$ are independent of the solute,
-  and
-  (ii) $h_{uv}$ is a linear function with respect to $c_{uv}$.
+From \eqref{eq:ozvv}, we know that
+  $h_{vv}$ and $c_{vv}$ are independent of the solute;
+and from \eqref{eq:ozuv}, we know that
+  $h_{uv}$ is a linear function with respect to $c_{uv}$.
 %
 Thus,
 \begin{align}
@@ -319,37 +341,37 @@ Thus,
 By using \eqref{eq:phig}, \eqref{eq:hc1} in \eqref{eq:uphig}, we get
 %
 \begin{align}
-  \langle
+  - \langle
   \beta U_1(\vr)
   \rangle_\lambda
   &=
-  \rho_v \,
+  - \rho_v \,
   \int d \vr
   \, \beta \phi(\vr) \, g_{uv}(\vr) \notag \\
   &=
    \rho_v \, \plam \int d \vr \,
    \left[
-    - c_{uv}(\vr)
-    + \tfrac{1}{2} h_{uv}^2(\vr)
-    - \tfrac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
+    c_{uv}(\vr)
+    - \tfrac{1}{2} h_{uv}^2(\vr)
+    + \tfrac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
     \right].
 \end{align}
 %
 %
 %
-By \eqref{eq:muti}, we get \eqref{eq:singer}, or more explicitly,
+By \eqref{eq:mu_ti}, we get \eqref{eq:singer}, or more explicitly,
 \begin{align}
-  \beta \mu_u
+  -\beta \mu_u
   &=
    \rho_v \, \int
     d \vr \,
    \left[
-    - c_{uv}(\vr)
-    + \tfrac{1}{2} h_{uv}^2(\vr)
+     c_{uv}(\vr)
+    - \tfrac{1}{2} h_{uv}^2(\vr)
     \right]
   \notag \\
   & \;\;\;\;\;
-    -
+    +
     \rho_v \, \iint d\vr \, d\vr'
     \, c_{uv}(\vr)
     \, \chi_{vv}(\vr - \vr')
@@ -397,21 +419,21 @@ If $d_{uv} > 0$, we have $c_{uv}(\vr) = \beta \lambda \phi(\vr)$, and
 \]
 Then
 \[
-  \beta \phi \, g_{uv}
-  = -\plam c_{uv} \, (1 + h_{uv}),
+  -\beta \phi \, g_{uv}
+  = \plam c_{uv} \, (1 + h_{uv}),
 \]
 which differs from the HNC case [cf. \eqref{eq:hc1}]
   only by the $h_{uv}^2/2$ term.
 Thus
 %
 \begin{equation}
-\beta \mu_u
+-\beta \mu_u
   =
   \rho_v \int d\vr
   \left\{
-    - c_{uv}(\vr)
-    + \frac{1}{2} h_{uv}^2(\vr) \, \Theta[ -d_{uv}(\vr) ]
-    - \frac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
+    c_{uv}(\vr)
+    - \frac{1}{2} h_{uv}^2(\vr) \, \Theta[ -d_{uv}(\vr) ]
+    + \frac{1}{2} h_{uv}(\vr) \, c_{uv}(\vr)
   \right\},
   \label{eq:singer-kh}
 \end{equation}
@@ -443,7 +465,7 @@ satisfies
 \begin{align*}
   \frac{ d \left[ \beta F(\beta) \right] }
   { d \beta }
-  = -\frac{ Z'(\beta) }{Z(\beta)}
+  = -\frac{ d Z(\beta) / d \beta }{Z(\beta)}
   = \left\langle
       U(\vrN)
     \right\rangle_\beta.
@@ -463,7 +485,7 @@ Note that
     U(\vrN)
   \right\rangle_\beta
   =
-  \frac{\rho^2}{2} \int d \vr \, \phi \, g(\vr),
+  \frac{\rho^2 V}{2} \int d \vr \, \phi(\vr) \, g(\vr),
 \end{equation}
 %
 where, the factor $1/2$ is due to the double counting of pairs.
@@ -471,7 +493,7 @@ where, the factor $1/2$ is due to the double counting of pairs.
 The counterpart of \eqref{eq:hc1} is
 %
 \begin{equation}
-  \phi \, g(\vr)
+  \phi(\vr) \, g(\vr)
   =
   - \pbet c(\vr) + h(\vr) \, \pbet h(\vr) - h(\vr) \, \pbet c(\vr).
   \label{eq:hcall}
@@ -481,12 +503,16 @@ The key difference here is that we are switching on the interaction
   of \emph{all} pairs of particles, whereas previously, we only switch on
   the interaction with a single solute $u$.
 %
-We have dropped the subscripts ``$u$'' and ``$v$'' for there is no
-  difference between solute and solvents.
+We have dropped the subscripts ``$u$'' and ``$v$''
+  for there is no difference between the solute and solvents.
 
 
-The last term $h(\vr) \, \pbet c(\vr)$, however,
-  is no longer $\pbet \big[ \frac{1}{2} h(\vr) c(\vr) \big]$.
+Now the last term $h(\vr) \, \pbet c(\vr)$
+  is no longer $\pbet \big[ \frac{1}{2} h(\vr) c(\vr) \big]$,
+  and it is handled as follows.
+%
+We will obtain a closed expression under the assumption
+  that $c(\vr) = c(-\vr)$.
 %
 First, from the $\vk$-space version of \eqref{eq:oz}
 \begin{align*}
@@ -497,7 +523,7 @@ First, from the $\vk$-space version of \eqref{eq:oz}
                + \dots
 \end{align*}
 %
-where $\FTc(\vk) = \int d\vk \, c(\vr) \, e^{-i \vk\cdot\vr}$.
+where $\FTc(\vk) = \int d\vr \, c(\vr) \, e^{-i \vk\cdot\vr}$.
 %
 Let's now define a similar function,
 %
@@ -555,7 +581,9 @@ We have
 \end{align*}
 where we have used the identity
 $\int e^{i \vk\cdot \vr} d \vr = (2\pi)^3 \delta(\vk)$.
-%
+
+
+
 Generally, we have
 %
 \begin{align*}
@@ -563,8 +591,13 @@ Generally, we have
     \rho^{n-1} \FTc^n(\vk)
      \FTc(-\vk)
   = \int d\vr \,
-  \rho^{n-1} (\underbrace{c*\dots*c}_n)(\vr) \, c(\vr).
+  \rho^{n-1} c^{*n}(\vr) \, c(\vr),
 \end{align*}
+where
+%
+\[
+  c^{*n}(\vr) \equiv [\underbrace{c*\dots*c}_n](\vr).
+\]
 %
 If the function $c(\vr)$ is even, then so is $\FTc(\vk)$.
 We assume this case below.
@@ -583,7 +616,7 @@ So
   &= \int \dvk
   \rho^{n-1} \FTc^n(\vk) \, \pbet \FTc(-\vk) \\
   &=  \int d \vr \,
-  \rho^{n-1} (\underbrace{c*\dots*c}_n)(\vr) \, \pbet c(\vr).
+  \rho^{n-1} \, c^{*n}(\vr) \, \pbet c(\vr).
 \end{align*}
 %
 Summing over $n$ yields
@@ -591,69 +624,116 @@ Summing over $n$ yields
 \begin{align*}
   \pbet  \int \dvk
   \FT{H}(\vk) \, \FTc(-\vk)
-  &= \int \sum_{n} \rho^{n-1}(\underbrace{c*\dots*c}_n)(\vr) \, \pbet c(\vr) \,
+  &= \int \sum_{n} \rho^{n-1} \, c^{*n}(\vr) \, \pbet c(\vr) \,
     d \vr \\
   &= \int h(\vr) \, \pbet c(\vr) \,
     d \vr.
 \end{align*}
 %
 %
-
+%
 Thus
 %
 \begin{align}
-\beta F
+-\frac{\beta F}{V}
 &=
   \frac{\rho^2}{2}
   \int d\vr
   \left[
-    - c(\vr)
-    + \tfrac{1}{2} h^2(\vr)
-    - H(\vr) \, c(\vr)
+    c(\vr)
+    - \tfrac{1}{2} h^2(\vr)
+    + H(\vr) \, c(\vr)
   \right] \notag \\
-  &=
-  \frac{\rho^2}{2}
-  \int d\vr
+&=
+  \frac{1}{2}
+  \int d\vr \rho^2
   \left[
-    - c(\vr)
-    + \tfrac{1}{2} h^2(\vr)
+     c(\vr)
+    - \tfrac{1}{2} h^2(\vr)
   \right]
-  +
+  -
   \frac{1}{2}
   \int \dvk
     \Big\{
       \rho \FTc(\vk)
       + \log\big[ 1 - \rho \FTc(\vk)  \big]
-    \Big\},
-  \label{eq:freeEnergy}
+    \Big\} \notag \\
+&=
+  \frac{1}{2}
+  \left\{
+  \int d\vr \rho^2
+  \left[
+     c(\vr)
+    - \tfrac{1}{2} h^2(\vr)
+  \right]
+  +
+  \int \dvk
+    \sum_{n = 2}^{\infty}
+      \frac{  \rho^n \FTc^n(\vk) }{n}
+  \right\},
+\label{eq:freeEnergy}
 \end{align}
 %
-where we have used \eqref{eq:bigH} in the last step.
+where we have used \eqref{eq:bigH} in the second step.
 %
 This is a simplified special case of (3.1) in the original paper.
 %
 In terms of a real space series, we have
 %
 \begin{align}
-\beta F
-  &=
+-\frac{\beta F}{V}
+&=
   \frac{1}{2}
   \int d\vr
   \left\{
     \rho^2
     \left[
-      - c(\vr)
-      + \tfrac{1}{2} h^2(\vr)
+      c(\vr)
+      - \tfrac{1}{2} h^2(\vr)
     \right]
-  -
-  \sum_{n = 1}^{\infty}
-    \frac{\rho^{n+1}}{n+1} \, (\underbrace{c*\dots*c}_{n})(\vr) \, c(\vr)
+  +
+  \sum_{n = 2}^{\infty}
+  \frac{\rho^{n}}{n} \, c^{*(n-1)}(\vr) \, c(\vr)
   \right\}.
 \end{align}
 %
 
-
-For the KH closure, we simply attach a $\Theta[-d(\vr)]$ before $\tfrac{1}{2}h^2(\vr)$.
+\emph{Note}, for the KH closure, we simply attach a $\Theta[-d(\vr)]$ before $\tfrac{1}{2}h^2(\vr)$.
+%
+We may further expand $h(\vr) = c(\vr) + t(\vr)$,
+  and rewrite the formula as
+%
+\begin{align}
+-\frac{\beta F}{V}
+&=
+  \frac{1}{2}
+  \left\{
+  \int d\vr \rho^2
+  \left[
+     c(\vr)
+    - \tfrac{1}{2} t^2(\vr)
+  \right]
+  +
+  \int \dvk
+    \sum_{n = 3}^{\infty}
+      \frac{1-n}{n} \rho^n \FTc^n(\vk)
+  \right\} \notag \\
+&=
+  \frac{1}{2}
+  \int d\vr
+  \left\{
+  \rho^2
+  \left[
+     c(\vr)
+    - \tfrac{1}{2} t^2(\vr)
+  \right]
+  +
+  \sum_{n = 3}^{\infty}
+  \frac{1-n}{n} \rho^{n} \, c^{*(n-1)}(\vr) \, c(\vr)
+  \right\}.
+\label{eq:freeEnergy_t2}
+\end{align}
+%
 
 
 
