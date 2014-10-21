@@ -1,0 +1,672 @@
+\documentclass[12pt]{book}
+\usepackage{indentfirst}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{bm, upgreek}
+\usepackage{hyperref}
+\usepackage{cite}
+\begin{document}
+
+
+\newcommand{\problem}[1]{\section{#1}}
+\newcommand{\hint}[1]{[Hint. #1]}
+
+\newcommand{\vct}[1]{\boldsymbol{\mathbf{#1}}}
+\newcommand{\vr}{\vct{r}}
+\newcommand{\vrN}{\vr^N}
+\newcommand{\vrn}{\vr^n}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\dvk}{\frac{ d \vk  }{(2\pi)^3}}
+% Fourier transform
+\newcommand{\FT}[1]{\tilde{#1}}
+\newcommand{\FTc}{\FT{c}}
+\newcommand{\FTh}{\FT{h}}
+
+% add a superscript ``ex''
+\newcommand{\supex}[1]{ { { #1 }^{ \mathrm{ex} } } }
+\newcommand{\Pex}{\supex{P}}
+\newcommand{\Fex}{\supex{F}}
+\newcommand{\muex}{\supex{\mu}}
+\newcommand{\kex}{\supex{\kappa}}
+\newcommand{\Chn}{\mathscr{C}}
+%\newcommand{\Chn}{\mathcal{C}}
+%\newcommand{\Chn}{\mathsf{C}}
+\newcommand{\secref}[1]{Sec. \ref{#1}}
+
+\newcommand{\llbra}{[\![}
+\newcommand{\llket}{]\!]}
+
+\newcommand{\plam}{\partial_\lambda}
+\newcommand{\pbet}{\partial_\beta}
+
+
+
+\title{Challenging Problems Liquid Theory \\
+  (For the Pettitt Group)}
+\date{}
+\maketitle
+
+\tableofcontents
+
+
+
+\chapter{Basic mathematical tools}
+
+
+\problem{Gaussian integral}
+
+Show that
+\begin{equation}
+  \int_{-\infty}^{\infty}
+    \exp\left( -\frac{1}{2} A \, x^2 \right) \, dx
+  =
+  \sqrt{ \frac{ 2 \pi }{ A } }.
+  \label{eq:gaussianintegral}
+\end{equation}
+
+\hint{
+  Let's call the integral on the left hand side as $I$.
+  Show that
+  \begin{align*}
+    I^2
+    &=
+    \int_{-\infty}^{\infty}
+      \exp\left( -\frac{1}{2} A \, x^2 \right) \, dx
+    \int_{-\infty}^{\infty}
+      \exp\left( -\frac{1}{2} A \, y^2 \right) \, dy \\
+    &=
+    \int_{0}^{2\pi}
+    \int_{0}^{\infty}
+      \exp\left( -\frac{1}{2} A \, r^2 \right) \, r \, dr \, d\theta
+    =
+    2\pi
+    \int_{-\infty}^{\infty}
+    \exp\left[ -A \left( \frac{r^2}{2} \right) \right]
+    \, d\left( \frac{r^2}{2} \right),
+  \end{align*}
+where we have changed from the Cartesian to polar coordinates in the second step.
+
+One can also evaluate this integral by the gamma function.
+}
+
+
+
+\problem{Gaussian integral (matrix form)}
+
+Show the matrix form of \eqref{eq:gaussianintegral}
+\begin{equation}
+  \int_{-\infty}^{\infty}
+  \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} \right) \, d\vct{x}
+  =
+  \frac{ (2\pi)^{n/2} }
+  { |\vct A|^{1/2} },
+  \label{eq:gaussianintegralmatrix}
+\end{equation}
+%
+where $\vct x = \{x_1, \dots, x_n\}^T$,
+$\vct A$ is an $n$ by $n$ symmetric positive-semidefinite matrix
+(i.e., $\vct x^T \vct A \vct x \ge 0$ for any $x$),
+and
+$|\vct A|$ is the determinant.
+
+\hint{
+  First, consider the case that $\vct A$ is an diagonal matrix.
+  Show that the integral in \eqref{eq:gaussianintegralmatrix}
+  is equivalent to $n$ one-dimensional integrals,
+  and evaluate them by \eqref{eq:gaussianintegral}.
+  Then, for a general $\vct A$, consider
+  \[
+    \vct x = \vct U \vct y,
+  \]
+  which $\vct U$ being a orthonormal matrix that diagonalize $\vct A$:
+  \[
+    \vct A = \vct U^T \vct \Lambda \vct U,
+  \]
+  where $\vct \Lambda$ is a diagonal matrix.
+}
+
+
+\problem{Gaussian integral with a bias}
+
+More generally, show that
+\begin{equation}
+  \int_{-\infty}^{\infty}
+  \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} + \vct b^T \vct x \right) \, d\vct{x}
+  =
+  \frac{ (2\pi)^{n/2} }
+  { |\vct A|^{1/2} }
+  \exp\left( \frac{1}{2} \vct b^T \vct A^{-1} \vct b \right),
+  \label{eq:gaussianintegralmatrixb}
+\end{equation}
+%
+where $\vct b = \{b_1, \dots, b_n\}^T$.
+%
+Obtain the Fourier transform of
+  $\exp\left( - \frac{1}{2} \vct x^T \vct A \vct x \right)$
+  by setting $\vct b = -i \vct k$.
+\hint{ Complete the square. }
+
+
+
+\problem{Derivatives of Gaussian integrals}
+
+1. By differentiating \eqref{eq:gaussianintegral} with respect to $A$, show that
+\begin{equation}
+  \langle x^2 \rangle
+\equiv \frac {
+  \int_{-\infty}^{\infty}
+    x^2 \exp\left( - \frac{1}{2} A\,x^2 \right) \, dx
+} {
+  \int_{-\infty}^{\infty}
+  \exp\left( - \frac{1}{2} A\,x^2 \right) \, dx
+}
+=
+\frac{1}{A}.
+\end{equation}
+
+2.
+Define the matrix $\vct{c}$, whose elements are
+\begin{equation*}
+c_{ij}
+\equiv \langle x_i \, x_j \rangle
+\equiv \frac {
+  \int_{-\infty}^{\infty}
+    x_i \, x_j \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} \right) \, d\vct{x}
+} {
+\int_{-\infty}^{\infty}
+  \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} \right) \, d\vct{x}
+}.
+\end{equation*}
+%
+By differentiating \eqref{eq:gaussianintegralmatrix} with respect to $A_{ij}$, show that
+%
+\begin{equation}
+  \vct{c}^T = \vct A^{-1},
+  \label{eq:gaussiancorrelation}
+\end{equation}
+%
+where
+$\vct{A}^{-1}$ is the inverse matrix of $\vct{A}$
+(thanks to Justin Drake).
+
+\hint{
+Use the identity
+\[
+  \frac{\partial}{\partial A_{ij}}
+  \log |\vct{A}|
+=
+  \left( \vct{A}^{-1} \right)_{ji},
+\]
+which can be shown by using the minors of $\vct A$.
+}
+
+3. By differentiating \eqref{eq:gaussianintegralmatrixb} with respect to $b_i$ and $b_j$,
+and then setting $\vct b = \vct 0$, show \eqref{eq:gaussiancorrelation}.
+
+
+
+\problem{Volume of high-dimensional spheres}
+
+In this problem, we will find the volume of a high-dimensional sphere
+by using the Gaussian integrals.
+
+1. Argue the volume of a $D$-dimensional sphere of radius $R$ is proportional to
+$R^D$; and the surface area $S_D(R)$ is proportional to $R^{D-1}$, and
+\[
+  S_D(R) = S_D(1) \, R^{D-1}.
+\]
+
+2. Evaluate the integral
+\[
+  I_D \equiv \int \exp(-r^2) \, d\vr = \int \exp(-r^2) S_D(r) dr 
+\]
+by the gamma function $\Gamma(x)$.
+
+3. Evaluate the same integral as
+\[
+  I
+  =
+\left( \int \exp(-x_1^2) \, d x_1 \right)
+\dots
+\left( \int \exp(-x_D^2) \, d x_D \right).
+\]
+
+4. Show that
+\begin{align*}
+  S_D(R) &= \frac{ 2 \pi^{D/2} } { \Gamma(D/2) } R^{D-1}, \\
+  V_D(R) &= \frac { \pi^{D/2} } { \Gamma(D/2+1) } R^D.
+\end{align*}
+
+
+\problem{Fourier transform}
+
+
+\problem{Fourier transform of a spherical function}
+
+\problem{Convolution}
+
+
+
+
+\chapter{Thermodynamics and statistical mechanics}
+
+
+\problem{Basic virial theorem}
+
+1. Show that, for a liquid with the pair potential being $u(r)$,
+the pressure is given by
+\begin{equation}
+  \beta \, P = \rho - \frac{\beta \rho^2} {2\, D} \int r \, u'(r) \, g(r) \, d\vr,
+\end{equation}
+where $\beta = 1/(k_BT)$, and $D$ is the dimension.
+
+2. Now consider a liquid with the discontinuous square well potential
+in three dimensions $D = 3$,
+\begin{equation}
+  u(r) =
+  \begin{cases}
+    \infty      \quad   & r < 1,          \\
+    -\epsilon           & 1 \le r < a,    \\
+    0                   & a \le r,
+  \end{cases}
+\end{equation}
+where $a > 1$.
+%
+Show that the pressure, $P$, is given by
+\begin{equation}
+  \beta \, P = \rho
+            + \frac{2 \pi \rho^2}{3}
+              \big[g(1^+)
+              + (e^{\beta \epsilon} - 1) a^3 g(a^-)\big].
+\end{equation}
+%
+The hard-sphere limit is obtained with $\epsilon \rightarrow 0$
+or $a \rightarrow \infty$.
+\hint{
+Express $u'(r)$ by $e'(r)$, where $e(r) = e^{-\beta u(r)}$;
+and use the fact that $y(r) = g(r)/e(r)$ is always a continuous function of $r$.
+cf. \cite{hansen} Sec. 2.5, Eq. (2.5.22)-(2.5.26).
+}
+
+
+\problem{Virial theorem for cluster integrals}
+
+Show that, in $D$ dimensions,
+\begin{align}
+  &  \int
+  3 D
+  f(\vr_{12}) f(\vr_{23}) f(\vr_{34}) f(\vr_{41})
+  \, d\vr_2 \, d\vr_3 \, d\vr_4 \\
+  &=
+  -4 \int
+  \vr_{12} \cdot \nabla_1 f(\vr_{12})
+  f(\vr_{23}) f(\vr_{34} f(\vr_{41})
+  \, d\vr_2 \, d\vr_3 \, d\vr_4.
+\end{align}
+
+\hint{
+Show that the integral
+\[
+  I(s) = s^{3D} \int f(s \vr_{12}) f(s \vr_{23}) f(s \vr_{34}) f(s \vr_{41})
+  \, d\vr_2 \, d\vr_3 \, d\vr_4,
+\]
+is independent of $s$.
+Then, differentiating $I(s)$ with respect to $s$.
+}
+
+
+
+
+\problem{Chemical potential and pressure}
+
+Show that chemical potential $\mu$ and pressure $P$ are related by
+\begin{equation}
+  \rho \frac{ \partial \mu } { \partial \rho}
+  =
+  \frac{ \partial P } { \partial \rho }.
+\end{equation}
+
+\hint{
+From $dE = T dS - P dV + \mu dN$, show that
+\[
+  -(\partial P/\partial N)_V = (\partial \mu/\partial V)_N.
+\]
+Then write $N$ and $V$ in terms of $\rho$.
+}
+
+
+
+\problem{Thermodynamic integration}
+
+1. Show that the excess chemical potential can be written as
+\begin{equation}
+  \muex
+=
+  \int_0^1 d\xi \left\langle \frac{d U(\xi)}{d\xi} \right\rangle,
+  \label{eq:muti}
+\end{equation}
+%
+where $U$ is potential energy function,
+%
+$\xi$ is called the ``charging'' parameter.
+%
+The charging parameter affects only the potential terms involving
+the designated particle 1;
+$\xi = 0$ means particle 1 is not interacting with the rest of the particles,
+$\xi = 1$ means particle 1 is identical to any other particle.
+
+2. Further, write the above expression as an integral of
+the pair correlation function $g(\vr)$:
+\begin{equation}
+  \muex
+=
+  \rho \int_0^1 d\xi \int \frac{d u(\xi)}{d\xi} g(\vr) \, d\vr,
+  \label{eq:mutigr}
+\end{equation}
+
+
+
+\problem{Free energy perturbation}
+
+Show that the chemical potential can be written as
+\begin{equation}
+  \exp(-\beta \muex)
+=
+  \langle \exp[ -\beta \Delta U(\xi) ] \rangle,
+\end{equation}
+%
+where $\Delta U$ is change of the potential energy after adding a particle into the system.
+
+
+
+\chapter{Functional differentiation}
+
+
+%\problem{Second derivative}
+%
+%
+%Show that, in the grand-canonical ensemble,
+%\begin{align}
+%  & \frac{ \delta^2 \rho(1)}
+%        { \beta^2 \delta \psi(2) \delta \psi(3)}
+%           %\notag \\
+%           = \rho^{(3)}(1, 2, 3)
+%  \notag \\
+%  &   - \rho^{(2)}(1, 2) \rho(3)
+%     - \rho^{(2)}(2, 3) \rho(1)
+%     - \rho^{(2)}(3, 1) \rho(2)
+%     + 2 \rho(1) \rho(2) \rho(3) \notag \\
+%   &
+%     + \big[ \rho^{(2)}(1, 2) - \rho(1) \rho(2) \big] \delta(2, 3)
+%     + \big[ \rho^{(2)}(2, 3) - \rho(2) \rho(3) \big] \delta(3, 1) \notag \\
+%   &
+%     + \big[ \rho^{(2)}(3, 1) - \rho(3) \rho(1) \big] \delta(1, 2) \notag \\
+%   &
+%     + \rho(1) \big[\delta(1, 2) \delta(2, 3)
+%     + \delta [\delta(1,2)] / \delta [\delta(3)] \big].
+%\end{align}
+%%
+%The notation here is the same as that of Ref. \cite{hansen} (Sec. 3.3, page 53).
+
+
+
+\problem{Lovett-Mou-Buff-Wertheim formula}
+
+Show, in an inhomogeneous liquid under the external field $\phi(\vr_1)$, that
+%
+\begin{align*}
+  \nabla_1 \big[
+    \rho(\vr_1)
+  + \beta \, \rho(\vr_1) \, \phi(\vr_1)
+\big]
+  =
+  -\int d \vr_2 \,
+    \left[
+      \rho^{(2)}(\vr_1, \vr_2) - \rho(\vr_1) \, \rho(\vr_2)
+    \right]
+    \nabla_2 \phi(\vr_2),
+\end{align*}
+%
+and
+%
+\begin{align}
+  \nabla_1 \big[
+    \log \rho(\vr_1) + \beta \, \phi(\vr_1)
+  \big]
+   = \int d \vr_2 \,
+    c(\vr_1, \vr_2)
+    \nabla_2 \rho(\vr_2).
+\end{align}
+These are the Lovett-Mou-Buff(-Wertheim) equations\cite{lovett1976, wertheim1976}.
+
+
+\hint{
+Consider a perturbation $\rho(\vr_1 + \vct{d}) - \rho(\vr_1)$,
+with $\vct{d}$ being a small displacement.
+}
+
+
+Further, rewrite the above equation as
+%
+\[
+   \nabla_1
+   \big[
+     \log \rho(\vr_1) + \beta \, \phi(\vr_1)
+   \big]
+  =
+ \int d \vr_2 \,
+    \nabla_1 c(\vr_1, \vr_2)
+    \rho h(\vr_2).
+\]
+%
+Then, compare the above result with the Yvon-Born-Green equation:
+%
+\begin{align}
+   \nabla_1
+   \big[
+     \log \rho(\vr_1) + \beta \, \phi(\vr_1)
+   \big]
+  =
+ \int d \vr_2 \,
+    \big[ \nabla_1 f(\vr_1, \vr_2) \big]
+    \, y(\vr_1, \vr_2)
+    h(\vr_2).
+\end{align}
+
+
+
+
+\problem{Electrostatic energy of a dipolar system}
+
+The electrostatic energy can be computed from
+\begin{equation}
+  E = \frac{1}{2} \int \rho(\vr) \, \phi(\vr) \, d\vr,
+  \label{eq:electrostaticenergy}
+\end{equation}
+where
+\[
+  \rho(\vr) = \int q_i \, \delta(\vr - \vr_i) \, d\vr.
+\]
+
+For a system of dipoles, we define the dipole density
+\[
+  \vct\upmu(\vr) = \int \vct\upmu_i \, \delta(\vr - \vr_i) \, d\vr,
+\]
+where $\vct\upmu_i = q_i \vct{d}_i$,
+and $\vct{d}_i$ is the vector from the negative charge to the positive charge.
+%
+Then, show that \eqref{eq:electrostaticenergy} can be rewritten as
+\[
+  E = \frac{1}{2} \int \vct\upmu(\vr) \cdot \nabla \, \phi(\vr) \, d\vr.
+\]
+
+\hint{
+  Try to write down the charge distribution of the dipole system.
+}
+
+
+
+\problem{Generating closures by the variational principle}
+%Stell
+
+
+
+\chapter{Integral equations}
+
+\problem{Upper bound of the bridge function}
+
+Show that the bridge function $B(\vr)$ satisfies\cite{kast2012}
+
+\begin{equation}
+  B(\vr) \le c(\vr) + \beta u(\vr).
+\end{equation}
+
+\hint{
+  Use
+\[
+  g(\vr) = \exp[-\beta u(\vr) + t(\vr) + B(\vr)],
+\]
+and $1 + x \le \exp(x)$.}
+
+
+
+\problem{Different closures, same result}
+
+Albus exactly solved the $g(r)$ of liquid $A$ whose molecular potential is $u_A(r)$;
+Harry solved that of liquid $H$ with $u_H(r)$ under the HNC closure;
+Percy solved that of liquid $P$ with $u_P(r)$ under the PY closure.
+Amazingly, they found that their results were the same.
+Show that the bridge function of liquid $A$ satisfies
+\begin{equation}
+  -\beta u_A(r) + B_A(r) = -\beta u_H(r).
+\end{equation}
+Can you also deduce $u_P(r)$?
+
+
+
+\problem{Pressure in the PY closure}
+
+In the PY closure, the pressure can be written as\cite{baxterpressure}
+\begin{align}
+  \beta P =  \int \left[
+    \log(1-\rho \,\tilde{c}) + \frac{ \rho \, \tilde{c} }{2}
+  \right] \, \dvk
+  +
+    \frac{\rho - \rho^2 \, \tilde{c}(\vct{0}) } {2}.
+  \label{eq:Pbaxter}
+\end{align}
+%
+Show that differentiating $\beta P$ with respect to $\rho$
+yields
+\begin{align}
+  \partial_\rho (\beta P) = 1 - \rho \int c(\vr) \, d\vr.
+\end{align}
+
+\hint{
+  Define
+\begin{align*}
+  \tilde{T}
+\equiv
+  \log(1 - \rho \tilde{c})
+  + \rho \tilde{c},
+ % \label{eq:logrhoc}
+\end{align*}
+show that
+%
+\begin{align*}
+  -\partial_\rho \tilde T
+=
+  \rho \, \tilde{h}
+  \, \partial_\rho ( \rho \, \tilde{c} ),
+\end{align*}
+%
+and
+%
+\begin{align}
+  -\int \partial_\rho \tilde T \dvk
+=
+  \rho \int h \, c \, d\vr
+  + \rho^2 \int h \, \partial_\rho c \, d\vr.
+\label{eq:intdlogrhoc}
+\end{align}
+%
+Also use the fact that $g(\vr) = h(\vr) + 1 = 0$ at $\vr = \vct 0$.
+}
+
+
+
+\problem{Chemical potential in the HNC closure}
+
+Show that the excess chemical potential in the HNC closure
+can be found from\cite{morita1958, morita1959, morita1960, singer1985}
+\begin{equation}
+  -\beta \muex = \rho \int \left( c - \tfrac{1}{2} h \, t\right) d\vr.
+  \label{eq:muexhnc}
+\end{equation}
+
+\hint{
+  Start from \eqref{eq:mutigr}.
+}
+
+
+\problem{Free energy in the HNC closure}
+
+1. Show that the excess free energy in the HNC closure
+can be found from\cite{morita1958, morita1959, morita1960, singer1985}
+\begin{align}
+    - \frac{ \beta \Fex } { V }
+    = \frac{\rho^2}{2} \int \left( c - \tfrac{1}{2} h^2 \right) \, d\vr
+      - \frac{1}{2} \int  \big[
+              \log\left( 1 - \rho \, \tilde{c} \right)
+                           + \rho \, \tilde{c}
+                         \big]  \dvk,
+\label{eq:Fexhnc}
+\end{align}
+
+2. Differentiating \eqref{eq:Fexhnc} with respect to $\rho$,
+show that it is identical to \eqref{eq:muexhnc}.
+
+\hint{
+  Use \eqref{eq:intdlogrhoc}.
+}
+
+%\begin{align*}
+%  \partial_\xi g
+%  &= (\partial_\xi f) \, y + (1+f) \, \partial_\xi y
+%  = (\partial_\xi f) \, y + (1+f) \, y \, \partial_\xi t \\
+%  &= (\partial_\xi f) \, y + g \, \partial_\xi t,
+%\end{align*}
+%Here, we have used $y = \exp t$ so that $\partial_\xi y = y \, \partial_\xi t$.
+%
+%Next, we will use
+%\begin{align*}
+%  -\beta \muex
+%  = \rho \int_0^1 d\xi \int_\vr (\partial_\xi f) \, y \, d\vr \\
+%\end{align*}
+%where $\rho$ comes about such that
+%\[
+%  \rho \int_\vr f \, y \, d \vr = \rho \int_\vr g \, d\vr = N
+%  \approx N - 1,
+%\]
+%which gives the number of particles interacting with particle 1.
+%%
+%Then,
+%\begin{align*}
+%  -\beta \muex
+%  &= \rho \int_0^1 d\xi \int_\vr (\partial_\xi g - g \partial_\xi t) \, d\vr \\
+%  &= \rho \int_0^1 d\xi \int_\vr (\partial_\xi c - h \partial_\xi t) \, d\vr \\
+%  &= \rho \int_0^1 d\xi \int_\vr \partial_\xi \left(c - \tfrac{1}{2} h \, t \right) \, d\vr \\
+%  &= \rho \int_\vr \left(c - \tfrac{1}{2} h \, t \right) \, d\vr
+%\end{align*}
+%We have assumed infinite dilution on the third line so that
+%$t \, \partial_\xi h = h \, \partial_\xi t = \tfrac{1}{2} \partial_\xi (h t)$.
+%
+%
+
+
+
+\bibliography{liquid}
+\bibliographystyle{alpha}
+\end{document}
+

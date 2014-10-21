@@ -1,0 +1,1307 @@
+%\documentclass{revtex4-1}
+% options: aip, jcp, reprint, preprint
+\documentclass[preprint]{revtex4-1}
+%\documentclass[notitlepage, preprint]{revtex4-1}
+%\documentclass[aip,jcp,reprint,superscriptaddress]{revtex4-1}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{dcolumn}
+\usepackage{bm}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{tikz}
+%\usepackage{setspace}
+
+\tikzstyle{blackdot}=[circle,draw=black,fill=black,
+                      inner sep=0pt,minimum size=1.5mm]
+\tikzstyle{whitedot}=[circle,draw=black,fill=white,
+                      inner sep=0pt,minimum size=1.5mm]
+
+%\renewcommand{\theequation}{N\arabic{equation}}
+
+\newtheorem{defn}{Definition}
+\newtheorem{thrm}{Theorem}
+\newtheorem{lemm}[thrm]{Lemma}
+\newtheorem{prop}[thrm]{Proposition}
+
+\newcommand{\vct}[1]{\mathbf{#1}}
+\providecommand{\vr}{} % clear \vr
+\renewcommand{\vr}{\vct{r}}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\vR}{\vct{R}}
+\newcommand{\dvk}{\frac{d\vk}{(2\pi)^D}}
+\newcommand{\tdvk}{\tfrac{d\vk}{(2\pi)^D}}
+
+% add a superscript ``ex''
+\newcommand{\supex}[1]{ { { #1 }^{ \mathrm{ex} } } }
+\newcommand{\Pex}{\supex{P}}
+\newcommand{\Ptex}{P^{ \mathrm{ex} }_t}
+\newcommand{\Fex}{\supex{F}}
+\newcommand{\muex}{\supex{\mu}}
+\newcommand{\muexxi}{\mu^{ \mathrm{ex} }_\xi}
+\newcommand{\kex}{\supex{\kappa}}
+\newcommand{\Chn}{\mathscr{C}}
+%\newcommand{\Chn}{\mathcal{C}}
+%\newcommand{\Chn}{\mathsf{C}}
+\newcommand{\secref}[1]{Sec. \ref{#1}}
+
+\newcommand{\llbra}{[\![}
+\newcommand{\llket}{]\!]}
+
+
+
+
+
+\begin{document}
+
+\title{On Attard's formula of chemical potential}
+
+\begin{abstract}
+We show that for a general approximate integral equation,
+  Attard's formula of chemical potential
+  yields a different value from
+  the direct charging integral.
+%
+The difference is due to that the former
+  assumes a special charging parameter that is
+  proportional to the total correlation function,
+%
+  and the charging integral depends critically
+  on the charging parameter for a general integral equation.
+%
+Concrete examples are given to illustrate the points.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+
+
+\subsection{Chemical potential and the charging parameter}
+
+
+
+For a simple liquid,
+the excess (non-ideal-gas) chemical potential $\muex$
+can be computed from the charging integral
+%
+\begin{align}
+  -\beta \, \muex
+&=
+  \rho \int_0^1 d\xi \int d\vr \, [-\beta \, \phi_\xi(r)] \, g_\xi(r)
+  \label{eq:muintg}
+\end{align}
+%
+Here,
+$\phi(r)$ and $g(r)$ denote the pair potential
+and the radial distribution function, respectively.
+%
+We are considering a system that contains a special particle 1,
+whose interaction with other particles
+is modified by the charging parameter, $\xi$.
+%
+The charging parameter, $\xi$, is 0
+  when particle 1 is not interacting with other particles,
+  i.e., $\phi_{\xi = 0}(r) = 0$;
+it is 1.0
+  when the interaction of particle 1 and other particles is assuming the full strength,
+  i.e., $\phi_{\xi = 1}(r) = \phi(r)$.
+
+
+
+Let us introduce the $f$-bond, which is defined as
+\[
+  f_\xi(r) \equiv \exp[-\beta \, \phi_\xi(r)] - 1.
+\]
+The $f$-bond vanishes at $\xi = 0$, and $f_{\xi = 1}(r) = f(r)$.
+%
+We can now rewrite Eq. \eqref{eq:muintg} as
+\begin{align}
+  -\beta \, \muex
+&=
+  \rho \int_0^1 d\xi \int d\vr \, (\partial_\xi f_\xi) \, y_\xi(r).
+\label{eq:mudf}
+\end{align}
+%
+where $y_\xi(r) \equiv \exp[-\beta \, \phi_\xi(r)] \, g_\xi(r)$
+is the cavity distribution function.
+
+
+
+
+
+\subsection{Graphic expansion}
+
+
+
+It is well known that
+the excess chemical potential of a homogeneous fluid
+(which corresponds to the $\xi = 1$ case here)
+has a well-defined graphic expansion,
+which is the sum of all biconnected (irreducible)
+1-root graphs weighted by the inverse symmetry number\cite{hansen}.
+%
+\begin{align*}
+  \newcommand{\sz}{3.0mm}
+  -\beta \, \muex
+=
+  \begin{tikzpicture}[baseline=-1.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{};
+    \draw (r1) -- (r2);
+  \end{tikzpicture}
+  +
+  \frac{1}{2} \,
+  \begin{tikzpicture}[baseline=-.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{};
+    \node (r3) at (   0,  \sz) [blackdot]{};
+    \draw (r1) -- (r3) -- (r2) -- (r1);
+  \end{tikzpicture}
+  +
+  \frac{1}{2} \,
+  \begin{tikzpicture}[baseline=-.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{};
+    \node (r3) at ( \sz,  \sz) [blackdot]{};
+    \node (r4) at (-\sz,  \sz) [blackdot]{};
+    \draw (r1) -- (r4) -- (r3) -- (r2) -- (r1) (r2) -- (r4);
+  \end{tikzpicture}
+  +
+  \frac{1}{2} \,
+  \begin{tikzpicture}[baseline=-.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{};
+    \node (r3) at ( \sz,  \sz) [blackdot]{};
+    \node (r4) at (-\sz,  \sz) [blackdot]{};
+    \draw (r1) -- (r4) -- (r3) -- (r2) -- (r1) (r1) -- (r3);
+  \end{tikzpicture}
+  +
+  \frac{1}{6} \,
+  \begin{tikzpicture}[baseline=-.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{};
+    \node (r3) at ( \sz,  \sz) [blackdot]{};
+    \node (r4) at (-\sz,  \sz) [blackdot]{};
+    \draw (r1) -- (r4) -- (r3) -- (r2) -- (r4) (r1) -- (r3) (r1) -- (r2);
+  \end{tikzpicture}
+  + \cdots.
+\end{align*}
+%
+This series can be adapted to the $\xi \ne 1$ case:
+%
+we simply replace every $f$-bond adjacent to field point 1
+by the $f_\xi$-bond,
+the result is denoted by $-\beta \, \muexxi$:
+%
+\begin{align}
+  -\beta \, \muexxi
+=
+  \newcommand{\sz}{3.6mm}
+  \newcommand{\isep}{0.1*\sz}
+  \begin{tikzpicture}[baseline=-1.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=north] {\scriptsize$\xi$} (r1);
+  \end{tikzpicture}
+  +
+  \frac{1}{2} \,
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=north] {\scriptsize$\xi$} (r1);
+    \node (r3) at (   0,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=-30] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2);
+  \end{tikzpicture}
+  +
+  \frac{1}{2} \,
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=north] {\scriptsize$\xi$} (r1);
+    \node (r3) at ( \sz,  \sz) [blackdot]{};
+    \node (r4) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=east] {\scriptsize$\xi$} (r1);
+    \draw (r1) -- (r4) -- (r3) -- (r2) -- (r1) (r2) -- (r4);
+  \end{tikzpicture}
+  +
+  \frac{1}{2} \,
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=north] {\scriptsize$\xi$} (r1);
+    \node (r3) at ( \sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=-45] {\scriptsize$\xi$} (r1);
+    \node (r4) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=east] {\scriptsize$\xi$} (r1);
+    \draw (r1) -- (r4) -- (r3) -- (r2) -- (r1) (r1) -- (r3);
+  \end{tikzpicture}
+  +
+  \frac{1}{6} \,
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=north] {\scriptsize$\xi$} (r1);
+    \node (r3) at ( \sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=2*\isep] node[anchor=15] {\scriptsize$\xi$} (r1);
+    \node (r4) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=east] {\scriptsize$\xi$} (r1);
+    \draw (r1) -- (r4) -- (r3) -- (r2) -- (r4) (r1) -- (r3) (r1) -- (r2);
+  \end{tikzpicture}
+  + \cdots.
+  \label{eq:muexxi}
+\end{align}
+
+
+
+
+
+\subsection{Derivative of the chemical potential as a total differential}
+
+
+
+From Eq. \eqref{eq:muexxi}, it follows that the derivative
+\begin{equation}
+  \partial_\xi (-\beta \, \muexxi)
+  = \rho \int d\vr (\partial_\xi f_\xi) \, y_\xi(r).
+\label{eq:dmu}
+\end{equation}
+also has a well-defined graphic representation.
+%
+This representation involves graphs with $\partial_\xi f_\xi$-bonds
+attached to particle 1.
+
+Further, the right-hand side of Eq. \eqref{eq:dmu}
+must be a total differential of $\xi$.
+%
+This statement, however, is valid under the assumption that
+$y_\xi(r)$ is exact.
+%
+It is not necessarily so for a general integral equation,
+e.g., the Percus-Yevick (PY) equation\cite{percusyevick},
+which yields an approximate $y_\xi(r)$ [or equivalently, $g_\xi(r)$].
+
+
+
+
+
+\subsection{Specialness of the hypernetted-chain equation}
+
+
+
+Nonetheless,
+  the hypernetted-chain (HNC) equation\cite{
+  morita1958, morita1959, morita1960, vanleeuwen1959, green1960, verlet1960, rushbrooke1960}
+  is a lucky exception:
+the right-hand side of Eq. \eqref{eq:dmu} is a total differential of $\xi$,
+  although it includes fewer graphs than the exact sum.
+%
+The specialness of the HNC equation is related to the fact that
+%
+we have a succinct and unique formula\cite{morita1960, singer1985}
+for the excess chemical potential:
+\begin{equation}
+  -\beta \, \muex
+=
+  \rho \int
+  \left[ c(r) - \tfrac{1}{2} h(r) t(r) \right] \, d\vr.
+\label{eq:muhnc}
+\end{equation}
+%
+This formula can be derived from analyzing graphs included in the HNC equation,
+as it is done originally\cite{morita1960}.
+%
+It can also be derived from algebraically transforming Eq. \eqref{eq:dmu}\cite{singer1985}
+(see also Appendix \ref{sec:muhncB}).
+%
+The latter is possible because the right-hand side is a total differential.
+
+
+
+
+
+\subsection{General integral equation and Attard's formula}
+
+
+
+For a general (e.g., PY) integral equation, however,
+there is usually no well-defined graphic sum for
+$-\beta \, \muexxi$,
+although the sum for $y_\xi(r)$ or $g_\xi(r)$ exists.
+%
+Consequently,
+the right-hand side of Eq. \eqref{eq:dmu}
+is not a total differential of $\xi$,
+and the integral
+depends on the detailed definition of $\xi$.
+
+
+
+
+We will show below that this $\xi$-dependence
+causes Attard's formula\cite{attard1991}
+to produce seemingly self-contradictory results of $\muex$
+for the PY equation
+(as a result of different definitions of $\xi$).
+%
+This phenomenon can be viewed as a neat illustration that
+integrating Eq. \eqref{eq:dmu} does not yield a well-defined $\xi$-independent $\muexxi$.
+
+
+
+Conversely,
+if we postulate a $\beta \, \muexxi$ with a well-defined graphic sum,
+its derivative with respect to $\xi$
+will not be given by Eq. \eqref{eq:dmu}.
+%
+Thus, the contradiction in Attard's formula,
+although inconvenient, is just as inevitable as
+the well-known nuisance that the virial and compressibility routes
+produce different values of pressure.
+
+
+
+
+
+\section{Evaluation of the charging integral}
+
+
+
+\subsection{Charging parameter proportional to $f$-bond}
+
+
+
+Let us first evaluate Eq. \eqref{eq:mudf}.
+%
+The most convenient $\xi$ to do so is one that satisfies
+\begin{equation}
+  f_\xi(r) = f(r) \, \xi.
+  \label{eq:fxi}
+\end{equation}
+Now we can write
+\begin{equation}
+  y_\xi(r) = \sum_{n = 0}^\infty y^{(n)}(r) \, \xi^n,
+\label{eq:yxi}
+\end{equation}
+where $y^{(n)}(r)$ collects all graphs
+with $n$ $f$-bonds adjacent to field point 1.
+%
+Using Eqs. \eqref{eq:fxi} and \eqref{eq:yxi} in Eq. \eqref{eq:mudf} yields
+\begin{equation}
+  -\beta \, \muex
+=
+  \rho \sum_{n = 0}^\infty
+  \frac{1}{n+1}
+  \int d\vr \, f(r) \, y^{(n)}(r).
+\label{eq:mu_fyseries}
+\end{equation}
+
+
+
+\subsection{$\xi$-dependence of the graphic sum of the chemical potential}
+
+
+
+We should point out a weakness of Eq. \eqref{eq:mu_fyseries}.
+%
+That is, for an arbitrary $y_\xi(r)$,
+the graphic sum generated by Eq. \eqref{eq:mu_fyseries}
+depends on the choice of $\xi$.
+%
+This can be seen from the example below.
+
+For simplicity, consider $y_\xi(r) = \exp \tau_\xi(r)$,
+where $\tau_\xi(r) =
+  \newcommand{\sz}{2.5mm}
+  \newcommand{\isep}{0.2*\sz}
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-1.2*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1.2*\sz, -\sz) [whitedot]{};
+    \node (r3) at (       0,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=-30] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2);
+  \end{tikzpicture}$.
+Then,
+\[
+  \newcommand{\sz}{4.0mm}
+  \newcommand{\isep}{0.2*\sz}
+  y_\xi(r)
+=
+  1
++
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-1.2*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1.2*\sz, -\sz) [whitedot]{};
+    \node (r3) at (       0,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=-30] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2);
+  \end{tikzpicture}
++
+  \frac{1}{2} \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [whitedot]{};
+    \node (r3) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+    \node (r4) at ( \sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=2*\isep] node[anchor=10] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2) -- (r4);
+  \end{tikzpicture}
+%+
+%  \frac{1}{6}
+%  \begin{tikzpicture}[baseline=-\sz]
+%    \node (r1) at (-\sz, -\sz) [whitedot]{};
+%    \node (r2) at ( \sz, -\sz) [whitedot]{};
+%    \node (r3) at (-\sz,  \sz) [blackdot]{}
+%        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+%    \node (r4) at ( \sz,  \sz) [blackdot]{}
+%        edge[thick, inner sep=2*\isep] node[anchor=10] {\scriptsize$\xi$} (r1);
+%    \node (r5) at (   0, -2.0*\sz) [blackdot]{}
+%        edge[thick, inner sep=\isep] node[anchor=45] {\scriptsize$\xi$} (r1);
+%    \draw (r3) -- (r2) -- (r4) (r2) -- (r5);
+%  \end{tikzpicture}
++ \cdots,
+\]
+%
+%
+%
+and Eq. \eqref{eq:mu_fyseries} becomes
+\begin{equation}
+  \newcommand{\sz}{4.0mm}
+  \newcommand{\isep}{0.2*\sz}
+  -\beta \, \muex
+=
+  \begin{tikzpicture}[baseline=-1.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{};
+    \draw (r1) -- (r2);
+  \end{tikzpicture}
++
+  \frac{1}{2} \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-1.2*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1.2*\sz, -\sz) [blackdot]{};
+    \node (r3) at (       0,  \sz) [blackdot]{};
+    \draw (r1) -- (r3) -- (r2) -- (r1);
+  \end{tikzpicture}
++
+  \frac{1}{6} \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{};
+    \node (r3) at (-\sz,  \sz) [blackdot]{};
+    \node (r4) at ( \sz,  \sz) [blackdot]{};
+    \draw (r1) -- (r3) -- (r2) -- (r4) -- (r1) -- (r2);
+  \end{tikzpicture}
+%+
+%  \frac{1}{24}
+%  \begin{tikzpicture}[baseline=-\sz]
+%    \node (r1) at (-\sz, -\sz) [whitedot]{};
+%    \node (r2) at ( \sz, -\sz) [blackdot]{};
+%    \node (r3) at (-\sz,  \sz) [blackdot]{};
+%    \node (r4) at ( \sz,  \sz) [blackdot]{};
+%    \node (r5) at (   0, -2.2*\sz) [blackdot]{};
+%    \draw (r1) -- (r3) -- (r2) -- (r4) -- (r1) -- (r5) -- (r2) -- (r1);
+%  \end{tikzpicture}
++ \cdots.
+\label{eq:muex_model}
+\end{equation}
+
+
+
+If Eq. \eqref{eq:muex_model} \emph{were} a $\xi$-independent graphic sum,
+the corresponding $\muexxi$ should be
+\begin{equation}
+  \newcommand{\sz}{4.0mm}
+  \newcommand{\isep}{0.2*\sz}
+  -\beta \, \muexxi
+=
+  \begin{tikzpicture}[baseline=-1.25*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=north] {\scriptsize$\xi$} (r1);
+  \end{tikzpicture}
++
+  \frac{1}{2} \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-1.2*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1.2*\sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=90] {\scriptsize$\xi$} (r1);
+    \node (r3) at (       0,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=-30] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2);
+  \end{tikzpicture}
++
+  \frac{1}{6} \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=90] {\scriptsize$\xi$} (r1);
+    \node (r3) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+    \node (r4) at ( \sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=2*\isep] node[anchor=10] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2) -- (r4);
+  \end{tikzpicture}
+%+
+%  \frac{1}{24}
+%  \begin{tikzpicture}[baseline=-\sz]
+%    \node (r1) at (-\sz, -\sz) [whitedot]{};
+%    \node (r2) at ( \sz, -\sz) [blackdot]{}
+%        edge[thick, inner sep=0.2*\isep] node[anchor=90] {\scriptsize$\xi$} (r1);
+%    \node (r3) at (-\sz,  \sz) [blackdot]{}
+%        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+%    \node (r4) at ( \sz,  \sz) [blackdot]{}
+%        edge[thick, inner sep=2*\isep] node[anchor=10] {\scriptsize$\xi$} (r1);
+%    \node (r5) at (   0, -2.2*\sz) [blackdot]{}
+%        edge[thick, inner sep=\isep] node[anchor=45] {\scriptsize$\xi$} (r1);
+%    \draw (r3) -- (r2) -- (r4) (r2) -- (r5);
+%  \end{tikzpicture}
++ \cdots,
+\label{eq:muexxi_model}
+\end{equation}
+%
+which should hold for an \emph{arbitrary} $\xi$
+(not just one that is proportional to $f_\xi$).
+
+But differentiating Eq. \eqref{eq:muexxi_model} yields
+\[
+  \newcommand{\sz}{4.0mm}
+  \newcommand{\isep}{0.2*\sz}
+  -\partial_\xi ( \beta \, \muexxi )
+=
+  \begin{tikzpicture}[baseline=-1.25*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, dashed] (r1);
+  \end{tikzpicture}
++
+  \frac{1}{2} \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-1.2*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1.2*\sz, -\sz) [blackdot]{}
+        edge[thick, dashed] (r1);
+    \node (r3) at (       0,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=-30] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2);
+  \end{tikzpicture}
++
+  \frac{1}{6} \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, dashed] (r1);
+    \node (r3) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+    \node (r4) at ( \sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=2*\isep] node[anchor=10] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2) -- (r4);
+  \end{tikzpicture}
++
+  \frac{1}{3} \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=90] {\scriptsize$\xi$} (r1);
+    \node (r3) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+    \node (r4) at ( \sz,  \sz) [blackdot]{}
+        edge[thick, dashed] (r1);
+    \draw (r3) -- (r2) -- (r4);
+  \end{tikzpicture}
+%+
+%  \frac{1}{24}
+%  \begin{tikzpicture}[baseline=-\sz]
+%    \node (r1) at (-\sz, -\sz) [whitedot]{};
+%    \node (r2) at ( \sz, -\sz) [blackdot]{}
+%        edge[thick, dashed] (r1);
+%    \node (r3) at (-\sz,  \sz) [blackdot]{}
+%        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+%    \node (r4) at ( \sz,  \sz) [blackdot]{}
+%        edge[thick, inner sep=2*\isep] node[anchor=10] {\scriptsize$\xi$} (r1);
+%    \node (r5) at (   0, -2*\sz) [blackdot]{}
+%        edge[thick, inner sep=\isep] node[anchor=45] {\scriptsize$\xi$} (r1);
+%    \draw (r3) -- (r2) -- (r4) (r2) -- (r5);
+%  \end{tikzpicture}
+%+
+%  \frac{1}{8}
+%  \begin{tikzpicture}[baseline=-\sz]
+%    \node (r1) at (-\sz, -\sz) [whitedot]{};
+%    \node (r2) at ( \sz, -\sz) [blackdot]{}
+%        edge[thick, inner sep=0.2*\isep] node[anchor=90] {\scriptsize$\xi$} (r1);
+%    \node (r3) at (-\sz,  \sz) [blackdot]{}
+%        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+%    \node (r4) at ( \sz,  \sz) [blackdot]{}
+%        edge[thick, inner sep=2*\isep] node[anchor=10] {\scriptsize$\xi$} (r1);
+%    \node (r5) at (   0, -2*\sz) [blackdot]{}
+%        edge[thick, dashed] (r1);
+%    \draw (r3) -- (r2) -- (r4) (r2) -- (r5);
+%  \end{tikzpicture}
++ \cdots,
+\]
+where a dashed line represents a $\partial_\xi f_\xi$-bond.
+%
+Clearly, this expression is not equivalent to the integral defined in Eq. \eqref{eq:dmu}
+because, for a general $\xi$,
+\[
+  \newcommand{\sz}{4.0mm}
+  \newcommand{\isep}{0.2*\sz}
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, dashed] (r1);
+    \node (r3) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+    \node (r4) at ( \sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=2*\isep] node[anchor=10] {\scriptsize$\xi$} (r1);
+    \draw (r3) -- (r2) -- (r4);
+  \end{tikzpicture}
+\; \ne \;
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=90] {\scriptsize$\xi$} (r1);
+    \node (r3) at (-\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1);
+    \node (r4) at ( \sz,  \sz) [blackdot]{}
+        edge[thick, dashed] (r1);
+    \draw (r3) -- (r2) -- (r4);
+  \end{tikzpicture}.
+\]
+
+The above example illustrates that
+the graphs included in $y_\xi(r)$ has to
+satisfy certain constraints
+in order for Eq. \eqref{eq:mudf}
+to produce a $\xi$-independent graphic sum.
+%
+The constraints are satisfied by the graphic sum of the exact $g(r)$,
+and the corresponding partial sum in the HNC case.
+%
+However, they are not satisfied in a general integral equation
+such as the PY one.
+%
+As a result, the chemical potential is $\xi$-dependent
+in the latter cases.
+
+
+
+
+
+\subsection{Charging parameter proportional to $h$-bond}
+
+
+
+On the other hand,
+one can algebraically transform Eq. \eqref{eq:mudf}
+to (see Appendix \ref{sec:muhncB})
+%
+\begin{equation}
+  -\beta \, \muex
+=
+  \rho \int d\vr
+  \left[ c(r) - B(r) - \tfrac{1}{2} h(r) \, t(r)
+  - \int_0^1 d\xi \, h_\xi(r) \, \partial_\xi B_\xi(r) \right],
+\label{eq:muhncB}
+\end{equation}
+where $B(r) \equiv \log y(r) - t(r)$ is the bridge function.
+
+This expression is most readily evaluated
+by choosing a \emph{different} $\xi$ such that
+\begin{equation}
+  h_{\xi}(r) = h(r) \, \xi.
+  \label{eq:hxi}
+\end{equation}
+We assume that such a $\xi$ exists
+as $h(r) \approx f(r)$ in the low density limit.
+
+Then, by writing
+\begin{equation}
+  B_{\xi}(r) = \sum_{n = 2}^\infty B^{(n)}_{\xi}(r) \, {\xi}^{\, n},
+\label{eq:Bxi}
+\end{equation}
+we get\cite{attard1991}
+\begin{equation}
+  -\beta \, \muex
+=
+  \rho \int d\vr
+  \left[ c(r) - B(r) - \frac{1}{2} h(r) \, t(r)
+   - \sum_{n = 2}^\infty \, \frac{n}{n+1} h(r) \, B^{(n)}(r) \right].
+\label{eq:muhncB_hBseries}
+\end{equation}
+This is Attard's formula for the excess chemical potential.
+
+
+
+
+\subsection{Different charging parameter, different result}
+
+
+
+We emphasize that although
+Eq. \eqref{eq:muhncB} is equivalent to Eq. \eqref{eq:mudf},
+Eq. \eqref{eq:muhncB_hBseries} is valid
+only for the special $\xi$ defined in Eq. \eqref{eq:hxi}.
+%
+If we use the $\xi$ defined in Eq. \eqref{eq:fxi}
+to evaluate Eq. \eqref{eq:muhncB},
+the result would be different.
+%
+Below, we give an example to illustrate the point.
+
+Let us consider the integral of
+\begin{equation}
+  \int_0^1 d\xi \int d\vr \, h_\xi(r) \, \partial_\xi B_\xi(r),
+  \label{eq:hBint}
+\end{equation}
+for two fictitious $h_\xi(r)$ and $B_\xi(r)$:
+\begin{align*}
+  h_\xi(r)
+&=
+  \newcommand{\sz}{3.0mm}
+  \newcommand{\isep}{0.2*\sz}
+  \begin{tikzpicture}[baseline=-1.25*\sz]
+    \node (r1) at (-\sz, -\sz) [whitedot]{};
+    \node (r2) at ( \sz, -\sz) [whitedot]{}
+        edge[thick, inner sep=\isep] node[anchor=90] {\scriptsize$\xi$} (r1);
+  \end{tikzpicture}
+  +
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-1.2*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1.2*\sz, -\sz) [whitedot]{}
+        edge[thick, inner sep=\isep, blue!50!black] node[anchor=90] {\scriptsize$\xi$} (r1);
+    \node (r3) at (   0*\sz,  \sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=0] {\scriptsize$\xi$} (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r2);
+  \end{tikzpicture}\;,
+\\
+  B_\xi(r)
+&=
+  \newcommand{\sz}{5.0mm}
+  \newcommand{\isep}{0.05*\sz}
+  -\frac{1}{2} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 1.5*\sz,   0*\sz) [whitedot]{};
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=-80] {\footnotesize$h_\xi$} (r1)
+        edge[thick, inner sep=\isep, green!30!black]
+          node[anchor=-135] {\footnotesize$c$} (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] node[anchor=80] {\footnotesize$h_\xi$} (r1)
+        edge[thick, inner sep=\isep, green!30!black]
+          node[anchor=135] {\footnotesize$c$} (r2);
+  \end{tikzpicture}\;.
+\end{align*}
+Note that here we have assumed
+$B_\xi(r) = -t_\xi^2(r)/2$,
+with $t_\xi(r)$ satisfying the Ornstein-Zernike (OZ) relation:
+\begin{equation}
+  t_\xi(r) = \rho (h_\xi * c)(r).
+  \label{eq:ozxi}
+\end{equation}
+%
+Then
+\begin{align}
+I
+\equiv
+\rho \int_0^1 d\xi
+  \int d\vr \, h_\xi(r) \, \partial_\xi B_\xi(r)
+=
+  \newcommand{\sz}{5.0mm}
+  \newcommand{\isep}{0.05*\sz}
+  - \int_0^1 d\xi \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep]
+          node[anchor=90] {\footnotesize$h_\xi$} (r1);
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep]
+          node[anchor=-80] {\footnotesize$\partial_\xi h_\xi$} (r1)
+        edge[thick, inner sep=\isep, green!30!black]
+          node[anchor=-135] {\footnotesize$c$} (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep]
+          node[anchor=80] {\footnotesize$h_\xi$} (r1)
+        edge[thick, inner sep=\isep, green!30!black]
+          node[anchor=135] {\footnotesize$c$} (r2);
+  \end{tikzpicture}\;.
+  \label{eq:hBintg_example}
+\end{align}
+
+
+Now let us evaluate Eq. \eqref{eq:hBintg_example} by
+the $\xi$ defined by Eq. \eqref{eq:hxi},
+which satisfies $\partial_\xi h_\xi = h$.
+%
+So
+\begin{align}
+  I^{(h)}
+&=
+  \newcommand{\sz}{5.0mm}
+  \newcommand{\isep}{0.05*\sz}
+  -\frac{1}{3} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep]
+          node[anchor=90] {\footnotesize$h$} (r1);
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep]
+          node[anchor=-80] {\footnotesize$h$} (r1)
+        edge[thick, inner sep=\isep, green!30!black]
+          node[anchor=-135] {\footnotesize$c$} (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep]
+          node[anchor=80] {\footnotesize$h$} (r1)
+        edge[thick, inner sep=\isep, green!30!black]
+          node[anchor=135] {\footnotesize$c$} (r2);
+  \end{tikzpicture}
+  \notag \\
+&=
+  \newcommand{\sz}{2.5mm}
+  \newcommand{\isep}{0.1*\sz}
+  -\frac{1}{3} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1);
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+  \end{tikzpicture}
+  -\frac{2}{3} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1);
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r5) at (-1.3*\sz, 2.8*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r3);
+  \end{tikzpicture}
+  -\frac{1}{3} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1);
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r5) at (-1.3*\sz, 2.8*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r3);
+    \node (r6) at (-1.3*\sz,-2.8*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r4);
+  \end{tikzpicture}
+  %
+  %
+  %
+  -\frac{1}{3} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1);
+    \node (r3) at (   0*\sz, 2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r9) at ( 0.0*\sz, 1.0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep] (r2);
+  \end{tikzpicture}
+  -\frac{2}{3} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1);
+    \node (r3) at (   0*\sz, 2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r5) at (-1.5*\sz, 3.3*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r3);
+    \node (r9) at ( 0.0*\sz, 1.0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep] (r2);
+  \end{tikzpicture}
+  -\frac{1}{3} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1);
+    \node (r3) at (   0*\sz, 2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r5) at (-1.5*\sz, 3.3*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r3);
+    \node (r6) at (-1.5*\sz,-3.3*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r4);
+    \node (r9) at ( 0.0*\sz, 1.0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep] (r2);
+  \end{tikzpicture}
+  \;.
+  \label{eq:hBintg_example_h}
+\end{align}
+
+
+But if we evaluate the same integral by the $\xi$ defined by Eq. \eqref{eq:fxi}, we get
+%
+\begin{align}
+  I^{(f)}
+&=
+  \newcommand{\sz}{2.5mm}
+  \newcommand{\isep}{0.1*\sz}
+  -\frac{1}{3} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1);
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+  \end{tikzpicture}
+  -\frac{3}{4} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1);
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r5) at (-1.3*\sz, 2.8*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r3);
+  \end{tikzpicture}
+  -\frac{2}{5} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1);
+    \node (r3) at (   0*\sz, 1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-1.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r5) at (-1.3*\sz, 2.8*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r3);
+    \node (r6) at (-1.3*\sz,-2.8*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r4);
+  \end{tikzpicture}
+  %
+  %
+  %
+  -\frac{1}{4} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1);
+    \node (r3) at (   0*\sz, 2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r9) at ( 0.0*\sz, 1.0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep] (r2);
+  \end{tikzpicture}
+  -\frac{3}{5} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1);
+    \node (r3) at (   0*\sz, 2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r5) at (-1.5*\sz, 3.3*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r3);
+    \node (r9) at ( 0.0*\sz, 1.0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep] (r2);
+  \end{tikzpicture}
+  -\frac{2}{6} \;
+  \begin{tikzpicture}[baseline=-0.1*\sz]
+    \node (r1) at (-3.0*\sz,   0*\sz) [whitedot]{};
+    \node (r2) at ( 2.0*\sz,   0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1);
+    \node (r3) at (   0*\sz, 2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r4) at (   0*\sz,-2.5*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep, blue!50!black] (r1)
+        edge[thick, inner sep=\isep, green!30!black] (r2);
+    \node (r5) at (-1.5*\sz, 3.3*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r3);
+    \node (r6) at (-1.5*\sz,-3.3*\sz) [blackdot]{}
+        edge[thick, inner sep=3*\isep] (r1)
+        edge[thick, inner sep=\isep, dotted, red!70!black] (r4);
+    \node (r9) at ( 0.0*\sz, 1.0*\sz) [blackdot]{}
+        edge[thick, inner sep=\isep] (r1)
+        edge[thick, inner sep=\isep] (r2);
+  \end{tikzpicture}
+  \;.
+  \label{eq:hBintg_example_f}
+\end{align}
+Note that in Eq. \eqref{eq:hBintg_example_f},
+the denominator of the coefficient before each graph
+is equal to the number $f$-bonds adjacent to field point 1
+[cf. the $1/(n+1)$ factor in Eq. \eqref{eq:mu_fyseries}].
+
+
+This example clearly shows that \emph{generally}
+the value of the charging integral Eq. \eqref{eq:hBint}
+depends critically on the choice of $\xi$.
+%
+As a result, the value from Eq. \eqref{eq:muhncB_hBseries}
+under the assumption of Eq. \eqref{eq:hxi},
+would be different from that from Eq. \eqref{eq:mu_fyseries}
+under the assumption of Eq. \eqref{eq:fxi}.
+%
+This point is illustrated below.
+
+
+
+
+
+\section{PY equation}
+
+
+
+Now let us show that Eqs. \eqref{eq:mu_fyseries} and \eqref{eq:muhncB_hBseries}
+produce contradictory results, when they are used on the PY equation.
+
+In the PY equation,
+every graph in the expansion of $y(r) = 1 + t(r)$
+is a polygon graph.
+That is, it is possible to
+put all vertices of the graph on a convex polygon
+without producing any intersecting edge.
+%
+Thus, Eq. \eqref{eq:mu_fyseries} permits
+no graph like
+\[
+G_3
+=
+  \newcommand{\sz}{3.6mm}
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-1.5*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1.5*\sz, -\sz) [whitedot]{};
+    \node (r3) at ( 1.5*\sz,  \sz) [blackdot]{};
+    \node (r4) at (   0*\sz,  \sz) [blackdot]{};
+    \node (r5) at (-1.5*\sz,  \sz) [blackdot]{};
+    \draw (r1) -- (r3) -- (r2) -- (r4) -- (r1) -- (r5) -- (r2) -- (r1);
+  \end{tikzpicture} \; .
+\]
+
+Now we shall show that $G_3$ exists in the expansion of Eq. \eqref{eq:muhncB_hBseries},
+which will yield an immediate contradiction.
+%
+First, the bridge function in the PY equation is given by
+\[
+B_\xi(r) = \log[1 + t_\xi(r)] - t_\xi(r) = -t_\xi^2(r)/2 + t_\xi^3(r)/3 - \cdots.
+\]
+Each $t_\xi(r)$ can be further expanded by Eq. \eqref{eq:ozxi},
+which gives a linear relation between $t_\xi$ and $h_\xi$.
+%
+As a result,
+the term $-t_\xi^2(r)/2$ belongs to $B^{(2)} \, \xi^2$,
+and
+the term $t_\xi^3(r)/3$ belongs to $B^{(3)} \, \xi^3$.
+
+
+
+Now $G_3$ can occur in Eq. \eqref{eq:muhncB_hBseries}
+only in the $n = 2$ and $n = 3$ terms of the sum.
+%
+For $B^{(2)}$ and $B^{(3)}$,
+the corresponding graphs in $h(r)$ to form $G_3$ must be
+$  \newcommand{\sz}{2mm}
+  \begin{tikzpicture}[baseline=-0.5*\sz]
+    \node (r1) at (-1*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1*\sz, -\sz) [whitedot]{};
+    \node (r3) at ( 0*\sz,  \sz) [blackdot]{};
+    \draw (r1) -- (r3) -- (r2) -- (r1);
+  \end{tikzpicture}$,
+and
+$  \newcommand{\sz}{2mm}
+  \begin{tikzpicture}[baseline=-1.5*\sz]
+    \node (r1) at (-1*\sz, -\sz) [whitedot]{};
+    \node (r2) at ( 1*\sz, -\sz) [whitedot]{};
+    \draw (r1) -- (r2);
+  \end{tikzpicture}$,
+respectively.
+%
+Thus, the overall coefficient before $G_3$
+in the expansion of Eq. \eqref{eq:muhncB_hBseries}
+is given by
+\[
+  -\frac{2}{3} \cdot \left( -\frac{1}{2} \right)
+  -\frac{3}{4} \cdot \left( \frac{1}{3}  \right)
+= \frac{1}{12} \ne 0.
+\]
+
+We have thus shown that Eqs. \eqref{eq:mu_fyseries}
+and \eqref{eq:muhncB_hBseries}
+yield different values of chemical potential
+for the PY equation.
+
+
+
+
+\section{Self-consistent integral equations}
+
+
+
+We can certainly fix the above $\mu$-inconsistency
+by adding some variable term,
+e.g., $\lambda \, t^2(r)$, to $y(r)$,
+and then setting $\lambda$ to enforce the $\mu$-consistency
+of Eqs. \eqref{eq:mu_fyseries} and \eqref{eq:muhncB_hBseries}.
+%
+But by doing so,
+can we obtain a more accurate integral equation?
+%
+Some fleeting attempts suggest a negative answer,
+at least for the three-dimensional hard-sphere fluid.
+%
+The reason is the following.
+%
+The HNC equation naturally achieves the $\mu$-consistency
+of Eqs. \eqref{eq:mu_fyseries} and \eqref{eq:muhncB_hBseries}.
+%
+But unfortunately, the virial coefficient from the HNC equation
+(we should use the virial-route value)
+$B_4^{v, \mathrm{HNC}} = 0.4453 B_2^3$
+does not agree well with the true value $B_4 = 0.2869 B_2^3$.
+
+
+
+An alternative is to enforce the self-consistency of
+the virial coefficients from Eq. \eqref{eq:muintg}
+and those from the compressibility or virial route.
+%
+For $B_4$ of the three-dimensional hard-sphere fluid,
+we found that, for the PY equation,
+$B_4^{\mu, \mathrm{PY}} = B_4^{c, \mathrm{HNC}} = 0.2092 B_2^3$,
+$B_4^{v-\mu, \mathrm{PY}} = B_4^{v, \mathrm{HNC}} = 0.4453 B_2^3$,
+and
+$B_4^{c-\mu, \mathrm{PY}} = 0.2731 B_2^3$,
+respectively.
+%
+These figures are inferior to the pressure-consistent (compressibility and virial) result
+$B_4^{c-v, \mathrm{PY}} = 0.2824 B_2^3$.
+%
+Thus, more work are to be done in this direction.
+
+
+\appendix
+
+
+
+\section{\label{sec:muhncB} Derivation of Eq. \eqref{eq:muhncB}}
+
+
+Here, we derive Eq. \eqref{eq:muhncB} from Eq. \eqref{eq:mudf}.
+%
+The manipulation is rather standard\cite{singer1985}.
+%
+We start from Eq. \eqref{eq:dmu},
+which is the differential form of Eq. \eqref{eq:mudf}.
+%
+Integration by parts yields
+\[
+(\partial_\xi f_\xi) \, y_\xi
+=
+(\partial_\xi e_\xi) \, y_\xi
+= \partial_\xi ( e_\xi \, y_\xi )
+- e_\xi \, \partial_\xi y_\xi,
+\]
+where $e_\xi = f_\xi + 1$.
+%
+Since $y_\xi = \exp( t_\xi + B_\xi )$,
+\[
+  \partial_\xi y_\xi = y_\xi \, \partial_\xi( t_\xi + B_\xi).
+\]
+and by using $e_\xi \, y_\xi = g_\xi$, we get
+\begin{align*}
+(\partial_\xi f_\xi) \, y_\xi
+&= \partial_\xi g_\xi
+- g_\xi \, \partial_\xi (t_\xi + B_\xi)
+\\
+&= \partial_\xi h_\xi
+- \partial_\xi (t_\xi + B_\xi)
+- h_\xi \, \partial_\xi (t_\xi + B_\xi),
+\end{align*}
+
+
+Finally, by integrating over $\vr$, we get
+\[
+\int d\vr \, (\partial_\xi f_\xi) \, y_\xi
+=
+\int d\vr \, \left\{
+  \partial_\xi (c_\xi - B_\xi - \tfrac{1}{2} h_\xi \, t_\xi)
+- h_\xi \, \partial_\xi B_\xi \right\},
+\]
+where we have used the fact that
+$t_\xi$ and $h_\xi$ are linearly related by
+Eq. \eqref{eq:ozxi}, such that
+\[
+\int d\vr \, h_\xi \, \partial_\xi t_\xi
+= \int d\vr \, \frac{1}{2} h_\xi \, t_\xi,
+\]
+
+Finally, integrating over $\xi$
+and multiplying the integral by $\rho$
+yields Eq. \eqref{eq:muhncB}.
+%
+By setting $B = 0$, we get Eq. \eqref{eq:muhnc}.
+
+
+
+\bibliography{liquid}
+\end{document}
+
