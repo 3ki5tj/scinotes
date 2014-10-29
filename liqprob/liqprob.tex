@@ -10,12 +10,17 @@
 
 
 \newcommand{\problem}[1]{\section{#1}}
-\newcommand{\hint}[1]{[Hint. #1]}
+\newcommand{\hint}[1]{[\,\emph{Hint.} #1]}
 
 \newcommand{\vct}[1]{\boldsymbol{\mathbf{#1}}}
 \newcommand{\vr}{\vct{r}}
 \newcommand{\vrN}{\vr^N}
 \newcommand{\vrn}{\vr^n}
+\newcommand{\dvr}{\frac{ d \vr  }{(2\pi)^3}}
+\newcommand{\vx}{\vct{x}}
+\newcommand{\vxN}{\vx^N}
+\newcommand{\vxn}{\vx^n}
+\newcommand{\dvx}{\frac{ d \vx  }{(2\pi)^3}}
 \newcommand{\vk}{\vct{k}}
 \newcommand{\dvk}{\frac{ d \vk  }{(2\pi)^3}}
 % Fourier transform
@@ -62,7 +67,7 @@ Show that
     \exp\left( -\frac{1}{2} A \, x^2 \right) \, dx
   =
   \sqrt{ \frac{ 2 \pi }{ A } }.
-  \label{eq:gaussianintegral}
+  \label{eq:GaussianIntegral}
 \end{equation}
 
 \hint{
@@ -87,21 +92,31 @@ Show that
   \end{align*}
 where we have changed from the Cartesian to polar coordinates in the second step.
 
-One can also evaluate this integral by the gamma function.
+Alternatively, try to evaluate this integral by the gamma (factorial) function:
+\begin{equation}
+  (s-1)!
+=
+  \Gamma(s)
+\equiv
+  \int_0^\infty z^{s-1} \, \exp(-z) \, dz,
+  \label{eq:gammaDef}
+\end{equation}
+where $s$ is not necessarily an integer.
+In our case, set $z = A \, x^2/2$.
 }
 
 
 
 \problem{Gaussian integral (matrix form)}
 
-Show the matrix form of \eqref{eq:gaussianintegral}
+Show the matrix form of \eqref{eq:GaussianIntegral}
 \begin{equation}
   \int_{-\infty}^{\infty}
   \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} \right) \, d\vct{x}
   =
   \frac{ (2\pi)^{n/2} }
   { |\vct A|^{1/2} },
-  \label{eq:gaussianintegralmatrix}
+  \label{eq:GaussianIntegralMatrix}
 \end{equation}
 %
 where $\vct x = \{x_1, \dots, x_n\}^T$,
@@ -112,9 +127,9 @@ $|\vct A|$ is the determinant.
 
 \hint{
   First, consider the case that $\vct A$ is an diagonal matrix.
-  Show that the integral in \eqref{eq:gaussianintegralmatrix}
+  Show that the integral in \eqref{eq:GaussianIntegralMatrix}
   is equivalent to $n$ one-dimensional integrals,
-  and evaluate them by \eqref{eq:gaussianintegral}.
+  and evaluate them by \eqref{eq:GaussianIntegral}.
   Then, for a general $\vct A$, consider
   \[
     \vct x = \vct U \vct y,
@@ -132,26 +147,26 @@ $|\vct A|$ is the determinant.
 More generally, show that
 \begin{equation}
   \int_{-\infty}^{\infty}
-  \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} + \vct b^T \vct x \right) \, d\vct{x}
+  \exp\left(
+    -\frac{1}{2} \vct{x}^T \, \vct{A} \, \vct{x}
+    + \vct b^T \, \vct x
+  \right) \, d\vct{x}
   =
   \frac{ (2\pi)^{n/2} }
   { |\vct A|^{1/2} }
   \exp\left( \frac{1}{2} \vct b^T \vct A^{-1} \vct b \right),
-  \label{eq:gaussianintegralmatrixb}
+  \label{eq:GaussianIntegralMatrixb}
 \end{equation}
 %
 where $\vct b = \{b_1, \dots, b_n\}^T$.
 %
-Obtain the Fourier transform of
-  $\exp\left( - \frac{1}{2} \vct x^T \vct A \vct x \right)$
-  by setting $\vct b = -i \vct k$.
 \hint{ Complete the square. }
 
 
 
 \problem{Derivatives of Gaussian integrals}
 
-1. By differentiating \eqref{eq:gaussianintegral} with respect to $A$, show that
+1. By differentiating \eqref{eq:GaussianIntegral} with respect to $A$, show that
 \begin{equation}
   \langle x^2 \rangle
 \equiv \frac {
@@ -179,11 +194,11 @@ c_{ij}
 }.
 \end{equation*}
 %
-By differentiating \eqref{eq:gaussianintegralmatrix} with respect to $A_{ij}$, show that
+By differentiating \eqref{eq:GaussianIntegralMatrix} with respect to $A_{ij}$, show that
 %
 \begin{equation}
   \vct{c}^T = \vct A^{-1},
-  \label{eq:gaussiancorrelation}
+  \label{eq:GaussianCorrelation}
 \end{equation}
 %
 where
@@ -201,17 +216,21 @@ Use the identity
 which can be shown by using the minors of $\vct A$.
 }
 
-3. By differentiating \eqref{eq:gaussianintegralmatrixb} with respect to $b_i$ and $b_j$,
-and then setting $\vct b = \vct 0$, show \eqref{eq:gaussiancorrelation}.
+3. By differentiating \eqref{eq:GaussianIntegralMatrixb} with respect to $b_i$ and $b_j$,
+and then setting $\vct b = \vct 0$, show \eqref{eq:GaussianCorrelation}.
+
+
 
 
 
 \problem{Volume of high-dimensional spheres}
 
+
+
 In this problem, we will find the volume of a high-dimensional sphere
 by using the Gaussian integrals.
 
-1. Argue the volume of a $D$-dimensional sphere of radius $R$ is proportional to
+1. Argue that the volume of a $D$-dimensional sphere of radius $R$ is proportional to
 $R^D$; and the surface area $S_D(R)$ is proportional to $R^{D-1}$, and
 \[
   S_D(R) = S_D(1) \, R^{D-1}.
@@ -219,9 +238,9 @@ $R^D$; and the surface area $S_D(R)$ is proportional to $R^{D-1}$, and
 
 2. Evaluate the integral
 \[
-  I_D \equiv \int \exp(-r^2) \, d\vr = \int \exp(-r^2) S_D(r) dr 
+  I_D \equiv \int \exp(-r^2) \, d\vr = \int \exp(-r^2) S_D(r) dr
 \]
-by the gamma function $\Gamma(x)$.
+by the gamma function defined in Eq. \eqref{eq:gammaDef}.
 
 3. Evaluate the same integral as
 \[
@@ -233,19 +252,206 @@ by the gamma function $\Gamma(x)$.
 \]
 
 4. Show that
-\begin{align*}
-  S_D(R) &= \frac{ 2 \pi^{D/2} } { \Gamma(D/2) } R^{D-1}, \\
+\begin{align}
+  S_D(R) &= \frac{ 2 \pi^{D/2} } { \Gamma(D/2) } R^{D-1},
+  \label{eq:SD} \\
   V_D(R) &= \frac { \pi^{D/2} } { \Gamma(D/2+1) } R^D.
+  \label{eq:VD}
+\end{align}
+
+
+
+
+
+\problem{High-dimensional spherical coordinates}
+
+
+
+The volume element of spherical coordinates is
+\[
+  r \, dr \, d\theta_2
+\]
+in two dimensions, where the integral $\theta_2$ goes from $0$ to $2\pi$.
+%
+It becomes
+\[
+  r^2 \, dr \, 
+  \sin \theta_3 \, d \theta_3 \,
+  d \theta_2
+\]
+in three dimensions,
+where $\theta_3$ ($0 \le \theta_3 \le \pi$)
+is the angle between $\vr$ and the $\vct{z} = \vct{x}_3$ axis.
+
+1. Show that the above result in $D$ dimensions is given by
+\begin{equation}
+  d\vr^{(D)}
+=
+  r^{D-1} \, dr \;
+  (\sin \theta_D)^{D-2} \, d \theta_D \;
+  \dots
+  \sin \theta_3 \, d \theta_3 \;
+  d \theta_2,
+  \label{eq:sphrcoordiff}
+\end{equation}
+where $\theta_k$ is the angle between $\vx_k$ and
+the projection of $\vr$ in the subspace
+spanned by $\vx_1$, \dots, and $\vx_k$.
+Here, $0 \le \theta_k \le \pi$ for $k \ge 3$,
+and $0 \le \theta_2 \le 2\pi$.
+
+\hint{
+Start with the relation:
+\[
+  r^{D-1} \, dr \, d\vct\uptheta^{(D)}
+= s^{D-2} \, ds \, d\vct\uptheta^{(D-1)} \, d x_D,
+\]
+where $d\vct\uptheta^{(k)}$ denotes the angular element in $k$ dimensions,
+and
+\begin{align*}
+  s   &= r \, \cos \theta_D, \\
+  x_D &= r \, \sin \theta_D,
 \end{align*}
+with the Jacobian $\partial(x_D, s)/\partial(r, \theta_D) = r$.
+%
+Thus,
+\[
+  r^{D-1} \, dr \, d\vct\uptheta^{(D)}
+=
+  r^{D-1} \, dr \, (\sin \theta_D)^{D-2} \, d\theta_D \, d\vct\uptheta^{(D-1)}.
+\]
+Then, show \eqref{eq:sphrcoordiff} by induction.
+}
+
+2. By integrating over the angular variables,
+show that for a spherical symmetric function
+the surface element is given by \eqref{eq:SD}.
+
+
 
 
 \problem{Fourier transform}
 
+1. The Fourier transform in $D$ dimensions is defined as
+\begin{equation}
+  \tilde f(\vk)
+\equiv
+  \int d\vr \, \exp(-i\vk \cdot \vx) \, f(\vx).
+  \label{eq:FourierTransform}
+\end{equation}
+Verify that the inverse transform is given by
+\begin{equation}
+  f(\vx)
+\equiv
+  \int \dvk \, \exp(i\vk \cdot \vx) \, \tilde f(\vk).
+  \label{eq:inverseFourierTransform}
+\end{equation}
 
-\problem{Fourier transform of a spherical function}
+\hint{
+  Use the identity
+\[
+  \int d\vk \, \exp[i\vk \cdot (\vx - \vx')]
+= (2 \pi)^D \, \delta(\vx - \vx').
+\]
+where $\delta(\vx - \vx')$ is the delta function
+that satisfies the relation
+\[
+  \int d\vx \, \delta(\vx - \vx') \, f(\vx)
+  = f(\vx'),
+\]
+for an arbitrary function $f(\vx)$.
+}
+
+2. By the differentiating Eq. \eqref{eq:inverseFourierTransform},
+show that the Fourier transform of $\nabla f(\vx)$ is given by $i\vk \, \tilde f(\vk)$.
+
+3. Obtain the Fourier transform of the Gaussian function
+\[
+  f(\vx) \equiv \exp\left( - \frac{1}{2} \vct x^T \vct A \vct x \right)
+\]
+by setting $\vct b = -i \vct k$ in \eqref{eq:GaussianIntegralMatrixb}.
+%
+Also, verify the inverse transform
+is indeed given by Eq. \eqref{eq:inverseFourierTransform}.
+
+
+
 
 \problem{Convolution}
 
+1. Show that the Fourier transform of the convolution
+\begin{equation}
+  (a*b)(\vx)
+\equiv
+  \int a(\vx - \vx') \, b(\vx') \, d\vx'
+  \label{eq:convolution}
+\end{equation}
+is given by $\tilde{a}(\vk) \, \tilde{b}(\vk)$.
+
+2. Show that
+\begin{equation}
+  \int a(\vx) \, b(\vx) \, d\vx
+=
+  \int \tilde{a}(\vk) \, b(-\vk) \, \dvk.
+\end{equation}
+
+
+
+
+\problem{Fourier transform of a spherical function}
+
+1. Argue that the Fourier transform of spherical-symmetric function
+$f(\vr) = f(r)$, with $r = |\vr|$,
+is also spherical symmetric.
+%
+That is, $\tilde f(\vk) = \tilde f(k)$, with $k = |\vk|$.
+
+2. Show that, in $D$ dimensions
+\begin{equation}
+  \tilde f(k)
+=
+  \frac{(2 \pi)^{D/2}} {k^{D/2 - 1}}
+  \int
+  f(r) \,
+  J_{D/2-1}(k\,r) \,
+  r^{D/2} \,
+  dr.
+  \label{eq:FourierTransformSpherical}
+\end{equation}
+Here, $J_\nu(z)$ is the Bessel function
+\begin{align}
+  J_\nu(z)
+\equiv
+  \sum_{s = 0}^\infty
+  \frac{ (z/2)^{2s + \nu } }
+  { s! \, (\nu + 2 s)! }.
+  \label{eq:Bessel}
+\end{align}
+
+3. Show that in three dimensions,
+\eqref{eq:FourierTransformSpherical}
+is reduced to
+\begin{equation}
+  \tilde f(k)
+=
+\frac{ 4 \, \pi } {k}
+  \int
+  f(r) \,
+  \sin(k\,r) \,
+  r \,
+  dr.
+  \label{eq:FourierTransformSpherical3D}
+\end{equation}
+
+4. Show that in three dimensions,
+the convolution of
+two spherical-symmetric functions $a(r)$ and $b(r)$
+satisfies\cite{hill} (page 204)
+\[
+  \int a(\vr - \vr') \, b(\vr') \, d\vr'
+=
+  \frac{2\pi}{r} \int a(s) \, b(t) \, s \, t \, ds \, dt.
+\]
 
 
 
@@ -283,63 +489,144 @@ Show that the pressure, $P$, is given by
 %
 The hard-sphere limit is obtained with $\epsilon \rightarrow 0$
 or $a \rightarrow \infty$.
+
 \hint{
 Express $u'(r)$ by $e'(r)$, where $e(r) = e^{-\beta u(r)}$;
 and use the fact that $y(r) = g(r)/e(r)$ is always a continuous function of $r$.
-cf. \cite{hansen} Sec. 2.5, Eq. (2.5.22)-(2.5.26).
+Cf. \cite{hansen} Sec. 2.5, Eq. (2.5.22)-(2.5.26).
 }
 
 
 \problem{Virial theorem for cluster integrals}
 
 Show that, in $D$ dimensions,
-\begin{align}
-  &  \int
-  3 D
+\begin{align*}
+  &
+  3 \, D
+  \int
   f(\vr_{12}) f(\vr_{23}) f(\vr_{34}) f(\vr_{41})
   \, d\vr_2 \, d\vr_3 \, d\vr_4 \\
   &=
   -4 \int
-  \vr_{12} \cdot \nabla_1 f(\vr_{12})
-  f(\vr_{23}) f(\vr_{34} f(\vr_{41})
+  \vr_{12} \cdot [\nabla_1 f(\vr_{12})]
+  \, f(\vr_{23}) \, f(\vr_{34}) \, f(\vr_{41})
   \, d\vr_2 \, d\vr_3 \, d\vr_4.
-\end{align}
+\end{align*}
 
 \hint{
 Show that the integral
 \[
-  I(s) = s^{3D} \int f(s \vr_{12}) f(s \vr_{23}) f(s \vr_{34}) f(s \vr_{41})
-  \, d\vr_2 \, d\vr_3 \, d\vr_4,
+  I(s)
+= s^{3D}
+  \int
+  f(s \, \vr_{12}) \,
+  f(s \, \vr_{23}) \,
+  f(s \, \vr_{34}) \,
+  f(s \, \vr_{41}) \,
+  d\vr_2 \, d\vr_3 \, d\vr_4,
 \]
 is independent of $s$.
-Then, differentiating $I(s)$ with respect to $s$.
+Then, differentiate $I(s)$ with respect to $s$.
 }
 
 
 
 
-\problem{Chemical potential and pressure}
+\problem{Pressure and chemical potential, I}
 
-Show that chemical potential $\mu$ and pressure $P$ are related by
+
+
+1. Show that pressure $P$ and chemical potential $\mu$ are related by
 \begin{equation}
-  \rho \frac{ \partial \mu } { \partial \rho}
-  =
-  \frac{ \partial P } { \partial \rho }.
+  \left(
+    \frac{ \partial P } { \partial \rho }
+  \right)_T
+=
+  \rho
+  \left(
+    \frac{ \partial \mu } { \partial \rho }
+  \right)_T.
+  \label{eq:dPdrho}
 \end{equation}
 
 \hint{
-From $dE = T dS - P dV + \mu dN$, show that
+From $d(E - TS) = -S \, dT - P \, dV + \mu \, dN$, show that
 \[
-  -(\partial P/\partial N)_V = (\partial \mu/\partial V)_N.
+  -\left(
+    \frac{ \partial P }{ \partial N }
+  \right)_{T, \, V}
+= \left(
+    \frac{ \partial \mu }{ \partial V }
+  \right)_{T, \, N}.
 \]
-Then write $N$ and $V$ in terms of $\rho$.
+Then use the fact that $P$ depends on $N$ and $V$ only through $\rho = N/V$.
+}
+
+
+2. Using Eq. \eqref{eq:dPdrho}, show that the density series
+\begin{align*}
+  \beta \, P
+&=
+  \sum_{n = 1}^\infty B_n \, \rho^n,
+\end{align*}
+and
+\begin{align*}
+  -\beta \, \mu
+&=
+  -\ln \rho + \sum_{n = 1}^\infty \beta_n \, \rho^n.
+\end{align*}
+are related by
+\[
+  (n + 1) \, B_{n+1} = -n \, \beta_n,
+\]
+for $n \ge 1$.
+
+
+\problem{Pressure and chemical potential, II}
+
+
+
+1. Similar to Eq. \eqref{eq:dPdrho}, show that
+\begin{equation}
+  \left(
+    \frac{ \partial P } { \partial \mu }
+  \right)_T
+=
+  \rho.
+  \label{eq:dPdmu}
+\end{equation}
+
+\hint{
+Start from $d(E - T \, S - \mu \, N) = -S \, dT - P \, dV - N \, \mu$.
+}
+
+2. Using Eq. \eqref{eq:dPdmu}, show that the activity series
+\begin{align*}
+  \beta \, P = \sum_{n = 1}^\infty b_n \, z^n,
+\end{align*}
+and
+\begin{align*}
+  \rho = \sum_{n = 1}^\infty c_n \, z^n,
+\end{align*}
+are related by
+\[
+  c_n
+=
+  n \, b_n.
+\]
+
+\hint{
+  Use $z \propto \exp(\beta \, \mu)$
+  and $\partial / \partial \mu = z \, \partial / \partial z$.
 }
 
 
 
 \problem{Thermodynamic integration}
 
-1. Show that the excess chemical potential can be written as
+
+
+1. Show that the excess chemical potential $\muex$ can be written as
 \begin{equation}
   \muex
 =
@@ -347,14 +634,25 @@ Then write $N$ and $V$ in terms of $\rho$.
   \label{eq:muti}
 \end{equation}
 %
-where $U$ is potential energy function,
+where the potential energy function is given by
+\[
+  U =
+  \sum_{j = 2}^n u_\xi(r_{1j})
+  +
+  \sum_{i = 2}^{n - 1} \sum_{j = i+1}^n u(r_{ij}).
+\]
 %
-$\xi$ is called the ``charging'' parameter.
+Here, $\xi$ is called the ``charging'' parameter.
 %
 The charging parameter affects only the potential terms involving
 the designated particle 1;
-$\xi = 0$ means particle 1 is not interacting with the rest of the particles,
+$\xi = 0$ means particle 1 is not interacting with other particles,
 $\xi = 1$ means particle 1 is identical to any other particle.
+%
+That is,
+$u_{\xi = 0}(r_{1j}) = 0$,
+and
+$u_{\xi = 1}(r_{1j}) = u(r_{1j})$.
 
 2. Further, write the above expression as an integral of
 the pair correlation function $g(\vr)$:
@@ -373,10 +671,13 @@ Show that the chemical potential can be written as
 \begin{equation}
   \exp(-\beta \muex)
 =
-  \langle \exp[ -\beta \Delta U(\xi) ] \rangle,
+  \bigl\langle
+    \exp( -\beta \Delta U )
+  \bigr\rangle,
 \end{equation}
 %
-where $\Delta U$ is change of the potential energy after adding a particle into the system.
+where $\Delta U$ is the increment of the potential energy
+after adding a particle into the system.
 
 
 
@@ -411,7 +712,7 @@ where $\Delta U$ is change of the potential energy after adding a particle into 
 
 
 
-\problem{Lovett-Mou-Buff-Wertheim formula}
+\problem{Lovett-Mou-Buff formula}
 
 Show, in an inhomogeneous liquid under the external field $\phi(\vr_1)$, that
 %
@@ -553,12 +854,13 @@ In the PY closure, the pressure can be written as\cite{baxterpressure}
     \log(1-\rho \,\tilde{c}) + \frac{ \rho \, \tilde{c} }{2}
   \right] \, \dvk
   +
-    \frac{\rho - \rho^2 \, \tilde{c}(\vct{0}) } {2}.
+  \frac{\rho}{2}
+  - \frac{\rho^2}{2} \int c(\vr) \, d\vr.
   \label{eq:Pbaxter}
 \end{align}
 %
-Show that differentiating $\beta P$ with respect to $\rho$
-yields
+By differentiating $\beta P$ with respect to $\rho$,
+show that
 \begin{align}
   \partial_\rho (\beta P) = 1 - \rho \int c(\vr) \, d\vr.
 \end{align}
@@ -598,8 +900,8 @@ Also use the fact that $g(\vr) = h(\vr) + 1 = 0$ at $\vr = \vct 0$.
 
 \problem{Chemical potential in the HNC closure}
 
-Show that the excess chemical potential in the HNC closure
-can be found from\cite{morita1958, morita1959, morita1960, singer1985}
+Show that the excess chemical potential $\muex$ in the HNC closure
+can be found from\cite{morita1960, singer1985}
 \begin{equation}
   -\beta \muex = \rho \int \left( c - \tfrac{1}{2} h \, t\right) d\vr.
   \label{eq:muexhnc}
@@ -613,7 +915,7 @@ can be found from\cite{morita1958, morita1959, morita1960, singer1985}
 \problem{Free energy in the HNC closure}
 
 1. Show that the excess free energy in the HNC closure
-can be found from\cite{morita1958, morita1959, morita1960, singer1985}
+can be found from\cite{morita1958, morita1960, singer1985}
 \begin{align}
     - \frac{ \beta \Fex } { V }
     = \frac{\rho^2}{2} \int \left( c - \tfrac{1}{2} h^2 \right) \, d\vr

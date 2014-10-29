@@ -1,7 +1,6 @@
 tex = $(wildcard *.tex)
 pdf = $(patsubst %.tex, %.pdf, $(tex))
 html = $(patsubst %.tex, %.html, $(tex))
-htmldir = $(patsubst %.tex, %_html, $(tex))
 
 all: $(pdf)
 
@@ -16,7 +15,7 @@ $(pdf) : %.pdf: %.tex
 
 $(htmldir) : %_html : %.tex
 	if [ ! -d "$@" ] ; then mkdir "$@" ; fi
-	cd $@; ln -sf ../$<; ln -sf ../liquid.bib .; htlatex $<
+	cd $@; ln -sf ../$<; htlatex $<
 
 # html versions by tth are more basic and have problems
 $(html) : %.html: %.tex
@@ -28,7 +27,7 @@ IPO=cz1@129.109.88.204
 #IPO=cz1@he.host.utmb.edu
 
 Bossman: $(pdf)
-	rsync -avzrL *.pdf *.tex $(IPO):/Bossman/cz1/notes/attardmu
+	rsync -avzrL *.pdf *.tex $(IPO):/Bossman/cz1/notes/liqprob
 
 # upload to github
 github:
@@ -37,7 +36,7 @@ github:
 push: github
 
 clean:
-	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg *.bbl *.blg
+	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg *.blg *.bbl *.toc
 	rm -rf $(htmldir)
 	rstrip.py
 
