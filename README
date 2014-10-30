@@ -1,5 +1,10 @@
 Lecture and paper notes.
 
-Use 
-  git push
+Dropbox link:
+https://www.dropbox.com/sh/wmyesgnjf3napg4/AACbk52lFjJCmcTjGxq7FdBQa?dl=0
 
+This directory is under the version control system git,
+and is uploaded to github.
+Use  
+  git push
+to update it remotely.

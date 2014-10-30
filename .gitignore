@@ -1,0 +1,10 @@
+a.out
+.*.swp
+*~
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.log
+*.out
+*.toc
