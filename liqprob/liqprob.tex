@@ -56,7 +56,10 @@
 
 
 
+
+
 \chapter{Basic mathematical tools}
+
 
 
 \problem{Gaussian integral}
@@ -109,7 +112,9 @@ In our case, set $z = A \, x^2/2$.
 
 \problem{Gaussian integral (matrix form)}
 
-Show the matrix form of \eqref{eq:GaussianIntegral}
+
+
+1. Show the matrix form of \eqref{eq:GaussianIntegral}
 \begin{equation}
   \int_{-\infty}^{\infty}
   \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} \right) \, d\vct{x}
@@ -141,8 +146,14 @@ $|\vct A|$ is the determinant.
   where $\vct \Lambda$ is a diagonal matrix.
 }
 
+2. What happens if $\vct A$ is not a symmetric matrix?
+
+
+
 
 \problem{Gaussian integral with a bias}
+
+
 
 More generally, show that
 \begin{equation}
@@ -166,6 +177,8 @@ where $\vct b = \{b_1, \dots, b_n\}^T$.
 
 \problem{Derivatives of Gaussian integrals}
 
+
+
 1. By differentiating \eqref{eq:GaussianIntegral} with respect to $A$, show that
 \begin{equation}
   \langle x^2 \rangle
@@ -181,7 +194,7 @@ where $\vct b = \{b_1, \dots, b_n\}^T$.
 \end{equation}
 
 2.
-Define the matrix $\vct{c}$, whose elements are
+Define the matrix $\vct{c}$, whose elements are defined as
 \begin{equation*}
 c_{ij}
 \equiv \langle x_i \, x_j \rangle
@@ -191,13 +204,15 @@ c_{ij}
 } {
 \int_{-\infty}^{\infty}
   \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} \right) \, d\vct{x}
-}.
+},
 \end{equation*}
+%
+where $\vct A$ is a symmetric matrix.
 %
 By differentiating \eqref{eq:GaussianIntegralMatrix} with respect to $A_{ij}$, show that
 %
 \begin{equation}
-  \vct{c}^T = \vct A^{-1},
+  \vct{c} = \vct{c}^T = \vct A^{-1},
   \label{eq:GaussianCorrelation}
 \end{equation}
 %
@@ -275,7 +290,7 @@ in two dimensions, where the integral $\theta_2$ goes from $0$ to $2\pi$.
 %
 It becomes
 \[
-  r^2 \, dr \, 
+  r^2 \, dr \,
   \sin \theta_3 \, d \theta_3 \,
   d \theta_2
 \]
@@ -564,17 +579,19 @@ Then use the fact that $P$ depends on $N$ and $V$ only through $\rho = N/V$.
 
 
 2. Using Eq. \eqref{eq:dPdrho}, show that the density series
-\begin{align*}
+\begin{align}
   \beta \, P
 &=
   \sum_{n = 1}^\infty B_n \, \rho^n,
-\end{align*}
+  \label{eq:series_Prho}
+\end{align}
 and
-\begin{align*}
-  -\beta \, \mu
+\begin{align}
+  \ln z = \beta \, \mu
 &=
-  -\ln \rho + \sum_{n = 1}^\infty \beta_n \, \rho^n.
-\end{align*}
+  \ln \rho - \sum_{n = 1}^\infty \beta_n \, \rho^n.
+  \label{eq:series_murho}
+\end{align}
 are related by
 \[
   (n + 1) \, B_{n+1} = -n \, \beta_n,
@@ -600,20 +617,18 @@ for $n \ge 1$.
 Start from $d(E - T \, S - \mu \, N) = -S \, dT - P \, dV - N \, \mu$.
 }
 
-2. Using Eq. \eqref{eq:dPdmu}, show that the activity series
-\begin{align*}
+2. Using Eq. \eqref{eq:dPdmu}, show that pressure assume the activity series
+\begin{align}
   \beta \, P = \sum_{n = 1}^\infty b_n \, z^n,
-\end{align*}
-and
-\begin{align*}
-  \rho = \sum_{n = 1}^\infty c_n \, z^n,
-\end{align*}
-are related by
-\[
-  c_n
-=
-  n \, b_n.
-\]
+  \label{eq:series_Pz}
+\end{align}
+then the activity series of density is given by
+\begin{align}
+  \rho = \sum_{n = 1}^\infty n \, b_n \, z^n.
+  \label{eq:series_rhoz}
+\end{align}
+Equations \eqref{eq:series_Pz} and \eqref{eq:series_rhoz}
+are the Mayer equations of state.
 
 \hint{
   Use $z \propto \exp(\beta \, \mu)$
@@ -622,11 +637,60 @@ are related by
 
 
 
+\problem{Density and activity expansions}
+
+
+
+From Eqs. \eqref{eq:series_rhoz} and \eqref{eq:series_murho},
+show that
+\begin{align}
+  n^2 \, b_n
+=
+  \frac{1} {(n - 1)!}
+  \frac{ d^{n-1} } { d \rho^{n-1} }
+  \,
+  \exp
+  \left(
+  n \sum_{k = 1}^\infty \beta_k \, \rho^k
+  \right).
+\end{align}
+In other words,
+$n^2 \, b_n$
+is the coefficient of $\rho^{n-1}$
+of the density series of
+$\exp \left( n \sum_{k = 1}^\infty \beta_k \, \rho^k \right)$.
+
+\hint{
+  From \eqref{eq:series_rhoz},
+\begin{align*}
+  n \, b_n
+&= \oint
+  \frac{ \rho } { z^{n+1} }
+  \frac{ d z } { 2 \pi i }
+= -\frac{1} {n}
+  \oint
+  \frac{ \rho }{ 2 \pi i }
+  \, d \left( \frac{ 1 } { z^n } \right) \\
+&=
+  \frac{1} {n}
+  \oint
+  \frac{ 1 } { z^n } \, \frac{ d\rho }{ 2 \pi i },
+\end{align*}
+where the contour is around the origin of the complex plane.
+%
+Then use \eqref{eq:series_murho}:
+$z = \rho \, \exp\left( \sum_{k=1}^\infty -\beta_k \, \rho^k \right)$.
+}
+
+
+
+
+
 \problem{Thermodynamic integration}
 
 
 
-1. Show that the excess chemical potential $\muex$ can be written as
+1. Show that the excess (non-ideal-gas) chemical potential $\muex$ can be written as
 \begin{equation}
   \muex
 =
@@ -659,7 +723,7 @@ the pair correlation function $g(\vr)$:
 \begin{equation}
   \muex
 =
-  \rho \int_0^1 d\xi \int \frac{d u(\xi)}{d\xi} g(\vr) \, d\vr,
+  \rho \int_0^1 d\xi \int \frac{d u(\xi)}{d\xi} g_\xi(\vr) \, d\vr,
   \label{eq:mutigr}
 \end{equation}
 
