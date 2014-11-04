@@ -82,12 +82,14 @@ Show that
     \int_{-\infty}^{\infty}
       \exp\left( -\frac{1}{2} A \, x^2 \right) \, dx
     \int_{-\infty}^{\infty}
-      \exp\left( -\frac{1}{2} A \, y^2 \right) \, dy \\
+      \exp\left( -\frac{1}{2} A \, y^2 \right) \, dy
+    \\
     &=
     \int_{0}^{2\pi}
     \int_{0}^{\infty}
       \exp\left( -\frac{1}{2} A \, r^2 \right) \, r \, dr \, d\theta
-    =
+    \\
+    &=
     2\pi
     \int_{-\infty}^{\infty}
     \exp\left[ -A \left( \frac{r^2}{2} \right) \right]
@@ -273,8 +275,38 @@ by the gamma function defined in Eq. \eqref{eq:gammaDef}.
   V_D(R) &= \frac { \pi^{D/2} } { \Gamma(D/2+1) } R^D.
   \label{eq:VD}
 \end{align}
-
-
+Note that
+\begin{equation}
+  \Gamma\left( D/2 + 1 \right)
+= \left( D/2 \right)!
+=
+\begin{cases}
+  D!! \sqrt{\pi} / 2^{(D+1)/2}  & \mbox{if $D$ is odd,} \\
+  D!! / 2^{D/2}                 & \mbox{if $D$ is even.} \\
+\end{cases}
+\end{equation}
+Thus,
+\begin{align}
+  S_D(R)
+=
+\begin{cases}
+  2 \, (2 \, \pi)^{(D-1)/2} R^{D-1} / (D-2)!!  & \mbox{if $D$ is odd,} \\
+       (2 \, \pi)^{D/2} R^{D-1} / (D-2)!!      & \mbox{if $D$ is even.} \\
+\end{cases}
+\tag{\ref{eq:SD}$'$}
+\label{eq:SDoe}
+\end{align}
+and
+\begin{align}
+  V_D(R)
+=
+\begin{cases}
+  2 \, (2 \, \pi)^{(D-1)/2} R^D / D!!  & \mbox{if $D$ is odd,} \\
+       (2 \, \pi)^{D/2} R^D / D!!      & \mbox{if $D$ is even.} \\
+\end{cases}
+\tag{\ref{eq:VD}$'$}
+\label{eq:VDoe}
+\end{align}
 
 
 
@@ -303,8 +335,10 @@ is the angle between $\vr$ and the $\vct{z} = \vct{x}_3$ axis.
   d\vr^{(D)}
 =
   r^{D-1} \, dr \;
-  (\sin \theta_D)^{D-2} \, d \theta_D \;
-  \dots
+  \sin^{D-2} \theta_D \, d \theta_D \,
+  \cdots \,
+  \sin^{k-2} \theta_k \, d \theta_k \,
+  \cdots \,
   \sin \theta_3 \, d \theta_3 \;
   d \theta_2,
   \label{eq:sphrcoordiff}
@@ -330,11 +364,12 @@ and
 with the Jacobian $\partial(x_D, s)/\partial(r, \theta_D) = r$.
 %
 Thus,
-\[
+\begin{align}
   r^{D-1} \, dr \, d\vct\uptheta^{(D)}
 =
-  r^{D-1} \, dr \, (\sin \theta_D)^{D-2} \, d\theta_D \, d\vct\uptheta^{(D-1)}.
-\]
+  r^{D-1} \, dr \, \sin^{D-2} \theta_D \, d\theta_D \, d\vct\uptheta^{(D-1)}.
+  \label{eq:drD_recursion}
+\end{align}
 Then, show \eqref{eq:sphrcoordiff} by induction.
 }
 
@@ -342,10 +377,44 @@ Then, show \eqref{eq:sphrcoordiff} by induction.
 show that for a spherical symmetric function
 the surface element is given by \eqref{eq:SD}.
 
+\hint{
+First, show that
+\begin{align}
+I_k
+= \int \sin^k \theta \, d\theta
+=
+\begin{cases}
+  2   \, (k-1)!! / k!!    &   \mbox{if $k$ is odd,} \\
+  \pi \, (k-1)!! / k!!    &   \mbox{if $k$ is even.} \\
+\end{cases}
+\label{eq:intsink}
+\end{align}
+by partial integration:
+\begin{align*}
+I_k
+&= - \int \sin^{k-1} \theta \, d\cos\theta
+= (k - 1) \, \int \sin^{k-2} \theta \, \cos^2\theta \, d\theta
+\\
+&= (k - 1) I_{k-2} - (k - 1) I_k,
+\end{align*}
+where we have used $\cos^2 \theta = 1 - \sin^2 \theta$ in the last step.
+Thus, $I_k = I_{k-2} \, (k - 1) / k$, which leads to \eqref{eq:intsink}.
+
+Then, from \eqref{eq:drD_recursion}, we have
+\begin{align*}
+  S_D
+&= I_{D-2} \, S_{D-1}
+= I_{D-2} \, \cdots I_1 \cdot (2 \, \pi).
+\end{align*}
+Discuss the cases of odd and even $D$,
+and compare the results with \eqref{eq:SDoe}.
+}
 
 
 
 \problem{Fourier transform}
+
+
 
 1. The Fourier transform in $D$ dimensions is defined as
 \begin{equation}
@@ -413,15 +482,47 @@ is given by $\tilde{a}(\vk) \, \tilde{b}(\vk)$.
 
 
 
-\problem{Fourier transform of a spherical function}
+\problem{Three-dimensional Fourier transform of a spherical function}
 
-1. Argue that the Fourier transform of spherical-symmetric function
+
+
+1. Show that in three dimensions,
+the Fourier transform of spherical-symmetric function
 $f(\vr) = f(r)$, with $r = |\vr|$,
 is also spherical symmetric.
 %
 That is, $\tilde f(\vk) = \tilde f(k)$, with $k = |\vk|$.
 
-2. Show that, in $D$ dimensions
+2. Further, show that
+\begin{equation}
+  \tilde f(k)
+=
+\frac{ 4 \, \pi } {k}
+  \int
+  f(r) \,
+  \sin(k\,r) \,
+  r \,
+  dr.
+  \label{eq:FourierTransformSpherical3D}
+\end{equation}
+
+2. Show that in three dimensions,
+the convolution of
+two spherical-symmetric functions $a(r)$ and $b(r)$
+satisfies\cite{hill} (page 204)
+\[
+  \int a(\vr - \vr') \, b(\vr') \, d\vr'
+=
+  \frac{2\pi}{r} \int a(s) \, b(t) \, s \, t \, ds \, dt.
+\]
+
+
+
+\problem{Arbitrary dimensional Fourier transform of a spherical function}
+
+
+
+1. Show that, in $D$ dimensions
 \begin{equation}
   \tilde f(k)
 =
@@ -439,34 +540,9 @@ Here, $J_\nu(z)$ is the Bessel function
 \equiv
   \sum_{s = 0}^\infty
   \frac{ (z/2)^{2s + \nu } }
-  { s! \, (\nu + 2 s)! }.
+  { s! \, (\nu + s)! }.
   \label{eq:Bessel}
 \end{align}
-
-3. Show that in three dimensions,
-\eqref{eq:FourierTransformSpherical}
-is reduced to
-\begin{equation}
-  \tilde f(k)
-=
-\frac{ 4 \, \pi } {k}
-  \int
-  f(r) \,
-  \sin(k\,r) \,
-  r \,
-  dr.
-  \label{eq:FourierTransformSpherical3D}
-\end{equation}
-
-4. Show that in three dimensions,
-the convolution of
-two spherical-symmetric functions $a(r)$ and $b(r)$
-satisfies\cite{hill} (page 204)
-\[
-  \int a(\vr - \vr') \, b(\vr') \, d\vr'
-=
-  \frac{2\pi}{r} \int a(s) \, b(t) \, s \, t \, ds \, dt.
-\]
 
 
 
