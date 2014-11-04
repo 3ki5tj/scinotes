@@ -270,7 +270,7 @@ by the gamma function defined in Eq. \eqref{eq:gammaDef}.
 
 4. Show that
 \begin{align}
-  S_D(R) &= \frac{ 2 \pi^{D/2} } { \Gamma(D/2) } R^{D-1},
+  S_D(R) &= \frac{ 2 \, \pi^{D/2} } { \Gamma(D/2) } R^{D-1},
   \label{eq:SD} \\
   V_D(R) &= \frac { \pi^{D/2} } { \Gamma(D/2+1) } R^D.
   \label{eq:VD}
@@ -282,16 +282,27 @@ Note that
 =
 \begin{cases}
   D!! \sqrt{\pi} / 2^{(D+1)/2}  & \mbox{if $D$ is odd,} \\
-  D!! / 2^{D/2}                 & \mbox{if $D$ is even.} \\
+  D!! / 2^{D/2}                 & \mbox{if $D$ is even,}
+\end{cases}
+\label{eq:doublefactorial}
+\end{equation}
+where
+\begin{equation}
+  D!!
+\equiv
+\begin{cases}
+  1 \cdot 3 \cdot \cdots \cdot D  & \mbox{if $D$ is odd,} \\
+  2 \cdot 4 \cdot \cdots \cdot D  & \mbox{if $D$ is even.}
 \end{cases}
 \end{equation}
+%
 Thus,
 \begin{align}
   S_D(R)
 =
 \begin{cases}
   2 \, (2 \, \pi)^{(D-1)/2} R^{D-1} / (D-2)!!  & \mbox{if $D$ is odd,} \\
-       (2 \, \pi)^{D/2} R^{D-1} / (D-2)!!      & \mbox{if $D$ is even.} \\
+       (2 \, \pi)^{D/2} R^{D-1} / (D-2)!!      & \mbox{if $D$ is even,} \\
 \end{cases}
 \tag{\ref{eq:SD}$'$}
 \label{eq:SDoe}
@@ -380,34 +391,191 @@ the surface element is given by \eqref{eq:SD}.
 \hint{
 First, show that
 \begin{align}
-I_k
-= \int \sin^k \theta \, d\theta
-=
-\begin{cases}
-  2   \, (k-1)!! / k!!    &   \mbox{if $k$ is odd,} \\
-  \pi \, (k-1)!! / k!!    &   \mbox{if $k$ is even.} \\
-\end{cases}
-\label{eq:intsink}
+  I_n
+  = \int_0^\pi \sin^n \theta \, d\theta
+  =
+  \begin{cases}
+    2   \, (n-1)!! / n!!    &   \mbox{if $n$ is odd,} \\
+    \pi \, (n-1)!! / n!!    &   \mbox{if $n$ is even.} \\
+  \end{cases}
+  \label{eq:intsinn}
 \end{align}
 by partial integration:
 \begin{align*}
-I_k
-&= - \int \sin^{k-1} \theta \, d\cos\theta
-= (k - 1) \, \int \sin^{k-2} \theta \, \cos^2\theta \, d\theta
-\\
-&= (k - 1) I_{k-2} - (k - 1) I_k,
+  I_n
+  &= - \int_0^\pi \sin^{n-1} \theta \, d\cos\theta
+  = (n - 1) \, \int_0^\pi \sin^{n-2} \theta \, \cos^2\theta \, d\theta
+  \\
+  &= (n - 1) I_{n-2} - (n - 1) I_n,
 \end{align*}
 where we have used $\cos^2 \theta = 1 - \sin^2 \theta$ in the last step.
-Thus, $I_k = I_{k-2} \, (k - 1) / k$, which leads to \eqref{eq:intsink}.
+Thus, $I_n = I_{n-2} \, (n - 1) / n$, which leads to \eqref{eq:intsinn}.
 
 Then, from \eqref{eq:drD_recursion}, we have
-\begin{align*}
-  S_D
-&= I_{D-2} \, S_{D-1}
-= I_{D-2} \, \cdots I_1 \cdot (2 \, \pi).
-\end{align*}
+\begin{align}
+    S_D(1)
+  &= I_{D-2} \, S_{D-1}(1)
+   = I_{D-2} \, \cdots I_1 \cdot (2 \, \pi).
+   \label{eq:SD_recursion}
+\end{align}
 Discuss the cases of odd and even $D$,
 and compare the results with \eqref{eq:SDoe}.
+
+Note, as a by product of Eq. \eqref{eq:SD_recursion},
+we can write $I_n$ as
+\begin{equation}
+  I_n
+=
+\sqrt{\pi} \, \Gamma\left( \tfrac{n+1}{2} \right) / \Gamma\left( \tfrac{n+2} 2 \right),
+\label{eq:intsinn2}
+\end{equation}
+which unifies the even and odd cases.
+}
+
+
+
+\problem{A trignometry identity}
+
+
+
+In this problem, we study a generalization of Eq. \eqref{eq:intsinn}
+which will be used later.
+
+1. Show that for an even $m$,
+\begin{align}
+  I_{m, n}
+& \equiv \int_0^\pi \cos^m \theta \, \sin^n \theta \, d\theta
+=
+  \frac{(m-1)!! \, n!!} { (m+n)!! } I_{0, n},
+  \label{eq:intcosmsinn}
+\end{align}
+where $I_{0, n} = I_n$
+as given by Eq. \eqref{eq:intsinn} or \eqref{eq:intsinn2}.
+
+\hint{
+By partial integration, we have
+\begin{align*}
+  I_{m, n}
+&=
+  \frac{1}{n+1} \int_0^\pi \cos^{m-1} \theta \, d \left( \sin^{n+1}\theta \right)
+\\
+&=
+  \frac{m - 1}{n+1} \,
+  \int_0^\pi \cos^{m-2}\theta \, \sin^{n+2} \theta \, d\theta
+  \\
+&=
+  \frac{m - 1}{n+1} \,
+  \int_0^\pi \cos^{m-2}\theta \, \left(1 - \cos^2 \theta\right) \, \sin^{n} \theta\, d\theta
+  \\
+&= \frac{m-1}{n + 1} I_{m-2, n} - \frac{m-1}{n + 1} I_{m, n},
+\end{align*}
+%
+Thus,
+\[
+  I_{m, n} = \frac{m-1}{m + n} I_{m-2, n},
+\]
+which leads to \eqref{eq:intsinn}.
+}
+
+2. Further, by writing $m = 2s$, show that
+\begin{align}
+  I_{2s, n}
+=
+  \frac{(2s)! \, \left(\frac n 2\right)!}
+  { 2^{2s} \, s! \, \left(s + \frac n 2\right)! }
+  I_{n}.
+  \label{eq:intcos2ssinn}
+\end{align}
+%
+Note, if $n$ is odd, $\left(\frac n 2\right)!$
+is defined through the Gamma function Eq. \eqref{eq:gammaDef}.
+\hint{
+  Use
+\begin{align*}
+  \left(\frac n 2 + s\right)!
+&=
+  \left(\frac n 2 + s \right)
+  \left(\frac n 2 + s - 1\right)!
+  = \cdots
+\\
+&=
+  \left(\frac n 2 + s \right)
+  \cdots
+  \left(\frac n 2 + 1\right)
+  \left(\frac n 2 \right)!
+\\
+&=
+  \frac{
+    (n + 2 \, s) \cdots (n + 2)
+  }
+  {
+    2^s
+  }
+  \left(\frac n 2 \right)!
+\end{align*}
+Then convert the expression to double factorial.
+}
+
+
+
+\problem{Bessel function}
+
+
+
+For integral orders, the Bessel function can be generated from
+\begin{align*}
+  \exp \left[ \frac{z}{2} \left(t - \frac 1 t \right) \right]
+&=
+  \sum_{\nu = -\infty}^\infty J_\nu(z) \, z^n.
+\end{align*}
+
+1. From this definition,
+show that the series expansion of the Bessel function
+is given by
+\begin{align}
+  J_\nu(z)
+&=
+  \sum_{s = 0}^\infty
+  (-)^s \, \frac{ (z/2)^{\nu + 2 s} } { s! \, (\nu + s)! }.
+  \label{eq:Bessel_series}
+\end{align}
+Notet that although Eq. \eqref{eq:Bessel_series}
+is derived for an integral $\nu$,
+it is also valid for a real $\nu$.
+
+\hint{
+Multiply the series
+\begin{align*}
+  \exp \frac{z \, t} {2}
+&=
+  \sum_{l = 0}^\infty \frac{1}{l!} \left( \frac{z \,t}{2} \right)^l,
+\end{align*}
+and
+\begin{align*}
+  \exp \frac{z}{2 \, t}
+&=
+  \sum_{s = 0}^\infty \frac{1}{s!} \left( \frac{z}{2 \, t} \right)^s.
+\end{align*}
+Then collect the coefficient of $t^{l - s}$, with $\nu = l - s$.
+}
+
+
+2. Show that
+\begin{align}
+  \int_0^\pi \exp( - i z \cos \theta) \, \sin^{2\,\nu} \theta \, d\theta
+=
+  \frac{ \nu! }{ (z/2)^\nu } \, I_{2\nu} \, J_\nu(z),
+  \label{eq:intexpsin}
+\end{align}
+where $I_{2\nu}$ is defined in Eq. \eqref{eq:intsinn}.
+
+\hint{
+Expand
+\[
+  \exp(-iz\cos\theta)
+  = \sum_{s = 0}^\infty (-)^s \frac{ (z \cos \theta )^{2s} } { (2s)! },
+\]
+then evaluate the integral for each term by using Eq. \eqref{eq:intcos2ssinn}.
 }
 
 
@@ -513,12 +681,14 @@ satisfies\cite{hill} (page 204)
 \[
   \int a(\vr - \vr') \, b(\vr') \, d\vr'
 =
-  \frac{2\pi}{r} \int a(s) \, b(t) \, s \, t \, ds \, dt.
+  \frac{2\pi}{r}
+  \int_0^\infty a(s) \, s \, ds
+  \int_{|r-s|}^{r+s} b(t) \, t \, dt.
 \]
 
 
 
-\problem{Arbitrary dimensional Fourier transform of a spherical function}
+\problem{$D$-dimensional Fourier transform of a spherical function}
 
 
 
@@ -535,14 +705,43 @@ satisfies\cite{hill} (page 204)
   \label{eq:FourierTransformSpherical}
 \end{equation}
 Here, $J_\nu(z)$ is the Bessel function
-\begin{align}
-  J_\nu(z)
-\equiv
-  \sum_{s = 0}^\infty
-  \frac{ (z/2)^{2s + \nu } }
-  { s! \, (\nu + s)! }.
-  \label{eq:Bessel}
-\end{align}
+given by Eq. \eqref{eq:Bessel_series}.
+
+\hint{
+By using Eq. \eqref{eq:SD_recursion},
+we have
+\begin{align*}
+  \tilde f(k)
+=
+  \int_0^\infty
+  \int_0^\pi \exp(-i \, k \, r \, \cos \theta)
+  \, \sin^{D-2} \theta_D \, d\sin \theta_D
+  \, S_{D-1}(1)
+  \, r^{D-1} \, dr,
+\end{align*}
+where $S_{D-1}(1)$ results from integrating
+$\theta_{D-1}$, \dots, and $\theta_2$.
+
+Then, use Eq. \eqref{eq:intexpsin} with $\nu = D/2-1$ to show that
+\begin{align*}
+  \tilde f(k)
+=
+  \int_0^\infty
+  \frac{ J_{D/2-1}(kr) }
+  { (kr/2)^{D/2-1} }
+  (D/2-1)! \,
+  I_{D-2} \,
+  S_{D-1}(1) \,
+  r^{D-1} \, dr.
+\end{align*}
+Then simplify the expression using Eqs. \eqref{eq:SD_recursion} and \eqref{eq:SD}.
+}
+
+2. Show that in the $D = 3$ case,
+Eq. \eqref{eq:FourierTransformSpherical}
+is reduced to
+Eq. \eqref{eq:FourierTransformSpherical3D}.
+
 
 
 
