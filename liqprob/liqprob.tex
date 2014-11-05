@@ -1,4 +1,4 @@
-\documentclass[12pt]{book}
+\documentclass{book}
 \usepackage{indentfirst}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -6,6 +6,7 @@
 \usepackage{bm, upgreek}
 \usepackage{hyperref}
 \usepackage{cite}
+\usepackage{relsize}
 \begin{document}
 
 
@@ -74,7 +75,7 @@ Show that
 \end{equation}
 
 \hint{
-  Let's call the integral on the left hand side as $I$.
+  Denote the integral on the left hand side as $I$.
   Show that
   \begin{align*}
     I^2
@@ -126,7 +127,9 @@ In our case, set $z = A \, x^2/2$.
   \label{eq:GaussianIntegralMatrix}
 \end{equation}
 %
-where $\vct x = \{x_1, \dots, x_n\}^T$,
+where
+$\vct x = \{x_1, \dots, x_n\}^T$,
+and
 $\vct A$ is an $n$ by $n$ symmetric positive-semidefinite matrix
 (i.e., $\vct x^T \vct A \vct x \ge 0$ for any $x$),
 and
@@ -304,7 +307,7 @@ Thus,
   2 \, (2 \, \pi)^{(D-1)/2} R^{D-1} / (D-2)!!  & \mbox{if $D$ is odd,} \\
        (2 \, \pi)^{D/2} R^{D-1} / (D-2)!!      & \mbox{if $D$ is even,} \\
 \end{cases}
-\tag{\ref{eq:SD}$'$}
+%\tag{\ref{eq:SD}$'$}
 \label{eq:SDoe}
 \end{align}
 and
@@ -315,7 +318,7 @@ and
   2 \, (2 \, \pi)^{(D-1)/2} R^D / D!!  & \mbox{if $D$ is odd,} \\
        (2 \, \pi)^{D/2} R^D / D!!      & \mbox{if $D$ is even.} \\
 \end{cases}
-\tag{\ref{eq:VD}$'$}
+%\tag{\ref{eq:VD}$'$}
 \label{eq:VDoe}
 \end{align}
 
@@ -325,25 +328,24 @@ and
 
 
 
-The volume element of spherical coordinates is
+In two dimensions, the volume element of spherical coordinates is
 \[
-  r \, dr \, d\theta_2
+  r \, dr \, d\theta_2,
 \]
-in two dimensions, where the integral $\theta_2$ goes from $0$ to $2\pi$.
-%
-It becomes
+where the integral $\theta_2$ goes from $0$ to $2\pi$.
+
+In three dimensions, it becomes
 \[
   r^2 \, dr \,
   \sin \theta_3 \, d \theta_3 \,
-  d \theta_2
+  d \theta_2,
 \]
-in three dimensions,
 where $\theta_3$ ($0 \le \theta_3 \le \pi$)
 is the angle between $\vr$ and the $\vct{z} = \vct{x}_3$ axis.
 
 1. Show that the above result in $D$ dimensions is given by
 \begin{equation}
-  d\vr^{(D)}
+  d\vr^{D}
 =
   r^{D-1} \, dr \;
   \sin^{D-2} \theta_D \, d \theta_D \,
@@ -363,22 +365,33 @@ and $0 \le \theta_2 \le 2\pi$.
 \hint{
 Start with the relation:
 \[
-  r^{D-1} \, dr \, d\vct\uptheta^{(D)}
-= s^{D-2} \, ds \, d\vct\uptheta^{(D-1)} \, d x_D,
+  r^{D-1} \, dr \, d\vct\uptheta^{D}
+= s^{D-2} \, ds \, d\vct\uptheta^{D-1} \, d x_D,
 \]
-where $d\vct\uptheta^{(k)}$ denotes the angular element in $k$ dimensions,
+where
+$d\vct\uptheta^k$ denotes the angular element in $k$ dimensions,
 and
+$s$ is the length of the projection of $\vr$
+onto the first $(D-1)$-dimensional subspace.
+%
+Thus
 \begin{align*}
   s   &= r \, \cos \theta_D, \\
   x_D &= r \, \sin \theta_D,
 \end{align*}
 with the Jacobian $\partial(x_D, s)/\partial(r, \theta_D) = r$.
 %
-Thus,
-\begin{align}
-  r^{D-1} \, dr \, d\vct\uptheta^{(D)}
+This means that
+\[
+  ds \, d x_D
 =
-  r^{D-1} \, dr \, \sin^{D-2} \theta_D \, d\theta_D \, d\vct\uptheta^{(D-1)}.
+  r dr \, d \theta_D
+\]
+It follows that
+\begin{align}
+  r^{D-1} \, dr \, d\vct\uptheta^{D}
+=
+  r^{D-1} \, dr \, \sin^{D-2} \theta_D \, d\theta_D \, d\vct\uptheta^{D-1}.
   \label{eq:drD_recursion}
 \end{align}
 Then, show \eqref{eq:sphrcoordiff} by induction.
@@ -426,7 +439,11 @@ we can write $I_n$ as
 \begin{equation}
   I_n
 =
-\sqrt{\pi} \, \Gamma\left( \tfrac{n+1}{2} \right) / \Gamma\left( \tfrac{n+2} 2 \right),
+\frac{ \sqrt{\pi} \, \Gamma\left( \tfrac{n+1}{2} \right) }
+     { \Gamma\left( \tfrac{n+2} 2 \right) }
+=
+\frac{ \Gamma\left( \tfrac 1 2 \right) \, \Gamma\left( \tfrac{n+1}{2} \right) }
+     { \Gamma\left( \tfrac{n+2} 2 \right) },
 \label{eq:intsinn2}
 \end{equation}
 which unifies the even and odd cases.
@@ -434,23 +451,24 @@ which unifies the even and odd cases.
 
 
 
-\problem{A trignometry identity}
+\problem{Beta function}
 
 
 
 In this problem, we study a generalization of Eq. \eqref{eq:intsinn}
 which will be used later.
 
-1. Show that for an even $m$,
+1. Show that for an even $m$
 \begin{align}
   I_{m, n}
-& \equiv \int_0^\pi \cos^m \theta \, \sin^n \theta \, d\theta
+& \equiv
+  2 \int_0^{\pi/2} \cos^m \theta \, \sin^n \theta \, d\theta
 =
-  \frac{(m-1)!! \, n!!} { (m+n)!! } I_{0, n},
+  \frac{(m-1)!! \, n!!} { (m+n)!! } I_{n},
   \label{eq:intcosmsinn}
 \end{align}
-where $I_{0, n} = I_n$
-as given by Eq. \eqref{eq:intsinn} or \eqref{eq:intsinn2}.
+where $I_{n} = I_{0, n}$
+is the integral given by Eq. \eqref{eq:intsinn} or \eqref{eq:intsinn2}.
 
 \hint{
 By partial integration, we have
@@ -477,43 +495,62 @@ Thus,
 which leads to \eqref{eq:intsinn}.
 }
 
-2. Further, by writing $m = 2s$, show that
+2. Further, show that
 \begin{align}
-  I_{2s, n}
-=
-  \frac{(2s)! \, \left(\frac n 2\right)!}
-  { 2^{2s} \, s! \, \left(s + \frac n 2\right)! }
-  I_{n}.
-  \label{eq:intcos2ssinn}
-\end{align}
-%
-Note, if $n$ is odd, $\left(\frac n 2\right)!$
-is defined through the Gamma function Eq. \eqref{eq:gammaDef}.
-\hint{
-  Use
-\begin{align*}
-  \left(\frac n 2 + s\right)!
+  I_{m, n}
 &=
-  \left(\frac n 2 + s \right)
-  \left(\frac n 2 + s - 1\right)!
+  \left.
+    \left( \frac{ m - 1}{2} \right)! \, \left(\frac {n - 1} 2\right)!
+  \middle/
+    \left( \frac {m + n} 2 \right)!
+  \right..
+  \label{eq:intcosmsinnbeta}
+\end{align}
+Note \eqref{eq:intcosmsinnbeta}
+is one of the definitions of the beta function,
+and it holds for nonintegral $m$ and $n$.
+
+\hint{
+  Since $x! = x \, (x-1)!$, we have
+\begin{align*}
+  \left(\frac {m + n} 2 \right)!
+&=
+  \left(\frac {m + n} 2 \right)
+  \left(\frac {m + n - 2} 2 \right)!
   = \cdots
 \\
 &=
-  \left(\frac n 2 + s \right)
+  \left(\frac {n + m} 2 \right)
+  \left(\frac {n + m - 2} 2 \right)
   \cdots
-  \left(\frac n 2 + 1\right)
+  \left(\frac {n + 2} 2 \right)
   \left(\frac n 2 \right)!
 \\
 &=
   \frac{
-    (n + 2 \, s) \cdots (n + 2)
+    (n + m) (n + m - 2) \cdots (n + 2)
   }
   {
-    2^s
+    2^{m/2}
   }
-  \left(\frac n 2 \right)!
+  \left(\frac n 2 \right)!.
 \end{align*}
-Then convert the expression to double factorial.
+%
+Particularly, for $n = -1$,
+%
+\begin{align*}
+  \left(\frac {m  - 1} 2 \right)!
+&=
+  \frac{
+    (m - 1) \, (m - 3) \, \cdots 1
+  }
+  {
+    2^{m/2}
+  }
+  \Gamma\left( \frac{1}{2} \right).
+\end{align*}
+%
+Then convert the expressions to double factorials.
 }
 
 
@@ -575,7 +612,7 @@ Expand
   \exp(-iz\cos\theta)
   = \sum_{s = 0}^\infty (-)^s \frac{ (z \cos \theta )^{2s} } { (2s)! },
 \]
-then evaluate the integral for each term by using Eq. \eqref{eq:intcos2ssinn}.
+then evaluate the integral for each term by using Eq. \eqref{eq:intcosmsinnbeta}.
 }
 
 
@@ -650,7 +687,7 @@ is given by $\tilde{a}(\vk) \, \tilde{b}(\vk)$.
 
 
 
-\problem{Three-dimensional Fourier transform of a spherical function}
+\problem{3D Fourier transform of a spherical function}
 
 
 
@@ -714,7 +751,7 @@ we have
   \tilde f(k)
 =
   \int_0^\infty
-  \int_0^\pi \exp(-i \, k \, r \, \cos \theta)
+  \int_0^\pi \exp(-i \, k \, r \, \cos \theta_D)
   \, \sin^{D-2} \theta_D \, d\sin \theta_D
   \, S_{D-1}(1)
   \, r^{D-1} \, dr,
