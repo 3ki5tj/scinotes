@@ -10,7 +10,7 @@
 \begin{document}
 
 
-\newcommand{\problem}[1]{\section{#1}}
+\newcommand{\problem}[1]{\subsection{#1}}
 \newcommand{\hint}[1]{[\,\emph{Hint.} #1]}
 
 \newcommand{\vct}[1]{\boldsymbol{\mathbf{#1}}}
@@ -60,6 +60,10 @@
 
 
 \chapter{Basic mathematical tools}
+
+
+
+\section{Gamma function}
 
 
 
@@ -196,6 +200,116 @@ Using Eq. \eqref{eq:gammaRecur}, show that
 \end{equation}
 
 
+
+\section{Beta function}
+
+
+
+\problem{Beta function}
+
+
+
+In this problem, we study a generalization of Eq. \eqref{eq:intsinn}
+which will be used later.
+
+1. Show that for an even $m$
+\begin{align}
+  I_{m, n}
+& \equiv
+  2 \int_0^{\pi/2} \cos^m \theta \, \sin^n \theta \, d\theta
+=
+  \frac{(m-1)!! \, n!!} { (m+n)!! } I_{n},
+  \label{eq:intcosmsinn}
+\end{align}
+where $I_{n} = I_{0, n}$
+is the integral given by Eq. \eqref{eq:intsinn} or \eqref{eq:intsinn2}.
+
+\hint{
+By partial integration, we have
+\begin{align*}
+  I_{m, n}
+&=
+  \frac{1}{n+1} \int_0^\pi \cos^{m-1} \theta \, d \left( \sin^{n+1}\theta \right)
+\\
+&=
+  \frac{m - 1}{n+1} \,
+  \int_0^\pi \cos^{m-2}\theta \, \sin^{n+2} \theta \, d\theta
+  \\
+&=
+  \frac{m - 1}{n+1} \,
+  \int_0^\pi \cos^{m-2}\theta \, \left(1 - \cos^2 \theta\right) \, \sin^{n} \theta\, d\theta
+  \\
+&= \frac{m-1}{n + 1} I_{m-2, n} - \frac{m-1}{n + 1} I_{m, n},
+\end{align*}
+%
+Thus,
+\[
+  I_{m, n} = \frac{m-1}{m + n} I_{m-2, n},
+\]
+which leads to \eqref{eq:intsinn}.
+}
+
+2. Further, show that
+\begin{align}
+  I_{m, n}
+&=
+  \left.
+    \left( \frac{ m - 1}{2} \right)! \, \left(\frac {n - 1} 2\right)!
+  \middle/
+    \left( \frac {m + n} 2 \right)!
+  \right..
+  \label{eq:intcosmsinnbeta}
+\end{align}
+Note \eqref{eq:intcosmsinnbeta}
+is one of the definitions of the beta function,
+and it holds for nonintegral $m$ and $n$.
+
+\hint{
+  Since $x! = x \, (x-1)!$, we have
+\begin{align*}
+  \left(\frac {m + n} 2 \right)!
+&=
+  \left(\frac {m + n} 2 \right)
+  \left(\frac {m + n - 2} 2 \right)!
+  = \cdots
+\\
+&=
+  \left(\frac {n + m} 2 \right)
+  \left(\frac {n + m - 2} 2 \right)
+  \cdots
+  \left(\frac {n + 2} 2 \right)
+  \left(\frac n 2 \right)!
+\\
+&=
+  \frac{
+    (n + m) (n + m - 2) \cdots (n + 2)
+  }
+  {
+    2^{m/2}
+  }
+  \left(\frac n 2 \right)!.
+\end{align*}
+%
+Particularly, for $n = -1$,
+%
+\begin{align*}
+  \left(\frac {m  - 1} 2 \right)!
+&=
+  \frac{
+    (m - 1) \, (m - 3) \, \cdots 1
+  }
+  {
+    2^{m/2}
+  }
+  \Gamma\left( \frac{1}{2} \right).
+\end{align*}
+%
+Then convert the expressions to double factorials.
+}
+
+
+
+\section{Gaussian integral}
 
 
 
@@ -585,107 +699,7 @@ which unifies the even and odd cases.
 
 
 
-\problem{Beta function}
-
-
-
-In this problem, we study a generalization of Eq. \eqref{eq:intsinn}
-which will be used later.
-
-1. Show that for an even $m$
-\begin{align}
-  I_{m, n}
-& \equiv
-  2 \int_0^{\pi/2} \cos^m \theta \, \sin^n \theta \, d\theta
-=
-  \frac{(m-1)!! \, n!!} { (m+n)!! } I_{n},
-  \label{eq:intcosmsinn}
-\end{align}
-where $I_{n} = I_{0, n}$
-is the integral given by Eq. \eqref{eq:intsinn} or \eqref{eq:intsinn2}.
-
-\hint{
-By partial integration, we have
-\begin{align*}
-  I_{m, n}
-&=
-  \frac{1}{n+1} \int_0^\pi \cos^{m-1} \theta \, d \left( \sin^{n+1}\theta \right)
-\\
-&=
-  \frac{m - 1}{n+1} \,
-  \int_0^\pi \cos^{m-2}\theta \, \sin^{n+2} \theta \, d\theta
-  \\
-&=
-  \frac{m - 1}{n+1} \,
-  \int_0^\pi \cos^{m-2}\theta \, \left(1 - \cos^2 \theta\right) \, \sin^{n} \theta\, d\theta
-  \\
-&= \frac{m-1}{n + 1} I_{m-2, n} - \frac{m-1}{n + 1} I_{m, n},
-\end{align*}
-%
-Thus,
-\[
-  I_{m, n} = \frac{m-1}{m + n} I_{m-2, n},
-\]
-which leads to \eqref{eq:intsinn}.
-}
-
-2. Further, show that
-\begin{align}
-  I_{m, n}
-&=
-  \left.
-    \left( \frac{ m - 1}{2} \right)! \, \left(\frac {n - 1} 2\right)!
-  \middle/
-    \left( \frac {m + n} 2 \right)!
-  \right..
-  \label{eq:intcosmsinnbeta}
-\end{align}
-Note \eqref{eq:intcosmsinnbeta}
-is one of the definitions of the beta function,
-and it holds for nonintegral $m$ and $n$.
-
-\hint{
-  Since $x! = x \, (x-1)!$, we have
-\begin{align*}
-  \left(\frac {m + n} 2 \right)!
-&=
-  \left(\frac {m + n} 2 \right)
-  \left(\frac {m + n - 2} 2 \right)!
-  = \cdots
-\\
-&=
-  \left(\frac {n + m} 2 \right)
-  \left(\frac {n + m - 2} 2 \right)
-  \cdots
-  \left(\frac {n + 2} 2 \right)
-  \left(\frac n 2 \right)!
-\\
-&=
-  \frac{
-    (n + m) (n + m - 2) \cdots (n + 2)
-  }
-  {
-    2^{m/2}
-  }
-  \left(\frac n 2 \right)!.
-\end{align*}
-%
-Particularly, for $n = -1$,
-%
-\begin{align*}
-  \left(\frac {m  - 1} 2 \right)!
-&=
-  \frac{
-    (m - 1) \, (m - 3) \, \cdots 1
-  }
-  {
-    2^{m/2}
-  }
-  \Gamma\left( \frac{1}{2} \right).
-\end{align*}
-%
-Then convert the expressions to double factorials.
-}
+\section{Bessel function}
 
 
 
@@ -919,6 +933,11 @@ Eq. \eqref{eq:FourierTransformSpherical3D}.
 \chapter{Thermodynamics and statistical mechanics}
 
 
+
+\section{Virial theorem}
+
+
+
 \problem{Basic virial theorem}
 
 1. Show that, for a liquid with the pair potential being $u(r)$,
@@ -990,6 +1009,9 @@ is independent of $s$.
 Then, differentiate $I(s)$ with respect to $s$.
 }
 
+
+
+\section{Equation of state}
 
 
 
@@ -1243,6 +1265,8 @@ after adding a particle into the system.
 
 \problem{Lovett-Mou-Buff formula}
 
+
+
 Show, in an inhomogeneous liquid under the external field $\phi(\vr_1)$, that
 %
 \begin{align*}
@@ -1344,6 +1368,12 @@ Then, show that \eqref{eq:electrostaticenergy} can be rewritten as
 
 \chapter{Integral equations}
 
+
+
+\section{Closure}
+
+
+
 \problem{Upper bound of the bridge function}
 
 Show that the bridge function $B(\vr)$ satisfies\cite{kast2012}
@@ -1372,6 +1402,10 @@ Show that the bridge function of liquid $A$ satisfies
   -\beta u_A(r) + B_A(r) = -\beta u_H(r).
 \end{equation}
 Can you also deduce $u_P(r)$?
+
+
+
+\section{Thermodynamic quantities}
 
 
 
