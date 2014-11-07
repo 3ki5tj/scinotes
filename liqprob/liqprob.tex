@@ -201,16 +201,132 @@ Using Eq. \eqref{eq:gammaRecur}, show that
 
 
 
+\problem{Doubling formula}
+
+
+
+1. Using Eq. \eqref{eq:gammaEulerProd},
+show that\cite{whittaker}
+\[
+  \phi(z)
+\equiv
+  \frac{
+    \left( 2z \right)!
+  }
+  {
+    2^{2z} \, z! \, \left( z - \frac 1 2 \right)!
+  }
+\]
+is independent of $z$.
+
+\hint{
+  For the expansion of $(2z)!$,
+  the $n$ in Eq. \eqref{eq:gammaEulerProd} should be extended to $2n$,
+  twice as that for the expansions of $z!$ and $(z-\frac 1 2)$.
+}
+
+2. By using $z = 1, 2, 3, \dots$, show that, we always have
+\[
+  \phi(z) = \frac 1 {\sqrt \pi}.
+\]
+
+3. Prove the doubling formula\cite{whittaker}
+\begin{equation}
+  \left( z - \frac 1 2 \right)!
+=
+  \frac{ (2z)! }
+  { 2^{2z} \, z! }
+  \sqrt \pi
+  \label{eq:doubling}
+\end{equation}
+Thus for an integer $n$,
+we have
+\begin{align}
+  \left(n - \frac 1 2 \right)!
+&=
+  \frac{ (2 n - 1)!! }
+  { 2^n } \,
+  \sqrt \pi.
+  \label{eq:doubling_odd}
+\\
+  n!
+&=
+  \frac{ (2 n)!! }
+  { 2^n }.
+  \label{eq:doubling_even}
+\end{align}
+Here
+\begin{equation}
+  k!!
+\equiv
+\begin{cases}
+  1 \cdot 3 \cdot \cdots \cdot k  & \mbox{if $k$ is odd,} \\
+  2 \cdot 4 \cdot \cdots \cdot k  & \mbox{if $k$ is even.}
+\end{cases}
+\end{equation}
+This formula is useful in getting rid of the factorial of a half integer.
+
+
+
+
 \section{Beta function}
 
 
 
-\problem{Beta function}
+\problem{Integral of powers of the sine function}
 
 
 
-In this problem, we study a generalization of Eq. \eqref{eq:intsinn}
-which will be used later.
+1. Show that
+\begin{align}
+  I_n
+  \equiv \int_0^\pi \sin^n \theta \, d\theta
+  =
+  \begin{cases}
+    2   \, (n-1)!! / n!!    &   \mbox{if $n$ is odd,} \\
+    \pi \, (n-1)!! / n!!    &   \mbox{if $n$ is even.} \\
+  \end{cases}
+  \label{eq:intsinn}
+\end{align}
+\hint{
+By partial integration:
+\begin{align*}
+  I_n
+  &= - \int_0^\pi \sin^{n-1} \theta \, d\cos\theta
+  = (n - 1) \, \int_0^\pi \sin^{n-2} \theta \, \cos^2\theta \, d\theta
+  \\
+  &= (n - 1) I_{n-2} - (n - 1) I_n,
+\end{align*}
+where we have used $\cos^2 \theta = 1 - \sin^2 \theta$ in the last step.
+%
+Thus,
+\[
+  I_n = \frac{ n - 1} n \, I_{n-2}.
+\]
+Apply the above formula repeatedly to show \eqref{eq:intsinn}.
+}
+
+2. Using Eqs. \eqref{eq:doubling_odd} and \eqref{eq:doubling_even},
+show that
+\begin{equation}
+  I_n
+=
+  \frac {
+    \left( \dfrac{n-1} 2 \right)!
+  }
+  {
+    \left( \dfrac n 2 \right)!
+  }
+  \sqrt\pi.
+  \label{eq:intsinnb}
+\end{equation}
+
+
+
+
+\problem{Integral of powers of the sine and cosine functions}
+
+
 
 1. Show that for an even $m$
 \begin{align}
@@ -222,7 +338,7 @@ which will be used later.
   \label{eq:intcosmsinn}
 \end{align}
 where $I_{n} = I_{0, n}$
-is the integral given by Eq. \eqref{eq:intsinn} or \eqref{eq:intsinn2}.
+is the integral given by Eq. \eqref{eq:intsinn} or \eqref{eq:intsinnb}.
 
 \hint{
 By partial integration, we have
@@ -257,55 +373,69 @@ which leads to \eqref{eq:intsinn}.
     \left( \frac{ m - 1}{2} \right)! \, \left(\frac {n - 1} 2\right)!
   \middle/
     \left( \frac {m + n} 2 \right)!
-  \right..
-  \label{eq:intcosmsinnbeta}
+  \right.
+  \label{eq:intcosmsinnb}
 \end{align}
-Note \eqref{eq:intcosmsinnbeta}
-is one of the definitions of the beta function,
-and it holds for nonintegral $m$ and $n$.
+by using Eqs. \eqref{eq:doubling_odd} and \eqref{eq:doubling_even},
+
+
+
+
+\problem{Beta function}
+
+
+
+We now establish a generalization of Eq. \eqref{eq:intcosmsinn}.
+
+1. Show that
+\[
+  K = 4 \int_0^\infty \int_0^\infty
+  \exp(-x^2 - y^2) \,
+  x^{2p+1} \, y^{2q+1} \, dx \, dy
+=
+  p! \, q!.
+\]
 
 \hint{
-  Since $x! = x \, (x-1)!$, we have
-\begin{align*}
-  \left(\frac {m + n} 2 \right)!
-&=
-  \left(\frac {m + n} 2 \right)
-  \left(\frac {m + n - 2} 2 \right)!
-  = \cdots
-\\
-&=
-  \left(\frac {n + m} 2 \right)
-  \left(\frac {n + m - 2} 2 \right)
-  \cdots
-  \left(\frac {n + 2} 2 \right)
-  \left(\frac n 2 \right)!
-\\
-&=
-  \frac{
-    (n + m) (n + m - 2) \cdots (n + 2)
-  }
-  {
-    2^{m/2}
-  }
-  \left(\frac n 2 \right)!.
-\end{align*}
-%
-Particularly, for $n = -1$,
-%
-\begin{align*}
-  \left(\frac {m  - 1} 2 \right)!
-&=
-  \frac{
-    (m - 1) \, (m - 3) \, \cdots 1
-  }
-  {
-    2^{m/2}
-  }
-  \Gamma\left( \frac{1}{2} \right).
-\end{align*}
-%
-Then convert the expressions to double factorials.
+  Let $X = x^2$ and $Y = y^2$,
+  then use the gamma function defined in Eq. \eqref{eq:gammaDef}.
 }
+
+2. Show that in the polar coordinates: $x = r \cos\theta$, $y = r\sin\theta$,
+we have
+\begin{align*}
+  K
+&=
+  4 \int_0^r \exp(-r^2) \, r^{2p+2q+3} \, dr
+  \int_0^{\pi/2}
+    \cos^{2p+1}\theta \,
+    \sin^{2q+1}\theta \, d\theta.
+\\
+&=
+  2 \, (p + q + 1)! \,
+  \int_0^{\pi/2}
+    \cos^{2p+1}\theta \,
+    \sin^{2q+1}\theta \, d\theta.
+\end{align*}
+
+3. Show that the beta function
+\begin{equation}
+  B(p + 1, q + 1)
+\equiv
+  2 \int_0^{\pi/2}
+    \cos^{2p+1}\theta \,
+    \sin^{2q+1}\theta \, d\theta
+= \frac{ p! \, q! } { (p + q + 1)! },
+  \label{eq:betaDef}
+\end{equation}
+%
+This relation,
+unlike \eqref{eq:intcosmsinnb},
+holds for real (even complex) $p$ and $q$.
+
+
+4. Verify that Eq. \eqref{eq:betaDef}
+agrees with Eq. \eqref{eq:intcosmsinnb}.
 
 
 
@@ -524,28 +654,8 @@ by the gamma function defined in Eq. \eqref{eq:gammaDef}.
   V_D(R) &= \frac { \pi^{D/2} } { \Gamma(D/2+1) } R^D.
   \label{eq:VD}
 \end{align}
-Note that
-\begin{equation}
-  \Gamma\left( D/2 + 1 \right)
-= \left( D/2 \right)!
-=
-\begin{cases}
-  D!! \sqrt{\pi} / 2^{(D+1)/2}  & \mbox{if $D$ is odd,} \\
-  D!! / 2^{D/2}                 & \mbox{if $D$ is even,}
-\end{cases}
-\label{eq:doublefactorial}
-\end{equation}
-where
-\begin{equation}
-  D!!
-\equiv
-\begin{cases}
-  1 \cdot 3 \cdot \cdots \cdot D  & \mbox{if $D$ is odd,} \\
-  2 \cdot 4 \cdot \cdots \cdot D  & \mbox{if $D$ is even.}
-\end{cases}
-\end{equation}
 %
-Thus,
+Particularly,
 \begin{align}
   S_D(R)
 =
@@ -648,53 +758,18 @@ show that for a spherical symmetric function
 the surface element is given by \eqref{eq:SD}.
 
 \hint{
-First, show that
-\begin{align}
-  I_n
-  = \int_0^\pi \sin^n \theta \, d\theta
-  =
-  \begin{cases}
-    2   \, (n-1)!! / n!!    &   \mbox{if $n$ is odd,} \\
-    \pi \, (n-1)!! / n!!    &   \mbox{if $n$ is even.} \\
-  \end{cases}
-  \label{eq:intsinn}
-\end{align}
-by partial integration:
-\begin{align*}
-  I_n
-  &= - \int_0^\pi \sin^{n-1} \theta \, d\cos\theta
-  = (n - 1) \, \int_0^\pi \sin^{n-2} \theta \, \cos^2\theta \, d\theta
-  \\
-  &= (n - 1) I_{n-2} - (n - 1) I_n,
-\end{align*}
-where we have used $\cos^2 \theta = 1 - \sin^2 \theta$ in the last step.
-Thus, $I_n = I_{n-2} \, (n - 1) / n$, which leads to \eqref{eq:intsinn}.
-
-Then, from \eqref{eq:drD_recursion}, we have
+From \eqref{eq:drD_recursion}, we have
 \begin{align}
     S_D(1)
   &= I_{D-2} \, S_{D-1}(1)
    \label{eq:SD_recursion}
 \\
-  &= I_{D-2} \, \cdots I_1 \cdot (2 \, \pi).
+  &= I_{D-2} \, \cdots I_1 \cdot (2 \, \pi),
 \notag
 \end{align}
-Discuss the cases of odd and even $D$,
-and compare the results with \eqref{eq:SDoe}.
-
-Note, as a by product of Eq. \eqref{eq:SD_recursion},
-we can write $I_n$ as
-\begin{equation}
-  I_n
-=
-\frac{ \sqrt{\pi} \, \Gamma\left( \tfrac{n+1}{2} \right) }
-     { \Gamma\left( \tfrac{n+2} 2 \right) }
-=
-\frac{ \Gamma\left( \tfrac 1 2 \right) \, \Gamma\left( \tfrac{n+1}{2} \right) }
-     { \Gamma\left( \tfrac{n+2} 2 \right) },
-\label{eq:intsinn2}
-\end{equation}
-which unifies the even and odd cases.
+where $I_n$ ($1 \le n \le D - 2$)
+is defined by Eq. \eqref{eq:intsinn}.
+Use, however, Eq. \eqref{eq:intsinnb}.
 }
 
 
@@ -760,7 +835,7 @@ Expand
   \exp(-iz\cos\theta)
   = \sum_{s = 0}^\infty (-)^s \frac{ (z \cos \theta )^{2s} } { (2s)! },
 \]
-then evaluate the integral for each term by using Eq. \eqref{eq:intcosmsinnbeta}.
+then evaluate the integral for each term by using Eq. \eqref{eq:intcosmsinnb}.
 }
 
 
@@ -873,7 +948,7 @@ satisfies\cite{hill} (page 204)
 
 
 
-\problem{$D$-dimensional Fourier transform of a spherical function}
+\problem{General Fourier transform of a spherical function}
 
 
 
