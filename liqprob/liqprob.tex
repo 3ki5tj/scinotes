@@ -63,9 +63,147 @@
 
 
 
+\problem{Gamma (factorial) function}
+
+
+
+1. The gamma or factorial function is defined as
+\begin{equation}
+  (z - 1)! = \Gamma(z)
+\equiv
+  \int_0^\infty t^{z-1} \, \exp(-t) \, d t,
+  \label{eq:gammaDef}
+\end{equation}
+%
+By partial integration, show that
+\begin{equation}
+  \Gamma(z + 1) = z \, \Gamma(z).
+  \label{eq:gammaRecur}
+\end{equation}
+
+\hint{
+$\Gamma(z + 1)
+=
+  -\int_0^\infty t^z \, d \exp(-t)
+=
+  \int_0^\infty \exp(-t) \, d (t^z)$.
+}
+
+2. If $z$ is an integer, show that
+\[
+  \Gamma(z) = 1 \cdot 2 \cdots (z - 1),
+\]
+which agrees with the definition of factorial $(z-1)!$.
+
+
+
+\problem{Product formula of the gamma function}
+
+
+
+It can be shown\cite{whittaker} that the $\Gamma(z)$
+is the $n\rightarrow \infty$ limit of
+\begin{equation}
+  \Pi(z, n)
+=
+  \int_0^n
+  \left(
+    1 - \frac t n
+  \right)^n \,
+  t^{z-1} \,
+  d t.
+\label{eq:gammaPi}
+\end{equation}
+The basic argument is
+$\lim_{n \rightarrow \infty} (1 - t/n)^n = \exp(-t)$.
+
+By partial integration, show that
+\[
+  \Pi(z, n)
+=
+  \frac{ 1 \cdot 2 \cdots n }
+  { z (z + 1) \cdots (z + n) }
+  \, n^z.
+\]
+The $n \rightarrow \infty$ limit is
+the Euler's infinite product formula of the gamma function:
+\begin{equation}
+  \frac 1 {z\,!}
+=
+  \frac 1 {\Gamma(z + 1)}
+=
+  \frac 1 {z \, \Gamma(z)}
+=
+  \lim_{n \rightarrow \infty}
+  \left( 1 + \frac z 1 \right)
+  \left( 1 + \frac z 2 \right)
+  \cdots
+  \left( 1 + \frac z n \right)
+  n^{-z}.
+  \label{eq:gammaEulerProd}
+\end{equation}
+
+
+
+\problem{Gamma and sine functions}
+
+
+
+1. Similar to Eq. \eqref{eq:gammaEulerProd},
+we can develop an infinite product of the sine function.
+%
+The zeros of $\sin(\pi z)$ are $0, \pm 1, \pm 2, \dots$
+%
+From this, show that
+\begin{equation}
+  \frac { \sin( \pi z ) } { \pi z }
+=
+  \lim_{n \rightarrow \infty}
+  \left( 1 - \frac {z^2} {1^2} \right)
+  \left( 1 - \frac {z^2} {2^2} \right)
+  \cdots
+  \left( 1 - \frac {z^2} {n^2} \right)
+  \label{eq:sin_infprod}
+\end{equation}
+
+2. By a comparison to Eq. \eqref{eq:gammaEulerProd},
+show that
+\begin{equation}
+  \frac 1 {z! \, (-z)!}
+=
+  \frac 1 {\Gamma(1+z)! \, \Gamma(1-z)!}
+=
+  \frac { \sin( \pi z ) } { \pi z }.
+  \label{eq:gammasin}
+\end{equation}
+%
+Using Eq. \eqref{eq:gammaRecur}, show that
+\begin{equation}
+  \frac 1 {\Gamma(z)! \, \Gamma(1-z)!}
+=
+  \frac { \pi } { \sin( \pi z ) }.
+  \label{eq:gammasin}
+\end{equation}
+
+3. Using $z = 1/2$, show that
+\begin{equation}
+  \left( -\frac 1 2 \right)!
+=
+  \Gamma\left( \frac 1 2 \right)
+=
+  \sqrt \pi.
+  \label{eq:gammahalf}
+\end{equation}
+
+
+
+
+
 \problem{Gaussian integral}
 
-Show that
+
+
+1. Show that
 \begin{equation}
   \int_{-\infty}^{\infty}
     \exp\left( -\frac{1}{2} A \, x^2 \right) \, dx
@@ -97,19 +235,13 @@ Show that
     \, d\left( \frac{r^2}{2} \right),
   \end{align*}
 where we have changed from the Cartesian to polar coordinates in the second step.
-
-Alternatively, try to evaluate this integral by the gamma (factorial) function:
-\begin{equation}
-  (s-1)!
-=
-  \Gamma(s)
-\equiv
-  \int_0^\infty z^{s-1} \, \exp(-z) \, dz,
-  \label{eq:gammaDef}
-\end{equation}
-where $s$ is not necessarily an integer.
-In our case, set $z = A \, x^2/2$.
 }
+
+2. Alternatively, change variable $t = A \, x^2/2$,
+and evaluate the integral by the gamma function
+defined by Eq. \eqref{eq:gammaDef}.
+%
+Then use Eq. \eqref{eq:gammahalf}.
 
 
 
@@ -428,8 +560,10 @@ Then, from \eqref{eq:drD_recursion}, we have
 \begin{align}
     S_D(1)
   &= I_{D-2} \, S_{D-1}(1)
-   = I_{D-2} \, \cdots I_1 \cdot (2 \, \pi).
    \label{eq:SD_recursion}
+\\
+  &= I_{D-2} \, \cdots I_1 \cdot (2 \, \pi).
+\notag
 \end{align}
 Discuss the cases of odd and even $D$,
 and compare the results with \eqref{eq:SDoe}.
