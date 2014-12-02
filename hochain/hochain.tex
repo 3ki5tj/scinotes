@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage[width=7.0in, height=10.0in]{geometry}
+
+
+
+\begin{document}
+
+
+
+\section{Harmonic oscillator chain under the open boundary condition }
+
+
+
+The set of equations we want to solve is
+\begin{equation}
+\begin{split}
+M \ddot x_1 &= -K x_1 + K x_2 \\
+M \ddot x_2 &= \hphantom{-}  K x_1 - 2 K x_2   + K x_3 \\
+            &\hphantom{-} \vdots \\
+M \ddot x_n &= \hphantom{-K x_1 -2}        K x_{n-1}  - K x_n.
+\end{split}
+\label{eq:eos}
+\end{equation}
+
+
+We will use the following trial solution:
+\begin{align}
+  x_i = \cos[a (i - 1) + b - \omega t],
+  \label{eq:trialsol}
+\end{align}
+where the parameters $a$, $b$ and $\omega$ are to be determined.
+Note that the solution can be multiplied by an arbitrary constant $c$
+without changing its nature.
+
+
+
+Substituting Eq. \eqref{eq:trialsol} in Eq. \eqref{eq:eos} yields
+\begin{align}
+-M \omega^2 x_1 &= -K x_1 + K x_2 \label{eq:eos1} \\
+                &\hphantom{-} \vdots \notag \\
+-M \omega^2 x_i &= \hphantom{-}  K x_{i-1} - 2 K x_i + K x_{i+1}
+  \label{eq:eosi} \\
+                &\hphantom{-} \vdots \notag \\
+-M \omega^2 x_n &= \hphantom{-K x_1 -2}        K x_{n-1}  - K x_n.
+  \label{eq:eosn}
+\end{align}
+Now that we have get rid of the time dependence,
+we shall set $t$ to 0 below.
+
+To determine parameters,
+we first use Eq. \eqref{eq:trialsol} in Eq. \eqref{eq:eosi}:
+\[
+-M \omega^2 \cos\phi
+=
+K \cos(\phi - a)
+-2 K \cos\phi
++K \cos(\phi + a),
+\]
+where $\phi = (i-1)a + b$.
+Using $\cos(\phi \pm a) = \cos\phi \cos a \mp \sin\phi \sin a$, we get
+\begin{align}
+\omega
+=
+\sqrt \frac { K (2 - 2 \cos a) } M
+=
+2 \sqrt \frac K M \left| \sin \frac a 2 \right|.
+\label{eq:omega_a}
+\end{align}
+
+
+Next, we use Eq. \eqref{eq:trialsol} in Eq. \eqref{eq:eos1}:
+\begin{equation}
+-M \omega^2 \cos b
+=
+-K \cos b
++K \cos(b + a).
+\label{eq:a_b_step1}
+\end{equation}
+Further, by using Eq. \eqref{eq:omega_a} in Eq. \eqref{eq:a_b_step1},
+we get
+\begin{equation*}
+(1 - \cos a) \cos b
+= \sin a \sin b.
+\end{equation*}
+or, as
+$1 - \cos a = 2 \sin^2(a/2)$
+and
+$\sin a = 2 \sin(a/2) \, \cos(a/2)$,
+\begin{equation*}
+\tan \left( \frac a 2 \right)
+= \tan b,
+\end{equation*}
+which means
+\begin{equation}
+b = \frac a 2 + m \pi,
+\label{eq:a_b}
+\end{equation}
+with $m$ being an arbitrary integer.
+
+
+
+Similarly, we can use Eq. \eqref{eq:trialsol} in Eq. \eqref{eq:eosn}
+\begin{equation*}
+-M \omega^2 \cos \phi_n
+=
+K \cos(\phi_n - a)
+-K \cos \phi_n,
+\end{equation*}
+where $\phi_n = (n - 1) a + b$.
+%
+Again, by using Eq. \eqref{eq:omega_a}, we get
+\[
+(\cos a - 1) \cos \phi_n = \sin \phi_n \sin a.
+\]
+or
+\[
+\tan \left( \frac a  2 \right) = -\tan \phi_n,
+\]
+which means
+\begin{align}
+m' \pi - \frac a 2 = \phi_n = (n - 1) a + b.
+\label{eq:a_phin}
+\end{align}
+
+
+Now the three equations \eqref{eq:omega_a}, \eqref{eq:a_b} and \eqref{eq:a_phin}
+determines the three unknowns $a$, $b$ and $\omega$.
+%
+Using Eq. \eqref{eq:a_b} in Eq. \eqref{eq:a_phin} yields
+\begin{equation*}
+a = \frac{ p \, \pi } n,
+\end{equation*}
+where $p = m' - m$ is an integer.
+%
+The frequency $\omega$ is then given by \eqref{eq:omega_a}.
+\begin{equation}
+\omega_p
+=
+2 \sqrt \frac K M
+\left|
+\sin \left( \frac {p \, \pi} {2 \, n} \right)
+\right|.
+\label{eq:freq}
+\end{equation}
+where we have attached the subscript $p$ to the frequency $\omega$.
+%
+In the case of $n = 3$ oscillators, we have
+$\omega_0 = 0$,
+$\omega_1 = \sqrt{K/M}$,
+and
+$\omega_2 = \sqrt{3K/M}$.
+
+
+So, the final solution, for mode $p$, is
+\begin{align}
+  x_i^{(p)}
+=
+  c_p \cos\left[
+  \frac{ (2 i - 1) p \, \pi } { 2 n }
+  -2 \sqrt \frac K M
+  \left|
+  \sin \left( \frac {p \, \pi} {\mathbf 2 \, n} \right)
+  \right| t
+  \right],
+  \label{eq:obcsol}
+\end{align}
+where $c_p$ is an arbitrary constant.
+%
+The general solution is a linear combination of different modes.
+
+
+
+\section{Periodic boundary condition}
+
+
+
+Let us do the same problem under the periodic boundary condition (PBC).
+%
+The only difference is that Eqs. \eqref{eq:eos1} and \eqref{eq:eosn}
+are now replaced by Eq. \eqref{eq:eosi}
+with $i = 1$ and $i = n$, respectively.
+%
+Thus Eq. \eqref{eq:omega_a} remains valid;
+but Eqs. \eqref{eq:a_b} and \eqref{eq:a_phin}
+are now replaced by the condition that
+\[
+  x_{n+i} = x_i.
+\]
+This is possible only if
+\begin{equation*}
+  a = \frac{ 2 \pi p } { n },
+\end{equation*}
+or, equivalently,
+\begin{equation}
+\omega_p^\mathrm{(PBC)}
+=
+2 \sqrt \frac K M
+\left|
+\sin \left( \frac {p \, \pi} {n} \right)
+\right|,
+\label{eq:freq_pbc}
+\end{equation}
+%
+and, the final solution, for mode $p$, is
+\begin{align}
+  x_i^{(p), \mathrm{PBC}}
+=
+  c'_p \cos\left[
+  \frac{ 2 (i - 1) p \, \pi } { n }
+  + b
+  -2 \sqrt \frac K M
+  \left|
+  \sin \left( \frac {p \, \pi} {n} \right)
+  \right| t
+  \right],
+  \label{eq:obcsol}
+\end{align}
+where $c'_p$ is an arbitrary constant,
+and $b$ is arbitrary.
+%
+
+
+Comparing Eq. \eqref{eq:freq_pbc} with Eq. \eqref{eq:freq},
+we note the missing factor of 2 in the frequency.
+%
+This means that the PBC case misses
+half of the frequencies.
+%
+However, in the PBC case,
+each frequency corresponds to two independent modes,
+one sine mode and one cosine mode;
+and any linear combination of the two modes
+is a valid solution as well.
+%
+Mathematically, it corresponds to the fact that
+$\cos b$ and $\sin b$ serve as the coefficients of combination:
+\[
+  \cos(\phi + b) = \cos b \, \cos \phi - \cos b \, \cos \phi.
+\]
+This degeneracy is absent in the open boundary condition (OBC) case;
+consequently, the OBC frequencies are finer.
+
+
+\end{document}

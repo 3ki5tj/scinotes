@@ -13,7 +13,7 @@ LM = -lfftw3 -lm
 
 binx = 2d_th 2d_mp 2d_mpi
 
-all: $(pdf) $(htmldir) $(bin) $(binx)
+all: $(pdf) $(bin) $(binx)
 
 $(pdf) : %.pdf: %.tex %.dvi
 	pdflatex $<
@@ -51,8 +51,8 @@ $(prj).zip: $(c) $(tex) Makefile
 
 zip: $(prj).zip
 
-Bossman: $(pdf) $(htmldir) $(c) $(prj).zip
-	rsync -avzrL *.pdf *.tex *_html *.c $(prj).zip cz1@he.host.utmb.edu:/Bossman/cz1/notes/$(prj)
+Bossman: $(pdf) $(c) $(prj).zip
+	rsync -avzrL *.pdf *.tex *.c $(prj).zip cz1@he.host.utmb.edu:/Bossman/cz1/notes/$(prj)
 
 # upload to github
 github:
