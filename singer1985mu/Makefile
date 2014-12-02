@@ -3,7 +3,7 @@ pdf = $(patsubst %.tex, %.pdf, $(tex))
 html = $(patsubst %.tex, %.html, $(tex))
 htmldir = $(patsubst %.tex, %_html, $(tex))
 
-all: $(pdf) $(htmldir)
+all: $(pdf)
 
 $(pdf) : %.pdf: %.tex
 	latex $<
@@ -25,8 +25,8 @@ $(html) : %.html: %.tex
 IPO=cz1@129.109.88.204
 #IPO=cz1@he.host.utmb.edu
 
-Bossman: $(pdf) $(htmldir)
-	rsync -avzrL *.pdf *.tex *_html $(IPO):/Bossman/cz1/notes/singer1985mu
+Bossman: $(pdf)
+	rsync -avzrL *.pdf *.tex $(IPO):/Bossman/cz1/notes/singer1985mu
 
 # upload to github
 github:

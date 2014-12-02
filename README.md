@@ -1,10 +1,10 @@
 Lecture and paper notes.
 
 Dropbox link:
-https://www.dropbox.com/sh/wmyesgnjf3napg4/AACbk52lFjJCmcTjGxq7FdBQa?dl=0
+https://www.dropbox.com/sh/9yp9rwz1c8xhllc/AAByqtERNR-XpPialWE1ZyyZa?dl=0
 
 This directory is under the version control system git,
 and is uploaded to github.
-Use  
+Use
   git push
 to update it remotely.

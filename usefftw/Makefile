@@ -61,7 +61,7 @@ github:
 push: github
 
 clean:
-	rm -f *~ *.out *.dat *.dvi *.aux *.log *.toc *.idv *.lg
+	rm -f *~ *.out *.dat *.dvi *.aux *.log *.toc *.idv *.lg .*.un~
 	rm -rf $(bin) $(binx) $(prj).zip $(prj).pdf
 	rstrip.py
 

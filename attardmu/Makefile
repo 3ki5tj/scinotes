@@ -16,7 +16,7 @@ $(pdf) : %.pdf: %.tex
 
 $(htmldir) : %_html : %.tex
 	if [ ! -d "$@" ] ; then mkdir "$@" ; fi
-	cd $@; ln -sf ../$<; ln -sf ../liquid.bib .; htlatex $<
+	cd $@; ln -sf ../$<; ln -sf ../../liquid.bib ..; htlatex $<
 
 # html versions by tth are more basic and have problems
 $(html) : %.html: %.tex
@@ -37,7 +37,7 @@ github:
 push: github
 
 clean:
-	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg *.bbl *.blg
+	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg *.bbl *.blg *Notes.bib
 	rm -rf $(htmldir)
 	rstrip.py
 
