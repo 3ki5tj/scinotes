@@ -1,4 +1,4 @@
-subdirs = liqprob singer1985mu usefftw usetikz attardmu hochain WHAM
+subdirs = liqprob singer1985mu usefftw usetikz attardmu hochain WHAM vrescale
 
 clean:
 	for dir in $(subdirs) ; do $(MAKE) -C $$dir clean ; done

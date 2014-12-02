@@ -62,7 +62,7 @@ push: github
 
 clean:
 	rm -f *~ *.out *.dat *.dvi *.aux *.log *.toc *.idv *.lg .*.un~
-	rm -rf $(bin) $(binx) $(prj).zip $(prj).pdf
+	rm -rf $(bin) $(binx) $(prj).zip
 	rstrip.py
 
 .PHONY: clean all

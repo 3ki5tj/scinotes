@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage[width=7.0in, height=10.0in]{geometry}
+
+
+
+\begin{document}
+
+\title{ Velocity rescaling thermostat }
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+
+The velocity rescaling thermostat is a modern and popular thermostat,
+which is widely used in molecular dynamics (MD) simulations.
+%
+Here, a ``thermostat'' is a piece of computer code
+that helps the MD program to sample a canonical distribution.
+%
+We will explain how the thermostat works in this document.
+
+
+
+\section{Langevin equation}
+
+
+
+We start with a simple exercise,
+that is, to solve the equation of motion
+of an over-damped harmonic oscillator
+under a random noise:
+%
+\begin{equation}
+  \dot x = -\gamma x + \sqrt{ 2 \gamma } \sigma \xi,
+  \label{eq:ho_langevin}
+\end{equation}
+where,
+$\dot x = dx/dt$,
+$\gamma$ and $\sigma$ are two constants,
+and $\xi$ is a unit Gaussian white noise:
+\begin{align}
+  \langle \xi(t) \xi(t') \rangle
+=
+  \delta(t - t').
+\end{align}
+Equation \eqref{eq:ho_langevin} is the Langevin equation.
+
+Since Eq. \eqref{eq:ho_langevin} involves a random noise,
+it is meaningless to discuss a particular trajectory.
+%
+Instead, we can imagine an \emph{ensemble} with the same initial condition,
+and then study the averaged trajectory
+and its variance at different time frames.
+%
+This is to say that we should talk about the distribution
+of $x$, $\rho(x, t)$ as a function of $t$.
+%
+At time $t = 0$, we can assume that the distribution
+is focused at $x = x_0$:
+%
+\begin{equation}
+  \rho(x, t = 0) = \delta(x - x_0).
+  \label{eq:rho_t0}
+\end{equation}
+
+
+
+\section{Fokker-Planck equation}
+
+
+
+We now give a useful theorem without giving a proof.
+%
+If $x$ follows the Langevin equation
+\begin{equation}
+  \dot x = -v(x) + \sqrt{ 2 B(x) } \, \xi,
+  \label{eq:x_langevin}
+\end{equation}
+then the distribution $\rho(x, t)$ satisfies
+\begin{equation}
+\frac { \partial \rho } { \partial t }
+=
+\frac { \partial } { \partial x }
+\left\{
+  v(x) \, \rho
+  +
+\frac { \partial  } { \partial x } \Bigl[ B(x) \rho \Bigr]
+\right\}.
+\label{eq:x_fp}
+\end{equation}
+
+An immediate consequence of Eq. \eqref{eq:x_fp} is that
+the stationary distribution, $\rho^*$, satisfies
+\begin{equation*}
+  \frac { d } { d x } \bigl[ B(x) \rho^*(x) \bigr]
+=
+  - v(x) \, \rho^*(x)
+\end{equation*}
+or
+\begin{equation}
+  \frac { d } { d x } \log\bigl[ B(x) \rho^*(x) \bigr]
+=
+  - \frac{ v(x) }{ B(x) }.
+\label{eq:rhost_fp}
+\end{equation}
+
+Equation \eqref{eq:rhost_fp} is useful.
+%
+If we know $v(x)$ and $B(x)$,
+we can then find out the stationary distribution $\rho^*(x)$
+by solving Eq. \eqref{eq:rhost_fp}.
+%
+Conversely,
+if we wish to design a dynamic equation of $x$
+that ultimately converges to some predefined distribution $\rho^*(x)$.
+%
+Then, $v(x)$ and $B(x)$ are constrained by Eq. \eqref{eq:rhost_fp},
+although we still have the freedom to choose a convenient $B(x)$.
+
+
+
+\section{Stationary solution of the over-damped oscillator}
+
+
+
+Now let us apply Eq. \eqref{eq:rhost_fp} to Eq. \eqref{eq:ho_langevin}.
+%
+We identify that
+$v(x) = \gamma x$,
+and
+$B(x) = \gamma \sigma^2$.
+%
+Thus, the stationary distribution, $\rho^*(x)$,
+\[
+  \frac { d } { d x } \log\bigl[ \gamma \sigma^2 \rho^*(x) \bigr]
+=
+  - \frac{ x }{ \sigma^2 }.
+\]
+This equation is readily solved,
+\[
+  \rho^*(x)
+=
+  - \frac{ x^2 }{ 2 \sigma^2 }
+  + \mathrm{const.},
+\]
+which,
+after the normalization $\int \rho^*(x) \, dx = 1$,
+yields
+\begin{align}
+\rho^*(x)
+=
+\frac{ 1 } { \sqrt{ 2 \pi \sigma^2 } }
+\exp\left(
+  -\frac{ x^2 } { 2 \sigma^2 }
+\right).
+\label{eq:ho_rhost}
+\end{align}
+
+
+
+\section{General solution of the over-damped oscillator}
+
+
+
+Now let us solve the time-dependent distribution, $\rho(x, t)$.
+%
+We shall assume the initial condition given by Eq. \eqref{eq:rho_t0},
+%
+and solve Eq. \eqref{eq:x_fp}.
+
+Inspired by the stationary distribution, Eq. \eqref{eq:ho_rhost},
+we shall use the trial solute
+%
+\begin{align}
+\rho(x, t)
+=
+\frac{ 1 } { \sqrt{ 2 \pi b(t) } }
+\exp \left\{
+  -\frac{ [x - c(t)]^2 } { 2 b(t) }
+\right\}.
+\label{eq:ho_rhot_trial}
+\end{align}
+%
+We expect that $c(t) \rightarrow 0$, and $b(t) \rightarrow \sigma^2$
+in the limit of $t \rightarrow \infty$.
+
+Plugging Eq. \eqref{eq:ho_rhot_trial} into Eq. \eqref{eq:x_fp},
+we get
+\begin{multline}
+  \frac{ 1 } { \sqrt{ 2 \pi b } }
+  \exp \left[
+    - \frac{ (x - c)^2 } { 2 b }
+  \right]
+  \left\{
+    \left[
+      \frac { (x - c)^2 } { b } - 1
+    \right]
+    \frac{ 1 } { 2 b }
+    \frac{ d b } { d t }
+    +
+    \frac { x - c } { b }
+    \frac { d c } { d t }
+  \right\} \\
+=
+  \frac{ 1 } { \sqrt{ 2 \pi b } }
+  \exp \left[
+    - \frac{ (x - c)^2 } { 2 b }
+  \right]
+  \left\{
+    \left[
+      \frac{ (x - c)^2 } { b } - 1
+    \right]
+    \, \gamma \,
+    \left(\frac{ \sigma^2 } b - 1\right)
+    -
+    \frac{ (x - c) } { b } \, \gamma \, c
+  \right\}.
+\end{multline}
+%
+Thus, for the trial solution to be valid,
+we must have
+\begin{align*}
+\frac{ 1 } { 2 b }
+\frac{ d b } { d t }
+&=
+\gamma \,
+\left(\frac{ \sigma^2 } b - 1\right),
+\\
+\frac { d c } { d t }
+&=
+-\gamma \, c.
+\end{align*}
+Solving the above two equations, we get
+\begin{align*}
+b &= \sigma^2 [1 - \exp( - 2 \gamma t)],
+\\
+c &= c(0) \exp(-\gamma t) = x_0 \, \exp(-\gamma t).
+\end{align*}
+%
+Thus, the solution is
+%
+\begin{align}
+\rho(x, t)
+=
+\frac{ 1 } { \sqrt{ 2 \pi \sigma^2 (1 - e^{-2\gamma t}) } }
+\exp \left[
+  -\frac{ ( x - x_0 \, e^{-\gamma t} )^2 } { 2 \sigma^2 (1 - e^{-2\gamma t}) }
+\right].
+\label{eq:ho_rhot}
+\end{align}
+Another way to put this is that
+the solution at time $t$ is given by
+a Gaussian centered at $x_0 \, e^{-\gamma t}$,
+with a variance of $\sigma^2 (1 - e^{-2\gamma t})$.
+
+
+
+\begin{thebibliography}{100}
+
+\bibitem{singer}
+  Giovanni Bussi, Davide Donadio and Michele Parrinello,
+  ``Canonical sampling through velocity rescaling,''
+  J. Chem. Phys., Vol. 126, 014101,
+  2007.
+
+\end{thebibliography}
+
+
+
+\end{document}
