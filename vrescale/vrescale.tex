@@ -1,5 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage{amsmath}
+\usepackage{hyperref}
 \usepackage[width=7.0in, height=10.0in]{geometry}
 
 
@@ -13,13 +14,13 @@
 
 
 
-The velocity rescaling thermostat is a modern and popular thermostat,
-which is widely used in molecular dynamics (MD) simulations.
+The velocity rescaling thermostat is a popular modern thermostat
+for molecular dynamics (MD) simulations.
 %
 Here, a ``thermostat'' is a piece of computer code
 that helps the MD program to sample a canonical distribution.
 %
-We will explain how the thermostat works in this document.
+Below we will explain how the thermostat works.
 
 
 
@@ -27,10 +28,7 @@ We will explain how the thermostat works in this document.
 
 
 
-We start with a simple exercise,
-that is, to solve the equation of motion
-of an over-damped harmonic oscillator
-under a random noise:
+We start by solving the following Langevin equation:
 %
 \begin{equation}
   \dot x = -\gamma x + \sqrt{ 2 \gamma } \sigma \xi,
@@ -45,20 +43,54 @@ and $\xi$ is a unit Gaussian white noise:
 =
   \delta(t - t').
 \end{align}
-Equation \eqref{eq:ho_langevin} is the Langevin equation.
+This equation describes the motion of an over-damped harmonic oscillator
+under a random noise\footnote{
+%
+%
+%
+The equation of motion of a harmonic oscillator
+in a frictious environment
+under a random noise is given by:
+$M \dot v = -\mu v - K x + \sqrt{ 2 D } \, \xi$,
+where, $v = \dot x$ is the velocity,
+$M$ and $K$ are the mass and the spring constant, respectively,
+and $\mu$ and $D$ are the mobility and diffusivity, respectively.
+%
+If the mass $M$ is large, we can drop the left-hand side,
+and move the $\mu v$ term to the left.
+%
+This yields Eq. \eqref{eq:ho_langevin},
+with $\gamma = K/\mu$,
+and $\sqrt{2\gamma} \sigma = \sqrt{2 D}/\mu$,
+%
+or
+$D = (\mu \sigma)^2 \gamma = K \sigma^2 \mu$.
+%
+Now Einstein's relation or the fluctuation-dissipation theorem
+states that $\beta D = \mu$.
+So
+\begin{equation}
+  \beta K \sigma^2 = 1.
+  \label{eq:bKsig2}
+\end{equation}
+%
+%
+%
+}.
 
 Since Eq. \eqref{eq:ho_langevin} involves a random noise,
 it is meaningless to discuss a particular trajectory.
 %
-Instead, we can imagine an \emph{ensemble} with the same initial condition,
+Instead, we can imagine an \emph{ensemble} of systems
+with the same initial condition,
 and then study the averaged trajectory
-and its variance at different time frames.
+and its variance at different times.
 %
-This is to say that we should talk about the distribution
+That is, we shall study the distribution
 of $x$, $\rho(x, t)$ as a function of $t$.
 %
 At time $t = 0$, we can assume that the distribution
-is focused at $x = x_0$:
+is limited at $x = x_0$:
 %
 \begin{equation}
   \rho(x, t = 0) = \delta(x - x_0).
@@ -75,18 +107,18 @@ We now give a useful theorem without giving a proof.
 %
 If $x$ follows the Langevin equation
 \begin{equation}
-  \dot x = -v(x) + \sqrt{ 2 B(x) } \, \xi,
+  \dot x = -F(x) + \sqrt{ 2 B(x) } \, \xi,
   \label{eq:x_langevin}
 \end{equation}
 then the distribution $\rho(x, t)$ satisfies
 \begin{equation}
-\frac { \partial \rho } { \partial t }
+\frac { \partial \rho(x, t) } { \partial t }
 =
 \frac { \partial } { \partial x }
 \left\{
-  v(x) \, \rho
+  F(x) \, \rho(x, t)
   +
-\frac { \partial  } { \partial x } \Bigl[ B(x) \rho \Bigr]
+  \frac { \partial  } { \partial x } \Bigl[ B(x) \, \rho(x, t) \Bigr]
 \right\}.
 \label{eq:x_fp}
 \end{equation}
@@ -94,60 +126,66 @@ then the distribution $\rho(x, t)$ satisfies
 An immediate consequence of Eq. \eqref{eq:x_fp} is that
 the stationary distribution, $\rho^*$, satisfies
 \begin{equation*}
-  \frac { d } { d x } \bigl[ B(x) \rho^*(x) \bigr]
+  \frac { d } { d x } \bigl[ B(x) \, \rho^*(x) \bigr]
 =
-  - v(x) \, \rho^*(x)
+  - F(x) \, \rho^*(x)
 \end{equation*}
 or
 \begin{equation}
-  \frac { d } { d x } \log\bigl[ B(x) \rho^*(x) \bigr]
+  \frac { d } { d x } \log\bigl[ B(x) \, \rho^*(x) \bigr]
 =
-  - \frac{ v(x) }{ B(x) }.
+  - \frac{ F(x) }{ B(x) }.
 \label{eq:rhost_fp}
 \end{equation}
 
 Equation \eqref{eq:rhost_fp} is useful.
 %
-If we know $v(x)$ and $B(x)$,
+If we know $F(x)$ and $B(x)$,
 we can then find out the stationary distribution $\rho^*(x)$
 by solving Eq. \eqref{eq:rhost_fp}.
 %
 Conversely,
-if we wish to design a dynamic equation of $x$
-that ultimately converges to some predefined distribution $\rho^*(x)$.
+if we wish to design a dynamic equation for the random variable $x$
+that satisfies some predefined distribution $\rho^*(x)$,
 %
-Then, $v(x)$ and $B(x)$ are constrained by Eq. \eqref{eq:rhost_fp},
+then, $F(x)$ and $B(x)$ are constrained by Eq. \eqref{eq:rhost_fp},
 although we still have the freedom to choose a convenient $B(x)$.
+%
+The latter usage is employed in Sec. \ref{sec:tstat1} to derive
+the velocity rescaling thermostat.
 
 
 
-\section{Stationary solution of the over-damped oscillator}
+\section{\label{sec:rhost}
+Stationary solution of the over-damped oscillator}
 
 
 
-Now let us apply Eq. \eqref{eq:rhost_fp} to Eq. \eqref{eq:ho_langevin}.
+Before deriving the thermostat,
+let us have some practice,
+and apply Eq. \eqref{eq:rhost_fp} to Eq. \eqref{eq:ho_langevin}.
 %
 We identify that
-$v(x) = \gamma x$,
+$F(x) = \gamma \, x$,
 and
-$B(x) = \gamma \sigma^2$.
+$B(x) = \gamma \, \sigma^2$.
 %
-Thus, the stationary distribution, $\rho^*(x)$,
+Thus, the stationary distribution, $\rho^*(x)$, satisfies
 \[
-  \frac { d } { d x } \log\bigl[ \gamma \sigma^2 \rho^*(x) \bigr]
+  \frac { d } { d x } \log\bigl[ \gamma \sigma^2 \, \rho^*(x) \bigr]
 =
   - \frac{ x }{ \sigma^2 }.
 \]
 This equation is readily solved,
 \[
-  \rho^*(x)
+  \log \rho^*(x)
 =
   - \frac{ x^2 }{ 2 \sigma^2 }
   + \mathrm{const.},
 \]
 which,
 after the normalization $\int \rho^*(x) \, dx = 1$,
-yields
+yields a Gaussian distribution:
 \begin{align}
 \rho^*(x)
 =
@@ -157,6 +195,15 @@ yields
 \right).
 \label{eq:ho_rhost}
 \end{align}
+
+If $x$ is the coordinate of a harmonic oscillator,
+then $\rho^*(x) \propto \exp( -\beta K x^2/2 )$,
+which demands $\beta K \sigma^2 = 1$,
+in agreement with Eq. \eqref{eq:bKsig2}.
+%
+We may also interpret $x$ as some momentum $p_i$,
+%
+then, $\beta \sigma^2 / M_i = 1$.
 
 
 
@@ -171,7 +218,7 @@ We shall assume the initial condition given by Eq. \eqref{eq:rho_t0},
 and solve Eq. \eqref{eq:x_fp}.
 
 Inspired by the stationary distribution, Eq. \eqref{eq:ho_rhost},
-we shall use the trial solute
+we shall use the trial solution
 %
 \begin{align}
 \rho(x, t)
@@ -183,8 +230,12 @@ we shall use the trial solute
 \label{eq:ho_rhot_trial}
 \end{align}
 %
-We expect that $c(t) \rightarrow 0$, and $b(t) \rightarrow \sigma^2$
-in the limit of $t \rightarrow \infty$.
+We expect that
+i) at time $t = 0$,
+$c(0) = x_0$, and $b(t) = 0$;
+and
+ii) at time $t \rightarrow \infty$,
+$c(t) \rightarrow 0$, and $b(t) \rightarrow \sigma^2$.
 
 Plugging Eq. \eqref{eq:ho_rhot_trial} into Eq. \eqref{eq:x_fp},
 we get
@@ -250,20 +301,236 @@ Thus, the solution is
 \right].
 \label{eq:ho_rhot}
 \end{align}
-Another way to put this is that
-the solution at time $t$ is given by
-a Gaussian centered at $x_0 \, e^{-\gamma t}$,
-with a variance of $\sigma^2 (1 - e^{-2\gamma t})$.
+In other words,
+the distribution at time $t$ is
+a Gaussian centered at $c = x_0 \, e^{-\gamma t}$,
+of variance $b = \sigma^2 (1 - e^{-2\gamma t})$.
+
+
+
+\section{\label{sec:int0}Integrator}
+
+
+
+For a short time $t \ll 1/\gamma$,
+we have $c = x_0 (1 - \gamma t)$
+and $b = 2 \sigma^2 \gamma t$.
+That is
+\[
+  x(t)
+\approx
+  x_0 - \gamma \, x_0 \, t
+  + \sqrt{ 2 \gamma \sigma^2 \, t } R,
+\]
+where $R$ is a unit-variance Gaussian random number.
+%
+This serves as the integrator for the Langevin equation.
+%
+More generally, the integrator for Eq. \eqref{eq:x_langevin}
+is given by
+\begin{equation}
+  x(t)
+\approx
+  x_0 - F(x_0) \, t
+  + \sqrt{ 2 B(x_0) \, t } \, R.
+  \label{eq:langevin_int0}
+\end{equation}
+
+
+
+\section{\label{sec:tstat1}Velocity rescaling thermostat}
+
+
+
+The velocity rescaling thermostat is essentially
+a Langevin equation of the kinetic energy
+$E_K = \sum_i p_i^2 / (2 M_i)$.
+%
+To derive it,
+we need to first find out the stationary distribution $\rho^*(E_K)$
+and then apply Eq. \eqref{eq:rhost_fp}.
+
+The distribution of $\rho^*(E_K)$ can be computed as
+an average in the canonical ensemble:
+\begin{align}
+\rho^*(E_K)
+&=
+\left\langle
+  \delta\left( E_K - \sum\nolimits_i \tfrac{ p_i^2 }{ 2 M_i } \right)
+\right\rangle
+\notag \\
+&=
+\int \prod\limits_i d p_i d q_i \,
+\delta\left( E_K - \sum\nolimits_i \tfrac{ p_i^2 }{ 2 M_i } \right)
+\left.
+\exp\left[
+    - \beta \sum\nolimits_i \tfrac{ p_i^2 }{ 2 M_i }
+    - \beta U(\{q_i\})
+\right] \middle/Q \right.
+\notag \\
+&=
+\beta^{N_f} E_K^{N_f/2 - 1} \exp(-\beta E_K) / \Gamma(N_f).
+\label{eq:rhost_EK}
+\end{align}
+%
+where $N_f$ is the number of degrees of freedom,
+$Q$ is the partition function of the canonical ensemble at $\beta$,
+and the factor $E_K^{N_f/2 - 1} d E_K$ comes from $\prod_{i = 1}^{N_f} d p_i$.
+%
+Thus
+\[
+\frac d {d E_K} \log \rho^*(E_K)
+=
+\frac{ N_f/2 - 1 } { E_K } - \beta.
+\]
+
+
+Now if we use Eq. \eqref{eq:rhost_fp},
+with $x = E_K$ and $B(x) = 2 \gamma \, E_K/\beta$,
+then $F(E_K) = 2 \gamma E_K - \gamma N_f/\beta$
+(with $\gamma$ being some constants),
+and we reach the Langevin equation
+for the velocity-rescaling thermostat:
+\begin{align}
+\frac { d E_K } { d t }
+=
+\left( \frac{ \gamma N_f }{ \beta } - 2 \gamma E_K \right)
++ \sqrt{ \frac{ 4 \, \gamma \, E_K } { \beta } } \, \xi.
+\label{eq:vrescale}
+\end{align}
+
+
+
+
+\section{Integrator for the velocity rescaling thermostat}
+
+
+
+By Eq. \eqref{eq:langevin_int0},
+the straightforward way of integrating Eq. \eqref{eq:vrescale} is
+\begin{align}
+E_K^\mathrm{new}
+=
+E_K^\mathrm{old}
++ \left( \frac{ \gamma \, N_f }{ \beta } - 2 \gamma \, E_K^\mathrm{old} \right) \Delta t
++ \sqrt{ \frac{ 4 E_K^\mathrm{old} \gamma \Delta t} { \beta } } \, R.
+\label{eq:vrescale_int0}
+\end{align}
+%
+where $R$ is a unit Gaussian random number.
+After $E_K$ is changed,
+we scale the velocity of all particles by a factor of
+$\sqrt{ E_K^\mathrm{new} / E_K^\mathrm{old} }$.
+
+
+This integrator, however,
+only works for a small time step $\Delta t$.
+%
+In the Appendix of the original paper\cite{bdp2007},
+the authors give an elegant exact integrator
+for arbitrary time steps.
+%
+The trick is
+to abandon \eqref{eq:vrescale},
+and go back to the variables $p_i$'s.
+%
+If each momentum $p_i$ ($i = 1, \dots, N_f$) follows Eq. \eqref{eq:ho_langevin},
+with $\sigma^2 = M_i/\beta$ (see Sec. \ref{sec:rhost}),
+then the stationary distribution is
+$\propto \exp[-\beta p_i^2/(2 M_i)]$,
+and $E_K = \sum_i p_i^2 /(2 M_i)$
+automatically satisfies Eq. \eqref{eq:rhost_EK}.
+
+The advantage of working with the variables $p_i$
+is that the exact time evolution
+is given by Eq. \eqref{eq:ho_rhot}.
+%
+This yields the following crude algorithm:
+%
+\begin{enumerate}
+  \item
+    Find a set of \emph{virtual} momenta $\{ p_i(t = 0) \}$ such that
+    \begin{equation}
+      \sum_i p_i^2(0)/(2 M_i) = E_K^\mathrm{old}.
+      \label{eq:sumEKold}
+    \end{equation}
+
+  \item
+    Compute each $p_i(\Delta t)$ according to Eq. \eqref{eq:ho_rhot}.
+    That is,
+    $p_i(\Delta t) = p_i(0) e^{-\gamma \Delta t}
+    + \sigma \sqrt{1 - e^{-2\gamma \Delta t}} R_i$,
+    with $R_i$ being a unit Gaussian random number.
+    Here, $\sigma^2 = M_i/\beta$.
+
+  \item
+    Compute
+    $E_K^\mathrm{new}
+    =
+    \sum_i p_i^2(\Delta t)/(2 M_i)$.
+\end{enumerate}
+
+Note that the virtual momenta $\{p_i\}$
+  can be different from the real ones,
+  as long as they satisfy Eq. \eqref{eq:sumEKold}.
+%
+Thus, we can choose a set of $\{p_i\}$
+that is most convenient.
+%
+We set
+$p_1(0) = \sqrt{2 M_1 E_K^\mathrm{old}}$,
+and
+$p_2(0) = \cdots = p_{N_f}(0) = 0$.
+%
+This yields\cite{bdp2007}
+\begin{align}
+  E_K^\mathrm{new}
+= E_K^\mathrm{old} e^{-2\gamma \Delta t}
+  + \sqrt{ \frac {2 E_K^\mathrm{old}} {\beta} (1 - e^{-2\gamma \Delta t}) }
+  e^{-\gamma \Delta t} R_1
+ + \frac{ 1 - e^{-2\gamma \Delta t}}{ 2 \beta }
+ \left( R_1^2 + \sum_{i = 2}^{N_f} R_i^2 \right).
+ \label{eq:vrescale_int}
+\end{align}
+%
+In the limit of $\Delta t \ll 1$,
+we have
+\begin{align*}
+  E_K^\mathrm{new}
+= E_K^\mathrm{old}
++ \left( \frac{ \gamma }{ \beta }
+    \sum_{i = 1}^{N_f} R_i^2 - 2 \gamma \, E_K^\mathrm{old}
+  \right) \, \Delta t
+  + \sqrt{ \frac {4 E_K^\mathrm{old} \, \gamma \Delta t} {\beta} }
+    R_1.
+\end{align*}
+If we further replace $\sum_{i = 1}^{N_f} R_i^2$ by its mean $N_f$,
+we recover Eq. \eqref{eq:vrescale_int0}.
+
+In implementing Eq. \eqref{eq:vrescale_int},
+we do not actually generate $N_f$ Gaussian random numbers, $R_i$'s.
+%
+For Eq. \eqref{eq:vrescale_int} needs only the sum $S \equiv \sum_{i = 2}^{N_f} R_i^2$,
+which satisfies the $\chi^2$ distribution of $N_f - 1$ degrees
+(a special $\Gamma$ distribution).
+%
+Thus, we just need to call the routine that generates
+a single random number that satisfies the $\chi^2$ or $\Gamma$ distribution
+for the sum.
+
+
+
 
 
 
 \begin{thebibliography}{100}
 
-\bibitem{singer}
+\bibitem{bdp2007}
   Giovanni Bussi, Davide Donadio and Michele Parrinello,
   ``Canonical sampling through velocity rescaling,''
   J. Chem. Phys., Vol. 126, 014101,
-  2007.
+  2007;
+  also arXiv:0803.4060.
 
 \end{thebibliography}
 
