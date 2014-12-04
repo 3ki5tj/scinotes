@@ -31,7 +31,7 @@ Below we will explain how the thermostat works.
 We start by solving the following Langevin equation:
 %
 \begin{equation}
-  \dot x = -\gamma x + \sqrt{ 2 \gamma } \sigma \xi,
+  \dot x = -\gamma x + \sqrt{ 2 \gamma \sigma^2 } \xi,
   \label{eq:ho_langevin}
 \end{equation}
 where,
@@ -124,7 +124,7 @@ then the distribution $\rho(x, t)$ satisfies
 \end{equation}
 
 An immediate consequence of Eq. \eqref{eq:x_fp} is that
-the stationary distribution, $\rho^*$, satisfies
+the stationary distribution, $\rho^*(x)$, satisfies
 \begin{equation*}
   \frac { d } { d x } \bigl[ B(x) \, \rho^*(x) \bigr]
 =
@@ -141,7 +141,7 @@ or
 Equation \eqref{eq:rhost_fp} is useful.
 %
 If we know $F(x)$ and $B(x)$,
-we can then find out the stationary distribution $\rho^*(x)$
+we can find out the stationary distribution $\rho^*(x)$
 by solving Eq. \eqref{eq:rhost_fp}.
 %
 Conversely,
@@ -285,7 +285,7 @@ we must have
 \end{align*}
 Solving the above two equations, we get
 \begin{align*}
-b &= \sigma^2 [1 - \exp( - 2 \gamma t)],
+b &= \sigma^2 \bigl[1 - \exp( - 2 \gamma t) \bigr],
 \\
 c &= c(0) \exp(-\gamma t) = x_0 \, \exp(-\gamma t).
 \end{align*}
@@ -326,7 +326,7 @@ where $R$ is a unit-variance Gaussian random number.
 %
 This serves as the integrator for the Langevin equation.
 %
-More generally, the integrator for Eq. \eqref{eq:x_langevin}
+Generally, the integrator for Eq. \eqref{eq:x_langevin}
 is given by
 \begin{equation}
   x(t)
@@ -369,13 +369,24 @@ an average in the canonical ensemble:
 \right] \middle/Q \right.
 \notag \\
 &=
-\beta^{N_f} E_K^{N_f/2 - 1} \exp(-\beta E_K) / \Gamma(N_f).
+\beta^{N_f} E_K^{N_f/2 - 1} \exp(-\beta E_K) / \Gamma(N_f/2).
 \label{eq:rhost_EK}
 \end{align}
 %
 where $N_f$ is the number of degrees of freedom,
 $Q$ is the partition function of the canonical ensemble at $\beta$,
-and the factor $E_K^{N_f/2 - 1} d E_K$ comes from $\prod_{i = 1}^{N_f} d p_i$.
+and the factor $E_K^{N_f/2 - 1} d E_K$
+comes from $\prod_{i = 1}^{N_f} d p_i$\footnote{
+The gamma function $\Gamma(z) \equiv \int_0^\infty t^{z - 1} \exp(-t) \, dt$
+  is equal to the usual factorial $(z-1)! = 1 \cdot 2 \cdots (z - 1)$ for an integral $z$.
+If $z$ is an half of an odd integer like $3/2$,
+  it is equal to $(2 z - 2)!! \sqrt\pi/2^{z - 1/2}$,
+e.g., $\Gamma(1/2) = \sqrt\pi$,
+$\Gamma(3/2) = \frac 1 2 \sqrt\pi$,
+$\Gamma(5/2) = \frac { 3 \cdot 1 } { 2^2 } \sqrt\pi$,
+$\Gamma(7/2) = \frac { 5 \cdot 3 \cdot 1 } { 2^3 } \sqrt\pi$,
+\dots
+}.
 %
 Thus
 \[
@@ -386,16 +397,17 @@ Thus
 
 
 Now if we use Eq. \eqref{eq:rhost_fp},
-with $x = E_K$ and $B(x) = 2 \gamma \, E_K/\beta$,
-then $F(E_K) = 2 \gamma E_K - \gamma N_f/\beta$
-(with $\gamma$ being some constants),
+with $x = E_K$ and $B(x) = (E_K/\beta) (2 \gamma)$,
+then $F(E_K) = -\left(\frac { N_f } { 2 \beta } - E_K\right) \, (2 \gamma)$
+(here $\gamma$ is some constants),
 and we reach the Langevin equation
 for the velocity-rescaling thermostat:
 \begin{align}
 \frac { d E_K } { d t }
 =
-\left( \frac{ \gamma N_f }{ \beta } - 2 \gamma E_K \right)
-+ \sqrt{ \frac{ 4 \, \gamma \, E_K } { \beta } } \, \xi.
+  \left( \frac{ N_f }{ 2 \beta } - E_K \right)
+  (2 \gamma)
++ \sqrt{ \frac{ 2 \, E_K } { \beta } ( 2 \gamma ) } \, \xi.
 \label{eq:vrescale}
 \end{align}
 
@@ -412,13 +424,14 @@ the straightforward way of integrating Eq. \eqref{eq:vrescale} is
 E_K^\mathrm{new}
 =
 E_K^\mathrm{old}
-+ \left( \frac{ \gamma \, N_f }{ \beta } - 2 \gamma \, E_K^\mathrm{old} \right) \Delta t
-+ \sqrt{ \frac{ 4 E_K^\mathrm{old} \gamma \Delta t} { \beta } } \, R.
++ \left( \frac{ N_f }{ 2 \beta } - \, E_K^\mathrm{old} \right)
+  (2 \gamma \Delta t)
+  + \sqrt{ \frac{ 2 E_K^\mathrm{old} } { \beta } (2 \gamma \Delta t) } \, R.
 \label{eq:vrescale_int0}
 \end{align}
 %
 where $R$ is a unit Gaussian random number.
-After $E_K$ is changed,
+After $E_K$ is updated,
 we scale the velocity of all particles by a factor of
 $\sqrt{ E_K^\mathrm{new} / E_K^\mathrm{old} }$.
 
@@ -474,8 +487,8 @@ Note that the virtual momenta $\{p_i\}$
   can be different from the real ones,
   as long as they satisfy Eq. \eqref{eq:sumEKold}.
 %
-Thus, we can choose a set of $\{p_i\}$
-that is most convenient.
+Thus, we can choose a set of $\{p_i(t = 0)\}$
+  that is most convenient.
 %
 We set
 $p_1(0) = \sqrt{2 M_1 E_K^\mathrm{old}}$,
@@ -485,23 +498,33 @@ $p_2(0) = \cdots = p_{N_f}(0) = 0$.
 This yields\cite{bdp2007}
 \begin{align}
   E_K^\mathrm{new}
-= E_K^\mathrm{old} e^{-2\gamma \Delta t}
-  + \sqrt{ \frac {2 E_K^\mathrm{old}} {\beta} (1 - e^{-2\gamma \Delta t}) }
-  e^{-\gamma \Delta t} R_1
- + \frac{ 1 - e^{-2\gamma \Delta t}}{ 2 \beta }
- \left( R_1^2 + \sum_{i = 2}^{N_f} R_i^2 \right).
+&=
+  p_1^2(\Delta t)/(2 M_1)
+  + \sum_{i = 2}^{N_f} p_i^2(\Delta t) / (2 M_i)
+= \frac{1}{2 M_1}
+  \left(\sqrt{2 M_1 E_K^\mathrm{old}} + \sigma s R_1\right)^2
+  + \sum_{i = 2}^{N_f} (\sigma s R_i)^2 / (2 M_i)
+  \notag \\
+&= E_K^\mathrm{old} \, c^2
+  + \sqrt{ \frac {2 E_K^\mathrm{old}} {\beta} } \, c \, s \, R_1
+  + \frac{ s^2 }{ 2 \beta }
+  \left( R_1^2 + \sum_{i = 2}^{N_f} R_i^2 \right),
  \label{eq:vrescale_int}
 \end{align}
+%
+where $c = e^{-\gamma \Delta t}$
+and $s = \sqrt{1 - e^{-2\gamma \Delta t}}$.
 %
 In the limit of $\Delta t \ll 1$,
 we have
 \begin{align*}
   E_K^\mathrm{new}
 = E_K^\mathrm{old}
-+ \left( \frac{ \gamma }{ \beta }
-    \sum_{i = 1}^{N_f} R_i^2 - 2 \gamma \, E_K^\mathrm{old}
-  \right) \, \Delta t
-  + \sqrt{ \frac {4 E_K^\mathrm{old} \, \gamma \Delta t} {\beta} }
++ \left(
+    \frac { \sum_{i = 1}^{N_f} R_i^2 } { 2 \beta }
+    - \, E_K^\mathrm{old}
+  \right) \, (2 \gamma \Delta t)
+  + \sqrt{ \frac {2 E_K^\mathrm{old} } {\beta} (2 \gamma \Delta t) }
     R_1.
 \end{align*}
 If we further replace $\sum_{i = 1}^{N_f} R_i^2$ by its mean $N_f$,
@@ -512,14 +535,117 @@ we do not actually generate $N_f$ Gaussian random numbers, $R_i$'s.
 %
 For Eq. \eqref{eq:vrescale_int} needs only the sum $S \equiv \sum_{i = 2}^{N_f} R_i^2$,
 which satisfies the $\chi^2$ distribution of $N_f - 1$ degrees
-(a special $\Gamma$ distribution).
+(a special gamma distribution).
 %
 Thus, we just need to call the routine that generates
-a single random number that satisfies the $\chi^2$ or $\Gamma$ distribution
+a single random number that satisfies the $\chi^2$ or gamma distribution
 for the sum.
 
 
 
+\section{$\chi^2$ distribution}
+
+
+Given $N$ unit-variant Gaussian random variables $x_i$,
+the sum of the squares $z = \sum_{i = 1}^N x_i^2$
+satisfies the $\chi^2$ distribution of $N$ degrees.
+
+Now let us show that in the $N=2$ case,
+the distribution of $z$ is exponential.
+\begin{align*}
+\rho(z)
+&=
+\int dx_1 \int dx_2
+  \frac{1} {\pi}
+  \exp(-x_1^2 - x_2^2)
+  \,
+  \delta(y - x_1^2 - x_2^2)
+\\
+&=
+\int_0^\infty r dr \int_0^{2\pi} d\theta
+  \frac{1} {\pi}
+  \exp(-r^2)
+  \,
+  \delta(y - r^2)
+= \exp(-y),
+\end{align*}
+where, we have changed to the polar coordinates
+in the second step.
+
+Generally, for an even number $N$,
+$z$ is the sum of $N/2$ exponential random variables.
+%
+In the next section,
+we will show that $z$
+satisfies the gamma distribution
+%
+(and this result is true also for an odd $N$).
+
+
+
+\section{Random number that satisfies the gamma distribution}
+
+
+
+The distribution density of the gamma distribution is given by
+\begin{equation}
+  \rho_\nu(z) = z^{\nu - 1} \exp(-z) / \Gamma(\nu).
+\end{equation}
+The definition of $\Gamma(\nu)$
+$\bigl[ \equiv \int_0^\infty z^{\nu - 1} \exp(-\nu) \, dz \bigr]$
+ensures that $\rho_\nu(z)$ is properly normalized
+$\int \rho_\nu(z) \, dz = 1$.
+
+The special case of $\nu = 1$ is the exponential distribution:
+\begin{equation}
+  \rho_1(z) = \exp(-z).
+\end{equation}
+The cumulative distribution function (CDF)
+$P_1(z) = \int_0^z \rho_1(y) \, dy$
+is given by
+$P_1(z) = 1 - \exp(-z)$.
+Thus, a random number that satisfies the exponential distribution
+is given by $-\log(1 - r)$,
+where $r$ is a uniformly distributed random number between 0 and 1.
+
+We can show that for an integral $\nu$,
+a random number that satisfies the gamma distribution
+can be constructed by adding up $\nu$ random numbers
+drawn from the exponential distribution\footnote{
+%
+%
+%
+We prove this by induction.
+The statement is obviously true for $\nu = 1$.
+%
+Suppose it remains true for $\nu = k$,
+that is,
+the sum $y$ of $k$ random numbers
+from the exponential distribution
+satisfies the gamma distribution
+$\rho_k(y) = y^{k - 1} \exp(-y) / (k-1)!$.
+%
+Then, the sum $z$ of $k+1$ random numbers
+can be treated as the sum $y$ of the first $k$ random numbers
+and the last one $x$.
+%
+So
+\begin{align*}
+  \rho(z)
+= \int_0^\infty \rho_k(y) \, dy \int_0^\infty \exp(-x) \, dx \, \delta(x + y - z)
+= \int_0^z y^{k - 1} \exp(-z) \, dy / (k-1)! = z^k \exp(-z) / k!.
+\end{align*}
+%
+Thus, $z$ satisfies the gamma distribution $\rho_{k+1}$.
+This completes the induction.
+%
+%
+%
+}.
+This method can be used to generate a random number
+that satisfies the gamma distribution for a small $\nu$.
+For a larger $\nu$, the ratio method is preferred
+(see Numerical Recipes).
 
 
 
