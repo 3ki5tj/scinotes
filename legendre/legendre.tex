@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
-\usepackage{amsmath}
 \usepackage[width=7.0in, height=10.0in]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
 
 
 
@@ -12,21 +13,256 @@
 
 
 
-The addition theorem is
+Consider two arbitrary points 1 and 2 on the unit sphere,
+whose positions are described in solid angles
+$\omega_1 = (\theta_1, \phi_1)$
+and
+$\omega_2 = (\theta_2, \phi_2)$, respectively.
+%
+Further define $\gamma$ as the angle between points 1 and 2.
+%
+The addition theorem states
 \begin{equation}
   P_n(\cos\gamma)
 = \sum_{m = -n}^n \frac{ 4 \pi } { 2 n + 1 }
-  Y_{n, m}(\theta_1, \phi_1) \, Y_{n, m}^*(\theta_2, \phi_2)
+  Y_{n, m}(\theta_1, \phi_1) \, Y_{n, m}^*(\theta_2, \phi_2).
 \label{eq:addition}
 \end{equation}
-where
-$\gamma$ is the angle between the points on the unit sphere
-at solid angles
-$\omega_1 = (\theta_1, \phi_1)$
+Below is a somewhat detailed proof of this theorem.
+
+
+
+\subsection{Expansion in spherical harmonics}
+
+
+
+First, we can expand the $P_n(\cos\gamma)$
+as a combination of spherical harmonics $Y_{n',m}(\theta_1, \phi_1)$,
+which are orthonormal.
+%
+One can argue that the relevant $Y_{n',m}$'s must share the same $n$,
+i.e., $n = n'$.\footnote{
+  Both sides of \eqref{eq:expansion1}
+  satisfy the differential equation of $Y$:
+\[
+  \frac{ 1 } { \sin \theta }
+  \frac{ \partial } { \partial \theta }
+  \left(
+    \sin \theta
+    \,
+    \frac{ \partial Y }{ \partial \theta }
+  \right)
+  +
+  \frac { 1 } { \sin^2 \theta }
+  \frac { \partial^2 Y } { \partial \phi^2 }
+  + n \, (n - 1)  \, Y = 0.
+\]
+This would not be so,
+if the right-hand side contains $n' \ne n$ terms.
+}
+%
+So
+\begin{equation}
+  P_n(\cos\gamma)
+=
+  \sum_{m = -n}^n a_m Y_{n, m}(\theta_1, \phi_1).
+  \label{eq:expansion1}
+\end{equation}
+%
+where the coefficient $a_m$ can be computed from the integral
+\begin{align}
+  a_m
+&=
+\int d\Omega_1 \, P_n(\cos\gamma) \, Y^*_{n,m}(\theta_1, \phi_1),
+\label{eq:am1}
+\end{align}
+where $d\Omega_1$ means
+$d(-\cos\theta_1) \, d\phi_1 = \sin\theta_1 d\theta_1 \, d\phi_1$.
+%
+We want to show that
+$a_m = 4 \pi Y_{n',m}(\theta_2, \phi_2)/ ( 2 n + 1 )$.
+
+
+
+\subsection{The inverse expansion}
+
+
+
+Now let us imagine a new coordination system,
+in which the $z$ axis points from the origin to point 2 on unit sphere.
+%
+In this special coordination system,
+we also have a set spherical harmonics $Y_{n', m'}(\gamma, \psi)$.
+\[
+  P_n(\cos\gamma)
+=
+\sqrt \frac { 4 \pi } { 2 n + 1 }
+  Y_{n, 0}(\gamma, \psi).
+\]
+Thus, we can rewrite $a_m$ in Eq. \eqref{eq:am1} as
+\begin{align}
+a_m
+&=
+\sqrt \frac{4 \pi}{ 2 n + 1 }
+\int d\Omega_1 \, Y_{n, 0}(\gamma, \psi) \, Y^*_{n,m}(\theta_1, \phi_1)
+=
+\sqrt \frac{4 \pi}{ 2 n + 1 } A_m.
+\label{eq:am2}
+\end{align}
+%
+where,
+\begin{equation}
+A_m
+\equiv
+\int d\Omega_1 \, Y_{n, 0}(\gamma, \psi) \, Y^*_{n,m}(\theta_1, \phi_1).
+\label{eq:Am}
+\end{equation}
+
+
+In the above expression of $A_m$,
+$Y_{n, 0}(\gamma, \psi)$ and $Y_{n, m}^*(\theta_1, \phi_1)$
+are almost symmetric (except a complex conjugation).
+%
+Thus $A_m$
+can be understood as the $m'=0$th expansion coefficients
+of $Y_{n, m}^*(\theta_1, \phi_1)$
+in terms of $Y_{n, m'}^*(\gamma, \psi)$.
+%
+Consider the expansion
+\begin{equation}
+  Y_{n, m}^*(\theta_1, \phi_1)
+=
+  \sum_{m' = -n}^n b_{m'} \,Y_{n, m'}^*(\gamma, \psi),
+  \label{eq:expansion0}
+\end{equation}
+in which,
+the coefficient $b_{m'}$ can be computed as
+\begin{equation}
+  b_{m'}
+=
+  \int d \Omega_{\gamma,\psi} \,
+  Y_{n, m}^*(\theta_1, \phi_1) \,
+  Y_{n, m'}(\gamma, \psi),
+  \label{eq:bm}
+\end{equation}
+where, $d\Omega_{\gamma, \psi} \equiv d(-\cos\gamma) d\psi$,
+and the integration over $d\Omega_{\gamma, \psi}$
+and that over $d\Omega_1$.
+Comparing it to \eqref{eq:Am}, we get
+\begin{equation}
+  b_0 = A_m.
+  \label{eq:b0Am}
+\end{equation}
+
+
+
+\subsection{Determination of $b_0$}
+
+
+Now our job is to determine $b_0$.
+The trick is \emph{not} to do it from Eq. \eqref{eq:bm},
+but to deduce it from Eq. \eqref{eq:expansion1}
+by setting $\theta_1$ and $\phi_1$ to some special values
+that will \emph{single out} the $m' = 0$ term.
+
+Let us set $\theta_1 = \theta_2$ and $\phi_1 = \phi_2$.
+Then the two points 1 and 2 coincide,
+and $\gamma = 0$ (with $\psi$ being arbitrary).
+%
+We show below that only the $m' = 0$ term in the sum
+of Eq. \eqref{eq:expansion1} survives.
+%
+This is because
+\begin{equation}
+  Y_{n, m'}(0, \psi)
+=
+  (-1)^{m'}
+  \sqrt{
+    \frac{ 2 n + 1 } { 4 \pi }
+    \frac{ (n - m')! } { (n + m')! }
+  }
+  P_{n}^{m'}\bigl( \cos(0) = 1 \bigr) e^{i m' \psi},
+  \label{eq:Ynm}
+\end{equation}
+and the associated Legendre polynomial
+\begin{equation}
+  P_{n}^{m'}(x)
+\equiv
+  \frac{ (1 - x^2)^{m'/2} } { 2^{n} n! }
+  \frac{ d^{n+m'} } { d x^{n+m'} } (x^2 - 1)^{n}.
+  \label{eq:Pnm}
+\end{equation}
+vanishes at $x = 1$, unless $m' = 0$.
+Thus,
+\[
+Y_{n,m}^*(\theta_2, \phi_2)
+=
+b_0 \, Y_{n, 0}(0, \psi).
+\]
+
+The final step is to determine $Y_{n, 0}(0, \psi)$.
+From Eq. \eqref{eq:Ynm}, we get
+\[
+  Y_{n, 0}
+=
+  \sqrt{
+    \frac { 2 n + 1 } { 4 \pi }
+  }
+  P_{n}^0(1),
+\]
 and
-$\omega_2 = (\theta_2, \phi_2)$.
+from Eq. \eqref{eq:Pnm}, we get
+\[
+  P_{n}^{0}(1)
+=
+  \left.
+  \frac{ 1 } { 2^{n} n! }
+  \frac{ d^{n} } { d x^{n} }
+  \Bigl[
+    (x - 1)^{n}
+    (x + 1)^{n}
+  \Bigr]
+  \right|_{x = 1}\
+= \frac{ 1 } { 2^{n} n! }
+  n! \, (1 + 1)^n
+= 1.
+\]
+In the second step,
+we have used the fact that
+the $n$ differentiations much
+be all applied to the factor $(x - 1)^n$
+to get a non-vanishing final result at $x = 1$.
+%
+Thus,
+$Y_{n, 0} = \sqrt{4\pi/(2n+1)}$.
+and
+\begin{equation}
+b_0 = \sqrt{ \frac {4 \pi} { 2 n + 1 } } \, Y_{n,m}^*(\theta_2, \phi_2).
+\label{eq:b0}
+\end{equation}
 
 
+\subsection{Finishing up}
+
+Using Eq. \eqref{eq:b0} in Eqs. \eqref{eq:b0Am} and \eqref{eq:am2},
+we get
+\begin{equation}
+  a_m = \frac{ 4 \pi } { 2 n + 1 }.
+\end{equation}
+Using this in Eq. \eqref{eq:expansion0}
+proves the addition theorem Eq. \eqref{eq:addition}.
+
+
+
+
+\subsection{An analogy}
+
+
+
+The centerpiece of the above proof is the shift of coordination system.
+This step may appear convoluted.
+Below we give a simpler analogy
+that can hopefully clear up the logic.
 
 
 \end{document}
