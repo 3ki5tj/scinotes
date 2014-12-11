@@ -84,7 +84,7 @@ $a_m = 4 \pi Y_{n',m}(\theta_2, \phi_2)/ ( 2 n + 1 )$.
 
 
 
-\subsection{The inverse expansion}
+\subsection{Spherical harmonics in a new coordination system}
 
 
 
@@ -119,6 +119,11 @@ A_m
 \end{equation}
 
 
+
+\subsection{The inverse expansion}
+
+
+
 In the above expression of $A_m$,
 $Y_{n, 0}(\gamma, \psi)$ and $Y_{n, m}^*(\theta_1, \phi_1)$
 are almost symmetric (except a complex conjugation).
@@ -128,12 +133,12 @@ can be understood as the $m'=0$th expansion coefficients
 of $Y_{n, m}^*(\theta_1, \phi_1)$
 in terms of $Y_{n, m'}^*(\gamma, \psi)$.
 %
-Consider the expansion
+Consider the inverse expansion
 \begin{equation}
   Y_{n, m}^*(\theta_1, \phi_1)
 =
   \sum_{m' = -n}^n b_{m'} \,Y_{n, m'}^*(\gamma, \psi),
-  \label{eq:expansion0}
+  \label{eq:expansion2}
 \end{equation}
 in which,
 the coefficient $b_{m'}$ can be computed as
@@ -161,8 +166,8 @@ Comparing it to \eqref{eq:Am}, we get
 
 Now our job is to determine $b_0$.
 The trick is \emph{not} to do it from Eq. \eqref{eq:bm},
-but to deduce it from Eq. \eqref{eq:expansion1}
-by setting $\theta_1$ and $\phi_1$ to some special values
+but to deduce it from Eq. \eqref{eq:expansion2}
+from a pair of special values of $\theta_1$ and $\phi_1$
 that will \emph{single out} the $m' = 0$ term.
 
 Let us set $\theta_1 = \theta_2$ and $\phi_1 = \phi_2$.
@@ -170,7 +175,7 @@ Then the two points 1 and 2 coincide,
 and $\gamma = 0$ (with $\psi$ being arbitrary).
 %
 We show below that only the $m' = 0$ term in the sum
-of Eq. \eqref{eq:expansion1} survives.
+of Eq. \eqref{eq:expansion2} survives.
 %
 This is because
 \begin{equation}
@@ -181,6 +186,7 @@ This is because
     \frac{ 2 n + 1 } { 4 \pi }
     \frac{ (n - m')! } { (n + m')! }
   }
+  \,
   P_{n}^{m'}\bigl( \cos(0) = 1 \bigr) e^{i m' \psi},
   \label{eq:Ynm}
 \end{equation}
@@ -197,12 +203,14 @@ Thus,
 \[
 Y_{n,m}^*(\theta_2, \phi_2)
 =
-b_0 \, Y_{n, 0}(0, \psi).
+b_0 \, Y_{n, 0}^*(0, \psi).
 \]
 
 The final step is to determine $Y_{n, 0}(0, \psi)$.
 From Eq. \eqref{eq:Ynm}, we get
 \[
+  Y_{n, 0}^*
+=
   Y_{n, 0}
 =
   \sqrt{
@@ -229,8 +237,8 @@ from Eq. \eqref{eq:Pnm}, we get
 \]
 In the second step,
 we have used the fact that
-the $n$ differentiations much
-be all applied to the factor $(x - 1)^n$
+the $n$ differentiations must be
+all applied to the factor $(x - 1)^n$
 to get a non-vanishing final result at $x = 1$.
 %
 Thus,
@@ -242,14 +250,17 @@ b_0 = \sqrt{ \frac {4 \pi} { 2 n + 1 } } \, Y_{n,m}^*(\theta_2, \phi_2).
 \end{equation}
 
 
+
 \subsection{Finishing up}
+
+
 
 Using Eq. \eqref{eq:b0} in Eqs. \eqref{eq:b0Am} and \eqref{eq:am2},
 we get
 \begin{equation}
   a_m = \frac{ 4 \pi } { 2 n + 1 }.
 \end{equation}
-Using this in Eq. \eqref{eq:expansion0}
+Using this in Eq. \eqref{eq:expansion1}
 proves the addition theorem Eq. \eqref{eq:addition}.
 
 
@@ -259,10 +270,92 @@ proves the addition theorem Eq. \eqref{eq:addition}.
 
 
 
-The centerpiece of the above proof is the shift of coordination system.
+The centerpiece of the above proof is the shift of coordination system
+in the inverse expansion Eq. \eqref{eq:expansion2}.
 This step may appear convoluted.
 Below we give a simpler analogy
 that can hopefully clear up the logic.
+
+Suppose we wish to prove the trigonometry identity:
+\begin{equation}
+  \cos(\gamma - \theta)
+= \cos\gamma \cos\theta
++ \sin\gamma \sin\theta.
+\label{eq:cosab}
+\end{equation}
+One way to do so is to think of it as a Fourier series
+\begin{equation}
+  \cos(\gamma - \theta)
+=
+  a \, \cos\theta
++
+  a' \, \sin\theta.
+  \label{eq:Fourier1}
+\end{equation}
+where, the expansion coefficients $a$ and $a'$
+are to be determined from
+\begin{align}
+a &= \frac{1}{\pi} \int_0^{2\pi}
+  \cos(\gamma - \theta) \, \cos\theta \, d\theta,
+  \label{eq:c1}
+\\
+a' &= \frac{1}{\pi} \int_0^{2\pi}
+  \cos(\gamma - \theta) \, \sin\theta \, d\theta.
+  \label{eq:s1}
+\end{align}
+Eq. \eqref{eq:Fourier1} is analogous to Eq. \eqref{eq:expansion1},
+and Eqs. \eqref{eq:c1} and \eqref{eq:s1}
+are analogous to Eq. \eqref{eq:am1}.
+
+
+Now consider a Fourier series based on $\cos(\gamma - \theta)$
+and $\sin(\gamma - \theta)$.
+Then the inverse expansion of $\cos\theta$
+in this new basis set, analogous to Eq. \eqref{eq:expansion2}, is
+\begin{equation}
+  \cos\theta
+  =
+  b \cos(\gamma - \theta)
++
+  b' \sin(\gamma - \theta).
+  \label{eq:Fourier2}
+\end{equation}
+where,
+the new coefficients are computed from,
+in analogous to Eq. \eqref{eq:bm},
+\begin{align}
+b &= \frac{1}{\pi} \int_0^{2\pi}
+  \cos\theta \, \cos(\gamma - \theta) \, \cos\theta \, d(\gamma - \theta),
+  \label{eq:c2}
+\\
+b' &= \frac{1}{\pi} \int_0^{2\pi}
+  \cos\theta \, \sin(\gamma - \theta) \, d(\gamma - \theta).
+  \label{eq:s2}
+\end{align}
+Clearly, $b = a$ [corresponding to Eq. \eqref{eq:b0Am}].
+
+To complete the analogy,
+consider the evaluation of $b = a$
+by using special values in
+Eq. \eqref{eq:Fourier2}.
+%
+With $\theta = \gamma$,
+we can single out the $b$ term
+as $\sin(\gamma - \theta) = 0$
+in this case.
+%
+So
+\begin{equation}
+  \cos\gamma
+=
+  b \cos(\gamma - \gamma)
+= b.
+\end{equation}
+So $a = b = \cos\gamma$.
+%
+Similarly one can show that $a' = \sin\gamma$,
+which yields Eq. \eqref{eq:cosab}.
+
 
 
 \end{document}
