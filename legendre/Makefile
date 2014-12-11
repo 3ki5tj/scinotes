@@ -5,7 +5,9 @@ htmldir = $(patsubst %.tex, %_html, $(tex))
 
 all: $(pdf)
 
-$(pdf) : %.pdf: %.tex
+$(pdf) : %.pdf: %.tex Makefile
+	pdflatex $<
+	bibtex $*
 	pdflatex $<
 	pdflatex $<
 

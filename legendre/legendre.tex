@@ -8,6 +8,24 @@
 \begin{document}
 
 
+\title{Notes on the Legendre polynomial}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+This note concerns some useful formulas of
+the (associated) Legendre polynomial
+and spherical harmonics.
+%
+Although we try to be as self-contained as possible,
+we assumed that the reader
+has a basic understanding of the two functions
+and the Bessel functions
+(Arfken and Weber's Mathematical Methods for Physics\cite{arfken}
+is an excellent source for these knowledge).
+
+
 
 \section{Addition theorem of the Legendre polynomial}
 
@@ -21,13 +39,16 @@ $\omega_2 = (\theta_2, \phi_2)$, respectively.
 %
 Further define $\gamma$ as the angle between points 1 and 2.
 %
-The addition theorem states
+The addition theorem states that
 \begin{equation}
   P_n(\cos\gamma)
 = \sum_{m = -n}^n \frac{ 4 \pi } { 2 n + 1 }
-  Y_{n, m}(\theta_1, \phi_1) \, Y_{n, m}^*(\theta_2, \phi_2).
+  Y_n^m(\theta_1, \phi_1) \, Y_n^{m*}(\theta_2, \phi_2),
 \label{eq:addition}
 \end{equation}
+where $Y_n^m$ is the spherical harmonics,
+and the ``$*$'' for complex conjugation
+can be assigned to either spherical harmonic.
 Below is a somewhat detailed proof of this theorem.
 
 
@@ -37,10 +58,10 @@ Below is a somewhat detailed proof of this theorem.
 
 
 First, we can expand the $P_n(\cos\gamma)$
-as a combination of spherical harmonics $Y_{n',m}(\theta_1, \phi_1)$,
+as a combination of spherical harmonics $Y_{n'}^m(\theta_1, \phi_1)$,
 which are orthonormal.
 %
-One can argue that the relevant $Y_{n',m}$'s must share the same $n$,
+One can argue that the relevant $Y_{n'}^m$'s must share the same $n$,
 i.e., $n = n'$.\footnote{
   Both sides of \eqref{eq:expansion1}
   satisfy the differential equation of $Y$:
@@ -65,7 +86,7 @@ So
 \begin{equation}
   P_n(\cos\gamma)
 =
-  \sum_{m = -n}^n a_m Y_{n, m}(\theta_1, \phi_1).
+  \sum_{m = -n}^n a_m Y_n^m(\theta_1, \phi_1).
   \label{eq:expansion1}
 \end{equation}
 %
@@ -73,14 +94,14 @@ where the coefficient $a_m$ can be computed from the integral
 \begin{align}
   a_m
 &=
-\int d\Omega_1 \, P_n(\cos\gamma) \, Y^*_{n,m}(\theta_1, \phi_1),
+\int d\Omega_1 \, P_n(\cos\gamma) \, Y_n^{m*}(\theta_1, \phi_1),
 \label{eq:am1}
 \end{align}
 where $d\Omega_1$ means
 $d(-\cos\theta_1) \, d\phi_1 = \sin\theta_1 d\theta_1 \, d\phi_1$.
 %
 We want to show that
-$a_m = 4 \pi Y_{n',m}(\theta_2, \phi_2)/ ( 2 n + 1 )$.
+$a_m = 4 \pi Y_n^m(\theta_2, \phi_2)/ ( 2 n + 1 )$.
 
 
 
@@ -92,19 +113,20 @@ Now let us imagine a new coordination system,
 in which the $z$ axis points from the origin to point 2 on unit sphere.
 %
 In this special coordination system,
-we also have a set spherical harmonics $Y_{n', m'}(\gamma, \psi)$.
+we also have a set spherical harmonics $Y_n^m(\gamma, \psi)$,
+among these, we have
 \[
   P_n(\cos\gamma)
 =
 \sqrt \frac { 4 \pi } { 2 n + 1 }
-  Y_{n, 0}(\gamma, \psi).
+  Y_n^0(\gamma, \psi).
 \]
 Thus, we can rewrite $a_m$ in Eq. \eqref{eq:am1} as
 \begin{align}
 a_m
 &=
 \sqrt \frac{4 \pi}{ 2 n + 1 }
-\int d\Omega_1 \, Y_{n, 0}(\gamma, \psi) \, Y^*_{n,m}(\theta_1, \phi_1)
+\int d\Omega_1 \, Y_n^0(\gamma, \psi) \, Y^*_{n,m}(\theta_1, \phi_1)
 =
 \sqrt \frac{4 \pi}{ 2 n + 1 } A_m.
 \label{eq:am2}
@@ -114,7 +136,7 @@ where,
 \begin{equation}
 A_m
 \equiv
-\int d\Omega_1 \, Y_{n, 0}(\gamma, \psi) \, Y^*_{n,m}(\theta_1, \phi_1).
+\int d\Omega_1 \, Y_n^0(\gamma, \psi) \, Y^*_{n,m}(\theta_1, \phi_1).
 \label{eq:Am}
 \end{equation}
 
@@ -125,19 +147,19 @@ A_m
 
 
 In the above expression of $A_m$,
-$Y_{n, 0}(\gamma, \psi)$ and $Y_{n, m}^*(\theta_1, \phi_1)$
+$Y_n^0(\gamma, \psi)$ and $Y_n^{m*}(\theta_1, \phi_1)$
 are almost symmetric (except a complex conjugation).
 %
 Thus $A_m$
 can be understood as the $m'=0$th expansion coefficients
-of $Y_{n, m}^*(\theta_1, \phi_1)$
-in terms of $Y_{n, m'}^*(\gamma, \psi)$.
+of $Y_n^{m*}(\theta_1, \phi_1)$
+in terms of $Y_n^{m'*}(\gamma, \psi)$.
 %
 Consider the inverse expansion
 \begin{equation}
-  Y_{n, m}^*(\theta_1, \phi_1)
+  Y_n^{m*}(\theta_1, \phi_1)
 =
-  \sum_{m' = -n}^n b_{m'} \,Y_{n, m'}^*(\gamma, \psi),
+  \sum_{m' = -n}^n b_{m'} \,Y_n^{m'*}(\gamma, \psi),
   \label{eq:expansion2}
 \end{equation}
 in which,
@@ -146,8 +168,8 @@ the coefficient $b_{m'}$ can be computed as
   b_{m'}
 =
   \int d \Omega_{\gamma,\psi} \,
-  Y_{n, m}^*(\theta_1, \phi_1) \,
-  Y_{n, m'}(\gamma, \psi),
+  Y_n^{m*}(\theta_1, \phi_1) \,
+  Y_n^{m'}(\gamma, \psi),
   \label{eq:bm}
 \end{equation}
 where, $d\Omega_{\gamma, \psi} \equiv d(-\cos\gamma) d\psi$,
@@ -179,7 +201,7 @@ of Eq. \eqref{eq:expansion2} survives.
 %
 This is because
 \begin{equation}
-  Y_{n, m'}(0, \psi)
+  Y_n^{m'}(0, \psi)
 =
   (-1)^{m'}
   \sqrt{
@@ -201,17 +223,17 @@ and the associated Legendre polynomial
 vanishes at $x = 1$, unless $m' = 0$.
 Thus,
 \[
-Y_{n,m}^*(\theta_2, \phi_2)
+Y_n^{m*}(\theta_2, \phi_2)
 =
-b_0 \, Y_{n, 0}^*(0, \psi).
+b_0 \, Y_n^{0*}(0, \psi).
 \]
 
-The final step is to determine $Y_{n, 0}(0, \psi)$.
+The final step is to determine $Y_n^0(0, \psi)$.
 From Eq. \eqref{eq:Ynm}, we get
 \[
-  Y_{n, 0}^*
+  Y_n^{0*}(0, \psi)
 =
-  Y_{n, 0}
+  Y_n^0(0, \psi)
 =
   \sqrt{
     \frac { 2 n + 1 } { 4 \pi }
@@ -242,10 +264,10 @@ all applied to the factor $(x - 1)^n$
 to get a non-vanishing final result at $x = 1$.
 %
 Thus,
-$Y_{n, 0} = \sqrt{4\pi/(2n+1)}$.
+$Y_n^0 = \sqrt{4\pi/(2n+1)}$.
 and
 \begin{equation}
-b_0 = \sqrt{ \frac {4 \pi} { 2 n + 1 } } \, Y_{n,m}^*(\theta_2, \phi_2).
+b_0 = \sqrt{ \frac {4 \pi} { 2 n + 1 } } \, Y_n^{m*}(\theta_2, \phi_2).
 \label{eq:b0}
 \end{equation}
 
@@ -358,4 +380,6 @@ which yields Eq. \eqref{eq:cosab}.
 
 
 
+\bibliography{../liquid}
+\bibliographystyle{alpha}
 \end{document}
