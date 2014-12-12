@@ -23,7 +23,104 @@ we assumed that the reader
 has a basic understanding of the two functions
 and the Bessel functions
 (Arfken and Weber's Mathematical Methods for Physics\cite{arfken}
-is an excellent source for these knowledge).
+is an excellent source).
+
+
+
+\section{Review}
+
+
+
+We shall briefly review some definitions and basic properties of the functions.
+
+
+\subsection{Legendre polynomials}
+
+
+
+The generating function of Legendre polynomials $P_n(x)$ is
+%
+\begin{equation}
+  (1 - 2 x t + t^2)^{-1/2}
+=
+  \sum_{n = 0}^\infty P_n(x) \, t^n.
+  \label{eq:legendre_gf}
+\end{equation}
+
+A more explicit formula, called Rodrigues' formula is
+%
+\begin{equation}
+  P_n(x)
+=
+  \frac{1}{2^n n!}
+  \frac{d^n}{dx^n}
+  (x^2 - 1)^n.
+  \label{eq:legendre_rodrigues}
+\end{equation}
+%
+Equivalently, we can write it as a contour integral,
+called Schlaefli integral, around $t = x$
+\begin{equation}
+  P_n(x)
+=
+  \frac{1}{2\pi i \, 2^n}
+  \oint
+  \frac{ (t^2 - 1)^n } { (t - x)^{n+1} } \, dt.
+  \label{eq:legendre_schlaefli}
+\end{equation}
+
+
+The Legendre polynomial satisfy the differential equation
+\begin{equation}
+  \frac{d}{dx}
+  \left[
+    (1 - x^2) \, \frac{d}{dx} P_n(x)
+  \right]
++ n (n + 1) \, P_n(x) = 0.
+\label{eq:legendre_diffeq}
+\end{equation}
+
+The Legendre polynomials are orthogonal with each other
+[which can be shown using Eq. \eqref{eq:legendre_diffeq}],
+and the normalization is given by
+\begin{equation}
+  \int_{-1}^1
+  P_n(x) \, P_{n'}(x) \, dx
+=
+  \frac { 2 } { 2 n + 1} \delta_{n, n'},
+  \label{eq:legendre_orthonormal}
+\end{equation}
+which can shown by squaring
+the generating function in Eq. \eqref{eq:legendre_gf},
+and integrating from $-1$ to 1.
+
+Below is a list of the first few Legendre polynomials:
+\begin{align*}
+  P_0(x) &= 1, &
+  P_1(x) &= x, \\
+  P_2(x) &= \frac{1}{2}(3 x^2 - 1), &
+  P_3(x) &= \frac{1}{2}(5 x^3 - 3 x),
+  \qquad \dots,
+\end{align*}
+from which we see that
+Legendre polynomials $P_n(x)$ share the same parity with $n$.
+For more values, one can use the recurrence relation:
+\begin{equation}
+  (2 n + 1) x P_n(x) = (n + 1) P_{n+1}(x) + n P_{n-1}(x),
+\end{equation}
+which can be readily shown from the generating function in Eq. \eqref{eq:legendre_gf}.
+
+Finally, some special values are listed below:
+\begin{align}
+  P_n(1)    &= 1,
+  \label{eq:legendre_1} \\
+  P_n(-1)   &= (-1)^n,
+  \label{eq:legendre_neg1} \\
+  P_{2n}(0) &= \frac{ (-1)^n (2n)! }{ 2^{2n} n!^2 },
+  \qquad
+  P_{2n-1}(0) = 0.
+  \label{eq:legendre_0}
+\end{align}
 
 
 
