@@ -35,7 +35,7 @@ github:
 push: github
 
 clean:
-	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg
+	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg *.bbl *.blg
 	rm -rf $(htmldir)
 	rstrip.py
 
