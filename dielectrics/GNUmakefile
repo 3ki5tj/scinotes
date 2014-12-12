@@ -1,5 +1,4 @@
-subdirs = liqprob singer1985mu usefftw usetikz attardmu hochain WHAM vrescale \
-	  legendre dielectrics
+subdirs = kirkwoodg
 
 clean:
 	for dir in $(subdirs) ; do $(MAKE) -C $$dir clean ; done
@@ -8,4 +7,4 @@ clean:
 	rstrip.py -Rlv
 
 Dropbox: clean
-	rsync -avzL * ~/Dropbox/scinotes/
+	rsync -avzL * ~/Dropbox/scinotes/dielectrics

@@ -1,0 +1,290 @@
+\documentclass[11pt]{article}
+\usepackage[width=7.0in, height=10.0in]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{upgreek}
+\usepackage{bm}
+
+
+
+\newcommand{\vct}[1]{\boldsymbol{\mathbf{#1}}}
+\newcommand{\vr}{\vct{r}}
+\newcommand{\vrN}{\vr^N}
+\newcommand{\vrn}{\vr^n}
+\newcommand{\dvr}{\frac{ d \vr  }{(2\pi)^3}}
+\newcommand{\vx}{\vct{x}}
+\newcommand{\vxN}{\vx^N}
+\newcommand{\vxn}{\vx^n}
+\newcommand{\dvx}{\frac{ d \vx  }{(2\pi)^3}}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\dvk}{\frac{ d \vk  }{(2\pi)^3}}
+\newcommand{\vy}{\vct{y}}
+\newcommand{\vz}{\vct{z}}
+\newcommand{\vE}{\vct{E}}
+\newcommand{\vD}{\vct{D}}
+\newcommand{\vP}{\vct{P}}
+\newcommand{\vM}{\vct{M}}
+\newcommand{\vdel}{\vct{\updelta}}
+
+
+
+\begin{document}
+
+
+\title{Kirkwood's formula for the dielectric constant}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+This note tries to explain the Kirkwood's 1939 paper\cite{kirkwood1939a}
+on the dielectric constant.
+%
+We try to use as basic mathematics
+(and to avoid the Legendre polynomials when possible).
+%
+The reader is, however, encourage to review Feynman's Lectures on Physics,
+Vol. II Chapters 10 and 11.
+%
+We will use the SI units throughout.
+If the reader who prefers the Gaussian units
+should simply replace $\epsilon_0$ by $1/(4 \pi)$.
+
+
+
+\section{Warm-up models}
+
+
+First, we recall that the Maxwell equations governing electrostatics
+are linear with respect to the fields,
+such as the electric field $\vE$ and the charge density $\rho$.
+%
+This simple fact is very useful,
+for it allows us to build up a complex field
+by linearly combining simpler electric fields.
+
+In this section,
+we will study a few basic model of polarization.
+%
+These models will be used as building blocks
+to understand the more complex Kirkwood model for
+the dielectric constant.
+
+
+
+\subsection{Uniformly polarized ball}
+
+
+
+The effect of a uniformly polarized ball of radius $R$ is equivalent to
+that of a uniformly and positively charged ball
+located at $\vct c_+ = (0, 0, \delta/2)$ (with charge density $\rho$)
+and that of a uniformly and negatively charged ball
+located at $\vct c_- = (0, 0, -\delta/2)$,
+with $\delta \rightarrow 0$.
+
+
+The electric field caused by the positive ball
+can be computed using the Gauss theorem.
+%
+For $r_+ < R$, we have
+\[
+  E 4 \pi r_+^2
+=
+  \frac { 4 \pi r_+^3 } { 3 } \frac{ \rho } { \epsilon_0 },
+\]
+where
+\[
+  r_\pm = |\vr - \vct c_\pm| = r \mp \frac{ \delta \cos\theta} { 2 },
+\]
+with $\theta$ being the angle between $\vr$ and $\vz$,
+i.e., $\hat\vr \cdot \hat\vz = \cos\theta$.
+So
+\[
+  \vE_+
+=
+  \frac{ \rho } { 3 \, \epsilon_0 } ( \vr - \vct c_+ ).
+\]
+By symmetry the field caused by the negatively charged ball
+is given by
+\[
+  \vE_- = -\frac{ \rho } { 3 \, \epsilon_0 } ( \vr - \vct c_- ).
+\]
+The superposition of the two yields
+\begin{align}
+  \vE_{\vP} = \vE_+ + \vE_-
+= - \frac{ \rho \, \vct\delta } { 3 \epsilon_0 }
+= - \frac{ \vP } { 3 \epsilon_0 },
+  \label{eq:EP_in}
+\end{align}
+where $\vdel = \delta \vz$.
+%
+
+Outside of the ball, we can also use the Gauss theorem.
+\[
+  E 4 \pi r_+^2
+=
+  \frac { 4 \pi R^3 } { 3 } \frac{ \rho } { \epsilon_0 },
+\]
+and
+\[
+  \vE_+
+=
+  \frac{ \rho \, R^3} { 3 \, \epsilon_0 \, r_+^3} ( \vr - \vct c_+ ).
+\]
+Similarly,
+\[
+  \vE_-
+=
+  -\frac{ \rho \, R^3} { 3 \, \epsilon_0 \, r_-^3} ( \vr - \vct c_- ).
+\]
+The sum of the above two is the electric field outside the ball.
+For a small $\delta$,
+we get
+\begin{align}
+  \vE_{\vP}
+&=
+  -\frac{ \rho \, R^3 \, (\vct c_+ - \vct c_-) } { 3 \, \epsilon_0 \, r^3 }
+  +\frac{ \rho \, R^3 \vr } { 3 \, \epsilon_0 }
+   \left(
+      \frac{ 1 } { r_+^3 }
+      -
+      \frac{ 1 } { r_-^3 }
+   \right)
+   \notag \\
+&=
+  -\frac{ \rho \, R^3 \vdel } { 3 \, \epsilon_0 \, r^3 }
+  +\frac{ \rho \, R^3 \vr } { \epsilon_0 }
+      \frac{ \delta \cos\theta } { r^4 }
+   \notag \\
+&=
+  -\frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM } {r^3}
+  +
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ 3 \, (\vM \cdot \hat\vr) \, \hat\vr } { r^3 }
+   \notag \\
+&=
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM \cdot (3 \, \hat\vr \, \hat\vr - 1) } { r^3 }
+=
+  -\nabla \left(
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM \cdot \vr } {r^3}
+  \right).
+  \label{eq:EP_out}
+\end{align}
+where
+\[
+  \vM =
+  \frac{ 4 \pi R^3 \, \rho \, \vdel } { 3 }
+  =
+  \frac{ 4 \pi R^3 } { 3 } \, \vP.
+\]
+is the total dipole moment of the ball.
+
+
+Physically,
+%
+A uniformly polarized ball produces,
+within the ball,
+a uniform field
+that is $-1/\epsilon_0$ times the polarization vector,
+by Eq. \eqref{eq:EP_in};
+and
+Eq. \eqref{eq:EP_out} says that
+the electric field outside the ball
+is equivalent to that of a dipole of moment $\vM$.
+
+
+
+
+\subsection{Dielectric ball in uniform field}
+
+
+
+This model is used in the paragraph between Eqs. (6) and (7)
+on page 913 of Kirkwood's paper.
+
+First, let us consider a solid ball of radius $R$ with
+the dielectric constant $\epsilon$.
+The ball is placed in vacuum
+under a constant electrostatic field
+$\vE_0 = E_0 \vz$
+along the $z$ axis.
+We wish to know the electric field within the ball.
+
+Solution.
+Let us assume that the ball is uniformly polarized,
+with polarization vector $\vP$.
+Then the electric field caused the by the polarization charges
+is given by $-\vP/\epsilon_0$,
+according to Eq. \eqref{eq:EP_in}.
+The total electric field (for $r < R$) is given by
+\[
+  \vE = \vE_0 - \frac{ \vP } { 3 \epsilon_0 }.
+\]
+Further, we have
+\[
+  \vP = (\epsilon - 1) \vE.
+\]
+Eliminating $\vP$ from the two above equations yields
+\[
+  \vE = \frac{ 3 } {2 + \epsilon} \vE_0.
+\]
+
+
+
+\section{Three-tier (Kirkwood's) model}
+
+
+
+The Kirkwood formula for the dielectric constant centers around a three-tier model.
+
+
+
+
+\section{Errata}
+
+
+
+Errors of the original paper are listed below.
+
+On page 918, the $\epsilon$ on the left-hand side of Eq. (28)
+should be dropped:
+\begin{align}
+  -\vct\upmu^*\cdot
+  \nabla
+  \left(
+    \frac { 1 }
+    { |\vr - \vr'| }
+  \right)
+&=
+  \sum_{n = 0}^\infty
+  \sum_{m = -n}^{+n}
+  \frac { ( n - |m| )! } { ( n + |m| )! }
+  \notag
+  \\
+&\hphantom{=}\times
+  \frac { A_{nm} } { r^{n + 1} }
+  P_n^m(\cos\vartheta) e^{im \varphi}.
+  \tag{28}
+\end{align}
+
+On the same page, the term $\epsilon - 1$ in Eq. (33) misses a square sign.
+\begin{align}
+\overline {\vM}
+=
+\overline {\vM}(R, r_0)
+-
+\frac{2}{3\epsilon}
+\frac{(\epsilon - 1)^2}{\epsilon + 2}
+\vct\upmu^*
++ O\left( \frac{ r_0^3 } { R^3 } \right).
+\tag{33}
+\end{align}
+
+
+\bibliography{../../liquid}
+\bibliographystyle{alpha}
+\end{document}
