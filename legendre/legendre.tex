@@ -5,10 +5,24 @@
 
 
 
+\newcommand{\vct}[1]{\boldsymbol{\mathbf{#1}}}
+\newcommand{\vr}{\vct{r}}
+\newcommand{\vrN}{\vr^N}
+\newcommand{\vrn}{\vr^n}
+\newcommand{\dvr}{\frac{ d \vr  }{(2\pi)^3}}
+\newcommand{\vx}{\vct{x}}
+\newcommand{\vxN}{\vx^N}
+\newcommand{\vxn}{\vx^n}
+\newcommand{\dvx}{\frac{ d \vx  }{(2\pi)^3}}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\dvk}{\frac{ d \vk  }{(2\pi)^3}}
+
+
+
 \begin{document}
 
 
-\title{Notes on the Legendre polynomial}
+\title{Notes on the Legendre polynomials}
 \author{ \vspace{-10ex} }
 \date{ \vspace{-10ex} }
 \maketitle
@@ -122,6 +136,50 @@ Finally, some special values are listed below:
   \label{eq:legendre_0}
 \end{align}
 
+
+
+\subsection{Spherical Bessel function}
+
+
+
+The spherical Bessel function is given by
+\begin{align}
+j_n(x)
+&= \sqrt{ \frac{ n } { 2 x } } J_{n + 1/2}(x) \\
+&= 2^n x^n
+\sum_{s = 0}^\infty
+\frac { (-)^s (s + n)! }
+{ s! \, (2 s + 2 n + 1)! }
+\,
+x^{2s}
+\label{eq:besselj}
+\end{align}
+
+The first few spherical Bessel functions are
+\begin{align*}
+  j_0(x) &= \frac { \sin x } { x }, \\
+  j_1(x) &= \frac { \sin x - x \, \cos x } { x^2 }, \\
+  j_2(x) &= \frac { 3 \, \sin x - 3 \, x \, \cos x - x^2 \, \sin x } { x^3 },
+\end{align*}
+
+There are two useful recurrence relations:
+\begin{align}
+  \frac{d}{dx}
+  \left[
+    x^{n+1} j_n(x)
+  \right]
+&=
+  x^{n+1} j_{n - 1}(x)
+\label{eq:recur_jn1}
+  \\
+  \frac{d}{dx}
+  \left[
+    j_n(x) / x^n
+  \right]
+=
+  - j_{n+1}(x) / x^n.
+\label{eq:recur_jn2}
+\end{align}
 
 
 \section{Addition theorem of the Legendre polynomial}
@@ -474,6 +532,122 @@ So $a = b = \cos\gamma$.
 %
 Similarly one can show that $a' = \sin\gamma$,
 which yields Eq. \eqref{eq:cosab}.
+
+
+
+\section{Rayleigh equation}
+
+
+
+The Rayleigh equation expands a plane wave $e^{i k x}$into spherical waves $j_n(kr)$
+\begin{align}
+  e^{i\vk \cdot \vr}
+=
+  e^{ikr\cos\gamma}
+&=
+  \sum_{n = 0}^\infty
+i^n \, ( 2 n + 1 )
+j_n(k r) \, P_n(\cos\gamma)
+\label{eq:rayleigh} \\
+&=
+  \sum_{n = 0}^\infty
+i^n \, 4 \, \pi
+j_n(k r) \, Y_n^m(\Omega_{\vk}) \, Y_n^{m*}(\Omega_{\vr}),
+\label{eq:rayleigh_yy}
+\end{align}
+where, $\gamma$ is angle between the vector $k$ and $r$,
+and we have used the addition theorem Eq. \eqref{eq:addition}
+on the second line.
+
+
+
+\subsection{Proof}
+
+
+
+To show this, we need the following lemma.
+%
+We wish to evaluate the integral
+$\int_{-1}^1 x^m \, P_n(x) \, dx$.
+%
+For $m = n + 2 s$, we can use
+Rodrigues' formula, Eq. \eqref{eq:legendre_rodrigues},
+and integrate by parts for $n$ times:
+\begin{align*}
+\int_{-1}^1 x^{n + 2s} \, P_n(x) \, dx
+&=
+\frac{ 1 } { 2^n n! }
+\int_{-1}^1 x^{n + 2 s} \,
+\frac{d^n}{dx^n} (x^2 - 1)^n \, dx
+\notag \\
+&=
+\frac{ (-)^n } { 2^n n! }
+\int_{-1}^1 \frac{d^n}{dx^n} x^{n + 2 s} \,
+(x^2 - 1)^n \, dx
+\notag \\
+&=
+\frac{ (-)^n (n + 2 s)! } { 2^n n! (2 s)! }
+\int_{-1}^1 x^{2 s} \,
+(x^2 - 1)^n \, dx
+\notag \\
+&=
+\frac{ (n + 2 s)! } { 2^n n! (2 s)! }
+\int_{-1}^1 \cos^{2 s}\theta \,
+\sin^{2n + 1}\theta \, d\theta
+\notag \\
+&=
+\frac{ (n + 2 s)! } { 2^n n! (2 s)! }
+B\left(s + \frac{1}{2}, n + 1\right)
+=
+\frac{ 2^{n+1} \, (n + 2 s)! \, (n + s)! } { (2 n + 2 s + 1)! \, s! },
+\notag \\
+\end{align*}
+where,
+on the fourth line,
+we have changed variable $x = -\cos\theta$;
+%
+$B(x, y) = \Gamma(x) \, \Gamma(y) / \Gamma(x + y)$
+is the beta function
+[with $\Gamma(x) = (x-1)!$ being the gamma function].
+%
+An integral for $x^m$ with $m < n$
+or for an $m$ that differs in parity with $n$
+yields zero.
+
+
+Consider the expansion,
+\[
+  e^{iax} = \sum_{m = 0}^\infty c_m P_m(x).
+\]
+Multiplying both sides by $P_n(x)$ and integrate from $-1$ to $1$,
+we get
+\begin{align*}
+  \frac{ 2 \, c_n } { 2 n + 1}
+&=
+  \int_{-1}^1
+  e^{iax} P_n(x) \, dx
+  \notag \\
+&=
+  \sum_{s = 0}^\infty
+  \frac{ (ia)^{n + 2s} } { (n + 2s)! }
+  \int_{-1}^1
+  x^{n + 2 s} \, P_n(x) \, dx
+  \notag \\
+&=
+  2^{n+1} \, i^n \,
+  \sum_{s = 0}^\infty
+  \frac{ a^{n + 2s} \, (n + s)! }
+  { (2n + 2s + 1)! \, s! }
+= 2 \, i^n j_n(a),
+\end{align*}
+where we have used Eq. \eqref{eq:besselj}.
+in the last step.
+%
+Thus
+\[
+  c_n = (2 n + 1) j_n(a).
+\]
+Now with $a = kr$ and $x = \cos\gamma$, we get Eq. \eqref{eq:rayleigh}.
 
 
 
