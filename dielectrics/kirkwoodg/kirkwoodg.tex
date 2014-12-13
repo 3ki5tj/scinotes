@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{upgreek}
 \usepackage{bm}
+\usepackage{mathtools}
 
 
 
@@ -24,8 +25,9 @@
 \newcommand{\vD}{\vct{D}}
 \newcommand{\vP}{\vct{P}}
 \newcommand{\vM}{\vct{M}}
+\newcommand{\vMbar}{\overline{\vct{M}}}
 \newcommand{\vdel}{\vct{\updelta}}
-
+\newcommand{\vmu}{\vct{\upmu}}
 
 
 \begin{document}
@@ -40,15 +42,17 @@
 This note tries to explain the Kirkwood's 1939 paper\cite{kirkwood1939a}
 on the dielectric constant.
 %
-We try to use as basic mathematics
-(and to avoid the Legendre polynomials when possible).
+%We try to use as basic mathematics
+%(and to avoid the Legendre polynomials when possible).
+Before reading this original paper or the note,
 %
-The reader is, however, encourage to review Feynman's Lectures on Physics,
+the reader is encourage to review Feynman's Lectures on Physics,
 Vol. II Chapters 10 and 11.
 %
 We will use the SI units throughout.
 If the reader who prefers the Gaussian units
-should simply replace $\epsilon_0$ by $1/(4 \pi)$.
+should simply replace $\epsilon_0$ by $1/(4 \pi)$,
+and ignore $4\pi \epsilon_0$ wherever it occurs.
 
 
 
@@ -113,12 +117,23 @@ is given by
 The superposition of the two yields
 \begin{align}
   \vE_{\vP} = \vE_+ + \vE_-
-= - \frac{ \rho \, \vct\delta } { 3 \epsilon_0 }
-= - \frac{ \vP } { 3 \epsilon_0 },
+= - \frac{ \rho \, \vdel } { 3 \epsilon_0 }
+= - \frac{ \vP } { 3 \epsilon_0 }
+= - \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM } { R^3 },
   \label{eq:EP_in}
 \end{align}
-where $\vdel = \delta \vz$.
+where $\vdel = \vz \, \delta$,
+the polarization vector $\vP = \rho \vdel$,
 %
+and
+\[
+  \vM =
+  \frac{ 4 \pi R^3 \, \rho \, \vdel } { 3 }
+  =
+  \frac{ 4 \pi R^3 } { 3 } \, \vP.
+\]
+is the total dipole moment of the ball.
 
 Outside of the ball, we can also use the Gauss theorem.
 \[
@@ -174,14 +189,32 @@ we get
   \right).
   \label{eq:EP_out}
 \end{align}
-where
-\[
-  \vM =
-  \frac{ 4 \pi R^3 \, \rho \, \vdel } { 3 }
+
+
+In summary,
+we have
+\begin{equation}
+  \vE_{\vP}
+=
+  \begin{dcases}
+  -\frac{ \vP } { 3 \, \epsilon_0 }
   =
-  \frac{ 4 \pi R^3 } { 3 } \, \vP.
-\]
-is the total dipole moment of the ball.
+  -\frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM } {R^3}
+  & \mbox{for $r \le R$},
+    \\
+  -\nabla \left(
+    \frac{ \vP \cdot \hat \vr \, R^3 } { 3 \, \epsilon_0 \, r^2 }
+    \right)
+  =
+  -\nabla \left(
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM \cdot \hat\vr } {r^2}
+  \right)
+  & \mbox{for $r > R$}.
+  \end{dcases}
+  \label{eq:uball}
+\end{equation}
 
 
 Physically,
@@ -217,21 +250,73 @@ We wish to know the electric field within the ball.
 Solution.
 Let us assume that the ball is uniformly polarized,
 with polarization vector $\vP$.
-Then the electric field caused the by the polarization charges
+Then the electric field caused by the polarization charges
 is given by $-\vP/\epsilon_0$,
 according to Eq. \eqref{eq:EP_in}.
 The total electric field (for $r < R$) is given by
 \[
-  \vE = \vE_0 - \frac{ \vP } { 3 \epsilon_0 }.
+  \vE = \vE_0 - \frac{ \vP } { 3 \, \epsilon_0 }.
 \]
 Further, we have
 \[
-  \vP = (\epsilon - 1) \vE.
+  \frac{ \vP } { \epsilon_0 }
+= (\epsilon - 1) \vE.
 \]
-Eliminating $\vP$ from the two above equations yields
+From the two above equations yields
+\begin{align}
+  \vE &= \frac{ 3 } { \epsilon + 2 } \vE_0, \\
+  \frac{\vP}{\epsilon_0}
+  &= \frac{ 1 } { 4 \pi \epsilon_0 } \frac{ 3 \vM } { R^3 }
+  = \frac{ 3 ( \epsilon - 1 ) } { \epsilon + 2 } \vE_0
+  \label{eq:Eplug}
+\end{align}
+
+
+
+\subsection{Dielectric ball in uniform field, generalized}
+
+
+
+Now consider a generalization.
+%
+The solid ball of dielectric constant $\epsilon$
+is now immersed in a medium of dielectric constant $\epsilon'$.
+%
+A uniform electric field $\vE'$ is applied in the medium.
+
+Solution.
+The ball is still uniformly polarized,
+but so is the medium.
+Thus we shall consider instead
+the excess polarization vector $\Delta\vP$
+of the ball with respect to the medium.
+%
+Then the electric field caused by $\Delta\vP$
+is given by $-\Delta\vP/\epsilon_0$,
+according to Eq. \eqref{eq:EP_in}.
+The total electric field inside the ball ($r < R$) is given by
 \[
-  \vE = \frac{ 3 } {2 + \epsilon} \vE_0.
+  \vE = \vE' - \frac{ \Delta \vP } { 3 \, \epsilon_0 \, \epsilon' }.
 \]
+Further, we have within the ball
+\[
+  \frac{ \Delta \vP } { \epsilon_0 }
+  = \left( \epsilon - \epsilon' \right) \, \vE.
+\]
+Eliminating $\Delta \vP$ from the two above equations yields
+\begin{equation}
+  \vE = \frac{ 3 \, \epsilon' } {2 \, \epsilon' + \epsilon} \vE'.
+  \label{eq:Eplug_general}
+\end{equation}
+
+Particularly for a vacuum cavity with $\epsilon = 1$,
+we have
+\begin{equation}
+  \vE = \frac{ 3 \, \epsilon' } {2 \, \epsilon' + 1} \vE'.
+  \label{eq:Ehole}
+\end{equation}
+
+
 
 
 
@@ -241,6 +326,62 @@ Eliminating $\vP$ from the two above equations yields
 
 The Kirkwood formula for the dielectric constant centers around a three-tier model.
 
+
+The first tier is the molecule itself with a dipole moment $\vmu^*$.
+
+The second tier is a sphere of radius $r_0$.
+
+The third tier is a sphere of larger sphere of radius $R$,
+which is the entire dielectric.
+
+
+To model the cause of the dipole, $\vmu^*$,
+we consider an external field, $\vE_0$,
+which is defined as follows.
+%
+In vacuum,
+the molecule is polarized to have a dipole moment $\vmu^*$
+under $\vE_0$.
+
+
+From a distance $r \gg R$,
+the entire medium looks like a dipole of moment $\vMbar$.
+%
+According to Eq. \eqref{eq:Eplug},
+\begin{align*}
+%  \frac{ \vMbar } { 4 \pi \epsilon_0 }
+%&=
+%  \frac{ ( \epsilon - 1 ) \, R^3 } { \epsilon + 2 } \vE_0
+%\\
+  \vE_2
+&=
+  \frac{ 3 } { \epsilon + 2 } \vE_0.
+\end{align*}
+%
+Try to argue
+$E_2 \cdot \vmu^* = E_0 \cdot \vMbar$.
+Then
+\begin{equation}
+  \vMbar
+=
+  \frac{ 3 } { \epsilon + 2 } \vmu^*
+\end{equation}
+
+According to Eq. \eqref{eq:Ehole},
+\begin{align*}
+  \vE^*
+&=
+  \frac{ 3 \epsilon } { 2 \epsilon + 1 } \vE_1.
+\end{align*}
+Try to argue
+$E_1 \cdot \vmu^* = E^* \cdot \vMbar$.
+Then
+\begin{equation}
+  \vmu^*
+=
+  \frac{ 3 \epsilon } { 2 \epsilon + 1}
+  \vMbar(R, r_0).
+\end{equation}
 
 
 
