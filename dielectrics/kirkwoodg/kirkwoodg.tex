@@ -47,351 +47,99 @@
 This note tries to explain the Kirkwood's 1939 paper\cite{kirkwood1939a}
 on the dielectric constant.
 %
-%We try to use as basic mathematics
-%(and to avoid the Legendre polynomials when possible).
-Before reading this original paper or the note,
-%
-the reader is encourage to review Feynman's Lectures on Physics,
-Vol. II Chapters 10 and 11.
-%
-We will use the SI units throughout.
-If the reader who prefers the Gaussian units
-should simply replace $\epsilon_0$ by $1/(4 \pi)$,
-and ignore $4\pi \epsilon_0$ wherever it occurs.
 
-
-
-\section{Warm-up models}
-
-
-
-First, we recall that the Maxwell equations governing electrostatics
-are linear with respect to the fields,
-such as the electric field $\vE$ and the charge density $\rho$.
-%
-This simple fact is very useful,
-for it allows us to build up a complex field
-by linearly combining simpler electric fields.
-
-In this section,
-we will study a few basic model of polarization.
-%
-These models will be used as building blocks
-to understand the more complex Kirkwood model for
-the dielectric constant.
-
-
-
-\subsection{Uniformly polarized ball}
-
-
-
-The effect of a uniformly polarized ball of radius $R$ is equivalent to
-that of a uniformly and positively charged ball
-located at $\vct c_+ = (0, 0, \delta/2)$ (with charge density $\rho$)
-and that of a uniformly and negatively charged ball
-located at $\vct c_- = (0, 0, -\delta/2)$,
-with $\delta \rightarrow 0$.
-
-
-The electric field caused by the positive ball
-can be computed using the Gauss theorem.
-%
-For $r_+ < R$, we have
-\[
-  E 4 \pi r_+^2
-=
-  \frac { 4 \pi r_+^3 } { 3 } \frac{ \rho } { \epsilon_0 },
-\]
-where
-\[
-  r_\pm = |\vr - \vct c_\pm| = r \mp \frac{ \delta \cos\theta} { 2 },
-\]
-with $\theta$ being the angle between $\vr$ and $\vz$,
-i.e., $\hat\vr \cdot \hat\vz = \cos\theta$.
-So
-\[
-  \vE_+
-=
-  \frac{ \rho } { 3 \, \epsilon_0 } ( \vr - \vct c_+ ).
-\]
-By symmetry the field caused by the negatively charged ball
-is given by
-\[
-  \vE_- = -\frac{ \rho } { 3 \, \epsilon_0 } ( \vr - \vct c_- ).
-\]
-The superposition of the two yields
-\begin{align}
-  \vE_{\vP} = \vE_+ + \vE_-
-= - \frac{ \rho \, \vdel } { 3 \epsilon_0 }
-= - \frac{ \vP } { 3 \epsilon_0 }
-= - \frac{ 1 } { 4 \pi \epsilon_0 }
-  \frac{ \vM } { R^3 },
-  \label{eq:EP_in}
-\end{align}
-where $\vdel = \vz \, \delta$,
-the polarization vector $\vP = \rho \vdel$,
-%
-and
-\[
-  \vM =
-  \frac{ 4 \pi R^3 \, \rho \, \vdel } { 3 }
-  =
-  \frac{ 4 \pi R^3 } { 3 } \, \vP.
-\]
-is the total dipole moment of the ball.
-
-Outside of the ball, we can also use the Gauss theorem.
-\[
-  E 4 \pi r_+^2
-=
-  \frac { 4 \pi R^3 } { 3 } \frac{ \rho } { \epsilon_0 },
-\]
-and
-\[
-  \vE_+
-=
-  \frac{ \rho \, R^3} { 3 \, \epsilon_0 \, r_+^3} ( \vr - \vct c_+ ).
-\]
-Similarly,
-\[
-  \vE_-
-=
-  -\frac{ \rho \, R^3} { 3 \, \epsilon_0 \, r_-^3} ( \vr - \vct c_- ).
-\]
-The sum of the above two is the electric field outside the ball.
-For a small $\delta$,
-we get
-\begin{align}
-  \vE_{\vP}
-&=
-  -\frac{ \rho \, R^3 \, (\vct c_+ - \vct c_-) } { 3 \, \epsilon_0 \, r^3 }
-  +\frac{ \rho \, R^3 \vr } { 3 \, \epsilon_0 }
-   \left(
-      \frac{ 1 } { r_+^3 }
-      -
-      \frac{ 1 } { r_-^3 }
-   \right)
-   \notag \\
-&=
-  -\frac{ \rho \, R^3 \vdel } { 3 \, \epsilon_0 \, r^3 }
-  +\frac{ \rho \, R^3 \vr } { \epsilon_0 }
-      \frac{ \delta \cos\theta } { r^4 }
-   \notag \\
-&=
-  -\frac{ 1 } { 4 \pi \epsilon_0 }
-  \frac{ \vM } {r^3}
-  +
-  \frac{ 1 } { 4 \pi \epsilon_0 }
-  \frac{ 3 \, (\vM \cdot \hat\vr) \, \hat\vr } { r^3 }
-   \notag \\
-&=
-  \frac{ 1 } { 4 \pi \epsilon_0 }
-  \frac{ \vM \cdot (3 \, \hat\vr \, \hat\vr - 1) } { r^3 }
-=
-  -\nabla \left(
-  \frac{ 1 } { 4 \pi \epsilon_0 }
-  \frac{ \vM \cdot \vr } {r^3}
-  \right).
-  \label{eq:EP_out}
-\end{align}
-
-
-In summary,
-we have
-\begin{equation}
-  \vE_{\vP}
-=
-  \begin{dcases}
-  -\frac{ \vP } { 3 \, \epsilon_0 }
-  =
-  -\frac{ 1 } { 4 \pi \epsilon_0 }
-  \frac{ \vM } {R^3}
-  & \mbox{for $r \le R$},
-    \\
-  -\nabla \left(
-    \frac{ \vP \cdot \hat \vr \, R^3 } { 3 \, \epsilon_0 \, r^2 }
-    \right)
-  =
-  -\nabla \left(
-  \frac{ 1 } { 4 \pi \epsilon_0 }
-  \frac{ \vM \cdot \hat\vr } {r^2}
-  \right)
-  & \mbox{for $r > R$}.
-  \end{dcases}
-  \label{eq:uball}
-\end{equation}
-
-
-Physically,
-%
-A uniformly polarized ball produces,
-within the ball,
-a uniform field
-that is $-1/\epsilon_0$ times the polarization vector,
-by Eq. \eqref{eq:EP_in};
-and
-Eq. \eqref{eq:EP_out} says that
-the electric field outside the ball
-is equivalent to that of a dipole of moment $\vM$.
-
-
-
-
-\subsection{Dielectric ball in uniform field}
-
-
-
-This model is used in the paragraph between Eqs. (6) and (7)
-on page 913 of Kirkwood's paper.
-
-First, let us consider a solid ball of radius $R$ with
-the dielectric constant $\epsilon$.
-The ball is placed in vacuum
-under a constant electrostatic field
-$\vE_0 = E_0 \vz$
-along the $z$ axis.
-We wish to know the electric field within the ball.
-
-Solution.
-Let us assume that the ball is uniformly polarized,
-with polarization vector $\vP$.
-Then the electric field caused by the polarization charges
-is given by $-\vP/\epsilon_0$,
-according to Eq. \eqref{eq:EP_in}.
-The total electric field (for $r < R$) is given by
-\[
-  \vE = \vE_0 - \frac{ \vP } { 3 \, \epsilon_0 }.
-\]
-Further, we have
-\[
-  \frac{ \vP } { \epsilon_0 }
-= (\epsilon - 1) \vE.
-\]
-From the two above equations yields
-\begin{align}
-  \vE &= \frac{ 3 } { \epsilon + 2 } \vE_0, \\
-  \frac{\vP}{\epsilon_0}
-  &= \frac{ 1 } { 4 \pi \epsilon_0 } \frac{ 3 \vM } { R^3 }
-  = \frac{ 3 ( \epsilon - 1 ) } { \epsilon + 2 } \vE_0
-  \label{eq:Eplug}
-\end{align}
-
-
-
-\subsection{Dielectric ball in uniform field, generalized}
-
-
-
-Now consider a generalization.
-%
-The solid ball of dielectric constant $\epsilon$
-is now immersed in a medium of dielectric constant $\epsilon'$.
-%
-A uniform electric field $\vE'$ is applied in the medium.
-
-Solution.
-The ball is still uniformly polarized,
-but so is the medium.
-Thus we shall consider instead
-the excess polarization vector $\Delta\vP$
-of the ball with respect to the medium.
-%
-Then the electric field caused by $\Delta\vP$
-is given by $-\Delta\vP/\epsilon_0$,
-according to Eq. \eqref{eq:EP_in}.
-The total electric field inside the ball ($r < R$) is given by
-\[
-  \vE = \vE' - \frac{ \Delta \vP } { 3 \, \epsilon_0 \, \epsilon' }.
-\]
-Further, we have within the ball
-\[
-  \frac{ \Delta \vP } { \epsilon_0 }
-  = \left( \epsilon - \epsilon' \right) \, \vE.
-\]
-Eliminating $\Delta \vP$ from the two above equations yields
-\begin{equation}
-  \vE = \frac{ 3 \, \epsilon' } {2 \, \epsilon' + \epsilon} \vE'.
-  \label{eq:Eplug_general}
-\end{equation}
-
-Particularly for a vacuum cavity with $\epsilon = 1$,
-we have
-\begin{equation}
-  \vE = \frac{ 3 \, \epsilon' } {2 \, \epsilon' + 1} \vE'.
-  \label{eq:Ehole}
-\end{equation}
-
-
-
-
-
-\section{Three-tier (Kirkwood's) model}
-
-
-
-The Kirkwood formula for the dielectric constant centers around a three-tier model.
-
-
-The first tier is the molecule itself with a dipole moment $\vmu^*$.
-
-The second tier is a sphere of radius $r_0$.
-
-The third tier is a sphere of larger sphere of radius $R$,
-which is the entire dielectric.
-
-
-To model the cause of the dipole, $\vmu^*$,
-we consider an external field, $\vE_0$,
-which is defined as follows.
-%
-In vacuum,
-the molecule is polarized to have a dipole moment $\vmu^*$
-under $\vE_0$.
-
-
-From a distance $r \gg R$,
-the entire medium looks like a dipole of moment $\vMbar$.
-%
-According to Eq. \eqref{eq:Eplug},
-\begin{align*}
-%  \frac{ \vMbar } { 4 \pi \epsilon_0 }
-%&=
-%  \frac{ ( \epsilon - 1 ) \, R^3 } { \epsilon + 2 } \vE_0
-%\\
-  \vE_2
-&=
-  \frac{ 3 } { \epsilon + 2 } \vE_0.
-\end{align*}
-%
-Try to argue
-$E_2 \cdot \vmu^* = E_0 \cdot \vMbar$.
-Then
-\begin{equation}
-  \vMbar
-=
-  \frac{ 3 } { \epsilon + 2 } \vmu^*
-\end{equation}
-
-According to Eq. \eqref{eq:Ehole},
-\begin{align*}
-  \vE^*
-&=
-  \frac{ 3 \epsilon } { 2 \epsilon + 1 } \vE_1.
-\end{align*}
-Try to argue
-$E_1 \cdot \vmu^* = E^* \cdot \vMbar$.
-Then
-\begin{equation}
-  \vmu^*
-=
-  \frac{ 3 \epsilon } { 2 \epsilon + 1}
-  \vMbar(R, r_0).
-\end{equation}
 
 
 
 \section{Technical notes on the Appendix}
+
+
+
+\subsection{Kirkwood's three-tier model}
+
+
+
+Kirkwood used a three-tier model.
+
+
+The first tier is the molecule itself,
+which carries a dipole of moment $\vmu$.
+%
+We assume that $\vmu$ is fixed,
+and study how this fixed dipole polarize its surroundings.
+
+
+The second tier is a sphere of radius $r_0$,
+this sphere includes the molecule and its immediate neighbors.
+%
+The material within this sphere assumes a dielectric constant
+much different from the macroscopic one $\epsilon$.
+%
+The total dipole moment of this sphere,
+caused by the polarization of $\vmu$,
+is given by $\vMbar(R, r_0)$.
+
+
+The third tier is the entire dielectric,
+which also assumes a spherical shape with radius $R$.
+%
+The total dipole moment of this largest sphere,
+as a result of the polarization field of $\vmu$
+is given by $\vMbar$.
+%
+The region between the second and third tiers
+assume the macroscopic dielectric constant $\epsilon$.
+
+
+
+
+%To model the cause of the dipole, $\vmu^*$,
+%we consider an external field, $\vE_0$,
+%which is defined as follows.
+%%
+%In vacuum,
+%the molecule is polarized to have a dipole moment $\vmu^*$
+%under $\vE_0$.
+%
+%
+%From a distance $r \gg R$,
+%the entire medium looks like a dipole of moment $\vMbar$.
+%%
+%According to Eq. \eqref{eq:Eplug},
+%\begin{align*}
+%%  \frac{ \vMbar } { 4 \pi \epsilon_0 }
+%%&=
+%%  \frac{ ( \epsilon - 1 ) \, R^3 } { \epsilon + 2 } \vE_0
+%%\\
+%  \vE_2
+%&=
+%  \frac{ 3 } { \epsilon + 2 } \vE_0.
+%\end{align*}
+%%
+%Try to argue
+%$E_2 \cdot \vmu^* = E_0 \cdot \vMbar$.
+%Then
+%\begin{equation}
+%  \vMbar
+%=
+%  \frac{ 3 } { \epsilon + 2 } \vmu^*
+%\end{equation}
+%
+%According to Eq. \eqref{eq:Ehole},
+%\begin{align*}
+%  \vE^*
+%&=
+%  \frac{ 3 \epsilon } { 2 \epsilon + 1 } \vE_1.
+%\end{align*}
+%Try to argue
+%$E_1 \cdot \vmu^* = E^* \cdot \vMbar$.
+%Then
+%\begin{equation}
+%  \vmu^*
+%=
+%  \frac{ 3 \epsilon } { 2 \epsilon + 1}
+%  \vMbar(R, r_0).
+%\end{equation}
 
 
 
@@ -401,7 +149,7 @@ Then
   \newcommand{\szR}{4.0*\sz}
   \newcommand{\szr}{1.5*\sz}
   \fill[yellow!40!white] (0, 0) circle (\szR);
-  \fill[green!15!white] (0, 0) circle (\szr);
+  \fill[yellow!5!white] (0, 0) circle (\szr);
   \draw[very thick, ->, >=stealth'] (0, 0) -- (60:\szR)
     node[pos=0.6, anchor=west]{$R$};
   \draw[very thick, ->, >=stealth'] (0, 0) -- (150:\szr)
@@ -564,10 +312,16 @@ $\vr' = \vct 0$, and keep the only relevant $n = 1$ term.
   \cos\vartheta.
   \tag{$28''$}
 \end{align}
+%
+A possible reason that Kirkwood use
+of associated Legendre polynomial
+is that he might wish to study a dipole
+that does not sit at the symmetric position of the origin.
 
 
 
 \subsection{Eq. (30)}
+
 
 
 Equations (30),

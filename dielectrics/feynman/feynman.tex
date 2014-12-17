@@ -1,0 +1,478 @@
+\documentclass[11pt]{article}
+\usepackage[width=7.0in, height=10.0in]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{upgreek}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{tikz}
+
+
+
+\newcommand{\vct}[1]{\boldsymbol{\mathbf{#1}}}
+\newcommand{\vr}{\vct{r}}
+\newcommand{\vrN}{\vr^N}
+\newcommand{\vrn}{\vr^n}
+\newcommand{\dvr}{\frac{ d \vr  }{(2\pi)^3}}
+\newcommand{\vx}{\vct{x}}
+\newcommand{\vxN}{\vx^N}
+\newcommand{\vxn}{\vx^n}
+\newcommand{\dvx}{\frac{ d \vx  }{(2\pi)^3}}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\dvk}{\frac{ d \vk  }{(2\pi)^3}}
+\newcommand{\vy}{\vct{y}}
+\newcommand{\vz}{\vct{z}}
+\newcommand{\vE}{\vct{E}}
+\newcommand{\vD}{\vct{D}}
+\newcommand{\vP}{\vct{P}}
+\newcommand{\vM}{\vct{M}}
+\newcommand{\vMbar}{\overline{\vct{M}}}
+\newcommand{\vdel}{\vct{\updelta}}
+\newcommand{\vmu}{\vct{\upmu}}
+
+
+\begin{document}
+
+
+\title{The Feynman Lectures on Physics}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+
+Here we review the Feynman's Lectures on Physics,
+Vol. II Chapters 10 and 11.
+%
+We will use the SI units throughout.
+If the reader who prefers the Gaussian units
+should simply replace $\epsilon_0$ by $1/(4 \pi)$,
+and ignore $4\pi \epsilon_0$ wherever it occurs.
+
+
+\section{11-4 Electric fields in cavities of a dielectric}
+
+
+
+It should be noted that the hole is
+a ``virtual'' (Lorentz) cavity,
+which is the negative of the plug.
+
+
+
+\subsection{Models}
+
+
+
+First, we recall that the Maxwell equations governing electrostatics
+are linear with respect to the fields,
+such as the electric field $\vE$ and the charge density $\rho$.
+%
+This simple fact is very useful,
+for it allows us to build up a complex field
+by linearly combining simpler electric fields.
+
+In this section,
+we will study a few basic model of polarization.
+%
+These models will be used as building blocks
+to understand the more complex models
+for the dielectric constant.
+
+
+
+\subsection{Uniformly polarized ball}
+
+
+
+The effect of a uniformly polarized ball of radius $R$ is equivalent to
+that of a uniformly and positively charged ball
+located at $\vct c_+ = (0, 0, \delta/2)$ (with charge density $\rho$)
+and that of a uniformly and negatively charged ball
+located at $\vct c_- = (0, 0, -\delta/2)$,
+with $\delta \rightarrow 0$.
+
+The electric field caused by the positive ball
+can be computed using the Gauss theorem.
+%
+For $r_+ < R$, we have
+\[
+  E 4 \pi r_+^2
+=
+  \frac { 4 \pi r_+^3 } { 3 } \frac{ \rho } { \epsilon_0 },
+\]
+where
+\[
+  r_\pm = |\vr - \vct c_\pm| = r \mp \frac{ \delta \cos\theta} { 2 },
+\]
+with $\theta$ being the angle between $\vr$ and $\vz$,
+i.e., $\hat\vr \cdot \hat\vz = \cos\theta$.
+So
+\[
+  \vE_+
+=
+  \frac{ \rho } { 3 \, \epsilon_0 } ( \vr - \vct c_+ ).
+\]
+By symmetry the field caused by the negatively charged ball
+is given by
+\[
+  \vE_- = -\frac{ \rho } { 3 \, \epsilon_0 } ( \vr - \vct c_- ).
+\]
+The superposition of the two yields
+\begin{align}
+  \vE_{\vP} = \vE_+ + \vE_-
+= - \frac{ \rho \, \vdel } { 3 \epsilon_0 }
+= - \frac{ \vP } { 3 \epsilon_0 }
+= - \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM } { R^3 },
+  \label{eq:EP_in}
+\end{align}
+where $\vdel = \vz \, \delta$,
+the polarization vector $\vP = \rho \vdel$,
+%
+and
+\[
+  \vM =
+  \frac{ 4 \pi R^3 \, \rho \, \vdel } { 3 }
+  =
+  \frac{ 4 \pi R^3 } { 3 } \, \vP.
+\]
+is the total dipole moment of the ball.
+
+Outside of the ball, we can also use the Gauss theorem.
+\[
+  E 4 \pi r_+^2
+=
+  \frac { 4 \pi R^3 } { 3 } \frac{ \rho } { \epsilon_0 },
+\]
+and
+\[
+  \vE_+
+=
+  \frac{ \rho \, R^3} { 3 \, \epsilon_0 \, r_+^3} ( \vr - \vct c_+ ).
+\]
+Similarly,
+\[
+  \vE_-
+=
+  -\frac{ \rho \, R^3} { 3 \, \epsilon_0 \, r_-^3} ( \vr - \vct c_- ).
+\]
+The sum of the above two is the electric field outside the ball.
+For a small $\delta$,
+we get
+\begin{align}
+  \vE_{\vP}
+&=
+  -\frac{ \rho \, R^3 \, (\vct c_+ - \vct c_-) } { 3 \, \epsilon_0 \, r^3 }
+  +\frac{ \rho \, R^3 \vr } { 3 \, \epsilon_0 }
+   \left(
+      \frac{ 1 } { r_+^3 }
+      -
+      \frac{ 1 } { r_-^3 }
+   \right)
+   \notag \\
+&=
+  -\frac{ \rho \, R^3 \vdel } { 3 \, \epsilon_0 \, r^3 }
+  +\frac{ \rho \, R^3 \vr } { \epsilon_0 }
+      \frac{ \delta \cos\theta } { r^4 }
+   \notag \\
+&=
+  -\frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM } {r^3}
+  +
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ 3 \, (\vM \cdot \hat\vr) \, \hat\vr } { r^3 }
+   \notag \\
+&=
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM \cdot (3 \, \hat\vr \, \hat\vr - 1) } { r^3 }
+=
+  -\nabla \left(
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM \cdot \vr } {r^3}
+  \right).
+  \label{eq:EP_out}
+\end{align}
+
+
+Physically,
+%
+A uniformly polarized ball produces,
+within the ball,
+a uniform field
+that is $-1/\epsilon_0$ times the polarization vector,
+by Eq. \eqref{eq:EP_in};
+and
+Eq. \eqref{eq:EP_out} says that
+the electric field outside the ball
+is equivalent to that of a dipole of moment $\vM$.
+
+
+In summary,
+we have
+\begin{equation}
+  \vE_{\vP}
+=
+  \begin{dcases}
+  -\frac{ \vP } { 3 \, \epsilon_0 }
+  =
+  -\frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM } {R^3}
+  & \mbox{for $r \le R$},
+    \\
+  -\nabla \left(
+    \frac{ \vP \cdot \hat \vr \, R^3 } { 3 \, \epsilon_0 \, r^2 }
+    \right)
+  =
+  -\nabla \left(
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM \cdot \vr } {r^3}
+  \right)
+  & \mbox{for $r > R$}.
+  \end{dcases}
+  \label{eq:uball}
+\end{equation}
+%
+Or in terms of the electric potential,
+$\vE_{\vP} = -\nabla \phi_{\vP}$,
+%
+\begin{equation}
+  \phi_{\vP}
+=
+  \begin{dcases}
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM \cdot \vr } {R^3}
+  & \mbox{for $r \le R$},
+    \\
+  \frac{ 1 } { 4 \pi \epsilon_0 }
+  \frac{ \vM \cdot \vr } {r^3}
+  & \mbox{for $r > R$}.
+  \end{dcases}
+  \label{eq:phi_uball}
+\end{equation}
+
+
+
+\subsection{Dielectric ball in uniform field}
+
+
+
+First, let us consider a solid ball of radius $R$ with
+the dielectric constant $\epsilon$.
+The ball is placed in vacuum
+under a constant electrostatic field
+$\vE_0 = E_0 \vz$
+along the $z$ axis.
+We wish to know the electric field within the ball.
+
+Solution.
+Let us assume that the ball is uniformly polarized,
+with polarization vector $\vP$.
+Then the electric field caused by the polarization charges
+is given by $-\vP/\epsilon_0$,
+according to Eq. \eqref{eq:EP_in}.
+The total electric field (for $r < R$) is given by
+\[
+  \vE = \vE_0 - \frac{ \vP } { 3 \, \epsilon_0 }.
+\]
+Further, we have
+\[
+  \frac{ \vP } { \epsilon_0 }
+= (\epsilon - 1) \vE.
+\]
+From the two above equations, we get
+\begin{align}
+  \vE &= \frac{ 3 } { \epsilon + 2 } \vE_0,
+  \label{eq:Eplug}
+  \\
+  \frac{\vP}{\epsilon_0}
+  &= \frac{ 1 } { 4 \pi \epsilon_0 } \frac{ 3 \vM } { R^3 }
+  = \frac{ 3 ( \epsilon - 1 ) } { \epsilon + 2 } \vE_0
+  \label{eq:Pplug}
+\end{align}
+
+
+
+\subsection{Dielectric ball in uniform field, generalized}
+
+
+
+Now consider a generalization.
+%
+The solid ball of dielectric constant $\epsilon$
+is now immersed in a medium of dielectric constant $\epsilon'$.
+%
+A uniform electric field $\vE'$ is applied in the medium.
+
+Solution.
+The ball is still uniformly polarized,
+but so is the medium.
+Thus we shall consider instead
+the excess polarization vector $\Delta\vP$
+of the ball with respect to the medium.
+%
+Then the electric field caused by $\Delta\vP$
+is given by $-\Delta\vP/\epsilon_0$,
+according to Eq. \eqref{eq:EP_in}.
+The total electric field inside the ball ($r < R$) is given by
+\[
+  \vE = \vE' - \frac{ \Delta \vP } { 3 \, \epsilon_0 \, \epsilon' }.
+\]
+Further, we have within the ball
+\[
+  \frac{ \Delta \vP } { \epsilon_0 }
+  = \left( \epsilon - \epsilon' \right) \, \vE.
+\]
+Eliminating $\Delta \vP$ from the two above equations yields
+\begin{equation}
+  \vE = \frac{ 3 \, \epsilon' } {2 \, \epsilon' + \epsilon} \vE'.
+  \label{eq:Eplug_general}
+\end{equation}
+
+Particularly for a vacuum cavity with $\epsilon = 1$,
+we have
+\begin{equation}
+  \vE = \frac{ 3 \, \epsilon' } {2 \, \epsilon' + 1} \vE'.
+  \label{eq:Ehole}
+\end{equation}
+
+
+
+\subsection{Alternative derivations of the cavity field}
+
+
+
+\subsubsection{First alternative derivation}
+
+
+
+Now let us use \eqref{eq:Eplug} to derive the cavity field
+\[
+  \vE_{\mathrm{hole}}
+=
+  \frac { 3 } { \epsilon + 2 }
+  \vE.
+\]
+
+
+\begin{enumerate}
+\item
+  Consider a plug of dielectric constant $\epsilon$
+  placed in vacuum under the electric field $\vE_0$.
+  According to Eq. \eqref{eq:Eplug},
+  the plug attains a uniform polarization
+  and the field strength is
+  \[
+    \vE_1 = \frac { 3 } { \epsilon + 2 } \vE_0.
+  \]
+
+\item
+  We know that in the dielectric,
+  the plug achieves the same polarization
+  under the uniform field $\vE$.
+  Thus
+  \[
+    \vE = \vE_1 = \frac { 3 } { \epsilon + 2 } \vE_0.
+  \]
+
+\item
+  The field $\vE = \vE_1$ is the sum of the external field $\vE_0$
+  and the field caused by the polarization of the plug $\vE_{\vP}$,
+  So we have
+  \[
+    \vE_{\vP}
+    =
+    \vE - \vE_0
+    =
+    -\frac{ \epsilon - 1 } { \epsilon + 2 } \vE_0.
+    =
+    -\frac{ \epsilon - 1 } { 3 } \vE.
+  \]
+
+\item
+  This field $\vE_{\vP}$ should be deducted for the hole or the virtual cavity.
+  Thus, the total field within the cavity is given by
+  \[
+    \vE_\texttt{hole}
+    =
+    \vE - \vE_{\vP}
+    =
+    \frac{ \epsilon + 2 } { 3 } \vE
+    =
+    \vE_0.
+  \]
+
+\end{enumerate}
+
+
+
+\subsubsection{Second alternative derivation}
+
+
+
+The simple conclusion $\vE_{hole} = \vE_0$
+calls for a simpler derivation.
+Below, we give another derivation based on
+the superposition principle.
+
+
+\begin{equation}
+\newcommand{\sz}{4mm}
+\newcommand{\szR}{4.0*\sz}
+\newcommand{\szr}{1.5*\sz}
+\newcommand{\bs}{0mm}
+{
+  \begin{tikzpicture}[baseline=\bs]
+    \fill[yellow!40!white] (0, 0) circle (\szR);
+    \fill[yellow!5!white] (0, 0) circle (\szr);
+  \end{tikzpicture}
+}
+\,=\,
+{
+  \begin{tikzpicture}[baseline=\bs]
+    \fill[yellow!40!white] (0, 0) circle (\szR);
+  \end{tikzpicture}
+}
+\,-\,
+{
+  \begin{tikzpicture}[baseline=\bs]
+    \fill[yellow!40!white] (0, 0) circle (\szr);
+  \end{tikzpicture}
+}\,.
+\end{equation}
+
+
+\begin{enumerate}
+
+\item
+The virtual cavity is constructed
+by subtracting a small plug from the large plug.
+The large plug is also spherical,
+it represents the entire sample.
+
+\item
+Under an external (vacuum) field $\vE_0$,
+both plugs attain the same electric field within.
+The polarization vectors,
+and the electric field $\vE_{\vP}$
+caused by polarization
+in the two plugs are also the same.
+
+\item
+Therefore, by subtracting the two plugs,
+the electric field $\vE_{\vP}$
+caused by polarization
+is zero.
+
+\item
+Thus, the total electric field
+within the hole is equal to the external field
+$\vE_0$.
+
+\end{enumerate}
+
+
+
+\bibliography{../../liquid}
+\bibliographystyle{alpha}
+\end{document}
