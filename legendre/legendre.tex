@@ -22,10 +22,12 @@
 \begin{document}
 
 
+
 \title{Notes on the Legendre polynomials}
 \author{ \vspace{-10ex} }
 \date{ \vspace{-10ex} }
 \maketitle
+
 
 
 This note concerns some useful formulas of
@@ -46,6 +48,7 @@ is an excellent source).
 
 
 We shall briefly review some definitions and basic properties of the functions.
+
 
 
 \subsection{Legendre polynomials}
@@ -73,7 +76,7 @@ A more explicit formula, called Rodrigues' formula is
 \end{equation}
 %
 Equivalently, we can write it as a contour integral,
-called Schlaefli integral, around $t = x$
+called Schlaefli integral, around $t = x$, as
 \begin{equation}
   P_n(x)
 =
@@ -109,6 +112,7 @@ the generating function in Eq. \eqref{eq:legendre_gf},
 and integrating from $-1$ to 1.
 
 Below is a list of the first few Legendre polynomials:
+%
 \begin{align*}
   P_0(x) &= 1, &
   P_1(x) &= x, \\
@@ -124,16 +128,124 @@ For more values, one can use the recurrence relation:
 \end{equation}
 which can be readily shown from the generating function in Eq. \eqref{eq:legendre_gf}.
 
-Finally, some special values are listed below:
+Finally, some special values are listed below,
+which can be shown by, e.g., Eq. \eqref{eq:legendre_schlaefli}:
+%
 \begin{align}
   P_n(1)    &= 1,
   \label{eq:legendre_1} \\
   P_n(-1)   &= (-1)^n,
   \label{eq:legendre_neg1} \\
-  P_{2n}(0) &= \frac{ (-1)^n (2n)! }{ 2^{2n} n!^2 },
+  P_{2n}(0) &= \frac{ (-1)^n (2 n)! }{ 2^{2n} n!^2 }
+             = (-1)^n \frac{ (2 n - 1)!! } { (2n)!! },
   \qquad
   P_{2n-1}(0) = 0.
   \label{eq:legendre_0}
+\end{align}
+
+
+
+\subsection{Associated Legendre polynomials}
+
+
+
+The Rodrigues' formula of the associated Legendre polynomials is
+%
+\begin{equation}
+  P_n^m(x)
+= (1 - x^2)^{m/2}
+  \frac{d^m}{dx^m}
+  P_n(x)
+=
+  \frac{(1 - x^2)^{m/2}}{2^n n!}
+  \frac{d^{n+m}}{dx^{n+m}}
+  (x^2 - 1)^n.
+  \label{eq:alegendre_rodrigues}
+\end{equation}
+%
+The equivalent Schlaefli integral, around $t = x$, is
+\begin{equation}
+  P_n(x)
+=
+  \frac{ (n + m)! } { n! }
+  \frac{ (1 - x^2)^{m/2} }{2\pi i \, 2^n}
+  \oint
+  \frac{ (t^2 - 1)^n } { (t - x)^{n+m+1} } \, dt.
+  \label{eq:alegendre_schlaefli}
+\end{equation}
+
+The generating function of the associated Legendre polynomials is
+%
+\begin{equation}
+  (2 m - 1)!! \,
+  \frac{ (1 - x^2)^{m/2} }
+  { (1 - 2 x t + t^2)^{m + 1/2} }
+=
+  \sum_{s = 0}^\infty P_{s+m}^m(x) \, t^s.
+  \label{eq:alegendre_gf}
+\end{equation}
+
+The associated Legendre polynomial satisfy the differential equation
+\begin{equation}
+  \frac{d}{dx}
+  \left[
+    (1 - x^2) \, \frac{d}{dx} P_n(x)
+  \right]
++
+  \left[
+    n (n + 1) - \frac{m^2}{1 - x^2}
+  \right]
+  \, P_n(x) = 0.
+\label{eq:alegendre_diffeq}
+\end{equation}
+
+The associated Legendre polynomials satisfy
+\begin{equation}
+  \int_{-1}^1
+  P_n^m(x) \, P_{n'}^m(x) \, dx
+=
+  \frac { 2 } { 2 \, n + 1 }
+  \frac{ (n + m)! } { (n - m)! }
+  \,
+  \delta_{n, n'},
+  \label{eq:alegendre_orthonormal}
+\end{equation}
+%
+and
+%
+\begin{equation}
+  \int_{-1}^1
+  \frac{
+    P_n^m(x) \, P_n^{m'}(x)
+  } {
+    \sqrt{ 1 - x^2 }
+  }\, dx
+=
+  \frac{ (n + m)! } { m \, (n - m)! }
+  \,
+  \delta_{m, m'}.
+  \label{eq:alegendre_orthonormal2}
+\end{equation}
+
+$P_n^m(x)$ and $P_n^{-m}(x)$ are linearly related:
+\begin{equation}
+  \frac{ P_n^m(x) } { (n + m)! }
+=
+  (-1)^m
+  \frac{ P_n^{-m}(x) } { (n - m)! }.
+  \label{eq:PnmPnnegm}
+\end{equation}
+
+Finally, some special values, derived from, e.g., Eq. \eqref{eq:alegendre_schlaefli}, are listed below:
+\begin{align}
+  P_n^m(1)    &= \delta_{m, 0},
+  \label{eq:alegendre_1} \\
+  P_n^m(-1)   &= (-1)^n \delta_{m, 0},
+  \label{eq:alegendre_neg1} \\
+  P_{m+2s}^m(0) &= (-)^s \, \frac{ (2m + 2s - 1)!! }{ (2s)!! },
+  \qquad
+  P_{m+2s-1}^m(0) = 0.
+  \label{eq:alegendre_0}
 \end{align}
 
 
