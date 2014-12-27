@@ -2,6 +2,7 @@
 \usepackage[width=7.0in, height=10.0in]{geometry}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\usepackage{upgreek}
 
 
 
@@ -30,10 +31,18 @@
 
 
 
-This note concerns some useful formulas of
+This note concerns some useful formulae of
 the (associated) Legendre polynomial
 and spherical harmonics.
 %
+Our focus are
+\begin{enumerate}
+  \item The addition theorem of the Legendre polynomial and spherical harmonics.
+  \item The Rayleigh equation, which relates the Legendre polynomial
+        to the spherical Bessel functions.
+  %\item Wave equation on a sphere.
+\end{enumerate}
+
 Although we try to be as self-contained as possible,
 we assumed that the reader
 has a basic understanding of the two functions
@@ -43,7 +52,11 @@ is an excellent source).
 
 
 
-\section{Review}
+%\tableofcontents
+
+
+
+\section{Review (cheat sheets)}
 
 
 
@@ -58,6 +71,8 @@ We shall briefly review some definitions and basic properties of the functions.
 The generating function of Legendre polynomials $P_n(x)$ is
 %
 \begin{equation}
+  g(x, t)
+\equiv
   (1 - 2 x t + t^2)^{-1/2}
 =
   \sum_{n = 0}^\infty P_n(x) \, t^n.
@@ -76,7 +91,7 @@ A more explicit formula, called Rodrigues' formula is
 \end{equation}
 %
 Equivalently, we can write it as a contour integral,
-called Schlaefli integral, around $t = x$, as
+called Schl\"{a}fli (Schlaefli) integral, around $t = x$, as
 \begin{equation}
   P_n(x)
 =
@@ -111,7 +126,7 @@ which can shown by squaring
 the generating function in Eq. \eqref{eq:legendre_gf},
 and integrating from $-1$ to 1.
 
-Below is a list of the first few Legendre polynomials:
+Below are the first few Legendre polynomials:
 %
 \begin{align*}
   P_0(x) &= 1, &
@@ -125,8 +140,11 @@ Legendre polynomials $P_n(x)$ share the same parity with $n$.
 For more values, one can use the recurrence relation:
 \begin{equation}
   (2 n + 1) x P_n(x) = (n + 1) P_{n+1}(x) + n P_{n-1}(x),
+  \label{eq:legendre_recur_dt}
 \end{equation}
-which can be readily shown from the generating function in Eq. \eqref{eq:legendre_gf}.
+which can be readily shown from the generating function in Eq. \eqref{eq:legendre_gf},
+for
+$(1 - 2 x t + t^2) \, \partial_t g = (x - t) \, g$.
 
 Finally, some special values are listed below,
 which can be shown by, e.g., Eq. \eqref{eq:legendre_schlaefli}:
@@ -163,9 +181,9 @@ The Rodrigues' formula of the associated Legendre polynomials is
   \label{eq:alegendre_rodrigues}
 \end{equation}
 %
-The equivalent Schlaefli integral, around $t = x$, is
+The equivalent Schl\"{a}fli integral, around $t = x$, is
 \begin{equation}
-  P_n(x)
+  P_n^m(x)
 =
   \frac{ (n + m)! } { n! }
   \frac{ (1 - x^2)^{m/2} }{2\pi i \, 2^n}
@@ -177,8 +195,9 @@ The equivalent Schlaefli integral, around $t = x$, is
 The generating function of the associated Legendre polynomials is
 %
 \begin{equation}
-  (2 m - 1)!! \,
-  \frac{ (1 - x^2)^{m/2} }
+  g_m(x, t)
+\equiv
+  \frac{ (2 m - 1)!! \, (1 - x^2)^{m/2} }
   { (1 - 2 x t + t^2)^{m + 1/2} }
 =
   \sum_{s = 0}^\infty P_{s+m}^m(x) \, t^s.
@@ -189,13 +208,13 @@ The associated Legendre polynomial satisfy the differential equation
 \begin{equation}
   \frac{d}{dx}
   \left[
-    (1 - x^2) \, \frac{d}{dx} P_n(x)
+    (1 - x^2) \, \frac{d}{dx} P_n^m(x)
   \right]
 +
   \left[
     n (n + 1) - \frac{m^2}{1 - x^2}
   \right]
-  \, P_n(x) = 0.
+  \, P_n^m(x) = 0.
 \label{eq:alegendre_diffeq}
 \end{equation}
 
@@ -236,8 +255,19 @@ $P_n^m(x)$ and $P_n^{-m}(x)$ are linearly related:
   \label{eq:PnmPnnegm}
 \end{equation}
 
+In analogous to \eqref{eq:legendre_recur_dt},
+we have
+$(1 - 2 x t + t^2) \, \partial_t g_m = (2 m + 1) (x - t) \, g$,
+and
+\begin{equation}
+  (2 n + 1) \, x \, P_n^m(x) = (n - m + 1) \, P_{n+1}^m(x) + (n + m) \, P_{n-1}^m(x).
+  \label{eq:alegendre_recur_dt}
+\end{equation}
+
 Finally, some special values, derived from, e.g., Eq. \eqref{eq:alegendre_schlaefli}, are listed below:
 \begin{align}
+  P_m^m(x)    &= (1 - x^2)^{m/2} \, (2 m - 1)!!,
+  \label{eq:alegendre_mm} \\
   P_n^m(1)    &= \delta_{m, 0},
   \label{eq:alegendre_1} \\
   P_n^m(-1)   &= (-1)^n \delta_{m, 0},
@@ -250,11 +280,95 @@ Finally, some special values, derived from, e.g., Eq. \eqref{eq:alegendre_schlae
 
 
 
-\subsection{Spherical Bessel function}
+\subsection{Spherical harmonics}
 
 
 
-The spherical Bessel function is given by
+Spherical harmonics are defined as
+normalized associated Legendre polynomials:
+\begin{equation}
+  Y_n^{m}(\theta, \phi)
+=
+  (-1)^{m}
+  \sqrt{
+    \frac{ 2 n + 1 } { 4 \pi }
+    \frac{ (n - m)! } { (n + m)! }
+  }
+  \,
+  P_{n}^{m}\bigl( \cos\theta \bigr) e^{i m \phi},
+  \label{eq:Ynm}
+\end{equation}
+
+The normalization condition reads
+\begin{equation}
+  \int_0^{2\pi} \int_0^\pi
+  Y_n^{m}(\theta, \phi) \, Y_{n'}^{m'}(\theta, \phi)
+  \, \sin\theta \, d\theta \, d\phi
+  = \delta_{n, n'} \, \delta_{m, m'}.
+  \label{eq:Ynm_orthonorm}
+\end{equation}
+
+Spherical harmonics of positive and negative $m$ are
+related by complex conjugation:
+\begin{equation}
+  Y_n^{-m}(\theta, \phi) = (-)^m Y_n^{m*}(\theta, \phi).
+\end{equation}
+
+Spherical harmonics satisfy the differential equation
+\begin{equation}
+  \frac{1}{\sin\theta}
+  \frac{d}{d\theta}
+  \left[
+    \sin\theta
+    \frac{d}{d\theta}
+    Y_n^m(\theta, \phi)
+  \right]
+  +
+  \frac{1}{\sin^2\theta}
+  \frac{d^2 Y_n^m(\theta, \phi)}{d\phi^2}
+  +
+  n (n + 1) Y_n^m(\theta, \phi)
+  = 0.
+  \label{eq:Ynm_diffeq}
+\end{equation}
+%
+Now the first two terms are the angular part of
+Laplacian $\nabla^2$ (see Appendix \ref{sec:spcoords_laplacian}).
+%
+So we can write
+\begin{equation}
+  \nabla^2 Y_n^m(\theta, \phi)
+  =
+  -n \,(n + 1) \, Y_n^m(\theta, \phi),
+  \qquad \mbox{for $r = 1$}.
+  \label{eq:Ynm_diffeq2}
+\end{equation}
+%
+In other words,
+the spherical harmonics
+are the solutions of the wave equation
+in spherical polar coordinates,
+just as the exponential functions $\psi(\vr) = \exp(i\vk\cdot\vr)$
+are the solutions of the wave equation
+in the Cartesian coordinates:
+\[
+  \nabla^2 \psi(\vr) = -k^2 \psi(\vr).
+\]
+
+
+
+\subsection{Spherical Bessel functions}
+
+
+
+As we shall see in Sec. \ref{sec:rayleigh_proof},
+the Legendre polynomials
+and spherical Bessel functions
+are related by Fourier transform.
+%
+Here we will briefly review the latter.
+
+The spherical Bessel function is defined as
 \begin{align}
 j_n(x)
 &= \sqrt{ \frac{ n } { 2 x } } J_{n + 1/2}(x) \\
@@ -286,12 +400,13 @@ There are two useful recurrence relations:
   \\
   \frac{d}{dx}
   \left[
-    j_n(x) / x^n
+    \frac{ j_n(x) }{ x^n }
   \right]
-=
-  - j_{n+1}(x) / x^n.
+&=
+  - \frac{ j_{n+1}(x) }{ x^n }.
 \label{eq:recur_jn2}
 \end{align}
+
 
 
 \section{Addition theorem of the Legendre polynomial}
@@ -477,7 +592,7 @@ This is because
   }
   \,
   P_{n}^{m'}\bigl( \cos(0) = 1 \bigr) e^{i m' \psi},
-  \label{eq:Ynm}
+  \label{eq:Ynm0}
 \end{equation}
 and the associated Legendre polynomial
 \begin{equation}
@@ -496,7 +611,7 @@ b_0 \, Y_n^{0*}(0, \psi).
 \]
 
 The final step is to determine $Y_n^0(0, \psi)$.
-From Eq. \eqref{eq:Ynm}, we get
+From Eq. \eqref{eq:Ynm0}, we get
 \[
   Y_n^{0*}(0, \psi)
 =
@@ -647,7 +762,7 @@ which yields Eq. \eqref{eq:cosab}.
 
 
 
-\section{Rayleigh equation}
+\section{\label{sec:rayleigh}Rayleigh equation}
 
 
 
@@ -673,7 +788,7 @@ on the second line.
 
 
 
-\subsection{Proof}
+\subsection{\label{sec:rayleigh_proof}Proof}
 
 
 
@@ -732,13 +847,10 @@ Consider the expansion,
   e^{iax} = \sum_{m = 0}^\infty c_m P_m(x).
 \]
 Multiplying both sides by $P_n(x)$ and integrate from $-1$ to $1$,
-we get
-\begin{align*}
-  \frac{ 2 \, c_n } { 2 n + 1}
-&=
+then for the left-hand side, we have
+\begin{align}
   \int_{-1}^1
   e^{iax} P_n(x) \, dx
-  \notag \\
 &=
   \sum_{s = 0}^\infty
   \frac{ (ia)^{n + 2s} } { (n + 2s)! }
@@ -751,15 +863,165 @@ we get
   \frac{ a^{n + 2s} \, (n + s)! }
   { (2n + 2s + 1)! \, s! }
 = 2 \, i^n j_n(a),
-\end{align*}
+\label{eq:PnFT}
+\end{align}
 where we have used Eq. \eqref{eq:besselj}.
 in the last step.
+For the right-hand side, we have
+\begin{align*}
+  \int_{-1}^1 P_n(x) \, \sum_{m = 0}^\infty c_m \, P_m(x) \, dx
+&=
+  \frac{ 2 \, c_n } { 2 n + 1}.
+\end{align*}
 %
 Thus
 \[
-  c_n = (2 n + 1) j_n(a).
+  c_n = i^n \, (2 n + 1) \, j_n(a).
+\]
+and
+\[
+  e^{iax} = \sum_{n = 0}^\infty i^n \, (2 n + 1) \, P_n(x).
 \]
 Now with $a = kr$ and $x = \cos\gamma$, we get Eq. \eqref{eq:rayleigh}.
+
+
+Note that Eq. \eqref{eq:PnFT} is interesting itself.
+It shows that the Fourier transform of the Legendre polynomial
+is the spherical Bessel function.
+
+
+
+\appendix
+
+
+
+\section{\label{sec:spcoords_laplacian}
+Laplacian in the spherical polar coordinates}
+
+
+
+The formula for the Laplacian $\nabla^2 = \nabla \cdot \nabla$
+in the spherical polar coordinates
+can be a bit difficult to remember.
+%
+We start with the identity from partial integration:
+\begin{equation}
+  \int \nabla \chi \cdot \nabla \psi \, d\vr
+=
+  -\int \chi \, \nabla^2 \psi \, d\vr.
+\label{eq:partint}
+\end{equation}
+In spherical polar coordinates,
+the gradient $\nabla$ is given by
+\begin{equation}
+  \nabla
+=
+  \hat \vr \, \frac{\partial} {\partial r}
++
+  \hat{ \vct \uptheta } \,
+  \frac{1} {r}
+  \frac{\partial} {\partial \theta}
++
+  \hat{ \vct \upphi } \,
+  \frac{1} {r \, \sin \theta}
+  \frac{\partial} {\partial \phi}
+  \label{eq:spcoords_grad}
+\end{equation}
+and the volume element is given by
+$d\vr = r^2 \sin \theta \, dr \, d\theta \, d\phi$.
+
+Now the left hand side of Eq. \eqref{eq:partint}
+is equal to
+\begin{align*}
+  \int \nabla \chi \cdot \nabla \psi \, d\vr
+&=
+  \int
+  \left(
+  \frac{\partial \chi}{\partial r}
+  \frac{\partial \psi}{\partial r}
+  +
+  \frac{1}{r^2}
+  \frac{\partial \chi}{\partial \theta}
+  \frac{\partial \psi}{\partial \theta}
+  +
+  \frac{1}{r^2 \, \sin^2 \theta}
+  \frac{\partial \chi}{\partial \phi}
+  \frac{\partial \psi}{\partial \phi}
+  \right)
+  \, r^2 \, \sin\theta \, dr \, d\theta \, d\phi
+\notag \\
+&=
+  -\int
+  \chi \,
+  \left[
+    \frac{\partial}{\partial r}
+    \left(
+      r^2 \, \sin\theta \,
+      \frac{\partial \psi}{\partial r}
+    \right)
+    +
+    \frac{\partial}{\partial \theta}
+    \left(
+      \sin\theta \,
+      \frac{\partial \psi}{\partial \theta}
+    \right)
+    +
+    \frac{\partial}{\partial \phi}
+    \left(
+      \frac{1}{\sin\theta}
+      \frac{\partial \psi}{\partial \phi}
+    \right)
+  \right]
+  \, dr \, d\theta \, d\phi
+\notag \\
+&=
+  -\int
+  \chi \,
+  \left[
+    \frac{1}{r^2}
+    \frac{\partial}{\partial r}
+    \left(
+      r^2 \,
+      \frac{\partial \psi}{\partial r}
+    \right)
+    +
+    \frac{1}{r^2 \, \sin\theta}
+    \frac{\partial}{\partial \theta}
+    \left(
+      \sin\theta \,
+      \frac{\partial \psi}{\partial \theta}
+    \right)
+    +
+    \frac{1}{r^2 \, \sin^2\theta}
+    \frac{\partial^2 \psi}{\partial \phi^2}
+  \right]
+  \, d\vr,
+\end{align*}
+where we have integrated by parts on the second line.
+
+Compare to the right hand side of Eq. \eqref{eq:partint},
+we find that
+\begin{equation}
+  \nabla^2\psi
+=
+  \frac{1}{r^2}
+  \frac{\partial}{\partial r}
+  \left(
+    r^2 \,
+    \frac{\partial \psi}{\partial r}
+  \right)
+  +
+  \frac{1}{r^2 \, \sin\theta}
+  \frac{\partial}{\partial \theta}
+  \left(
+    \sin\theta \,
+    \frac{\partial \psi}{\partial \theta}
+  \right)
+  +
+  \frac{1}{r^2 \, \sin^2\theta}
+  \frac{\partial^2 \psi}{\partial \phi^2}.
+  \label{eq:spcoords_laplacian}
+\end{equation}
 
 
 
