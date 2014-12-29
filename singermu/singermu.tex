@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{amsmath}
+\usepackage[width=7.0in, height=10.0in]{geometry}
 \begin{document}
 
 
@@ -21,19 +22,20 @@
 
 
 \title{Singer-Chandler formula for the chemical potential}
-\date{}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
 \maketitle
 
 
 
-\section{Derivation}
+\section{Chemical potential}
 
 Here we give a detailed derivation of the Singer-Chandler formula
   for the chemical potential \cite{singer}.
 %
 For simplicity, we assume a simple classical liquid,
-  with a single solute molecule, denoted by the subscript $u$,
-  and a one-atom solvent denoted by the subscript $v$ below.
+  with a single solute atom, denoted by the subscript $u$,
+  and an atomic solvent denoted by the subscript $v$ below.
 %
 If we further assume the hypernetted-chain (HNC) approximation,
 then, the chemical potential of adding the solute into
@@ -108,6 +110,23 @@ Equivalently, in terms of the free energy $\beta F = -\log Z$,
       U_1(\vrN)
     \right\rangle_\lambda.
 \end{equation}
+
+
+
+\subsection{Solute-solvent interaction}
+
+We now use the above thermodynamic integration technique
+  to compute the chemical potential.
+To do so, we add a solute atom to system,
+  and the resulting change of the free energy
+  is the chemical potential.
+Since there is only one solute,
+  we can assume that it is infinitely diluted.
+The distinction of solute and solvent
+  can be an artificial one.
+That is, the solute and solvent atoms can be of the same type,
+  and the condition of infinite dilution certainly does not mean
+  that the solvent density is small.
 
 Let the first atom be the solute $u = 0$,
   the next $n = N - 1$ atoms be the solvent atoms.
@@ -240,7 +259,7 @@ We now try to simplify the right-hand side of \eqref{eq:mu_ti}, such that
 the inner integral, which represents the internal energy, can be written
 as a total differential of $\lambda$.
 %
-In this way the outer integral can be removed.
+In this way, the outer integral can be removed.
 
 Differentiating \eqref{eq:yr}, we have [dropping ``$(\vr)$'' below whenever convenient]
 \[
@@ -288,8 +307,11 @@ a total differential $\plam(\dots)$.
 Obviously $h_{uv} \plam h_{uv} = \plam ( h_{uv}^2/2 )$.
 %
 We argue below that $h_{uv} \plam c_{uv} = \plam ( h_{uv} c_{uv} /2) $
-in an \emph{average} sense, meaning after the integration $\int d\vr$,
-under the condition of \emph{infinite dilution}.
+in an \emph{average} sense.
+%
+That is, it holds, at least approximately,
+after the integration $\int d\vr$,
+and under the condition of infinite dilution.
 Let us look at \eqref{eq:oz} more carefully.
 %
 For the solute-solvent pair, we have
@@ -297,7 +319,7 @@ For the solute-solvent pair, we have
   h_{uv} = c_{uv} + \rho_v \, c_{uv}*h_{vv}
   + \rho_u \, c_{uu}*h_{uv},
 \]
-where $\rho_v$ and $\rho_u$ means the density of
+where $\rho_v$ and $\rho_u$ mean the density of
 solvent and solute, respectively.
 %
 Since we have a single solute and many $n \gg 1$ solvent atoms,
@@ -381,11 +403,37 @@ By \eqref{eq:mu_ti}, we get \eqref{eq:singer}, or more explicitly,
 where
 $\chi_{vv}(\vr) = \delta_{vv}(r) + \rho_v \, h_{vv}(\vr)$.
 %
-This is the equivalent to (2.8) in \cite{singer}
+This is the equivalent to (2.8) in the original paper \cite{singer}
 [note,
-(2.8) misses the $\omega_{\alpha\gamma}$ (for the intra-solute interaction)
+(2.8) there misses the $\omega_{\alpha\gamma}$
+(for the intra-solute interaction)
 in the last term].
 
+
+
+\subsection{Homogeneity approximation}
+
+The above derivation contains a major approximation:
+%
+we assume that the solvent distribution
+remains homogeneous and isotropic,
+even in the presence of the solute.
+%
+This allows us to write
+\[
+  c_{vv}(\vr, \vr') = c_{vv}(\vr - \vr'),
+  \qquad
+  h_{vv}(\vr, \vr') = h_{vv}(\vr - \vr').
+\]
+Strictly, the homogeneity of the solvent is broken,
+%
+e.g., no solvent can exists at the origin,
+which has been occupied by the solute.
+%
+Nevertheless,
+\eqref{eq:singer}
+often turns out to be exact
+by an analysis of the graphs.
 
 
 
