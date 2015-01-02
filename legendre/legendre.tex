@@ -73,7 +73,8 @@ The generating function of Legendre polynomials $P_n(x)$ is
 \begin{equation}
   g(x, t)
 \equiv
-  (1 - 2 x t + t^2)^{-1/2}
+  \frac{ 1 }
+  { \sqrt{1 - 2 x t + t^2} }
 =
   \sum_{n = 0}^\infty P_n(x) \, t^n.
   \label{eq:legendre_gf}
@@ -759,6 +760,47 @@ So $a = b = \cos\gamma$.
 %
 Similarly one can show that $a' = \sin\gamma$,
 which yields Eq. \eqref{eq:cosab}.
+
+
+
+\subsection{Trigonometry identity and haversine formula}
+
+
+
+The special case of $n = 1$ of Eq. \eqref{eq:addition}
+leads to the following trigonometry identity:
+%
+\begin{equation}
+  \cos\gamma
+=
+  \cos\theta_1 \, \cos\theta_2
++
+  \sin\theta_1 \, \sin\theta_2 \, \cos(\phi_1 - \phi_2).
+  \label{eq:triggamma}
+\end{equation}
+%
+This identity is easily proved in Cartesian coordinates,
+since $\cos\gamma$ is the dot product of the vectors
+$\vct v_1 = (\sin\theta_1 \, \cos\phi_1, \sin\theta_1 \, \sin\phi_1, \cos\theta_1)$
+and
+$\vct v_2 = (\sin\theta_2 \, \cos\phi_2, \sin\theta_2 \, \sin\phi_2, \cos\theta_2)$.
+
+Computationally, if $\gamma$ is small,
+it is also useful to compute $\sin(\gamma/2)$ instead of $\cos\gamma$.
+Using
+\[
+  \cos x = 1 - 2 \sin^2(x/2),
+\]
+on $\gamma$, $\theta_1$, $\theta_2$, and $\Delta \phi = \phi_1 - \phi_2$ yields
+the so-called \emph{haversine formula}:
+\[
+  \sin^2 \left( \frac{\gamma}{2} \right)
+=
+  \sin^2 \left( \frac{\theta_1 - \theta_2}{2} \right)
++
+  \sin\theta_1 \, \sin\theta_2 \,
+  \sin^2 \left( \frac{\phi_1 - \phi_2}{2} \right).
+\]
 
 
 
