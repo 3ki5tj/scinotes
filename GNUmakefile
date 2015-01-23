@@ -9,3 +9,6 @@ clean:
 
 Dropbox: clean
 	rsync -avzL * ~/Dropbox/scinotes/
+
+syncbib:
+	rsync -avzL ../vir/doc/iedoc/liquid.bib .
