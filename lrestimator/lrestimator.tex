@@ -1,0 +1,159 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\begin{document}
+
+\title{A note on the left-right estimator}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+We start with the following identity
+\begin{align}
+  E(x)
+&=
+  \int_{x_{\min}}^x \phi'(y) \, E(y) \, dy
+  +
+  \int_x^{x_{\max}} \phi'(y) \, E(y) \, dy
+\notag
+\\
+&
+  +
+  \int_{x_{\min}}^x \phi(y) \, E'(y) \, dy
+  +
+  \int_x^{x_{\max}} \phi(y) \, E'(y) \, dy,
+\label{eq:lr0}
+\end{align}
+if the following conditions hold
+%
+\begin{align}
+  \phi(x_{\min}) = \phi(x_{\max}) = 0,
+\\
+  \phi(x^{-}) - \phi(x^{+}) = 1.
+  \label{eq:phi_normalization}
+\end{align}
+
+In the left-right estimator,
+we demand the sum of the last two terms of \eqref{eq:lr0} to vanish,
+and
+\begin{align}
+  E(x)
+&=
+  \int_{x_{\min}}^x \phi'(y) \, E(y) \, dy
+  +
+  \int_x^{x_{\max}} \phi'(y) \, E(y) \, dy,
+\label{eq:lr1}
+\end{align}
+if
+\begin{align}
+  \int_{x_{\min}}^x \phi(y) \, E'(y) \, dy
++
+  \int_x^{x_{\max}} \phi(y) \, E'(y) \, dy
+= 0.
+\label{eq:lr1_constraint}
+\end{align}
+
+
+We now consider the following $\phi(x)$
+whose derivative satisfies
+\begin{align}
+  \phi'(y)
+=
+  \begin{cases}
+    a \, w(y) &   \mbox{for $y < x$,} \\
+    b \, w(y) &   \mbox{for $y > x$,}
+  \end{cases}
+\end{align}
+where $w(x)$ is the ensemble weight.
+%
+Thus,
+\begin{align}
+  \phi(y)
+=
+  \begin{cases}
+    a \, W_-(y) = a \int_{x_-}^y w(z) \, dz   &   \mbox{for $y < x$,} \\
+    b \, W_+(y) = -b \int_y^{x_+} w(z) \, dz  &   \mbox{for $y > x$.}
+  \end{cases}
+  \label{eq:phi_W}
+\end{align}
+%
+Then, \eqref{eq:phi_normalization} means
+\begin{align}
+  a \int_{x_-}^x w(y) \, dy
++
+  b \int_{x}^{x_+} w(y) \, dy
+=
+  1.
+  \label{eq:phi_normalization1}
+\end{align}
+
+The expectation of the histogram, $\hat h(x)$, should be proportional to $w(x)$
+\begin{align}
+  \hat h(x) = \theta \, w(x),
+  \label{eq:h_w}
+\end{align}
+and \eqref{eq:phi_normalization} means
+\begin{align}
+  a \, \int_{x_-}^x \hat h(y) \, dy
++
+  b \, \int_x^{x_+} \hat h(y) \, dy
+=
+  \theta.
+  \label{eq:h_normalization}
+\end{align}
+
+
+By using \eqref{eq:phi_W}, \eqref{eq:h_w}, \eqref{eq:h_normalization}
+in \eqref{eq:lr1} and \eqref{eq:lr1_constraint},
+we get
+\begin{align}
+  E(x)
+&=
+  a \int_{x_{-}}^x w(y) \, E(y) \, dy
++
+  b \int_x^{x_{+}} w(y) \, E(y) \, dy,
+\notag
+\\
+&=
+\frac{
+  a \int_{x_{-}}^x \hat h(y) \, E(y) \, dy
++
+  b \int_x^{x_{+}} \hat h(y) \, E(y) \, dy
+}
+{
+  a \int_{x_{-}}^x \hat h(y) \, dy
++
+  b \int_x^{x_{+}} \hat h(y) \, dy
+},
+\label{eq:lrw}
+\end{align}
+and
+\begin{align}
+  a \int_{x_{-}}^x W_-(y) \, E'(y) \, dy
++
+  b \int_x^{x_{+}} W_+(y) \, E'(y) \, dy
+= 0.
+\label{eq:lrw_constraint}
+\end{align}
+%
+Note that $a$ and $b$ does not have to be
+normalized using \eqref{eq:h_normalization},
+only the ratio $a/b$ enters \eqref{eq:lrw}.
+%
+In practice, we first solve the ratio $a/b$ from \eqref{eq:lrw_constraint},
+then use it in \eqref{eq:lrw}.
+
+This form is particularly convenient, because
+\[
+  \int_x^{x+\Delta x} \hat h(y) \, dy
+\]
+can be estimated by the total number of data points
+that fall in the bin $(x, x + \Delta x)$,
+and
+\[
+  \int_x^{x+\Delta x} \hat h(y) \, E(y) \, dy
+\]
+can be estimated as the total energy of the data points.
+
+
+
+\end{document}

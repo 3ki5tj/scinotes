@@ -1,4 +1,4 @@
-prj=wham
+prj=lrestimator
 
 figs=
 pdffigs=$(patsubst %,fig/%.pdf, $(figs))
