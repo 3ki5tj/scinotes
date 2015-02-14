@@ -7,10 +7,8 @@ clean:
 	  *.log *.aux *.bbl *.blg *.out
 	rstrip.py -Rlv
 
-excludes = --exclude=".*.swp"
-
 Dropbox: clean
-	rsync -avzL $(excludes) * ~/Dropbox/scinotes/
+	rsync -avzL * ~/Dropbox/scinotes/
 
 syncbib:
-	rsync -avzL $(excludes) ../vir/doc/iedoc/liquid.bib .
+	rsync -avzL ../vir/doc/liquid.bib .
