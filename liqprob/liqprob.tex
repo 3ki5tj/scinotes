@@ -5,9 +5,21 @@
 \usepackage{mathrsfs}
 \usepackage{bm}
 \usepackage{upgreek}
+\usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{cite}
 %\usepackage{relsize}
+
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+
 \begin{document}
 
 
@@ -64,6 +76,27 @@
 
 
 
+In this chapter,
+we will review a few commonly-used mathematical tools.
+%
+The Gaussian integral is probably the most useful.
+%
+Bessel functions are somewhat advanced,
+but we need them to Fourier transform
+a spherical-symmetric function.
+
+
+
+It is also good to know something about the gamma function, $\Gamma(z)$.
+But if you have to skip it,
+remember it is the extension of the factorial: $\Gamma(z) = (z-1)!$,
+and $\Gamma(1/2) = \sqrt \pi$.
+%
+The beta function is less important,
+it is like the inverse binomial coefficient.
+
+
+
 \section{Gamma function}
 
 
@@ -106,6 +139,10 @@ which agrees with the definition of factorial $(z-1)!$.
 
 
 
+The main purpose of this and the next problems
+are to show the famous result:
+$\Gamma(1/2) = \sqrt \pi$.
+
 It can be shown\cite{whittaker} that the $\Gamma(z)$
 is the $n\rightarrow \infty$ limit of
 \begin{equation}
@@ -120,7 +157,10 @@ is the $n\rightarrow \infty$ limit of
 \label{eq:gammaPi}
 \end{equation}
 The basic argument is
-$\lim_{n \rightarrow \infty} (1 - t/n)^n = \exp(-t)$.
+$\lim_{n \rightarrow \infty} (1 - t/n)^n = \exp(-t)$,
+which then makes
+Eq. \eqref{eq:gammaPi} look quite like
+Eq. \eqref{eq:gammaDef}.
 
 By partial integration, show that
 \[
@@ -304,7 +344,7 @@ Thus,
 \[
   I_n = \frac{ n - 1} n \, I_{n-2}.
 \]
-Apply the above formula repeatedly to show \eqref{eq:intsinn}.
+Apply the above formula repeatedly to show Eq. \eqref{eq:intsinn}.
 }
 
 2. Using Eqs. \eqref{eq:doubling_odd} and \eqref{eq:doubling_even},
@@ -363,7 +403,7 @@ Thus,
 \[
   I_{m, n} = \frac{m-1}{m + n} I_{m-2, n},
 \]
-which leads to \eqref{eq:intsinn}.
+which leads to Eq. \eqref{eq:intsinn}.
 }
 
 2. Further, show that
@@ -431,7 +471,7 @@ we have
 \end{equation}
 %
 This relation,
-unlike \eqref{eq:intcosmsinnb},
+unlike Eq. \eqref{eq:intcosmsinnb},
 holds for real (even complex) $p$ and $q$.
 
 
@@ -450,6 +490,8 @@ agrees with Eq. \eqref{eq:intcosmsinnb}.
 
 1. Show that
 \begin{equation}
+  I
+  =
   \int_{-\infty}^{\infty}
     \exp\left( -\frac{1}{2} A \, x^2 \right) \, dx
   =
@@ -458,7 +500,6 @@ agrees with Eq. \eqref{eq:intcosmsinnb}.
 \end{equation}
 
 \hint{
-  Denote the integral on the left hand side as $I$.
   Show that
   \begin{align*}
     I^2
@@ -490,11 +531,59 @@ Then use Eq. \eqref{eq:gammahalf}.
 
 
 
+
+\problem{Moments of the Gaussian distribution}
+
+
+
+Because of Eq. \eqref{eq:GaussianIntegral},
+the Gaussian function can be normalized as a distribution:
+%
+\begin{equation}
+  p(x) =
+  \sqrt{ \frac{ A } { 2 \, \pi } }
+  \exp\left( \frac 1 2 A x^2 \right).
+  \label{eq:GaussianDistribution}
+\end{equation}
+
+
+
+
+1. By differentiating Eq. \eqref{eq:GaussianIntegral} with respect to $A$,
+show that
+%
+\begin{equation}
+  \langle x^2 \rangle
+\equiv
+  \sqrt{ \frac { A } { 2 \, \pi } }
+  \int_{-\infty}^{\infty}
+    x^2 \exp\left( - \frac{1}{2} A\,x^2 \right) \, dx
+=
+\frac{1}{A}.
+\label{eq:GaussianVariance}
+\end{equation}
+
+
+2. As an extension of Eq. \eqref{eq:GaussianVariance},
+show that
+\begin{equation}
+  \langle x^{2 n} \rangle
+\equiv
+\sqrt{ \frac { A } { 2 \, \pi } }
+  \int_{-\infty}^{\infty}
+    x^{ 2 \, n} \exp\left( - \frac{1}{2} A\,x^2 \right) \, dx
+=
+\frac{(2 \, n - 1)!!}{A^n}.
+\end{equation}
+
+
+
+
 \problem{Gaussian integral (matrix form)}
 
 
 
-1. Show the matrix form of \eqref{eq:GaussianIntegral}
+1. Show the matrix form of Eq. \eqref{eq:GaussianIntegral}
 \begin{equation}
   \int_{-\infty}^{\infty}
   \exp\left( -\frac{1}{2} \vct{x}^T \vct{A} \vct{x} \right) \, d\vct{x}
@@ -514,9 +603,9 @@ $|\vct A|$ is the determinant.
 
 \hint{
   First, consider the case that $\vct A$ is an diagonal matrix.
-  Show that the integral in \eqref{eq:GaussianIntegralMatrix}
+  Show that the integral in Eq. \eqref{eq:GaussianIntegralMatrix}
   is equivalent to $n$ one-dimensional integrals,
-  and evaluate them by \eqref{eq:GaussianIntegral}.
+  and evaluate them by Eq. \eqref{eq:GaussianIntegral}.
   Then, for a general $\vct A$, consider
   \[
     \vct x = \vct U \vct y,
@@ -557,25 +646,11 @@ where $\vct b = \{b_1, \dots, b_n\}^T$.
 
 
 
-\problem{Derivatives of Gaussian integrals}
+\problem{Correlation matrix}
 
 
 
-1. By differentiating \eqref{eq:GaussianIntegral} with respect to $A$, show that
-\begin{equation}
-  \langle x^2 \rangle
-\equiv \frac {
-  \int_{-\infty}^{\infty}
-    x^2 \exp\left( - \frac{1}{2} A\,x^2 \right) \, dx
-} {
-  \int_{-\infty}^{\infty}
-  \exp\left( - \frac{1}{2} A\,x^2 \right) \, dx
-}
-=
-\frac{1}{A}.
-\end{equation}
-
-2.
+1.
 Define the matrix $\vct{c}$, whose elements are defined as
 \begin{equation*}
 c_{ij}
@@ -591,7 +666,8 @@ c_{ij}
 %
 where $\vct A$ is a symmetric matrix.
 %
-By differentiating \eqref{eq:GaussianIntegralMatrix} with respect to $A_{ij}$, show that
+By differentiating Eq. \eqref{eq:GaussianIntegralMatrix} with respect to $A_{ij}$,
+show that
 %
 \begin{equation}
   \vct{c} = \vct{c}^T = \vct A^{-1},
@@ -613,15 +689,216 @@ Use the identity
 which can be shown by using the minors of $\vct A$.
 }
 
-3. By differentiating \eqref{eq:GaussianIntegralMatrixb} with respect to $b_i$ and $b_j$,
-and then setting $\vct b = \vct 0$, show \eqref{eq:GaussianCorrelation}.
+2. By differentiating Eq. \eqref{eq:GaussianIntegralMatrixb} with respect to $b_i$ and $b_j$,
+and then setting $\vct b = \vct 0$, show Eq. \eqref{eq:GaussianCorrelation}.
 
+
+
+\problem{* A not-so-Gaussian integral}
+
+
+
+This is a fun exercise.
+%
+We wish to evaluate
+%
+\begin{align}
+  I
+  &\equiv
+  \int_0^\infty
+  \exp\left[
+    -\frac 1 2
+    \left(
+      x^2
+      +
+      \frac {1} { x^2 }
+    \right)
+  \right]
+  \, d x.
+\label{eq:notSoGaussianIntegralDef}
+\end{align}
+%
+The result is $\sqrt{2 \, \pi}/(2 \, e)$.
+%
+We will do it in different ways.
+
+
+
+1. In the first method.
+%
+Show that
+%
+\begin{equation}
+  I
+  =
+  \int_0^\infty
+  \exp\left[
+    -\frac 1 2
+    \left(
+      x^2
+      +
+      \frac {1} { x^2 }
+    \right)
+  \right]
+  \, \frac{ d x } { x^2 }.
+\label{eq:notSoGaussianIntegralInv}
+\end{equation}
+Then, by adding
+Eqs. \eqref{eq:notSoGaussianIntegralDef}
+and \eqref{eq:notSoGaussianIntegralInv},
+show that
+\begin{equation*}
+  2 \, I
+  =
+  \frac 1 e
+  \int_{-\infty}^\infty
+  \exp\left[
+    -\frac 1 2
+    \left(
+      x
+      -
+      \frac {1} { x }
+    \right)^2
+  \right]
+  \, d \left(
+    x - \frac 1 x
+  \right).
+%\label{eq:notSoGaussianIntegralAddInv}
+\end{equation*}
+Evaluate this by Gaussian integral.
+
+
+
+2. In the second method,
+we are going to do something like thermodynamic integration.
+%
+That is, integrating over a parameter.
+%
+First, we generalize
+%
+\begin{align}
+  I(a)
+  &\equiv
+  \int_0^\infty
+  \exp\left[
+    -\frac 1 2
+    \left(
+      x^2
+      +
+      \frac {a^2} { x^2 }
+    \right)
+  \right]
+  \, d x.
+\label{eq:notSoGaussianIntegralDefa}
+\end{align}
+%
+Show by change of variable $y \equiv a/x$,
+%
+\begin{align*}
+  \frac{d}{da}
+  I(a)
+  =
+  -\int_0^\infty
+  \exp\left[
+    -\frac 1 2
+    \left(
+      \frac {a^2} { y^2 }
+      +
+      y^2
+    \right)
+  \right]
+  \, d y
+  =-I(a).
+\end{align*}
+Thus, show that $I(a) = I(0) \, \exp(-a)$,
+and also that $I(0) = \sqrt{\pi / 2}$
+by Gaussian integral.
+
+3. The third method
+is most convenient if you remember how to compute residues.
+%
+First, show that
+%
+\begin{align*}
+\exp\left(
+    -\frac 1 { 2 \, x^2 }
+\right)
+=
+\frac { x } { \sqrt{ 2 \, \pi } }
+\int_{-\infty}^\infty
+\exp\left(
+  -\frac1 2 t^2 \, x^2
+  + i \, t
+\right)
+\, d t.
+\end{align*}
+%
+Then,
+use this in Eq. \eqref{eq:notSoGaussianIntegralDef},
+\begin{align*}
+I
+=
+\frac { 1 } { \sqrt{ 2 \, \pi } }
+\int_{-\infty}^\infty
+\frac{
+  \exp(i \, t)
+} {
+  1 + t^2
+}
+\, d t,
+\end{align*}
+which can readily evaluated
+by contour integral
+from the residue at $t = i$.
+
+
+
+4. The fourth method is the steepest descend.
+%
+This is an approximate method,
+but it happens to yield the correct result in this case.
+%
+First, show that the maximum of $x^2 + 1/x^2$
+is located at $x = 1$,
+and at the vicinity,
+we have
+\[
+  x^2 + 1/x^2
+\approx
+  2 + 4 (x - 1)^2.
+\]
+%
+Then,
+use this in Eq. \eqref{eq:notSoGaussianIntegralDef},
+and extend the domain of integration to
+$(-\infty, +\infty)$.
+
+
+
+
+\section{Spherical coordinates in high dimensions}
+
+
+
+In this set of problems,
+we will study how to integrate
+a spherical-symmetric function
+over a high-dimensional space.
+%
+Usually, the dimensionality is usually one to three.
+%
+But occasionally,
+it can be much larger
+(e.g., recall the introduction of microcanonical ensemble
+in which we have integrate over the $6N$-dimensional phase space.)
+%
+The first problem also serves
+as a neat application of the Gaussian integral.
 
 
 
 
 \problem{Volume of high-dimensional spheres}
-
 
 
 In this problem, we will find the volume of a high-dimensional sphere
@@ -751,15 +1028,15 @@ It follows that
   r^{D-1} \, dr \, \sin^{D-2} \theta_D \, d\theta_D \, d\vct\uptheta^{D-1}.
   \label{eq:drD_recursion}
 \end{align}
-Then, show \eqref{eq:sphrcoordiff} by induction.
+Then, show Eq. \eqref{eq:sphrcoordiff} by induction.
 }
 
 2. By integrating over the angular variables,
 show that for a spherical symmetric function
-the surface element is given by \eqref{eq:SD}.
+the surface element is given by Eq. \eqref{eq:SD}.
 
 \hint{
-From \eqref{eq:drD_recursion}, we have
+From Eq. \eqref{eq:drD_recursion}, we have
 \begin{align}
     S_D(1)
   &= I_{D-2} \, S_{D-1}(1)
@@ -841,6 +1118,8 @@ then evaluate the integral for each term by using Eq. \eqref{eq:intcosmsinnb}.
 
 
 
+\section{Fourier transform}
+
 \problem{Fourier transform}
 
 
@@ -882,7 +1161,7 @@ show that the Fourier transform of $\nabla f(\vx)$ is given by $i\vk \, \tilde f
 \[
   f(\vx) \equiv \exp\left( - \frac{1}{2} \vct x^T \vct A \vct x \right)
 \]
-by setting $\vct b = -i \vct k$ in \eqref{eq:GaussianIntegralMatrixb}.
+by setting $\vct b = -i \vct k$ in Eq. \eqref{eq:GaussianIntegralMatrixb}.
 %
 Also, verify the inverse transform
 is indeed given by Eq. \eqref{eq:inverseFourierTransform}.
@@ -1205,7 +1484,7 @@ of the density series of
 $\exp \left( n \sum_{k = 1}^\infty \beta_k \, \rho^k \right)$.
 
 \hint{
-  From \eqref{eq:series_rhoz},
+  From Eq. \eqref{eq:series_rhoz},
 \begin{align*}
   n \, b_n
 &= \oint
@@ -1426,7 +1705,7 @@ For a system of dipoles, we define the dipole density
 where $\vct\upmu_i = q_i \vct{d}_i$,
 and $\vct{d}_i$ is the vector from the negative charge to the positive charge.
 %
-Then, show that \eqref{eq:electrostaticenergy} can be rewritten as
+Then, show that Eq. \eqref{eq:electrostaticenergy} can be rewritten as
 \[
   E = \frac{1}{2} \int \vct\upmu(\vr) \cdot \nabla \, \phi(\vr) \, d\vr.
 \]
@@ -1547,7 +1826,7 @@ can be found from\cite{morita1960, singer1985}
 \end{equation}
 
 \hint{
-  Start from \eqref{eq:mutigr}.
+  Start from Eq. \eqref{eq:mutigr}.
 }
 
 
@@ -1565,11 +1844,11 @@ can be found from\cite{morita1958, morita1960, singer1985}
 \label{eq:Fexhnc}
 \end{align}
 
-2. Differentiating \eqref{eq:Fexhnc} with respect to $\rho$,
-show that it is identical to \eqref{eq:muexhnc}.
+2. Differentiating Eq. \eqref{eq:Fexhnc} with respect to $\rho$,
+show that it is identical to Eq. \eqref{eq:muexhnc}.
 
 \hint{
-  Use \eqref{eq:intdlogrhoc}.
+  Use Eq. \eqref{eq:intdlogrhoc}.
 }
 
 %\begin{align*}
