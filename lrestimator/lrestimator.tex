@@ -1,11 +1,24 @@
 \documentclass[12pt]{article}
+\usepackage{xcolor}
+\usepackage{hyperref}
 \usepackage{amsmath}
+
+
+
 \begin{document}
+
+
 
 \title{A note on the left-right estimator}
 \author{ \vspace{-10ex} }
 \date{ \vspace{-10ex} }
 \maketitle
+
+
+
+\paragraph{Basic identity.}
+
+
 
 We start with the following identity
 \begin{align}
@@ -27,23 +40,50 @@ if the following conditions hold
 %
 \begin{align}
   \phi(x_{\min}) = \phi(x_{\max}) = 0,
+  \label{eq:phi_boundary}
 \\
   \phi(x^{-}) - \phi(x^{+}) = 1.
   \label{eq:phi_normalization}
 \end{align}
 
-In the left-right estimator,
-we demand the sum of the last two terms of \eqref{eq:lr0} to vanish,
-and
-\begin{align}
-  E(x)
+
+\paragraph{Proof.}
+
+
+
+This identity is derived from
+%
+\begin{align*}
+  \phi(y) \, E(y) \Big|_{x_{\min}}^{x_{\max}}
 &=
-  \int_{x_{\min}}^x \phi'(y) \, E(y) \, dy
-  +
-  \int_x^{x_{\max}} \phi'(y) \, E(y) \, dy,
-\label{eq:lr1}
-\end{align}
-if
+  \int [\phi'(y) \, E(y) + \phi(y) \, E'(y)] \, dy.
+\end{align*}
+%
+Then, by Eq. \eqref{eq:phi_boundary},
+the left-hand side vanishes.
+%
+The integral on the right-hand side
+can be broken up to three pieces,
+and by Eq. \eqref{eq:phi_normalization},
+we have
+\[
+0=-E(x)
++
+  \int_{x_{\min}}^{x} [\phi'(y) \, E(y) + \phi(y) \, E'(y)] \, dy
++
+  \int_{x}^{x_{\max}} [\phi'(y) \, E(y) + \phi(y) \, E'(y)] \, dy,
+\]
+which is Eq. \eqref{eq:lr0}.
+
+
+
+\paragraph{Left-right estimator.}
+
+
+
+In the left-right estimator,
+we demand the sum of the last two terms
+on the right-hand side of Eq. \eqref{eq:lr0} to vanish,
 \begin{align}
   \int_{x_{\min}}^x \phi(y) \, E'(y) \, dy
 +
@@ -51,6 +91,21 @@ if
 = 0.
 \label{eq:lr1_constraint}
 \end{align}
+%
+Then we have a simplified identity
+\begin{align}
+  E(x)
+&=
+  \int_{x_{\min}}^x \phi'(y) \, E(y) \, dy
+  +
+  \int_x^{x_{\max}} \phi'(y) \, E(y) \, dy.
+\label{eq:lr1}
+\end{align}
+
+
+
+\paragraph{Choice of the function $\phi(x)$.}
+
 
 
 We now consider the following $\phi(x)$
@@ -76,7 +131,7 @@ Thus,
   \label{eq:phi_W}
 \end{align}
 %
-Then, \eqref{eq:phi_normalization} means
+Then, Eq. \eqref{eq:phi_normalization} means
 \begin{align}
   a \int_{x_-}^x w(y) \, dy
 +
@@ -86,71 +141,63 @@ Then, \eqref{eq:phi_normalization} means
   \label{eq:phi_normalization1}
 \end{align}
 
-The expectation of the histogram, $\hat h(x)$, should be proportional to $w(x)$
+
+
+\paragraph{Connection to the histogram.}
+
+
+
+The observed distribution, $\hat w(x)$,
+should match $w(x)$,
 \begin{align}
-  \hat h(x) = \theta \, w(x),
+  \hat w(x) = w(x).
   \label{eq:h_w}
 \end{align}
-and \eqref{eq:phi_normalization} means
+%
+This means that
+we can substitute $\hat w(x)$ for $w(x)$ in
+Eqs. \eqref{eq:phi_normalization}-\eqref{eq:lr1}.
+%
+That is,
+$a$ and $b$ satisfy
 \begin{align}
-  a \, \int_{x_-}^x \hat h(y) \, dy
-+
-  b \, \int_x^{x_+} \hat h(y) \, dy
-=
-  \theta.
+  &a \, \int_{x_-}^x \hat w(y) \, dy
+  &+\phantom{=}
+  &b \, \int_x^{x_+} \hat w(y) \, dy
+  &=\phantom{=}
+  &1
   \label{eq:h_normalization}
-\end{align}
-
-
-By using \eqref{eq:phi_W}, \eqref{eq:h_w}, \eqref{eq:h_normalization}
-in \eqref{eq:lr1} and \eqref{eq:lr1_constraint},
-we get
-\begin{align}
-  E(x)
-&=
-  a \int_{x_{-}}^x w(y) \, E(y) \, dy
-+
-  b \int_x^{x_{+}} w(y) \, E(y) \, dy,
-\notag
 \\
-&=
-\frac{
-  a \int_{x_{-}}^x \hat h(y) \, E(y) \, dy
-+
-  b \int_x^{x_{+}} \hat h(y) \, E(y) \, dy
-}
-{
-  a \int_{x_{-}}^x \hat h(y) \, dy
-+
-  b \int_x^{x_{+}} \hat h(y) \, dy
-},
-\label{eq:lrw}
-\end{align}
-and
-\begin{align}
-  a \int_{x_{-}}^x W_-(y) \, E'(y) \, dy
-+
-  b \int_x^{x_{+}} W_+(y) \, E'(y) \, dy
-= 0.
+  &a \int_{x_{-}}^x W_-(y) \, E'(y) \, dy
+&+\phantom{=}
+  &b \int_x^{x_{+}} W_+(y) \, E'(y) \, dy
+  &=\phantom{=}
+  &0.
 \label{eq:lrw_constraint}
 \end{align}
 %
-Note that $a$ and $b$ does not have to be
-normalized using \eqref{eq:h_normalization},
-only the ratio $a/b$ enters \eqref{eq:lrw}.
-%
-In practice, we first solve the ratio $a/b$ from \eqref{eq:lrw_constraint},
-then use it in \eqref{eq:lrw}.
+and,
+\begin{align}
+  E(x)
+&=
+  a \int_{x_{-}}^x \hat w(y) \, E(y) \, dy
++
+  b \int_x^{x_{+}} \hat w(y) \, E(y) \, dy.
+\label{eq:lrw}
+\end{align}
 
-This form is particularly convenient, because
+
+
+Now
 \[
-  \int_x^{x+\Delta x} \hat h(y) \, dy
+  \int_{x - \Delta x/2}^{x + \Delta x/2} \hat w(y) \, dy
 \]
 can be estimated by the total number of data points
-that fall in the bin $(x, x + \Delta x)$,
+that fall in the bin $(x - \Delta x/2, x + \Delta x/2)$,
+or the normalized histogram height $h(x)$ at $x$,
 and
 \[
-  \int_x^{x+\Delta x} \hat h(y) \, E(y) \, dy
+  \int_{x - \Delta x/2}^{x + \Delta x/2} \hat w(y) \, E(y) \, dy
 \]
 can be estimated as the total energy of the data points.
 
