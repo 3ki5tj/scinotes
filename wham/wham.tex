@@ -1,337 +1,438 @@
-\documentclass[12pt]{article}
+%\documentclass[reprint,aip,jcp,superscriptaddress]{revtex4-1}
+\documentclass[aip,jcp,preprint,superscriptaddress]{revtex4-1}
 \usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
 \begin{document}
 
-\title{Weighted histogram analysis method (WHAM)}
-\date{}
+
+
+\newcommand{\vct}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vct{x}}
+\newcommand{\vy}{\vct{y}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\Ham}{\mathcal{H}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\com}{\mathrm{com}}
+
+\newcommand{\llbra}{[\![}
+\newcommand{\llket}{]\!]}
+
+% annotation macros
+\newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
+\newcommand{\add}[1]{{\color{blue} #1}}
+\newcommand{\del}[1]{{\color{gray} [#1]}}
+\newcommand{\note}[1]{{\color{OliveGreen}\small [\textbf{Comment.} #1]}}
+
+
+
+
+
+\title{Weighted histogram analysis method (WHAM)
+and related free energy methods}
+%\author{ \vspace{-10ex} }
+%\date{ \vspace{-10ex} }
+
+
+\begin{abstract}
+  We review a few free energy methods,
+  including the famous weighted histogram analysis method (WHAM).
+\end{abstract}
+
 \maketitle
 
-\section{Problem}
+\tableofcontents
 
-Suppose, we have performed Monte Carlo (MC) simulations of a given system,
- at several temperatures $\beta_1$, $\beta_2$, \dots, $\beta_M$.
+
+
+\section{What is WHAM and what does it do?}
+
+
+
+The main purpose of this article is
+to give a detailed discussion on
+a beautiful free energy calculation method called
+the weighted histogram analysis method (WHAM)\cite{
+ferrenberg1988, *ferrenberg1989, kumar1992,
+newman, frenkel}.
 %
-Here $\beta = 1/(k_B T)$, denotes the inverse temperature,
+The method is widely useful because
+it gives the most precise results
+among a large class of similar methods.
+%
+Nonetheless, as we shall see,
+it can be derived from some very rudimentary arguments.
+
+
+
+Although WHAM is a general free energy method,
+we shall discuss it in the context of the following case.
+%
+Suppose we have performed Monte Carlo (MC) simulations of a given system,
+at several temperatures $\beta_1$, $\beta_2$, \dots, $\beta_K$.
+%
+Here $\beta = 1/(k_B T)$ denotes the inverse temperature,
 with $k_B$ being the temperature.
 %
 We can then readily compute the average energy, heat capacity, etc.,
 at these temperatures.
+
+
+Now the first question is that
+can we also \emph{rigorously} compute these quantities at a temperature,
+say $\beta = (\beta_1 + \beta_2)/2$, which is not simulated?
 %
-Now can we also \emph{rigorously} compute these quantities at a temperature
-$(\beta_1 + \beta_2)/2$, which is not simulated?
+A cheap answer such as a linear interpolation, for example,
+would be biased and inefficient.
 %
-The weighted histogram analysis method is one way to do this.
-
-
-
-\section{Single histogram reweighting}
-
-We start from the simplest case of a single histogram.
+WHAM, on the other hand,
+would give a better solution.
 %
-That is, we have simulated the system under temperature $\beta$.
+The quantities computed from WHAM will be
+most accurate (unbiased)
+and precise (with minimal errors).
 %
-We now want to use data from this simulation to compute thermodynamic quantities
-at another temperature $\beta$.
+The idea is that even if we only care about the quantities
+at a particular temperature,
+the data from \emph{all} simulated temperatures
+can be combined in an unbiased way
+to improve the estimates of the quantities.
 
 
-Let us first consider the energy distribution
+
+Besides, WHAM will provide accurate
+estimates for the partition function,
+or, equivalently, the free energy,
+which is usually something valuable
+but hard-to-get.
+%
+This is why WHAM is usually introduced
+as a free energy method.
+
+
+
+
+\section{Basics}
+
+
+
+\subsection{Canonical ensemble}
+
+
+
+To start, we need to cover some basic concepts and formulae.
+%
+For simplicity,
+we assume a quantum system with discrete energy levels.
+%
+The density of states, $g(E)$, is defined as the number of states
+sharing the same energy $E$.
+%
+This $g(E)$
+is the partition function of
+the microcanonical ensemble.
+%
+In the canonical ensemble,
+the partition function
+at a certain temperature $\beta$
+is given by
+%
 \begin{equation}
-  p(E; \beta) = \frac{ g(E) \exp(-\beta E) } { Z(\beta) },
-  \label{eq:pE}
+  e^{-f(\beta)} = Z(\beta) = \sum_E g(E) \, \exp(-\beta \, E),
+  \label{eq:Z_def}
 \end{equation}
-where
-$g(E)$ is density of state of the energy level $E$
-(that is, the number of energy states that share the energy $E$),
-and $Z(\beta)$ is the partition function
+%
+where,
+we have also introduced
+a dimensionless free energy $f\equiv -\log Z$.
+
+
+
+The energy distribution is given by
+%
 \begin{equation}
-  Z(\beta) = \sum_E g(E) \exp(-\beta E).
+  p_\beta(E) = g(E) \, \frac{ \exp(-\beta \, E) } { Z(\beta) }.
+  \label{eq:pE_def}
 \end{equation}
+%
+It is clear from Eq. \eqref{eq:Z_def}
+that we have the normalization:
+\begin{equation}
+  \sum_E p_\beta(E) = 1.
+  \label{eq:pE_normalization}
+\end{equation}
+%
+
+
+
+With the energy distribution,
+we can compute the average of any quantity,
+$A(E)$, that can be expressed as a function of $E$:
+%
+\begin{equation}
+  \langle A(E) \rangle_\beta
+=
+  \sum_E A(E) \, p_\beta(E).
+  \label{eq:pE_average}
+\end{equation}
+%
+If we want the average energy,
+we simply set $A(E) = E$.
+
+
+
+From a simulation at temperature $\beta$,
+we can collect an energy histogram, $n_\beta(E)$,
+whose entries sum to the sample size.
+%
+\begin{equation}
+  N_\beta = \sum_E n_\beta(E).
+  \label{eq:nE_sum}
+\end{equation}
+%
+The observed energy histogram
+should match the theoretical distribution
+\begin{equation}
+  \frac{ \langle n_\beta(E) \rangle } { N_\beta }
+=
+  p_\beta(E)
+=
+  g(E) \frac{ \exp(-\beta \, E) } { Z(\beta) }.
+  \label{eq:nE}
+\end{equation}
+
+
+
+
+\subsection{General distribution}
+
+
+
+A similarly set of formulae
+can be derived for a general ensemble
+with weight $q(E)$.
+%
+\begin{equation}
+  Z_q = \sum_E g(E) \, q(E).
+  \label{eq:Zq_def}
+\end{equation}
+%
+with the energy distribution is given by
+%
+\begin{equation}
+  p_q(E) = g(E) \, \frac{ q(E) } { Z_q },
+  \label{eq:pqE_def}
+\end{equation}
+%
+which is also properly normalized.
+
+
+For a simulation done in this ensemble,
+we have, similar to Eq. \eqref{eq:nqE}
+\begin{equation}
+  \frac{ \langle n_q(E) \rangle_q } { N_q }
+=
+  p_q(E)
+=
+  g(E) \frac{ q(E) } { Z_q }.
+  \label{eq:nqE}
+\end{equation}
+
+
+
+
+
+\section{Deriving WHAM}
+
+
+
+\subsection{Estimating the density of states}
+
+
+We have now all the tools needed to derive WHAM.
+%
+An important observation from
+Eqs. \eqref{eq:pE_def} and \eqref{eq:pqE_def}
+is that
+the energy distributions at different ensembles
+differ only by the ensemble weight,
+which is $w_\beta(E) = \exp(-\beta \, E) / Z(\beta)$
+for the canonical ensemble,
+or $w_q(E) = q(E)/Z_q$ in the general case.
+%
+The common part, the density of states,
+$g(E)$, is the key for WHAM.
+%
+If we can accurately estimate $g(E)$
+then for any temperature, $\beta$,
+we can compute $Z(\beta)$ from Eq. \eqref{eq:Z_def},
+and Eq. \eqref{eq:pE_def} gives the distribution,
+hence, any average quantities.
+%
 Thus,
-\begin{equation}
-  \sum_E p(E; \beta) = 1.
-\end{equation}
+the central task of WHAM
+is to estimate $g(E)$ accurately.
 
 
-The average energy can be computed from the distribution $p(E; \beta)$:
-\begin{equation}
-  \langle E \rangle
-= \sum_E E \, p(E; \beta).
-\label{eq:avE}
-\end{equation}
+
+
+\subsection{Composite ensemble}
+
+
+
+The simplest way
+of estimating $g(E)$ is through the histogram equation,
+Eq. \eqref{eq:nE}:
 %
-For the heat capacity, we have
 \begin{align}
-  k_B T^2 C_V
-&=
-  \langle \Delta E^2 \rangle
+\hat g(E)
 =
-  \Big\langle\big( E - \langle E \rangle\big)^2\Big\rangle
+\frac{ n_\beta(E) }
+{ N_\beta \, \exp(-\beta \, E) / Z(\beta) }
 =
-  \langle E^2 \rangle - \langle E \rangle^2
- \notag \\
-&=
-  \sum_E \big( E - \langle E \rangle\big)^2 \, p(E; \beta).
-\label{eq:CV}
+\frac{ n_\beta(E) }
+{ N_\beta \, w_\beta(E) }
+\label{eq:gE_onehistogram}
 \end{align}
-Thus, all we need is the distribution $p(E; \beta)$,
-which can be estimate as the observed frequency
+for some $\beta = \beta_k$.
+%
+This is obviously not the most efficient way,
+because we are only using the data
+from a single simulation.
+%
+To improve this,
+we naturally would like to include data
+from all simulations.
+%
+Here is how to do it.
+
+
+
+Consider a composite ensemble
+of the $K$ canonical ensembles.
+%
+The histogram of this ensemble
+is obviously the overall histogram
+%
 \begin{equation}
-  p(E; \beta)
-\approx
-\frac{ n(E) } { N }
+  n_\com(E)
 =
-\frac{ n(E) } { \sum_{E'} n(E') }.
-\label{eq:pEfreq}
+  \sum_{k = 1}^K n_k(E).
+  \label{eq:ncom_def}
 \end{equation}
-
-
-For a given temperature $\beta'$,
-let us deduce the distribution $p(E; \beta')$
-from the distribution at $\beta$:
-\begin{align}
-  p(E; \beta')
-&=
-\frac{ g(E) \, \exp(-\beta' \, E) }
-     { Z(\beta') }
-\notag \\
-&=
-\frac{ g(E) \, \exp(-\beta \, E) }
-     { Z(\beta) }
-\frac{ \exp\big[ -(\beta' - \beta) \, E \big] }
-     { Z(\beta') / Z(\beta) }
-\notag \\
-&=
-p(E; \beta)
-\frac{ \exp\big[ -(\beta' - \beta) \, E \big] }
-     { Z(\beta') / Z(\beta) }.
-\label{eq:onehistp}
-\end{align}
-The above equation means that to get $p(E; \beta')$,
-we only need to multiply the known distribution $p(E; \beta)$
-by $\exp[ -(\beta' - \beta) \, E ]$,
-and divide it by an unknown $E$-independent factor $Z(\beta')/Z(\beta)$.
-
-
-The last factor $Z(\beta')/Z(\beta)$ can be computed
-from the normalization condition:
+%
+If we sum over $E$,
+we should get the total sample size
+%
 \begin{equation}
-  \sum_E p(E; \beta') = 1.
-  \label{eq:pE'}
+ \sum_{k = 1}^K N_k
+= N_\com
+= \sum_E n_\com(E)
+\label{eq:ncom_sum}
 \end{equation}
-Using \eqref{eq:onehistp} in \eqref{eq:pE'} yields
-\begin{align}
-  Z(\beta')/Z(\beta)
-&=
-  \sum_E p(E; \beta) \, \exp[-(\beta' - \beta) E]
-  \notag \\
-&=
-  \big\langle \exp[-(\beta' - \beta) E] \big\rangle.
-\label{eq:onehistZ}
-\end{align}
-
-This completes the one-histogram method.
-To summarize,
-we first compute the ratio $Z(\beta')/Z(\beta)$ from \eqref{eq:onehistZ},
-then use \eqref{eq:onehistp} to compute
-the energy distribution \eqref{eq:onehistp},
-from which, thermodynamic quantities can be computed.
-
-Note that although the method is exact for any pair of $\beta$ and $\beta'$.
 %
-In practice, $\beta$ and $\beta'$ must be sufficiently close,
-otherwise, the exponential average involved in
-\eqref{eq:onehistZ} and \eqref{eq:onehistp} can produce large errors.
 
 
-
-
-\section{Multiple-histogram method}
-
-Let us now consider the multiple-histogram case.
+Let us now find the ensemble weight, $w_\com(E)$,
+of the composite ensemble.
 %
-Suppose we have simulated the system at $\beta_1$, \dots, $\beta_M$.
+But, by the nature of the ensemble,
+this should be a linear combination
+of the weight of the member canonical ensembles,
+with the sample sizes serving as the relative weight.
 %
-For each temperature $\beta_i$,
-we have accumulated a distribution $p(E; \beta_i)$
-($1 \le i \le M$).
-%
-Our aim is to obtain the best estimate of $p(E; \beta')$,
-where $\beta'$ is a given temperature,
-which may or may not be one of $\beta_i$'s.
-
-
-Since we have one-histogram algorithm,
-we can deduce the distribution $p(E; \beta')$ from each of temperature $\beta_i$ as
-\begin{align}
-  p(E; \beta')
+\begin{equation}
+w_\com(E)
 =
-p(E; \beta_i) \frac{ \exp[ -(\beta' - \beta_i) \, E ] }
-                   { Z(\beta') / Z(\beta_i) }.
-\end{align}
-%
-Thus, we expect that a proper linear combination would be the best:
-\begin{align}
-  p(E; \beta')
+\sum_{k = 1}^K
+\frac{ N_k } { N_\com }
+w_{\beta_k}(E)
 =
-\sum_{i = 1}^M
-w_i \, p(E; \beta_i) \frac{ \exp[ -(\beta' - \beta_i) \, E ]}
-                          { Z(\beta') / Z(\beta_i) }.
-\label{eq:pEmh1}
-\end{align}
-Below, we will optimize $w_i$.
-
-
-
-Particularly, let us consider the distribution at the infinitely-high temperature,
-$\beta' = 0$:
-\begin{equation}
-  p(E; 0) = g(E) / Z(0),
+\sum_{k = 1}^K
+\frac{ N_k } { N_\com }
+\frac{ \exp( -\beta_k \, E ) } { Z(\beta_k) }
 \end{equation}
-which is just the normalized density of states $g(E)$.
+
+
+
+Now let us solve $g(E)$
+for the composite ensemble,
+from an analogy of Eq. \eqref{eq:gE_onehistogram}:
 %
-Since the normalization of $g(E)$ is arbitrary in classic statistical mechanics,
-we shall drop $Z(0)$ below, and work with the unnormalized $g(E)$ instead.
-%
-Thus,
 \begin{align}
-  g(E)
-  &=
-\sum_{i = 1}^M w_i \, p(E; \beta_i)
-  \frac{ 1 } { \exp( -\beta_i E )/Z(\beta_i) }
-  \notag \\
-  &\approx
-\sum_{i = 1}^M w_i \,
-\frac{ n_i(E) } { N_i \, \exp( -\beta_i E )/Z(\beta_i) },
-\label{eq:gEmh1}
-\end{align}
-where in the second step,
-we have replaced $p(E; \beta_i)$ by the frequency $n_i(E)/N_i$
-at temperature $\beta_i$.
-Here, $N_i = \sum_E n_i(E)$ is the total number of samples
-in temperature $\beta_i$.
-
-
-In Section \ref{sec:optwt},
-we show that the optimal weight $w_i$ is given by
-\begin{equation}
-  w_i \propto N_i \exp( - \beta_i E) / Z(\beta_i).
-  \label{eq:optwt1}
-\end{equation}
-The weight is subject to the normalization:
-\begin{equation}
-  \sum_{i=1}^M w_i = 1,
-  \label{eq:wi_normalize}
-\end{equation}
-which yields
-\begin{equation}
-  w_i
+\hat g(E)
 =
-\frac{ N_i \exp( - \beta_i E) / Z(\beta_i) }
-    { \sum_{i = 1}^M N_i \exp( - \beta_i E) / Z(\beta_i) }.
-\end{equation}
-Using this expression in \eqref{eq:gEmh1}, we get
-\begin{align}
-  g(E)
-&=
-  \frac{ \sum_{i = 1}^M n_i(E) }
-  { \sum_{i = 1}^M N_i \exp( - \beta_i E) / Z(\beta_i) }.
-\label{eq:gEmh}
+\frac{ n_\com(E) }
+{ N_\com \, w_\com(E) }
+=
+\frac{ \sum_{k = 1}^K n_k(E) }
+{ \sum_{k = 1}^K N_k \, \exp( -\beta_k \, E ) / Z(\beta_k) }.
+\label{eq:gE_WHAM}
 \end{align}
 %
-From the density of states $g(E)$,
-we can compute the partition function as
-\begin{align}
-  Z(\beta_i) = \sum_E g(E) \, \exp( -\beta_i E ).
-  \label{eq:Zimh}
-\end{align}
-
-This completes the method.
-%
-In summary,
-we first compute a trial partition function
-$Z(\beta_1)$, $Z(\beta_2)$, \dots, $Z(\beta_M)$,
-by e.g., the single-histogram method above.
-%
-Then, we use them to compute the density of states $g(E)$
-using \eqref{eq:gEmh}.
-Then, we use $g(E)$ to update the partition function $Z(\beta_i)$
-using \eqref{eq:Zimh}.
-%
-We repeat the above two steps until
-the difference of the partition functions
-from two successive rounds is small enough.
-%
-After convergence, we can use the optimal $g(E)$ and $Z(\beta_i)$
-to compute the energy distribution at any temperature $\beta'$
-from \eqref{eq:pE},
-and hence the average energy $\langle E \rangle$ from \eqref{eq:avE}
-and the heat capacity $C_V$ from \eqref{eq:CV}.
+Since this is based on the all data we have,
+it should be the most precise estimate of $g(E)$.
 
 
 
-\section{\label{sec:optwt}Optimal weight}
 
-We now show that optimal weight in \eqref{eq:gEmh1}
-is given by \eqref{eq:optwt1}.
+\subsection{Iterative solution}
+
+
+This is it!
 %
-We start by minimizing variance of $g(E)$.
+Equation \eqref{eq:gE_WHAM} is the key equation of WHAM.
 %
-Since the data from different temperatures are independent,
-we have
+But, wait, we don't know $Z(\beta_k)$ yet,
+how can we use them in Eq. \eqref{eq:gE_WHAM}?
 %
-\newcommand{\Var}{\mathrm{Var}\,}
+Well, this is done iteratively.
 %
-\begin{equation}
-  \Var g(E)
-= \sum_{i = 1}^M
-\frac{ w_i^2 \, \Var[ n_i(E) ] }
-{ \big[ N_i \, \exp(-\beta_i E) / Z(\beta_i) \big]^2 }.
-\end{equation}
-%
-We assume a Poisson distribution for $n_i(E)$,
-then
+Initially,
+we can guess a set of arbitrary $Z(\beta_k)$,
+say,
 \[
-  \Var[ n_i(E) ] = n_i(E).
+  Z^{(0)}(\beta_1) = \dots = Z^{(0)}(\beta_K) = 1.
 \]
-Since $w_i$ is subject to the normalization \eqref{eq:wi_normalize},
-we should minimize
-\[
-  S \equiv \Var g(E) - \lambda \sum_i w_i,
-\]
-with $\lambda$ being the Lagrange multiplier.
 %
-For the optimal weight $w_i$, we have
-\[
-  \partial S / \partial w_i = 0,
-\]
-for each $i$.
+Plugging these numbers to Eq. \eqref{eq:gE_WHAM}
+yields a $g^{(1)}(E)$.
 %
-So
-\begin{equation}
-  \frac { 2 w_i \, n_i(E) }
-{ \big[ N_i \, \exp(-\beta_i E) / Z(\beta_i) \big]^2 }
-  - \lambda = 0.
-\label{eq:wi_minimization}
-\end{equation}
-Finally,
-we use
-\[
-  \frac{ n_i(E) }{ N_i }
-  \approx p(E; \beta)
-  =
-  \frac{ g(E) \exp(-\beta_i \, E) } { Z(\beta_i) }.
-\]
-Then,
-\begin{align}
-  w_i &\approx \frac{ \lambda } { 2 g(E) }
-  \frac{ N_i \, \exp(-\beta_i \, E) } { Z(\beta_i) }
-  \notag \\
-&\propto N_i \, \exp(-\beta_i \, E) / Z(\beta_i),
-\end{align}
-which is \eqref{eq:optwt1}.
-(Note: since we are considering a fixed $E$, $g(E)$ is constant.)
+Then, we use this $g(E)$ in Eq. \eqref{eq:Z_def}
+to compute a new set of
+$Z^{(1)}(\beta_k)$.
+%
+This time, the numbers should be better
+than those from the last time.
+%
+Keep doing the two steps will yield
+a set of converged
+$Z^{(\infty)}(\beta_k)$,
+and the corresponding density of states
+$g^{(\infty)}(E)$,
+which are invariant under the iteration.
+%
+These are the solution of the WHAM equation.
 
 
 
 
+
+
+
+\bibliography{../simul}
 \end{document}

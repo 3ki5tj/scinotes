@@ -9,9 +9,9 @@ all: $(prj).pdf
 
 $(prj).pdf: $(prj).tex Makefile $(pdffigs)
 	pdflatex $<
-	#bibtex $(prj)
-	#pdflatex $<
-	#pdflatex $<
+	bibtex $(prj)
+	pdflatex $<
+	pdflatex $<
 
 $(pdffigs): %.pdf: %.gp
 	$(MAKE) -C fig

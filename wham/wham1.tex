@@ -1,0 +1,337 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\begin{document}
+
+\title{Weighted histogram analysis method (WHAM)}
+\date{}
+\maketitle
+
+\section{Problem}
+
+Suppose, we have performed Monte Carlo (MC) simulations of a given system,
+ at several temperatures $\beta_1$, $\beta_2$, \dots, $\beta_M$.
+%
+Here $\beta = 1/(k_B T)$, denotes the inverse temperature,
+with $k_B$ being the temperature.
+%
+We can then readily compute the average energy, heat capacity, etc.,
+at these temperatures.
+%
+Now can we also \emph{rigorously} compute these quantities at a temperature
+$(\beta_1 + \beta_2)/2$, which is not simulated?
+%
+The weighted histogram analysis method is one way to do this.
+
+
+
+\section{Single histogram reweighting}
+
+We start from the simplest case of a single histogram.
+%
+That is, we have simulated the system under temperature $\beta$.
+%
+We now want to use data from this simulation to compute thermodynamic quantities
+at another temperature $\beta$.
+
+
+Let us first consider the energy distribution
+\begin{equation}
+  p(E; \beta) = \frac{ g(E) \exp(-\beta E) } { Z(\beta) },
+  \label{eq:pE}
+\end{equation}
+where
+$g(E)$ is density of state of the energy level $E$
+(that is, the number of energy states that share the energy $E$),
+and $Z(\beta)$ is the partition function
+\begin{equation}
+  Z(\beta) = \sum_E g(E) \exp(-\beta E).
+\end{equation}
+Thus,
+\begin{equation}
+  \sum_E p(E; \beta) = 1.
+\end{equation}
+
+
+The average energy can be computed from the distribution $p(E; \beta)$:
+\begin{equation}
+  \langle E \rangle
+= \sum_E E \, p(E; \beta).
+\label{eq:avE}
+\end{equation}
+%
+For the heat capacity, we have
+\begin{align}
+  k_B T^2 C_V
+&=
+  \langle \Delta E^2 \rangle
+=
+  \Big\langle\big( E - \langle E \rangle\big)^2\Big\rangle
+=
+  \langle E^2 \rangle - \langle E \rangle^2
+ \notag \\
+&=
+  \sum_E \big( E - \langle E \rangle\big)^2 \, p(E; \beta).
+\label{eq:CV}
+\end{align}
+Thus, all we need is the distribution $p(E; \beta)$,
+which can be estimate as the observed frequency
+\begin{equation}
+  p(E; \beta)
+\approx
+\frac{ n(E) } { N }
+=
+\frac{ n(E) } { \sum_{E'} n(E') }.
+\label{eq:pEfreq}
+\end{equation}
+
+
+For a given temperature $\beta'$,
+let us deduce the distribution $p(E; \beta')$
+from the distribution at $\beta$:
+\begin{align}
+  p(E; \beta')
+&=
+\frac{ g(E) \, \exp(-\beta' \, E) }
+     { Z(\beta') }
+\notag \\
+&=
+\frac{ g(E) \, \exp(-\beta \, E) }
+     { Z(\beta) }
+\frac{ \exp\big[ -(\beta' - \beta) \, E \big] }
+     { Z(\beta') / Z(\beta) }
+\notag \\
+&=
+p(E; \beta)
+\frac{ \exp\big[ -(\beta' - \beta) \, E \big] }
+     { Z(\beta') / Z(\beta) }.
+\label{eq:onehistp}
+\end{align}
+The above equation means that to get $p(E; \beta')$,
+we only need to multiply the known distribution $p(E; \beta)$
+by $\exp[ -(\beta' - \beta) \, E ]$,
+and divide it by an unknown $E$-independent factor $Z(\beta')/Z(\beta)$.
+
+
+The last factor $Z(\beta')/Z(\beta)$ can be computed
+from the normalization condition:
+\begin{equation}
+  \sum_E p(E; \beta') = 1.
+  \label{eq:pE'}
+\end{equation}
+Using \eqref{eq:onehistp} in \eqref{eq:pE'} yields
+\begin{align}
+  Z(\beta')/Z(\beta)
+&=
+  \sum_E p(E; \beta) \, \exp[-(\beta' - \beta) E]
+  \notag \\
+&=
+  \big\langle \exp[-(\beta' - \beta) E] \big\rangle.
+\label{eq:onehistZ}
+\end{align}
+
+This completes the one-histogram method.
+To summarize,
+we first compute the ratio $Z(\beta')/Z(\beta)$ from \eqref{eq:onehistZ},
+then use \eqref{eq:onehistp} to compute
+the energy distribution \eqref{eq:onehistp},
+from which, thermodynamic quantities can be computed.
+
+Note that although the method is exact for any pair of $\beta$ and $\beta'$.
+%
+In practice, $\beta$ and $\beta'$ must be sufficiently close,
+otherwise, the exponential average involved in
+\eqref{eq:onehistZ} and \eqref{eq:onehistp} can produce large errors.
+
+
+
+
+\section{Multiple-histogram method}
+
+Let us now consider the multiple-histogram case.
+%
+Suppose we have simulated the system at $\beta_1$, \dots, $\beta_M$.
+%
+For each temperature $\beta_i$,
+we have accumulated a distribution $p(E; \beta_i)$
+($1 \le i \le M$).
+%
+Our aim is to obtain the best estimate of $p(E; \beta')$,
+where $\beta'$ is a given temperature,
+which may or may not be one of $\beta_i$'s.
+
+
+Since we have one-histogram algorithm,
+we can deduce the distribution $p(E; \beta')$ from each of temperature $\beta_i$ as
+\begin{align}
+  p(E; \beta')
+=
+p(E; \beta_i) \frac{ \exp[ -(\beta' - \beta_i) \, E ] }
+                   { Z(\beta') / Z(\beta_i) }.
+\end{align}
+%
+Thus, we expect that a proper linear combination would be the best:
+\begin{align}
+  p(E; \beta')
+=
+\sum_{i = 1}^M
+w_i \, p(E; \beta_i) \frac{ \exp[ -(\beta' - \beta_i) \, E ]}
+                          { Z(\beta') / Z(\beta_i) }.
+\label{eq:pEmh1}
+\end{align}
+Below, we will optimize $w_i$.
+
+
+
+Particularly, let us consider the distribution at the infinitely-high temperature,
+$\beta' = 0$:
+\begin{equation}
+  p(E; 0) = g(E) / Z(0),
+\end{equation}
+which is just the normalized density of states $g(E)$.
+%
+Since the normalization of $g(E)$ is arbitrary in classic statistical mechanics,
+we shall drop $Z(0)$ below, and work with the unnormalized $g(E)$ instead.
+%
+Thus,
+\begin{align}
+  g(E)
+  &=
+\sum_{i = 1}^M w_i \, p(E; \beta_i)
+  \frac{ 1 } { \exp( -\beta_i E )/Z(\beta_i) }
+  \notag \\
+  &\approx
+\sum_{i = 1}^M w_i \,
+\frac{ n_i(E) } { N_i \, \exp( -\beta_i E )/Z(\beta_i) },
+\label{eq:gEmh1}
+\end{align}
+where in the second step,
+we have replaced $p(E; \beta_i)$ by the frequency $n_i(E)/N_i$
+at temperature $\beta_i$.
+Here, $N_i = \sum_E n_i(E)$ is the total number of samples
+in temperature $\beta_i$.
+
+
+In Section \ref{sec:optwt},
+we show that the optimal weight $w_i$ is given by
+\begin{equation}
+  w_i \propto N_i \exp( - \beta_i E) / Z(\beta_i).
+  \label{eq:optwt1}
+\end{equation}
+The weight is subject to the normalization:
+\begin{equation}
+  \sum_{i=1}^M w_i = 1,
+  \label{eq:wi_normalize}
+\end{equation}
+which yields
+\begin{equation}
+  w_i
+=
+\frac{ N_i \exp( - \beta_i E) / Z(\beta_i) }
+    { \sum_{i = 1}^M N_i \exp( - \beta_i E) / Z(\beta_i) }.
+\end{equation}
+Using this expression in \eqref{eq:gEmh1}, we get
+\begin{align}
+  g(E)
+&=
+  \frac{ \sum_{i = 1}^M n_i(E) }
+  { \sum_{i = 1}^M N_i \exp( - \beta_i E) / Z(\beta_i) }.
+\label{eq:gEmh}
+\end{align}
+%
+From the density of states $g(E)$,
+we can compute the partition function as
+\begin{align}
+  Z(\beta_i) = \sum_E g(E) \, \exp( -\beta_i E ).
+  \label{eq:Zimh}
+\end{align}
+
+This completes the method.
+%
+In summary,
+we first compute a trial partition function
+$Z(\beta_1)$, $Z(\beta_2)$, \dots, $Z(\beta_M)$,
+by e.g., the single-histogram method above.
+%
+Then, we use them to compute the density of states $g(E)$
+using \eqref{eq:gEmh}.
+Then, we use $g(E)$ to update the partition function $Z(\beta_i)$
+using \eqref{eq:Zimh}.
+%
+We repeat the above two steps until
+the difference of the partition functions
+from two successive rounds is small enough.
+%
+After convergence, we can use the optimal $g(E)$ and $Z(\beta_i)$
+to compute the energy distribution at any temperature $\beta'$
+from \eqref{eq:pE},
+and hence the average energy $\langle E \rangle$ from \eqref{eq:avE}
+and the heat capacity $C_V$ from \eqref{eq:CV}.
+
+
+
+\section{\label{sec:optwt}Optimal weight}
+
+We now show that optimal weight in \eqref{eq:gEmh1}
+is given by \eqref{eq:optwt1}.
+%
+We start by minimizing variance of $g(E)$.
+%
+Since the data from different temperatures are independent,
+we have
+%
+\newcommand{\Var}{\mathrm{Var}\,}
+%
+\begin{equation}
+  \Var g(E)
+= \sum_{i = 1}^M
+\frac{ w_i^2 \, \Var[ n_i(E) ] }
+{ \big[ N_i \, \exp(-\beta_i E) / Z(\beta_i) \big]^2 }.
+\end{equation}
+%
+We assume a Poisson distribution for $n_i(E)$,
+then
+\[
+  \Var[ n_i(E) ] = n_i(E).
+\]
+Since $w_i$ is subject to the normalization \eqref{eq:wi_normalize},
+we should minimize
+\[
+  S \equiv \Var g(E) - \lambda \sum_i w_i,
+\]
+with $\lambda$ being the Lagrange multiplier.
+%
+For the optimal weight $w_i$, we have
+\[
+  \partial S / \partial w_i = 0,
+\]
+for each $i$.
+%
+So
+\begin{equation}
+  \frac { 2 w_i \, n_i(E) }
+{ \big[ N_i \, \exp(-\beta_i E) / Z(\beta_i) \big]^2 }
+  - \lambda = 0.
+\label{eq:wi_minimization}
+\end{equation}
+Finally,
+we use
+\[
+  \frac{ n_i(E) }{ N_i }
+  \approx p(E; \beta)
+  =
+  \frac{ g(E) \exp(-\beta_i \, E) } { Z(\beta_i) }.
+\]
+Then,
+\begin{align}
+  w_i &\approx \frac{ \lambda } { 2 g(E) }
+  \frac{ N_i \, \exp(-\beta_i \, E) } { Z(\beta_i) }
+  \notag \\
+&\propto N_i \, \exp(-\beta_i \, E) / Z(\beta_i),
+\end{align}
+which is \eqref{eq:optwt1}.
+(Note: since we are considering a fixed $E$, $g(E)$ is constant.)
+
+
+
+
+\end{document}
