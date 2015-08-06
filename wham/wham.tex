@@ -26,6 +26,7 @@
 \newcommand{\Ham}{\mathcal{H}}
 \newcommand{\W}{\mathcal{W}}
 \newcommand{\A}{\mathcal{A}}
+\newcommand{\LL}{\mathcal{L}}
 \newcommand{\var}{\mathrm{var}}
 \newcommand{\com}{\mathrm{com}}
 
@@ -42,15 +43,27 @@
 
 
 
-\title{Weighted histogram analysis method (WHAM)
-and related free energy methods}
+\title{Introduction to the weighted histogram analysis method (WHAM)}
 %\author{ \vspace{-10ex} }
 %\date{ \vspace{-10ex} }
 
 
 \begin{abstract}
-  We review a few free energy methods,
-  including the famous weighted histogram analysis method (WHAM).
+  We review the weighted histogram analysis method (WHAM)
+  and some related free energy methods.
+  %
+  We shall give several derivations of WHAM,
+  from the composite-ensemble viewpoint,
+  Bayesian inference,
+  and the classical variance analysis.
+  %
+  The iteration-free version, ST-WHAM,
+  is also reviewed.
+
+  If the reader is interested in a short
+  derivation of WHAM, sections
+  \ref{sec:basics} and \ref{sec:WHAM_compens} (about four pages)
+  would suffice.
 \end{abstract}
 
 \maketitle
@@ -59,34 +72,40 @@ and related free energy methods}
 
 
 
-\section{What is WHAM and what does it do?}
+\section{\label{sec:intro}
+What is WHAM and what does it do?}
 
 
 
-The main purpose of this article is
+Our main purpose is
 to give a detailed discussion on
-a beautiful free energy calculation method called
+an elegant free energy calculation method called
 the weighted histogram analysis method (WHAM)\cite{
 ferrenberg1988, *ferrenberg1989, kumar1992,
 newman, frenkel}.
 %
-The method is widely useful because
-it gives the most precise results
+The method is widely used because
+it gives the most accurate and precise result
 among a large class of similar methods.
 %
-Nonetheless, as we shall see,
-it can be derived from some very rudimentary arguments.
+Nonetheless,
+the common derivation in literature
+is somewhat complicated.
+%
+Here, we shall see that
+WHAM can also be derived
+using some very rudimentary arguments.
 
 
 
-Although WHAM is a general free energy method,
-we shall discuss it in the context of the following case.
+Although WHAM is a general method,
+we shall discuss it in the context of the following case\cite{
+ferrenberg1988, *ferrenberg1989, newman}.
 %
 Suppose we have performed Monte Carlo (MC) simulations of a given system,
-at several temperatures $\beta_1$, $\beta_2$, \dots, $\beta_K$.
+at several temperatures $\beta_1$, $\beta_2$, \dots, $\beta_K$
 %
-Here $\beta = 1/(k_B T)$ denotes the inverse temperature,
-with $k_B$ being the temperature.
+[here $\beta = 1/(k_B T)$ denotes the inverse temperature].
 %
 We can then readily compute the average energy, heat capacity, etc.,
 at these temperatures.
@@ -99,14 +118,33 @@ say $\beta = (\beta_1 + \beta_2)/2$, which is not simulated?
 A cheap answer such as a linear interpolation, for example,
 would be biased and inefficient.
 %
-WHAM, on the other hand,
-would give a better solution.
+But WHAM gives a better solution.
 %
-The quantities computed from WHAM will be
-most accurate (unbiased)
+The quantities computed from WHAM can usually be
+much more accurate (unbiased)
 and precise (with minimal errors).
+
+
+
+How is this possible?
 %
-The idea is that even if we only care about the quantities
+Well, the data obtained from MC simulations
+are not arbitrary, but subject to
+some underlying constraints from statistical mechanics.
+%
+Particular, as we shall see,
+the energy distributions from the different temperatures
+share a common factor called the density of states,
+and they differ only by some external weighting factor.
+%
+This interrelation between distributions
+makes \emph{sharing} data among simulations possible.
+%
+This sharing in turn leads to WHAM,
+a method that maximizes the statistical efficiency
+of using all available data.
+%
+Thus, even if we only care about the quantities
 at a particular temperature,
 the data from \emph{all} simulated temperatures
 can be combined in an unbiased way
@@ -126,7 +164,8 @@ as a free energy method.
 
 
 
-\section{Basics}
+\section{\label{sec:basics}
+Basics}
 
 
 
@@ -134,7 +173,7 @@ as a free energy method.
 
 
 
-To start, we need to cover some basic concepts and formulae.
+We first need to review some basic statistical mechanics.
 %
 For simplicity,
 we assume a quantum system with discrete energy levels.
@@ -143,7 +182,7 @@ The density of states, $g(E)$, is defined as the number of states
 sharing the same energy $E$.
 %
 This $g(E)$
-is the partition function of
+is also the partition function of
 the microcanonical ensemble.
 %
 In the canonical ensemble,
@@ -152,27 +191,34 @@ at a certain temperature $\beta$
 is given by
 %
 \begin{equation}
-  e^{-f(\beta)} = Z(\beta) = \sum_E g(E) \, \exp(-\beta \, E),
+  Z(\beta) = \sum_E g(E) \, \exp(-\beta \, E).
   \label{eq:Z_def}
 \end{equation}
-%
-where,
-we have also introduced
-a dimensionless free energy $f\equiv -\log Z$.
 
 
 
 The energy distribution is given by
 %
 \begin{equation}
-  p_\beta(E) = g(E) \, \frac{ \exp(-\beta \, E) } { Z(\beta) }.
+  p_\beta(E) = g(E) \, \frac{ \exp(-\beta \, E) } { Z(\beta) }
+  = g(E) \, w_\beta(E),
   \label{eq:pE_def}
+\end{equation}
+%
+where we have introduced
+a normalized weight\footnote{
+This weight is useful
+because in many formulae below,
+$Z(\beta)$ always goes with $\exp(-\beta E)$}
+\begin{equation}
+  w_\beta(E) = \frac{ \exp(-\beta E) }{ Z(\beta) }.
+\label{eq:wE_def}
 \end{equation}
 %
 It is clear from Eq. \eqref{eq:Z_def}
 that we have the normalization:
 \begin{equation}
-  \sum_E p_\beta(E) = 1.
+  1 = \sum_E p_\beta(E) = \sum_E g(E) \, w_\beta(E).
   \label{eq:pE_normalization}
 \end{equation}
 %
@@ -190,7 +236,8 @@ $A(E)$, that can be expressed as a function of $E$:
   \label{eq:pE_average}
 \end{equation}
 %
-If we want the average energy,
+For example,
+if we want the average energy,
 we simply set $A(E) = E$.
 
 
@@ -204,51 +251,57 @@ whose entries sum to the sample size.
   \label{eq:nE_sum}
 \end{equation}
 %
-The observed energy histogram
+The normalized histogram
 should match the theoretical distribution
-\begin{equation}
+\begin{align}
   \frac{ \langle n_\beta(E) \rangle } { N_\beta }
 =
   p_\beta(E)
-=
+&=
+  g(E) \, w_\beta(E)
+\label{eq:nEw}
+\\
+&=
   g(E) \frac{ \exp(-\beta \, E) } { Z(\beta) }.
-  \label{eq:nE}
-\end{equation}
+\label{eq:nE}
+\end{align}
 
 
 
 
-\subsection{General distribution}
+\subsection{General ensemble}
 
 
 
 A similarly set of formulae
-can be derived for a general ensemble
-with weight $q(E)$.
+can be derived for a general ensemble.
+%
+In the general case,
+we postulate a nonnegative weight $w_q(E)$,
+which generalizes the factor $w_\beta(E) = \exp(-\beta E)/Z(\beta)$ above.
+%
+The energy distribution is given by
 %
 \begin{equation}
-  Z_q = \sum_E g(E) \, q(E).
-  \label{eq:Zq_def}
-\end{equation}
-%
-with the energy distribution is given by
-%
-\begin{equation}
-  p_q(E) = g(E) \, \frac{ q(E) } { Z_q },
+  p_q(E) = g(E) \, w_q(E).
   \label{eq:pqE_def}
 \end{equation}
 %
-which is also properly normalized.
+The distribution
+has to be normalized:
+\begin{equation}
+  1 = \sum_E p_q(E)
+  = \sum_E g(E) \, w_q(E).
+  \label{eq:pqE_normalization}
+\end{equation}
 
 
 For a simulation done in this ensemble,
-we have, similar to Eq. \eqref{eq:nqE}
+we have, similar to Eq. \eqref{eq:nEw},
 \begin{equation}
   \frac{ \langle n_q(E) \rangle_q } { N_q }
-=
-  p_q(E)
-=
-  g(E) \frac{ q(E) } { Z_q }.
+= p_q(E)
+= g(E) \, w_q(E).
   \label{eq:nqE}
 \end{equation}
 
@@ -256,7 +309,8 @@ we have, similar to Eq. \eqref{eq:nqE}
 
 
 
-\section{Deriving WHAM}
+\section{\label{sec:WHAM_compens}
+Deriving WHAM from the composite ensemble}
 
 
 
@@ -272,12 +326,12 @@ the energy distributions at different ensembles
 differ only by the ensemble weight,
 which is $w_\beta(E) = \exp(-\beta \, E) / Z(\beta)$
 for the canonical ensemble,
-or $w_q(E) = q(E)/Z_q$ in the general case.
+or $w_q(E)$ in the general case.
 %
 The common part, the density of states,
 $g(E)$, is the key for WHAM.
 %
-If we can accurately estimate $g(E)$
+If we can accurately estimate $g(E)$,
 then for any temperature, $\beta$,
 we can compute $Z(\beta)$ from Eq. \eqref{eq:Z_def},
 and Eq. \eqref{eq:pE_def} gives the distribution,
@@ -289,11 +343,6 @@ is to estimate $g(E)$ accurately.
 
 
 
-
-\subsection{Composite ensemble}
-
-
-
 The simplest way
 of estimating $g(E)$ is through the histogram equation,
 Eq. \eqref{eq:nE}:
@@ -302,10 +351,10 @@ Eq. \eqref{eq:nE}:
 \hat g(E)
 =
 \frac{ n_\beta(E) }
-{ N_\beta \, \exp(-\beta \, E) / Z(\beta) }
+{ N_\beta \, w_\beta(E) }
 =
 \frac{ n_\beta(E) }
-{ N_\beta \, w_\beta(E) }
+{ N_\beta \, \exp(-\beta \, E) / Z(\beta) }
 \label{eq:gE_onehistogram}
 \end{align}
 for some $\beta = \beta_k$.
@@ -318,12 +367,23 @@ To improve this,
 we naturally would like to include data
 from all simulations.
 %
-Here is how to do it.
+Below is how to do it (the WHAM way).
 
 
 
-Consider a composite ensemble
-of the $K$ canonical ensembles.
+
+
+\subsection{Composite ensemble}
+
+
+
+Imagine a composite ensemble,
+which is a simple superposition of
+the $K$ canonical ensembles.
+%
+By its very nature,
+this ensemble includes all simulation data
+and should fit our need.
 %
 The histogram of this ensemble
 is obviously the overall histogram
@@ -331,29 +391,35 @@ is obviously the overall histogram
 \begin{equation}
   n_\com(E)
 =
-  \sum_{k = 1}^K n_k(E).
+  \sum_{k = 1}^K n_k(E),
   \label{eq:ncom_def}
 \end{equation}
+%
+where $n_k(E) \equiv n_{\beta_k}(E)$.
 %
 If we sum over $E$,
 we should get the total sample size
 %
 \begin{equation}
- \sum_{k = 1}^K N_k
-= N_\com
-= \sum_E n_\com(E)
+\sum_E n_\com(E)
+=
+\sum_{k = 1}^K N_k
+=
+N_\com.
 \label{eq:ncom_sum}
 \end{equation}
 %
+where $N_k \equiv N_{\beta_k}$.
 
 
-Let us now find the ensemble weight, $w_\com(E)$,
+
+Let us find out the ensemble weight, $w_\com(E)$,
 of the composite ensemble.
 %
-But, by the nature of the ensemble,
-this should be a linear combination
-of the weight of the member canonical ensembles,
-with the sample sizes serving as the relative weight.
+Since the composite ensemble is a simple superposition,
+the weight should be a linear combination
+of the weights of the member ensembles,
+with the sample sizes serving as the relative weights:
 %
 \begin{equation}
 w_\com(E)
@@ -364,33 +430,61 @@ w_{\beta_k}(E)
 =
 \sum_{k = 1}^K
 \frac{ N_k } { N_\com }
-\frac{ \exp( -\beta_k \, E ) } { Z(\beta_k) }
+\frac{ \exp( -\beta_k \, E ) } { Z(\beta_k) }.
 \end{equation}
+%
+It is easy to check that this weight is properly normalized
+according to Eq. \eqref{eq:pqE_normalization}:
+%
+\begin{align*}
+\sum_E g(E) \, w_\com(E)
+&=
+\sum_{k = 1}^K
+\frac{ N_k } { N_\com }
+\left(
+  \sum_E g(E) \, w_{\beta_k}(E)
+\right)
+\\
+&=
+%\sum_{k = 1}^K
+%\frac{ N_k } { N_\com }
+%\frac{ Z(\beta_k) } { Z(\beta_k) }
+%=
+\sum_{k = 1}^K
+\frac{ N_k } { N_\com }
+=1.
+\end{align*}
+
 
 
 
 Now let us solve $g(E)$
 for the composite ensemble,
-from an analogy of Eq. \eqref{eq:gE_onehistogram}:
+from Eq. \eqref{eq:nqE}
+with $q \rightarrow \com$:
 %
 \begin{align}
 \hat g(E)
-=
+&=
 \frac{ n_\com(E) }
 { N_\com \, w_\com(E) }
-=
+\notag \\
+&=
 \frac{ \sum_{k = 1}^K n_k(E) }
 { \sum_{k = 1}^K N_k \, \exp( -\beta_k \, E ) / Z(\beta_k) }.
 \label{eq:gE_WHAM}
 \end{align}
 %
-Since this is based on the all data we have,
+This can be also reached from an analogy
+of Eq. \eqref{eq:gE_onehistogram}.
+%
+Since this formula uses all available data,
 it should be the most precise estimate of $g(E)$.
 
 
 
 
-\subsection{Iterative solution}
+\subsection{Self-consistent solution}
 
 
 This is it!
@@ -400,10 +494,14 @@ Equation \eqref{eq:gE_WHAM} is the key equation of WHAM.
 But, wait, we don't know $Z(\beta_k)$ yet,
 how can we use them in Eq. \eqref{eq:gE_WHAM}?
 %
-Well, this is done iteratively.
+Well, this equation is meant to be solved
+\emph{self-consistently}.
+%
+The simplest iterative way of solving it is the following.
 %
 Initially,
-we can guess a set of arbitrary $Z(\beta_k)$,
+we can guess a set of arbitrary
+$Z(\beta_k)$,
 say,
 \[
   Z^{(0)}(\beta_1) = \dots = Z^{(0)}(\beta_K) = 1.
@@ -412,21 +510,962 @@ say,
 Plugging these numbers to Eq. \eqref{eq:gE_WHAM}
 yields a $g^{(1)}(E)$.
 %
-Then, we use this $g(E)$ in Eq. \eqref{eq:Z_def}
+Then, we use this $g^{(1)}(E)$ in Eq. \eqref{eq:Z_def}
 to compute a new set of
-$Z^{(1)}(\beta_k)$.
+$Z^{(1)}(\beta_1), \dots, Z^{(1)}(\beta_K)$.
 %
 This time, the numbers should be better
 than those from the last time.
 %
-Keep doing the two steps will yield
-a set of converged
+Keep going back and forth
+between Eqs. \eqref{eq:gE_WHAM} and \eqref{eq:Z_def}
+will ultimately yield a set of converged
 $Z^{(\infty)}(\beta_k)$,
 and the corresponding density of states
 $g^{(\infty)}(E)$,
-which are invariant under the iteration.
+which are the converged results of the iteration.
 %
-These are the solution of the WHAM equation.
+They represent the solution of the WHAM equation.
+
+
+
+Note that the free energies and the density of states
+are only determined up to a multiplication constant.
+%
+That is,
+if we multiple $g(E)$ and $Z(\beta_k)$
+by the same constant,
+Eqs. \eqref{eq:Z_def} and \eqref{eq:gE_WHAM}
+are unaffected.
+%
+Thus, we need to 
+fix a reference value for an anchor point,
+e.g.,
+$g(E_{\min}) = 1$,
+or
+$Z(\beta_1) = 1$.
+%
+Other values are then scaled accordingly.
+
+
+
+
+
+\section{\label{sec:WHAM_Bayesian}
+Deriving WHAM from the Bayesian method}
+
+
+
+Another way to reach Eq. \eqref{eq:gE_WHAM}
+is through a probability argument\cite{
+bartels1997, *gallicchio2005, *habeck2007, *habeck2012, zhu2012}.
+%
+While it looks a bit formal,
+the essence are pretty much the same.
+
+
+
+The aim, as we recall, is to guess the most probable
+density of states $g(E)$ from the observed trajectories.
+%
+The Bayesian method is a general method of
+estimating parameters of distributions,
+and we shall use it to estimate $g(E)$.
+
+
+
+\subsection{Functional differentiation}
+
+
+
+We shall first make clear
+what we mean by ``guessing the most probable $g(E)$''.
+%
+Since $g(E)$ is a function,
+we actually mean guessing a set of \emph{parameters}
+that characterize the function $g(E)$.
+%
+
+
+
+Intuitively,
+we can imagine the function $g(E)$
+as a curve determined by the values
+$g_1 \equiv g(E_1)$,
+$g_2 \equiv g(E_2)$,
+\dots,
+at a set of grid points
+$E_1$, $E_2$, \dots,
+which are the energy levels in our case.
+%
+Thus,
+$g_1$, $g_2$, \dots
+are the parameters that characterize the function $g(E)$,
+and we will find the most probable values
+of these numbers.
+
+
+
+Mathematically,
+we shall use the language called functional differentiation
+which is designed for this type of task.
+%
+However, the grid points $E_1$, $E_2$, \dots,
+are implicit in the language,
+and we have to mentally picture them when needed.
+
+
+
+A functional $F[g(E)]$ is something (called a mapping)
+that takes a function as the input,
+and outputs a number.
+%
+It is equivalent to a multi-variable function
+$F(g_1, g_2, \dots)$.
+
+
+
+A functional differentiation is
+equivalent to a partial differentiation:
+%
+\begin{equation}
+\frac{ \delta F[g(E)]}
+     { \delta g(E_j) }
+\rightarrow
+\frac{ \partial F(g_1, g_2, \dots) }
+     { \partial g_j }
+\end{equation}
+%
+Below are some examples.
+%
+First,
+%
+\begin{equation}
+\frac{ \delta g(E_i) }
+     { \delta g(E_j) }
+=
+\frac{ \partial g_i }
+     { \partial g_j }
+=
+\delta_{i, j},
+\end{equation}
+%
+where $\delta_{a, b}$
+is a two-variable function,
+which yields either $1$ if $a = b$,
+or $0$ otherwise.\footnote{
+%
+Here, we assume the energy is discrete.
+In the continuous case,
+$\delta_{a, b}$
+should be replaced by the Dirac delta function
+$\delta(a - b)$.
+%
+}
+%
+It is readily verified that
+$\delta_{i, j} = \delta_{E_i, E_j}$.
+%
+Thus,
+without writing the grid points explicitly, we have
+\begin{equation}
+\frac{ \delta g(E') }
+     { \delta g(E) }
+=
+\delta_{E', E}.
+\label{eq:funcdiff_g}
+\end{equation}
+
+
+
+Using this rule for the partition function $Z(\beta)$,
+we have
+\begin{align}
+\frac{ \delta Z(\beta) }
+     { \delta g(E) }
+&=
+\sum_{E'}
+\frac{ \delta g(E') }
+     { \delta g(E) }
+\exp(-\beta \, E')
+\notag \\
+&=
+\sum_{E'} \delta_{E', E} \, \exp(-\beta \, E')
+\notag \\
+&= \exp(-\beta \, E).
+\label{eq:funcdiff_Z}
+\end{align}
+
+
+
+
+Other rules in the usual calculus
+can be adopted here almost unchanged.
+%
+For example,
+\begin{equation}
+\frac{ \delta \log F[g(E)] }
+     { \delta g(E) }
+=
+\frac{ 1 } { F[g(E)] }
+\frac{ \delta F[g(E)] }
+     { \delta g(E) }.
+\label{eq:funcdiff_logF}
+\end{equation}
+
+
+
+
+\subsection{Prior probability}
+
+
+
+The first step is write down the prior probability,
+the probability of observing the trajectory,
+for a given $g(E)$.
+%
+Basically,
+it would be a product of
+probabilities given by Eq. \eqref{eq:pE_def},
+one for each trajectory frame.
+%
+\begin{align}
+P[\mathrm{Traj.}|g(E)]
+=
+\prod_{k = 1}^K
+\prod_{j = 1}^{N_k}
+g(E^{(k)}_j) \, \frac{ \exp(-\beta \, E^{(k)}_j) } { Z(\beta_k) },
+\label{eq:Pg_prior}
+\end{align}
+%
+where
+$E^{(k)}_j$
+means the $j$th frame of simulation $k$.
+%
+The first product $\prod_{k=1}^K$
+runs over simulations.
+%
+The second product $\prod_{j=1}^{N_k}$
+runs over trajectory frames in the $k$th simulation.
+
+
+
+
+\subsection{Posterior probability}
+
+
+
+The posterior probability,
+$P[g(E)|\mathrm{Traj.}]$,
+is the probability of $g(E)$
+from the observed trajectory.
+%
+In this sense,
+it is the opposite of the prior probability.
+%
+The Bayesian theorem
+gives a relation of the two probabilities
+%
+\begin{equation}
+  P[g(E)|\mathrm{Traj.}]
+\propto
+  P[\mathrm{Traj.}|g(E)]
+  \,
+  P[g(E)],
+\label{eq:Bayes_Pg}
+\end{equation}
+%
+The last term
+on the right-hand side
+is an intrinsic bias
+of the \emph{values} of $g(E)$,
+or $g_1$, $g_2$, \dots.
+%
+For example,
+we may set
+$P(g_1, g_2, \dots) \propto \sqrt{ g_1 \, g_2 \dots }$
+if there is a reason to believe the square-root dependence.
+%
+Here,
+without any a priori knowledge on $g(E)$,
+we shall simply set it to a constant.
+%
+Thus
+\begin{equation}
+  P[g(E)|\mathrm{Traj.}]
+\propto
+  P[\mathrm{Traj.}|g(E)].
+\label{eq:Bayes_Pg2}
+\end{equation}
+
+
+Our job below is to figure out a function $g(E)$
+that maximizes the posterior probability.
+%
+Note that the posterior probability can be
+regarded as a functional of $g(E)$.
+%
+Thus, we can use functional differentiation
+to do the maximization.
+%
+The proportionality constant
+in Eq. \eqref{eq:Bayes_Pg}
+or \eqref{eq:Bayes_Pg2}
+is independent of $g(E)$,
+and hence irrelevant to the maximization.
+
+
+
+
+\subsection{Likelihood function}
+
+
+
+The likelihood function $\LL[g(E)]$
+is the logarithm of the posterior probability.
+%
+Maximizing the likelihood function
+is equivalent to maximizing the posterior probability,
+but the former is easier mathematically.
+%
+Let us write down $\LL[g(E)]$ first,
+%
+\begin{align}
+\LL[g(E)]
+&=
+\log P[g(E)|\mathrm{Traj.}]
+\notag \\
+&=
+\sum_{k = 1}^K
+\sum_{j = 1}^{N_k}
+  \left[
+  \log g( E^{(k)}_j )
+  -\beta \, E^{(k)}_j
+  - \log Z(\beta_k)
+\right]
++\mathrm{const.}
+\notag \\
+&=
+\sum_{k = 1}^K
+\sum_{j = 1}^{N_k}
+\log g( E^{(k)}_j )
+-
+\sum_{k = 1}^K
+N_k \,
+\log Z(\beta_k)
++\mathrm{const.}
+\end{align}
+where
+we have used Eqs. \eqref{eq:Bayes_Pg2}
+and \eqref{eq:Pg_prior}
+on the second line;
+on the next line,
+we have further removed
+terms independent of $g(E)$.
+%
+Note that
+$Z(\beta_k)$ is
+itself a functional of $g(E)$
+by Eq. \eqref{eq:Z_def},
+so it must be kept.
+
+
+Now let us take the functional derivative.
+%
+\begin{align}
+\frac{ \delta \LL[g(E)] }
+     { \delta g(E) }
+&=
+\log P[g(E)|\mathrm{Traj.}]
+\notag \\
+&=
+\sum_{k = 1}^K
+\sum_{j = 1}^{N_k}
+\frac{ \delta_{E, \, E^{(k)}_j} }
+     { g( E ) }
+-
+\sum_{k = 1}^K
+N_k
+\frac{ \exp(-\beta_k \, E) }
+     { Z(\beta_k) },
+\end{align}
+where,
+we have used Eqs.
+\eqref{eq:funcdiff_logF},
+\eqref{eq:funcdiff_g},
+and
+\eqref{eq:funcdiff_Z}.
+
+
+
+
+Further,
+we observe the sum
+$\sum_{j = 1}^{N_k} \delta_{E, \, E^{(k)}_j}$
+gives the number of frames in the $k$th trajectory
+with energy equal to $E$,
+so it must be equal to $n_k(E)$.
+%
+Thus,
+\begin{align}
+\frac{ \delta \LL[g(E)] }
+     { \delta g(E) }
+=
+\frac{  \sum_{k = 1}^K n_k(E) }
+     { g( E ) }
+-
+\sum_{k = 1}^K
+N_k
+\frac{ \exp(-\beta_k \, E) }
+     { Z(\beta_k) }.
+\end{align}
+%
+Around the peak of the likelihood function,
+this functional derivation must vanish:
+$\delta \LL[g(E)]/ \delta g(E) = 0$.
+%
+Thus,
+we recover Eq. \eqref{eq:gE_WHAM}.
+
+
+
+
+\section{\label{sec:WHAM_var}
+Deriving WHAM from the variance analysis}
+
+
+
+
+We have seen two derivations of the WHAM equation.
+%
+However, the traditional derivation of WHAM\cite{
+ferrenberg1988, *ferrenberg1989, kumar1992,
+newman, frenkel}
+follows a different path
+based on the minimization of the variance.
+%
+Personally,
+I believe the derivation
+is not as clean as the previous two.
+%
+Nonetheless,
+we shall study it anyway
+because of its historical importance.
+
+
+
+\subsection{Basic idea}
+
+
+The basic idea is that
+for each simulation,
+we have an estimate of the density of states
+from Eq. \eqref{eq:gE_onehistogram}.
+%
+These estimates of $g(E)$
+use limited data, and thus have larger errors.
+%
+An optimal combination of the estimates, however,
+should be able to improve the result.
+
+
+To put it formally,
+for each temperature, we have
+%
+\begin{equation}
+\hat g_k(E)
+=
+\frac{ n_k(E) }
+     { d_k(E) }.
+\label{eq:gkE_onehistogram}
+\end{equation}
+where
+\begin{equation}
+  d_k(E) \equiv N_k \, \frac{ \exp(-\beta_k E) } { Z(\beta_k) },
+  \label{eq:dkE_def}
+\end{equation}
+%
+We seek an optimal combination
+%
+\begin{equation}
+g(E)
+=
+\sum_{k = 1}^K c_k \, \hat g_k(E).
+\end{equation}
+with the coefficients
+under the constraint
+$\sum_{k = 1}^K c_k = 1$.
+
+
+We should note that
+although Eq. \eqref{eq:gkE_onehistogram}
+gives only an estimate of $g(E)$,
+the average value is exact:
+\begin{equation}
+g(E)
+=
+\frac{ \langle n_k(E) \rangle}
+     { d_k(E) }.
+\label{eq:gkE_ave}
+\end{equation}
+
+
+
+\subsection{Variance analysis}
+
+
+
+Let us first study a general theorem
+of combining data.
+%
+Suppose we have $K$ random variables,
+$x_1$, \dots, $x_K$,
+which are estimates of the same quantity.
+%
+We wish to linearly combine them to
+form an estimate with the smallest error.
+%
+Below, we shall show that
+in an optimal combination,
+the weight is inversely proportional to the variance.
+
+
+
+The combination is
+\[
+  X = c_1 \, x_1 + \cdots + c_K \, x_K,
+\]
+with
+\begin{equation}
+  c_1 + \cdots + c_K = 1,
+  \label{eq:constraint_normalization}
+\end{equation}
+%
+The variance of $X$ is
+%
+\begin{align*}
+  \mathrm{var}(X)
+=
+\sum_{k = 1}^K c_k^2 \, \mathrm{var}(x_k)
+\end{align*}
+%
+To minimize $\mathrm{var}(X)$,
+we seek the minimum
+under the Lagrange multiplier,
+$\lambda$ of Eq. \eqref{eq:constraint_normalization}.
+%
+This means minimizing
+%
+\begin{equation}
+F(c_1, \dots c_K)
+=
+\sum_{k = 1}^K c_k^2 \, \mathrm{var}(x_k)
+-\lambda \, \sum_{k = 1}^K c_k.
+\end{equation}
+%
+Now
+setting the partial derivatives to zeros as
+$\partial F/\partial c_k = 0$
+yields,
+%
+\begin{align*}
+  2 \, c_k \, \mathrm{var}(x_k) - \lambda = 0
+\end{align*}
+%
+which shows that
+\begin{align*}
+c_k
+&= \frac{ \lambda/2 }{\mathrm{var}(x_k) }
+\propto \frac{ 1 } { \mathrm{var}(x_k) }.
+\end{align*}
+In other words,
+the optimal weight
+is inversely proportional to the variance.
+
+
+
+\subsection{WHAM}
+
+
+
+Under WHAM,
+the variance of $\hat g_k(E)$ can be computed as follows.
+%
+From Eq. \eqref{eq:gkE_onehistogram},
+we have
+%
+\begin{align*}
+\var[ \hat g_k(E) ]
+&=
+\frac{ \var[ n_k(E) ] }
+{ [ d_k(E) ]^2 }
+\approx
+\frac{ \langle n_k(E) \rangle }
+{ [ d_k(E) ]^2 }
+=
+\frac{ g(E) } { d_k(E) }
+\propto
+\frac{ 1 } { d_k(E) }.
+\end{align*}
+where we have assumed
+$\var[ n(E) ] = \langle n(E) \rangle$
+(see Appendix \ref{sec:varhist}
+for a derivation),
+and used Eq. \eqref{eq:gkE_ave}.
+
+
+
+This shows that the optimal weight
+of combining $\hat g_k(E)$ is proportional to $d_k(E)$.
+%
+So
+\begin{align}
+\hat g(E)
+&=
+\frac{ \sum_{k = 1}^K d_k(E) \, \hat g_k(E) }
+     { \sum_{k = 1}^K d_k(E) }
+\notag \\
+&=
+\frac{ \sum_{k = 1}^K n_k(E) }
+     { \sum_{k = 1}^K d_k(E) }.
+\label{eq:gE_WHAM_nkdk}
+\end{align}
+%
+Upon expanding $d_k(E)$,
+we recover Eq. \eqref{eq:gE_WHAM}.
+
+
+
+
+\section{\label{sec:ST-WHAM}
+Statistical-temperature WHAM (ST-WHAM)}
+
+
+
+As we have seen,
+the WHAM equation requires an iteratively solution.
+%
+It is possible to avoid the iteration process
+with minimal approximation.
+%
+This iteration-free variant of WHAM
+is ST-WHAM\cite{fenwick2008, kim2011}.
+
+
+
+We start from Eq. \eqref{eq:gE_WHAM}
+or the form by Eq. \eqref{eq:gE_WHAM_nkdk}.
+%
+We observe that from Eq. \eqref{eq:dkE_def}
+the partition function
+dependence only lies in the denominator
+\[
+D(E)
+\equiv
+\sum_{k = 1}^K d_k(E).
+\]
+Now, from Eq. \eqref{eq:dkE_def} we have
+\[
+d_k'(E)
+= -\beta_k \, d_k(E).
+\]
+So
+\[
+D'(E)
+= -\sum_{k = 1}^K \beta_k \, d_k(E),
+\]
+and
+\begin{align}
+\frac{d}{dE} \log D(E)
+=
+\frac{ D'(E) } { D(E) }
+=
+-\frac{ \sum_{k = 1}^K \beta_k \, d_k(E) }
+      { \sum_{k = 1}^K d_k(E) }.
+\label{eq:dlogD_step1}
+\end{align}
+
+
+
+Now our key approximation
+is to substitute $n_k(E)$ for $\langle n_k(E) \rangle$
+in Eq. \eqref{eq:gkE_ave}:
+%
+\begin{equation}
+  d_k(E)
+  =
+  \frac{ \langle n_k(E) \rangle } { g(E) }
+  \approx
+  \frac{ n_k(E) } { g(E) }.
+  \label{eq:dkE_approx}
+\end{equation}
+%
+Using this in Eq. \eqref{eq:dlogD_step1} yields
+%
+\begin{align*}
+\frac{d}{dE} \log D(E)
+=
+-\frac{ \sum_{k = 1}^K \beta_k \, n_k(E) / g(E) }
+{ \sum_{k = 1}^K n_k(E) / g(E) }
+\approx
+-\frac{ \sum_{k = 1}^K \beta_k \, n_k(E) }
+{ \sum_{k = 1}^K n_k(E) }.
+\end{align*}
+%
+Notice that the right-hand side
+is now free of $d_k(E)$, hence the partition function.
+%
+Integrating over $E$ yields
+%
+\begin{align*}
+\log D(E)
+=
+-\int^E_{E_{\min}} \frac{ \sum_{k = 1}^K \beta_k \, n_k(E') }
+{ \sum_{k = 1}^K n_k(E') } dE'.
+\end{align*}
+%
+Using this in Eq. \eqref{eq:gE_WHAM_nkdk},
+we reach the ST-WHAM result
+\begin{align}
+g(E)
+=
+\left[
+  \sum_{k = 1}^K n_k(E)
+\right]
+\,
+\exp
+\left[
+\int^E_{E_{\min}}
+    \frac{ \sum_{k = 1}^K \beta_k \, n_k(E') }
+         { \sum_{k = 1}^K n_k(E') }
+  dE'
+\right].
+\label{eq:g_STWHAM}
+\end{align}
+%
+Again, this forms requires
+only histograms
+and hence is iteration-free.
+
+
+
+
+
+
+\appendix
+
+
+
+\section{\label{sec:varhist}
+Variance of the histogram}
+
+
+
+Here we show how to compute
+the variance of a histogram.
+%
+We shall show,
+in terms of an energy histogram,
+\[
+  \var[ n(E) ] = \langle n(E) \rangle -  \langle n(E) \rangle^2/N,
+\]
+with $N$ being the sample size.
+%
+The second term on the right-hand side
+results from the constraint $\sum_E n(E) = N$.
+%
+If $\langle n(E) \rangle \ll N$,
+then we have
+\[
+  \var[ n(E) ] \approx \langle n(E) \rangle.
+\]
+
+
+
+\subsection{Indicator function}
+
+
+
+The variance of histogram
+can be computed as follows.
+%
+We start by defining an indicator function $\chi(x)$,
+which is $1$ if $x \in (E - \Delta E/2, E + \Delta E/2)$,
+or $0$ otherwise.
+%
+Because of the 0-1 nature, we have
+%
+\begin{equation}
+  \chi^p(x) = \chi(x),
+  \label{eq:chi_pow}
+\end{equation}
+for any integer $p \ge 1$.
+
+
+%
+Then, for a sample of $N$ points,
+$E_1$, $E_2$, \dots, $E_N$,
+we can express the histogram as
+%
+\[
+  n = \sum_{j = 1}^N \chi( E_j ),
+\]
+%
+Note that,
+so far $n$ is a random variable,
+instead of its average value, $\langle n \rangle$.
+
+
+
+\subsection{Generating function}
+
+
+
+To compute the variance of $n$,
+we compute the generating function\cite{vankampen}.
+\begin{align*}
+G(k)
+&\equiv
+\langle
+  \exp( i k n )
+\rangle
+\\
+&=
+\left\langle
+\exp\left[ i k \sum_{j = 1}^N \chi( E_j) \right]
+\right\rangle
+\\
+&=
+\prod_{j = 1}^N
+\left\langle
+\exp[ i k \chi( E_j) ]
+\right\rangle.
+\end{align*}
+%
+In the last step,
+we have assumed that the data points are independent.
+%
+Since the data points
+satisfy the same distribution,
+we further have
+\begin{align*}
+G(k)
+&=
+  \left\langle
+    \exp[ i k \chi( E_1) ]
+  \right\rangle^N.
+\end{align*}
+%
+Or
+\begin{align*}
+\log G(k)
+&=
+N \log
+  \left\langle
+    \exp[ i k \chi( E_1) ]
+  \right\rangle
+.
+\end{align*}
+
+
+Now
+\begin{align*}
+  \left\langle
+    \exp[ i k \chi( E_1) ]
+  \right\rangle
+&=
+  1 +
+  \sum_{p = 1}^\infty
+    \frac{ (i k)^p }{ p! }
+    \langle
+    \chi^p( E_1 )
+    \rangle
+\\
+&=
+  1  +
+  \sum_{p = 1}^\infty
+    \frac{ (i k)^p }{ p! }
+    \langle
+    \chi( E_1 )
+    \rangle
+\\
+&=
+  1
+  +
+  \langle
+  \chi( E_1 )
+  \rangle
+  [\exp( i k ) - 1]
+\\
+&=
+  1
+  +
+  \langle
+  \chi( E_1 )
+  \rangle
+  \left[
+  i k
+  +
+  \frac{ (i k)^2 } { 2! }
+  + \dots
+  \right].
+\end{align*}
+%
+Here,
+we have used Eq. \eqref{eq:chi_pow} on the second line.
+
+
+
+With the definition $\bar\chi \equiv \langle \chi( E_1 ) \rangle$,
+we have
+%
+\begin{align*}
+\log G(k)
+&=
+N
+\left[
+ \bar\chi \cdot (i k)
++
+  \bar\chi \cdot
+  \left(
+    1 - \bar\chi
+  \right)
+  \frac{ (i k)^2 } { 2! }
++ \dots
+\right]
+.
+\end{align*}
+%
+By definition,
+the power expansion of $\log G(k)$
+gives all cumulants\cite{vankampen}:
+\begin{align*}
+\log G(k)
+&=
+ \langle n \rangle \cdot (i k)
++
+\var(n)
+\frac{ (i k)^2 } { 2! }
++ \dots
+.
+\end{align*}
+%
+This means
+%
+\begin{align*}
+\langle n \rangle
+&=
+N \cdot \bar\chi,
+\\
+\var(n)
+&=
+N \cdot \bar\chi \cdot (1 - \bar\chi)
+=
+\langle n \rangle \cdot ( 1 - \langle n \rangle/N).
+\end{align*}
+
+
+
 
 
 
