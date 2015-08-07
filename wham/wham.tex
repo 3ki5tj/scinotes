@@ -52,9 +52,9 @@
   We review the weighted histogram analysis method (WHAM)
   and some related free energy methods.
   %
-  We shall give several derivations of WHAM,
+  We shall give three derivations of WHAM,
   from the composite-ensemble viewpoint,
-  Bayesian inference,
+  the maximum-likelihood method,
   and the classical variance analysis.
   %
   The iteration-free version, ST-WHAM,
@@ -497,7 +497,7 @@ how can we use them in Eq. \eqref{eq:gE_WHAM}?
 Well, this equation is meant to be solved
 \emph{self-consistently}.
 %
-The simplest iterative way of solving it is the following.
+The simplest way for this is a direct iteration.
 %
 Initially,
 we can guess a set of arbitrary
@@ -538,7 +538,7 @@ by the same constant,
 Eqs. \eqref{eq:Z_def} and \eqref{eq:gE_WHAM}
 are unaffected.
 %
-Thus, we need to 
+Thus, we need to
 fix a reference value for an anchor point,
 e.g.,
 $g(E_{\min}) = 1$,
@@ -551,8 +551,8 @@ Other values are then scaled accordingly.
 
 
 
-\section{\label{sec:WHAM_Bayesian}
-Deriving WHAM from the Bayesian method}
+\section{\label{sec:WHAM_maxlikelihood}
+Deriving WHAM from the maximum-likelihood method}
 
 
 
@@ -568,7 +568,7 @@ the essence are pretty much the same.
 The aim, as we recall, is to guess the most probable
 density of states $g(E)$ from the observed trajectories.
 %
-The Bayesian method is a general method of
+The maximum-likelihood method is a general method of
 estimating parameters of distributions,
 and we shall use it to estimate $g(E)$.
 
@@ -716,11 +716,11 @@ For example,
 
 
 
-\subsection{Prior probability}
+\subsection{Conditional probability}
 
 
 
-The first step is write down the prior probability,
+The first step is write down the conditional probability,
 the probability of observing the trajectory,
 for a given $g(E)$.
 %
@@ -735,7 +735,7 @@ P[\mathrm{Traj.}|g(E)]
 \prod_{k = 1}^K
 \prod_{j = 1}^{N_k}
 g(E^{(k)}_j) \, \frac{ \exp(-\beta \, E^{(k)}_j) } { Z(\beta_k) },
-\label{eq:Pg_prior}
+\label{eq:Pg_cond}
 \end{align}
 %
 where
@@ -751,89 +751,41 @@ runs over trajectory frames in the $k$th simulation.
 
 
 
-\subsection{Posterior probability}
-
-
-
-The posterior probability,
-$P[g(E)|\mathrm{Traj.}]$,
-is the probability of $g(E)$
-from the observed trajectory.
-%
-In this sense,
-it is the opposite of the prior probability.
-%
-The Bayesian theorem
-gives a relation of the two probabilities
-%
-\begin{equation}
-  P[g(E)|\mathrm{Traj.}]
-\propto
-  P[\mathrm{Traj.}|g(E)]
-  \,
-  P[g(E)],
-\label{eq:Bayes_Pg}
-\end{equation}
-%
-The last term
-on the right-hand side
-is an intrinsic bias
-of the \emph{values} of $g(E)$,
-or $g_1$, $g_2$, \dots.
-%
-For example,
-we may set
-$P(g_1, g_2, \dots) \propto \sqrt{ g_1 \, g_2 \dots }$
-if there is a reason to believe the square-root dependence.
-%
-Here,
-without any a priori knowledge on $g(E)$,
-we shall simply set it to a constant.
-%
-Thus
-\begin{equation}
-  P[g(E)|\mathrm{Traj.}]
-\propto
-  P[\mathrm{Traj.}|g(E)].
-\label{eq:Bayes_Pg2}
-\end{equation}
-
-
-Our job below is to figure out a function $g(E)$
-that maximizes the posterior probability.
-%
-Note that the posterior probability can be
-regarded as a functional of $g(E)$.
-%
-Thus, we can use functional differentiation
-to do the maximization.
-%
-The proportionality constant
-in Eq. \eqref{eq:Bayes_Pg}
-or \eqref{eq:Bayes_Pg2}
-is independent of $g(E)$,
-and hence irrelevant to the maximization.
-
-
-
-
 \subsection{Likelihood function}
 
 
 
-The likelihood function $\LL[g(E)]$
-is the logarithm of the posterior probability.
+Viewed as a \emph{functional} of $g(E)$,
+$P[\mathrm{Traj.}|g(E)]$
+gives the likelihood of function $g(E)$,
+given the observed trajectory.
 %
-Maximizing the likelihood function
-is equivalent to maximizing the posterior probability,
-but the former is easier mathematically.
+Our job below is to figure out the function $g(E)$
+that maximizes the likelihood function.
 %
+For mathematical convenience,
+we shall work on the logarithm,
+or the log-likelihood function,
+\[
+  \LL[g(E)]
+  \equiv
+  \log P[\mathrm{Traj.}|g(E)].
+\]
+%
+We shall then use functional differentiation
+to do the maximization.
+%
+
+
+
+
+
 Let us write down $\LL[g(E)]$ first,
 %
 \begin{align}
 \LL[g(E)]
 &=
-\log P[g(E)|\mathrm{Traj.}]
+\log P[\mathrm{Traj.} | g(E)]
 \notag \\
 &=
 \sum_{k = 1}^K
@@ -856,12 +808,12 @@ N_k \,
 +\mathrm{const.}
 \end{align}
 where
-we have used Eqs. \eqref{eq:Bayes_Pg2}
-and \eqref{eq:Pg_prior}
+we have used Eq. \eqref{eq:Pg_cond}
 on the second line;
 on the next line,
 we have further removed
-terms independent of $g(E)$.
+the term, $-\beta \, E^{(k)}_j$,
+that is independent of $g(E)$.
 %
 Note that
 $Z(\beta_k)$ is
@@ -875,9 +827,6 @@ Now let us take the functional derivative.
 \begin{align}
 \frac{ \delta \LL[g(E)] }
      { \delta g(E) }
-&=
-\log P[g(E)|\mathrm{Traj.}]
-\notag \\
 &=
 \sum_{k = 1}^K
 \sum_{j = 1}^{N_k}
@@ -901,7 +850,9 @@ and
 
 Further,
 we observe the sum
-$\sum_{j = 1}^{N_k} \delta_{E, \, E^{(k)}_j}$
+\[
+  \sum_{j = 1}^{N_k} \delta_{E, \, E^{(k)}_j}
+\]
 gives the number of frames in the $k$th trajectory
 with energy equal to $E$,
 so it must be equal to $n_k(E)$.
@@ -1204,10 +1155,10 @@ Using this in Eq. \eqref{eq:dlogD_step1} yields
 %
 \begin{align*}
 \frac{d}{dE} \log D(E)
-=
+\approx
 -\frac{ \sum_{k = 1}^K \beta_k \, n_k(E) / g(E) }
 { \sum_{k = 1}^K n_k(E) / g(E) }
-\approx
+=
 -\frac{ \sum_{k = 1}^K \beta_k \, n_k(E) }
 { \sum_{k = 1}^K n_k(E) }.
 \end{align*}
@@ -1219,7 +1170,7 @@ Integrating over $E$ yields
 %
 \begin{align*}
 \log D(E)
-=
+\approx
 -\int^E_{E_{\min}} \frac{ \sum_{k = 1}^K \beta_k \, n_k(E') }
 { \sum_{k = 1}^K n_k(E') } dE'.
 \end{align*}
@@ -1227,8 +1178,8 @@ Integrating over $E$ yields
 Using this in Eq. \eqref{eq:gE_WHAM_nkdk},
 we reach the ST-WHAM result
 \begin{align}
-g(E)
-=
+\hat g(E)
+\approx
 \left[
   \sum_{k = 1}^K n_k(E)
 \right]
