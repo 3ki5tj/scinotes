@@ -1217,9 +1217,10 @@ the variance of a histogram.
 %
 We shall show,
 in terms of an energy histogram,
-\[
+\begin{equation}
   \var[ n(E) ] = \langle n(E) \rangle -  \langle n(E) \rangle^2/N,
-\]
+  \label{eq:varn}
+\end{equation}
 with $N$ being the sample size.
 %
 The second term on the right-hand side
@@ -1233,184 +1234,46 @@ then we have
 
 
 
-\subsection{Indicator function}
 
-
-
-The variance of histogram
-can be computed as follows.
+To derive Eq. \eqref{eq:varn},
+let us consider flipping an unfair coin,
+with probability $p$ of getting a head.
 %
-We start by defining an indicator function $\chi(x)$,
-which is $1$ if $x \in (E - \Delta E/2, E + \Delta E/2)$,
-or $0$ otherwise.
-%
-Because of the 0-1 nature, we have
+Then, after $N$ independent flips,
+the number of heads $n$ satisfies the binomial distribution.
 %
 \begin{equation}
-  \chi^p(x) = \chi(x),
-  \label{eq:chi_pow}
+  p(n) = {N \choose n} \, p^n \, (1 - p)^{N - n}.
+  \label{eq:binomial}
 \end{equation}
-for any integer $p \ge 1$.
-
-
 %
-Then, for a sample of $N$ points,
-$E_1$, $E_2$, \dots, $E_N$,
-we can express the histogram as
+The mean and variance of $n$ are
 %
-\[
-  n = \sum_{j = 1}^N \chi( E_j ),
-\]
+\begin{align}
+  \langle n \rangle &= p \, N, \\
+  \var(n) &= p \, (1 - p) \, N,
+  \label{eq:binomial_moments}
+\end{align}
+respectively.
+
+
+
+Now let us reinterpret $p$ as
+the probability of a random data point
+assuming energy $E$ (instead of getting a head in the coin flipping),
+then the histogram $n(E)$ is the number
+of data points assuming $E$ after $N$ independent trials.
 %
-Note that,
-so far $n$ is a random variable,
-instead of its average value, $\langle n \rangle$.
-
-
-
-\subsection{Generating function}
-
-
-
-To compute the variance of $n$,
-we compute the generating function\cite{vankampen}.
-\begin{align*}
-G(k)
-&\equiv
-\langle
-  \exp( i k n )
-\rangle
-\\
-&=
-\left\langle
-\exp\left[ i k \sum_{j = 1}^N \chi( E_j) \right]
-\right\rangle
-\\
-&=
-\prod_{j = 1}^N
-\left\langle
-\exp[ i k \chi( E_j) ]
-\right\rangle.
-\end{align*}
-%
-In the last step,
-we have assumed that the data points are independent.
-%
-Since the data points
-satisfy the same distribution,
-we further have
-\begin{align*}
-G(k)
-&=
-  \left\langle
-    \exp[ i k \chi( E_1) ]
-  \right\rangle^N.
-\end{align*}
-%
-Or
-\begin{align*}
-\log G(k)
-&=
-N \log
-  \left\langle
-    \exp[ i k \chi( E_1) ]
-  \right\rangle
-.
-\end{align*}
-
-
-Now
-\begin{align*}
-  \left\langle
-    \exp[ i k \chi( E_1) ]
-  \right\rangle
-&=
-  1 +
-  \sum_{p = 1}^\infty
-    \frac{ (i k)^p }{ p! }
-    \langle
-    \chi^p( E_1 )
-    \rangle
-\\
-&=
-  1  +
-  \sum_{p = 1}^\infty
-    \frac{ (i k)^p }{ p! }
-    \langle
-    \chi( E_1 )
-    \rangle
-\\
-&=
-  1
-  +
-  \langle
-  \chi( E_1 )
-  \rangle
-  [\exp( i k ) - 1]
-\\
-&=
-  1
-  +
-  \langle
-  \chi( E_1 )
-  \rangle
-  \left[
-  i k
-  +
-  \frac{ (i k)^2 } { 2! }
-  + \dots
-  \right].
-\end{align*}
-%
-Here,
-we have used Eq. \eqref{eq:chi_pow} on the second line.
-
-
-
-With the definition $\bar\chi \equiv \langle \chi( E_1 ) \rangle$,
-we have
-%
-\begin{align*}
-\log G(k)
-&=
-N
-\left[
- \bar\chi \cdot (i k)
-+
-  \bar\chi \cdot
-  \left(
-    1 - \bar\chi
-  \right)
-  \frac{ (i k)^2 } { 2! }
-+ \dots
-\right]
-.
-\end{align*}
-%
-By definition,
-the power expansion of $\log G(k)$
-gives all cumulants\cite{vankampen}:
-\begin{align*}
-\log G(k)
-&=
- \langle n \rangle \cdot (i k)
-+
-\var(n)
-\frac{ (i k)^2 } { 2! }
-+ \dots
-.
-\end{align*}
-%
-This means
+Thus,
 %
 \begin{align*}
 \langle n \rangle
 &=
-N \cdot \bar\chi,
+N \, p,
 \\
 \var(n)
 &=
-N \cdot \bar\chi \cdot (1 - \bar\chi)
+N \, p \, (1 - p),
 =
 \langle n \rangle \cdot ( 1 - \langle n \rangle/N).
 \end{align*}
