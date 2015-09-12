@@ -58,11 +58,12 @@
   and the classical variance analysis.
   %
   The iteration-free version, ST-WHAM,
-  is also reviewed.
+  multiple Bennett's acceptance ratio (MBAR) method
+  are also reviewed.
 
   If the reader is interested in a short
   derivation of WHAM, sections
-  \ref{sec:basics} and \ref{sec:WHAM_compens} (about four pages)
+  \ref{sec:basics} to \ref{sec:WHAM_selfconsistent} (about four pages)
   would suffice.
 \end{abstract}
 
@@ -484,7 +485,9 @@ it should be the most precise estimate of $g(E)$.
 
 
 
-\subsection{Self-consistent solution}
+\subsection{\label{sec:WHAM_selfconsistent}
+Self-consistent solution}
+
 
 
 This is it!
@@ -549,6 +552,197 @@ Other values are then scaled accordingly.
 
 
 
+\subsection{\label{sec:MBAR}
+Histogram-free form: multiple Bennett's acceptance ratio (MBAR) method}
+
+
+
+We now describe a generalization of WHAM
+that avoids the histogram dependence.
+%
+Using Eq. \eqref{eq:gE_WHAM} in Eq. \eqref{eq:Z_def},
+we get
+\begin{align}
+  Z_i
+  =
+  \sum_E
+  \frac{ n_\com (E) \, q_i(E) }
+       { N_\com \, w_\com(E) },
+  \label{eq:Z_WHAM_sumE}
+\end{align}
+%
+where,
+\begin{align}
+  q_i(E) &\equiv \exp(-\beta_i \, E), \\
+  w_\com(E) &= \sum_{k = 1}^K
+  \frac{ N_k } { N_\com }
+  \frac{ q_k(E) } { Z_k }.
+  \label{eq:wcom_def}
+\end{align}
+
+
+
+Now observe that
+$n_\com(E)$
+is the sum over configurations $\vx$ in the trajectories
+with the same $E$.
+%
+In other words,
+\begin{align}
+  n_\com(E)
+  =
+  \sum_{\vx} \delta_{E, E(\vx)},
+  \label{eq:nE_sumx}
+\end{align}
+%
+where the sum $\sum_{\vx}$
+is carried over all configurations, $\vx$,
+in the trajectories (no matter the temperature),
+and $E(\vx)$ means the energy of configuration $\vx$.
+%
+It follows that any sum of $n_\com(E)$ over $E$
+is equivalent to a sum over configurations, $\vx$,
+\begin{align*}
+  \sum_E n_\com(E) \, A(E)
+  &=
+  \sum_E \sum_{\vx} \delta_{E, E(\vx)} \, A(E) \\
+  &=
+  \sum_{\vx} A(E(\vx)).
+\end{align*}
+%
+If we use the above result for Eq. \eqref{eq:Z_WHAM_sumE}
+with $A(E) = q_i(E)/[N_\com \, w_\com(E)]$,
+then
+%
+\begin{align}
+  Z_i
+  &=
+  \sum_{\vx}
+  \frac{ q_i[ E(\vx) ] }
+       { N_\com w_\com[ E(\vx) ] }
+        \notag \\
+  &=
+  \sum_{\vx}
+  \frac{ q_i[ E(\vx) ] }
+  { \sum_k N_k \, q_k[ E(\vx) ] / Z_k }.
+  \label{eq:Z_WHAM_sumx}
+\end{align}
+%
+This form of WHAM is free of histograms,
+so we shall refer to it as the histogram-free form.
+
+
+
+Equation \eqref{eq:Z_WHAM_sumx}
+is also the central result of
+a generalization of WHAM called
+the multiple Bennett's acceptance ratio (MBAR) method\cite{shirts2008}.
+%
+This name is due to that the method
+was originally derived as a generalization of
+Bennett's acceptance ratio (BAR) method\cite{bennett1976}.
+%
+It is a generalization
+instead of a variant, because it permits
+the weight $q_i$ to depend on the configuration $\vx$
+in an arbitrary fashion.
+%
+That is, $q_i$ does not have to depend on $\vx$
+through the energy $E(\vx)$ according to
+$\exp[-\beta_i \, E(\vx)]$,
+but instead,
+we can have a distinct functional form
+for each simulation condition $i$, that is
+\[
+  q_i(\vx) = \exp[-\beta_i \, E_i(\vx)].
+\]
+Note the subscript $i$ to $E(\vx)$,
+meaning a different function for each $i$.
+%
+For example,
+in simulation of a fluid,
+we may wish to change the radii of interaction
+in each simulation condition.
+%
+Then, the above MBAR form would still be valid,
+whereas the original WHAM form is not.
+%
+To emphasize this freedom,
+we rewrite Eq. \eqref{eq:Z_WHAM_sumx} as
+\begin{equation}
+  Z_i
+  =
+  \sum_{\vx}
+  \frac{ q_i(\vx) }
+  { \sum_{k = 1}^K N_k \, q_k(\vx) / Z_k }.
+  \label{eq:Z_MBAR}
+\end{equation}
+
+
+
+\subsection{Derivation of the histogram-free form}
+
+
+
+We now give a direct derivation
+of the generalized form, Eq. \eqref{eq:Z_MBAR}.
+%
+We shall still adopt the composite ensemble view.
+%
+The key of the new derivation is to assume that
+each configuration, $\vx$, is free to choose
+a simulation condition $i$ (e.g., the simulation temperature $\beta_i$)
+according to the ensemble weight.
+%
+Then, the probability of configuration, $\vx$,
+assuming condition $i$ in the composite ensemble
+is given by
+%
+\begin{align}
+  p(i|\vx)
+  &=
+  \frac{ \dfrac{N_i}{N_\com} \dfrac{q_i(\vx)}{Z_i} }
+  { w_\com(\vx) }
+  %\notag \\
+  =
+  \frac{ \dfrac{N_i}{N_\com} \dfrac{q_i(\vx)}{Z_i} }
+  { \sum_{k = 1}^K \dfrac{N_k}{N_\com} \dfrac{q_k(\vx)}{Z_k} }
+  \notag \\
+  &=
+  \frac{ N_i \, q_i(\vx) / Z_i }
+  { \sum_{k = 1}^K N_k \, q_k(\vx) / Z_k }.
+  \label{eq:pix_MBAR}
+\end{align}
+
+
+If we sum Eq. \eqref{eq:pix_MBAR}
+over all trajectory frames $\vx$
+(no matter the simulation conditions),
+we get the expected value of the population
+in condition $i$:
+%
+\begin{align}
+  \hat N_i
+  &=
+  \sum_{\vx} p(i|\vx)
+  \notag \\
+  &=
+  \sum_{\vx}
+  \frac{ N_i \, q_i(\vx) / Z_i }
+  { \sum_{k = 1}^K N_k \, q_k(\vx) / Z_k }.
+  \label{eq:Ni_WHAM}
+\end{align}
+%
+If we demand the expected value $\hat N_i$
+to be equal to observed one $N_i$,
+we then recover Eq. \eqref{eq:Z_MBAR}
+after multiplying both sides by $Z_i/N_i$.
+%
+This completes the derivation.
+
+
+
+
 
 
 \section{\label{sec:WHAM_maxlikelihood}
@@ -556,7 +750,18 @@ Deriving WHAM from the maximum-likelihood method}
 
 
 
-Another way to reach Eq. \eqref{eq:gE_WHAM}
+In this and the next sections,
+we shall return to WHAM
+and give two more popular derivations.
+%
+Although they are somewhat less straightforward,
+it is good to know them,
+because most people do not derive WHAM
+using the composite ensemble approach.
+
+
+
+Another way of reaching Eq. \eqref{eq:gE_WHAM}
 is through a probability argument\cite{
 bartels1997, *gallicchio2005, *habeck2007, *habeck2012, zhu2012}.
 %
@@ -896,7 +1101,7 @@ follows a different path
 based on the minimization of the variance.
 %
 Personally,
-I believe the derivation
+I think that the derivation
 is not as clean as the previous two.
 %
 Nonetheless,
