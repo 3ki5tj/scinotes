@@ -432,6 +432,7 @@ w_{\beta_k}(E)
 \sum_{k = 1}^K
 \frac{ N_k } { N_\com }
 \frac{ \exp( -\beta_k \, E ) } { Z(\beta_k) }.
+\label{eq:wcom}
 \end{equation}
 %
 It is easy to check that this weight is properly normalized
@@ -553,14 +554,21 @@ Other values are then scaled accordingly.
 
 
 \subsection{\label{sec:MBAR}
-Histogram-free form: multiple Bennett's acceptance ratio (MBAR) method}
+Multiple Bennett's acceptance ratio (MBAR) method}
 
 
 
 We now describe a generalization of WHAM
 that avoids the histogram dependence.
 %
-Using Eq. \eqref{eq:gE_WHAM} in Eq. \eqref{eq:Z_def},
+For simplicity,
+we shall use the short-hand notation below:
+\[
+  Z_i \equiv Z(\beta_i).
+\]
+%
+Using Eq. \eqref{eq:gE_WHAM}
+in Eq. \eqref{eq:Z_def},
 we get
 \begin{align}
   Z_i
@@ -602,15 +610,27 @@ and $E(\vx)$ means the energy of configuration $\vx$.
 %
 It follows that any sum of $n_\com(E)$ over $E$
 is equivalent to a sum over configurations, $\vx$,
-\begin{align*}
+\begin{align}
   \sum_E n_\com(E) \, A(E)
   &=
-  \sum_E \sum_{\vx} \delta_{E, E(\vx)} \, A(E) \\
+  \sum_E \sum_{\vx} \delta_{E, E(\vx)} \, A(E)
+  \notag \\
   &=
-  \sum_{\vx} A(E(\vx)).
-\end{align*}
+  \sum_{\vx} \sum_{E} \delta_{E, E(\vx)} \, A(E)
+  \notag \\
+  &=
+  \sum_{\vx} A(E(\vx)),
+  \label{eq:sumE_to_sumx}
+\end{align}
 %
-If we use the above result for Eq. \eqref{eq:Z_WHAM_sumE}
+where we have exchanged the order of summation
+on the second line,
+and used the following property of the $\delta$-function
+%
+$\sum_E \delta_{E, E'} A(E) = A(E')$.
+%
+If we use Eq. \eqref{eq:sumE_to_sumx}
+for Eq. \eqref{eq:Z_WHAM_sumE}
 with $A(E) = q_i(E)/[N_\com \, w_\com(E)]$,
 then
 %
@@ -630,6 +650,10 @@ then
 %
 This form of WHAM is free of histograms,
 so we shall refer to it as the histogram-free form.
+%
+Naturally,
+it can be treated as the zero-bin-width
+limit of WHAM.
 
 
 
@@ -648,19 +672,19 @@ the weight $q_i$ to depend on the configuration $\vx$
 in an arbitrary fashion.
 %
 That is, $q_i$ does not have to depend on $\vx$
-through the energy $E(\vx)$ according to
+through the same energy function $E(\vx)$ according to
 $\exp[-\beta_i \, E(\vx)]$,
 but instead,
-we can have a distinct functional form
+we can have a distinct function $E_i(\vx)$
 for each simulation condition $i$, that is
 \[
   q_i(\vx) = \exp[-\beta_i \, E_i(\vx)].
 \]
-Note the subscript $i$ to $E(\vx)$,
-meaning a different function for each $i$.
+%Note the added subscript $i$ to $E(\vx)$,
+%meaning a different function for each $i$.
 %
 For example,
-in simulation of a fluid,
+in simulating a fluid,
 we may wish to change the radii of interaction
 in each simulation condition.
 %
@@ -680,7 +704,7 @@ we rewrite Eq. \eqref{eq:Z_WHAM_sumx} as
 
 
 
-\subsection{Derivation of the histogram-free form}
+\subsection{Derivation of the MBAR equation}
 
 
 
@@ -717,7 +741,7 @@ is given by
 
 If we sum Eq. \eqref{eq:pix_MBAR}
 over all trajectory frames $\vx$
-(no matter the simulation conditions),
+(no matter the associated simulation conditions),
 we get the expected value of the population
 in condition $i$:
 %
@@ -739,6 +763,217 @@ we then recover Eq. \eqref{eq:Z_MBAR}
 after multiplying both sides by $Z_i/N_i$.
 %
 This completes the derivation.
+
+
+
+
+
+\subsection{\label{sec:WHAM_average}
+Computing averages}
+
+
+
+The histogram-free form, or the MBAR equation,
+is particularly useful in optimally computing
+the average of a quantity $Y(\vx)$
+unrelated to the energy $E$.
+%
+For example,
+we have simulated a system in $K$ temperatures
+$\beta_1$, $\beta_2$, \dots, $\beta_K$,
+and obtained $K$ trajectories.
+%
+Now we can obtain the optimal estimate
+of the average $\langle Y(\vx) \rangle_\beta$
+at a temperature $\beta$,
+which can be different from any of
+$\beta_1$, \dots, $\beta_K$.
+
+
+
+\subsubsection{Reweighting}
+
+
+
+Let us first consider the general problem of reweighting.
+%
+Suppose we have simulated a system under condition $A$,
+in which the ensemble weight is $w_A(\vx)$,
+we want to use the data to compute the average
+under a different condition $B$ with ensemble weight, $w_B(\vx)$.
+%
+The solution is simple.
+%
+We simply reweight each configuration $\vx$
+in the trajectory by a factor $w_B(\vx)/w_A(\vx)$:
+%
+\begin{align}
+  \langle Y(\vx) \rangle_B
+=
+  \left\langle Y(\vx) \cdot \dfrac{ w_B(\vx) }{ w_A(\vx) } \right\rangle_A,
+  \label{eq:reweighting}
+\end{align}
+%
+where,
+$\langle \cdots \rangle_A$
+and
+$\langle \cdots \rangle_B$
+mean the averages in ensembles $A$ and $B$, respectively.
+
+
+
+To see why Eq. \eqref{eq:reweighting} is true,
+note that,
+for any quantity, $\chi(\vx)$
+%
+\begin{align*}
+  \langle \chi(\vx) \rangle_A
+=
+  \int_{\vx} d\vx \, \chi(\vx) \, w_A(\vx),
+\end{align*}
+%
+where the integral $\int_{\vx} d\vx$
+is carried over all possible configurations $\vx$
+in the configuration space
+(note that it is to be distinguished from
+the sum of configurations in the trajectory).
+%
+The formula for ensemble $B$ is similar.
+%
+Now,
+let us use $\chi(\vx) = Y(\vx) \, w_B(\vx) / w_A(\vx)$
+in the above formula, then
+%
+\begin{align*}
+  \left \langle Y(\vx) \, \frac{ w_B(\vx) }{ w_A(\vx) } \right \rangle_A
+  &=
+  \int_{\vx} d\vx \, Y(\vx) \, \frac{ w_B(\vx) }{ w_A(\vx) } \, w_A(\vx)
+  \notag \\
+  &=
+  \int_{\vx} d\vx \, Y(\vx) w_B(\vx)
+  \notag \\
+  &= \left\langle Y(\vx) \right\rangle_B.
+\end{align*}
+
+
+
+\subsubsection{Application to the composite ensemble}
+
+
+
+We now use Eq. \eqref{eq:reweighting} for our problem.
+%
+Let ensemble $A$ be the composite ensemble
+with weight $w_\mathrm{com}(\vx)$,
+ensemble $B$ be the target ensemble
+with weight $w(\vx) = q(\vx)/Z_q$,
+and $Z_q = \sum_{\vx} q(\vx)$.
+%
+Then,
+%
+\begin{align}
+  \langle Y(\vx) \rangle_q
+&=
+  \left\langle Y(\vx) \cdot
+    \dfrac{ q(\vx)/Z_q }{ w_\com(\vx) }
+  \right\rangle_A
+  \notag \\
+&=
+  \left\langle Y(\vx) \cdot
+  \dfrac{
+    q(\vx)/Z_q
+  }
+  {
+    \sum_{k = 1}^K \frac{N_k}{N_\com} \frac{ q_k(\vx) } { Z_k }
+  }
+  \right\rangle_{\com}
+  \notag \\
+&=
+  \frac{N_\com}{Z_q}
+  \left\langle Y(\vx) \cdot
+  \dfrac{
+    q(\vx)
+  }
+  {
+    \sum_{k = 1}^K N_k \, q_k(\vx) / Z_k
+  }
+  \right\rangle_{\com}
+  \label{eq:reweightingY_com}
+\end{align}
+%
+But we still need to figure out $Z_q$.
+%
+To do this, we set $Y(\vx) = 1$, and
+%
+\begin{align*}
+  \frac{Z_q}{N_\com}
+&=
+  \left\langle
+  \dfrac{
+    q(\vx)
+  }
+  {
+    \sum_{k = 1}^K N_k \, q_k(\vx) / Z_k
+  }
+  \right\rangle_{\com}
+\end{align*}
+%
+Using it in Eq. \eqref{eq:reweightingY_com},
+we get
+\begin{align}
+  \langle Y(\vx) \rangle_q
+&=
+  \frac{
+    \left\langle Y(\vx) \cdot
+    \dfrac{
+      q(\vx)
+    }
+    {
+      \sum_{k = 1}^K N_k \, q_k(\vx) / Z_k
+    }
+    \right\rangle_{\com}
+  }
+  {
+    \left\langle
+    \dfrac{
+      q(\vx)
+    }
+    {
+      \sum_{k = 1}^K N_k \, q_k(\vx) / Z_k
+    }
+    \right\rangle_{\com}.
+  }
+  \label{eq:reweighting_com}
+\end{align}
+
+
+
+To understand Eq. \eqref{eq:reweighting_com},
+consider the special case of $q \rightarrow q_i$.
+%
+Then, the reweighting factor
+\begin{align*}
+  \frac{ w_i(\vx) } { w_\com(\vx) }
+=
+  \frac{  q_i(\vx) / Z_i }
+  { w_\com(\vx) }
+\propto
+\frac{ \dfrac{N_i}{N_\com} \dfrac{ q_i(\vx) }{ Z_i } }
+  { w_\com(\vx) }
+= p(i|\vx)
+\end{align*}
+is basically
+the conditional probability $p(i|\vx)$
+in Eq. \eqref{eq:pix_MBAR}.
+%
+In other words,
+if each configuration $\vx$
+were allowed to reselect a condition $i$
+according to the weights in the composite ensemble,
+the reweighting factor of $\vx$
+to condition $i$
+is basically the likelihood
+of $\vx$ choosing condition $i$.
 
 
 
@@ -1292,17 +1527,18 @@ we recover Eq. \eqref{eq:gE_WHAM}.
 
 
 
-
 \section{\label{sec:ST-WHAM}
 Statistical-temperature WHAM (ST-WHAM)}
 
 
 
+
 As we have seen,
-the WHAM equation requires an iteratively solution.
+the WHAM equation requires an iterative solution.
 %
-It is possible to avoid the iteration process
-with minimal approximation.
+Below, we shall show that
+with minimal approximation,
+it is possible to avoid the iteration process.
 %
 This iteration-free variant of WHAM
 is ST-WHAM\cite{fenwick2008, kim2011}.
@@ -1404,6 +1640,267 @@ only histograms
 and hence is iteration-free.
 
 
+
+
+
+
+\section{\label{sec:simultemp}
+Modification for simulated tempering}
+
+
+
+The WHAM equation has to be changed a bit
+for data generated from
+a simulated tempering simulation\cite{
+marinari1992, lyubartsev1992},
+in which temperature is a random variable.
+%
+Accordingly,
+the number of visits $N_k$ to temperature $k$
+is also a variable.
+%
+As a result of this,
+we shall see that
+the WHAM-related equations,
+e.g. Eqs. \eqref{eq:gE_WHAM},
+\eqref{eq:Z_WHAM_sumx}
+\eqref{eq:reweighting_com},
+should be modified,
+and in the modification
+$N_k$ becomes the expected value $\hat N_k$.
+%
+This change turns out to be most convenient
+because the combination $\hat N_k/Z_k$
+turns out to be equivalent to a known weight
+used in temperature transition probability.
+%
+Thus, we no longer need to use many iterations
+to solve for the density of states,
+$g(E)$, or the partition function, $Z(\beta)$.
+
+
+
+\subsection{Basics of simulated tempering}
+
+
+
+The simulated tempering method
+is a MC method
+based directly on sampling in
+the composite ensemble of $K$ temperatures.
+%
+Basically, temperature, $\beta$,
+now becomes a random variable, just like
+configuration $\vx$.
+%
+To study this method,
+we need to first write down the joint distribution
+of configuration $\vx$ and temperature $\beta$,
+$p(\vx, \beta)$, which is the product
+of the conditional distribution $p(\vx | \beta)$
+and the overall temperature distribution $p(\beta)$:
+%
+\begin{align}
+  p(\vx, \beta)
+  &=
+  p(\vx | \beta)
+  \,
+  p(\beta)
+\end{align}
+%
+The conditional distribution
+is simply the Boltzmann distribution
+%
+\begin{align}
+  p(\vx|\beta)
+  =
+  \frac{ \exp[-\beta \, E(\vx)] }
+       { Z(\beta) }.
+\end{align}
+%
+It is readily verified the normalization
+%
+$\int_{\vx} d\vx \, p(\vx|\beta) = 1$.
+%
+Thus, the joint distribution is
+given by
+\begin{align}
+  p(\vx, \beta)
+  &=
+  \frac{ \exp[-\beta \, E(\vx)] }
+  { Z(\beta) } \, p(\beta)
+  \notag \\
+  &\equiv
+  \frac{ \exp[-\beta \, E(\vx)] }
+  { \zeta(\beta) },
+  \label{eq:pjoint_simultemp}
+\end{align}
+%
+where we have defined
+\begin{align}
+  \zeta(\beta)
+  \equiv
+  \frac{ Z(\beta) }
+  { p(\beta) }.
+  \label{eq:weight_simultemp}
+\end{align}
+
+
+To do sampling in this simulated tempering ensemble,
+temperature is allowed to change
+according to the joint distribution $p(E, \beta)$.
+%
+This usually means that
+the acceptance probability for a transition
+from $\beta$ to $\beta'$
+should satisfy the detailed balance condition:
+%
+\begin{align*}
+  p(E, \beta) \, A(\beta \rightarrow \beta'; E)
+  =
+  p(E, \beta') \, A(\beta' \rightarrow \beta; E).
+\end{align*}
+%
+This equation only ties down
+the ratio of the forward and backward
+transition probabilities
+$A(\beta \rightarrow \beta'; E)$ and $A(\beta' \rightarrow \beta; E)$
+but not the two individual values.
+%
+A common choice that satisfies this is
+%
+\begin{align}
+  A(\beta \rightarrow \beta'; E)
+  &=
+  \min\left\{
+    1, \;
+    \frac{
+      p(E, \beta')
+    }
+    {
+      p(E, \beta)
+    }
+  \right\}
+  \notag \\
+  &=
+  \min\left\{
+    1, \;
+    \frac{
+      \exp(-\beta' \, E) / \zeta(\beta')
+    }
+    {
+      \exp(-\beta \, E) / \zeta(\beta)
+    }
+  \right\}.
+\end{align}
+%
+In practice,
+for temperature transitions,
+we only need to decide
+the values of $\zeta(\beta)$
+instead of those of $Z(\beta)$ and $p(\beta)$.
+%
+If $\zeta(\beta)$ and $Z(\beta)$
+happen to be close enough (up to a multiplicative constant),
+the overall temperature distribution, $p(\beta)$,
+should be roughly flat.
+
+
+
+
+\subsection{Modifications of the WHAM equation}
+
+
+
+For simulated tempering,
+the WHAM equation should be modified,
+because the weight $w_\com(\vx)$
+in Eq. \eqref{eq:wcom}
+is now changed to
+%
+\begin{align}
+  w_\com(\vx)
+  &=
+  \sum_{k = 1}^K p(\vx, \beta_k)
+  \notag \\
+  &=
+  \sum_{k = 1}^K
+  \frac{ \exp[-\beta \, E(\vx) ] }
+       { \zeta(\beta_k) }.
+  \label{eq:wcom_simultemp}
+\end{align}
+%
+where we have used
+Eq. \eqref{eq:pjoint_simultemp}.
+%
+This formula is nice because
+it does not involve
+the unknown partition function $Z(\beta_k)$
+in Eq. \eqref{eq:wcom}.
+
+
+
+Nonetheless, to establish a connection with Eq. \eqref{eq:wcom},
+we use the fact that
+the \emph{expected} number of visits $\hat N_k$
+to temperature $\beta_k$
+is given by
+\begin{equation}
+  \hat N_k
+  =
+  N_{\com} \, p( \beta_k )
+  =
+  N_{\com} \, \frac{ Z(\beta_k) } { \zeta(\beta_k) },
+  \label{eq:Nkhat_simultemp}
+\end{equation}
+where we have used
+Eq. \eqref{eq:weight_simultemp}
+in the second step.
+%
+Now if we replace $N_k$ by $\hat N_k$
+in Eq. \eqref{eq:wcom},
+and use Eq. \eqref{eq:Nkhat_simultemp},
+we get
+\begin{align*}
+  w_\com(\vx)
+  &=
+  \sum_{k = 1}^K
+  \frac{ \hat N_k } { N_\com }
+  \frac{ \exp[-\beta \, E(\vx) ] }
+  { Z(\beta_k) }
+  \notag \\
+  &=
+  \sum_{k = 1}^K
+  \frac{ N_\com \, Z(\beta_k) / \zeta(\beta_k) } { N_\com }
+  \frac{ \exp[-\beta \, E(\vx) ] }
+  { Z(\beta_k) }
+  \notag \\
+  &=
+  \sum_{k = 1}^K
+  \frac{ \exp[-\beta \, E(\vx) ] }
+       { \zeta(\beta_k) }.
+\end{align*}
+which is Eq. \eqref{eq:wcom_simultemp}.
+
+
+The above connection
+gives a convenient rule
+of adapting WHAM-relate equations,
+such as Eqs. \eqref{eq:gE_WHAM},
+\eqref{eq:Z_MBAR},
+and \eqref{eq:reweighting_com},
+to simulated tempering.
+%
+Whenever we see the combination
+$N_k/Z(\beta_k)$, or $N_k/Z_k$,
+we replace it by
+$1/\zeta(\beta_k)$
+in the corresponding simulated tempering version.
+%
+Again we emphasize that
+the simulated tempering variant
+does not require iterations,
+since $\zeta(\beta_k)$ is the known weight.
 
 
 

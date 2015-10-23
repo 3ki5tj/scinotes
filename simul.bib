@@ -138,6 +138,15 @@
   address = {Cambridge}
 }
 
+@book{press3rd,
+  author = {William H. Press and Saul A. Teukolsky and William T. Vetterling and Brian P. Flannery},
+  title = {Numerical Recipes in C: The Art of Scientific Computing.},
+  edition = {3rd},
+  year = {2007},
+  publisher = {Cambridge University Press},
+  address = {Cambridge}
+}
+
 @book{cormen,
   author = {Cormen, T. H.},
   title = {Introduction to Algorithms},
@@ -155,6 +164,15 @@
   series = {Cambridge Series in Statistical and Probabilistic Mathematics},
   isbn = {9780521004145},
   lccn = {98033722}
+}
+
+@book{duda,
+  author = {Duda, R.O. and Hart, P.E. and Stork, D.G.},
+  title = {Pattern Classification},
+  edition = {2nd},
+  year = {2000},
+  publisher = {Wiley},
+  isbn = {9780471056690}
 }
 
 @article{metropolis1953,
@@ -957,6 +975,19 @@
   keywords = {free energy, potential of mean force, weighted histogram analysis method, statistical error, systematic error, optimization algorithm, convergence rate, block average, molecular dynamics, Monte Carlo}
 }
 
+@article{tan2012,
+  author = "Tan, Zhiqiang and Gallicchio, Emilio and Lapelosa, Mauro and Levy, Ronald M.",
+  title = "Theory of binless multi-state free energy estimation with applications to protein-ligand binding",
+  journal = "The Journal of Chemical Physics",
+  year = "2012",
+  volume = "136",
+  number = "14",
+  eid = 144102,
+  pages = "-",
+  url = "http://scitation.aip.org/content/aip/journal/jcp/136/14/10.1063/1.3701175",
+  doi = "http://dx.doi.org/10.1063/1.3701175"
+}
+
 @article{ruiz-montero1997,
   author = {Ruiz-Montero, M. J. and Frenkel, D. and Brey, J. J.},
   title = {Efficient schemes to compute diffusive barrier crossing rates},
@@ -1119,6 +1150,51 @@
   doi = {10.1021/ct700301q},
   URL = { http://dx.doi.org/10.1021/ct700301q },
   abstract = { Molecular simulation is an extremely useful, but computationally very expensive tool for studies of chemical and biomolecular systems. Here, we present a new implementation of our molecular simulation toolkit GROMACS which now both achieves extremely high performance on single processors from algorithmic optimizations and hand-coded routines and simultaneously scales very well on parallel machines. The code encompasses a minimal-communication domain decomposition algorithm, full dynamic load balancing, a state-of-the-art parallel constraint solver, and efficient virtual site algorithms that allow removal of hydrogen atom degrees of freedom to enable integration time steps up to 5 fs for atomistic simulations also in parallel. To improve the scaling properties of the common particle mesh Ewald electrostatics algorithms, we have in addition used a Multiple-Program, Multiple-Data approach, with separate node domains responsible for direct and reciprocal space interactions. Not only does this combination of algorithms enable extremely long simulations of large systems but also it provides that simulation performance on quite modest numbers of standard cluster nodes. }
+}
+
+@article{pronk2013,
+  author = {Pronk, Sander and P\'all, Szilárd and Schulz, Roland and Larsson, Per and Bjelkmar, Pär and Apostolov, Rossen and Shirts, Michael R. and Smith, Jeremy C. and Kasson, Peter M. and van der Spoel, David and Hess, Berk and Lindahl, Erik},
+  title = {GROMACS 4.5: a high-throughput and highly parallel open source molecular simulation toolkit},
+  journal = {Bioinformatics},
+  volume = {29},
+  number = {7},
+  pages = {845-854},
+  year = {2013},
+  doi = {10.1093/bioinformatics/btt055},
+  abstract ={Motivation: Molecular simulation has historically been a low-throughput technique, but faster computers and increasing amounts of genomic and structural data are changing this by enabling large-scale automated simulation of, for instance, many conformers or mutants of biomolecules with or without a range of ligands. At the same time, advances in performance and scaling now make it possible to model complex biomolecular interaction and function in a manner directly testable by experiment. These applications share a need for fast and efficient software that can be deployed on massive scale in clusters, web servers, distributed computing or cloud resources.Results: Here, we present a range of new simulation algorithms and features developed during the past 4 years, leading up to the GROMACS 4.5 software package. The software now automatically handles wide classes of biomolecules, such as proteins, nucleic acids and lipids, and comes with all commonly used force fields for these molecules built-in. GROMACS supports several implicit solvent models, as well as new free-energy algorithms, and the software now uses multithreading for efficient parallelization even on low-end systems, including windows-based workstations. Together with hand-tuned assembly kernels and state-of-the-art parallelization, this provides extremely high performance and cost efficiency for high-throughput as well as massively parallel simulations.Availability: GROMACS is an open source and free software available from http://www.gromacs.org.Contact: erik.lindahl@scilifelab.seSupplementary information: Supplementary data are available at Bioinformatics online.},
+  URL = {http://bioinformatics.oxfordjournals.org/content/29/7/845.abstract}
+}
+
+@incollection{pall2015,
+  author={P\'all, Szil\'ard and Abraham, MarkJames and Kutzner, Carsten and Hess, Berk and Lindahl, Erik},
+  title={Tackling Exascale Software Challenges in Molecular Dynamics Simulations with GROMACS},
+  booktitle={Solving Software Challenges for Exascale},
+  volume={8759},
+  pages={3-27},
+  year={2015},
+  series={Lecture Notes in Computer Science},
+  editor={Markidis, Stefano and Laure, Erwin},
+  publisher={Springer International Publishing},
+  isbn={978-3-319-15975-1},
+  doi={10.1007/978-3-319-15976-8\_1},
+  url={http://dx.doi.org/10.1007/978-3-319-15976-8\_1}
+}
+
+@article{abraham2015,
+  author = "Mark James Abraham and Teemu Murtola and Roland Schulz and Szil\'ard P\'all and Jeremy C. Smith and Berk Hess and Erik Lindahl",
+  title = "GROMACS: High performance molecular simulations through multi-level parallelism from laptops to supercomputers ",
+  journal = "SoftwareX ",
+  volume = "1 - 2",
+  pages = "19 - 25",
+  year = "2015",
+  issn = "2352-7110",
+  keywords = "Molecular dynamics",
+  keywords = "GPU",
+  keywords = "SIMD",
+  keywords = "Free energy ",
+  abstract = "Abstract \{GROMACS\} is one of the most widely used open-source and free software codes in chemistry, used primarily for dynamical simulations of biomolecules. It provides a rich set of calculation types, preparation and analysis tools. Several advanced techniques for free-energy calculations are supported. In version 5, it reaches new performance heights, through several new and enhanced parallelization algorithms. These work on every level; \{SIMD\} registers inside cores, multithreading, heterogeneous CPU–GPU acceleration, state-of-the-art 3D domain decomposition, and ensemble-level parallelization through built-in replica exchange and the separate Copernicus framework. The latest best-in-class compressed trajectory storage format is supported. ",
+  doi = "http://dx.doi.org/10.1016/j.softx.2015.06.001",
+  url = "http://www.sciencedirect.com/science/article/pii/S2352711015000059"
 }
 
 @article{essmann1995,
@@ -1746,7 +1822,7 @@
 
 @article{hub2010,
   author = {Hub, Jochen S. and de Groot, Bert L. and van der Spoel, David},
-  title = {g\_wham—A Free Weighted Histogram Analysis Implementation Including Robust Error and Autocorrelation Estimates},
+  title = {g\_wham--A Free Weighted Histogram Analysis Implementation Including Robust Error and Autocorrelation Estimates},
   journal = {Journal of Chemical Theory and Computation},
   volume = {6},
   number = {12},
@@ -1754,5 +1830,78 @@
   year = {2010},
   doi = {10.1021/ct100494z},
   URL = {http://dx.doi.org/10.1021/ct100494z}
+}
+
+@article{wang2000,
+  author = {Wang, Junmei and Cieplak, Piotr and Kollman, Peter A.},
+  title = {How well does a restrained electrostatic potential (RESP) model perform in calculating conformational energies of organic and biological molecules?},
+  journal = {Journal of Computational Chemistry},
+  volume = {21},
+  number = {12},
+  pages = {1049--1074},
+  year = {2000},
+  publisher = {John Wiley \& Sons, Inc.},
+  issn = {1096-987X},
+  url = {http://dx.doi.org/10.1002/1096-987X(200009)21:12<1049::AID-JCC3>3.0.CO;2-F},
+  doi = {10.1002/1096-987X(200009)21:12<1049::AID-JCC3>3.0.CO;2-F},
+  keywords = {additive force field, nonadditive force field, restrained electrostatic potential (RESP), torsional angle parameterization}
+}
+
+@article{hornak2006,
+  author = {Hornak, Viktor and Abel, Robert and Okur, Asim and Strockbine, Bentley and Roitberg, Adrian and Simmerling, Carlos},
+  title = {Comparison of multiple Amber force fields and development of improved protein backbone parameters},
+  journal = {Proteins: Structure, Function, and Bioinformatics},
+  volume = {65},
+  number = {3},
+  pages = {712--725},
+  year = {2006},
+  publisher = {Wiley Subscription Services, Inc., A Wiley Company},
+  issn = {1097-0134},
+  url = {http://dx.doi.org/10.1002/prot.21123},
+  doi = {10.1002/prot.21123},
+  keywords = {trialanine, dihedral parameters, molecular dynamics, molecular mechanics, decoy analysis, NMR order parameters, α-helix}
+}
+
+@article{lindorff-larsen2010,
+  author = {Lindorff-Larsen, Kresten and Piana, Stefano and Palmo, Kim and Maragakis, Paul and Klepeis, John L. and Dror, Ron O. and Shaw, David E.},
+  title = {Improved side-chain torsion potentials for the Amber ff99SB protein force field},
+  journal = {Proteins: Structure, Function, and Bioinformatics},
+  volume = {78},
+  number = {8},
+  pages = {1950--1958},
+  year = {2010},
+  publisher = {Wiley Subscription Services, Inc., A Wiley Company},
+  issn = {1097-0134},
+  url = {http://dx.doi.org/10.1002/prot.22711},
+  doi = {10.1002/prot.22711},
+  keywords = {molecular dynamics simulation, molecular mechanics, NMR, rotamer, side chain, protein dynamics, quantum mechanics, dihedral}
+}
+
+@article{dempster1977,
+  author = {A. P. Dempster and N. M. Laird and D. B. Rubin},
+  title = {Maximum likelihood from incomplete data via the EM algorithm},
+  journal = {Journal of the Royal Statistical Society, Series B},
+  year = {1977},
+  volume = {39},
+  number = {1},
+  pages = {1--38}
+}
+
+@incollection{neal1998,
+  author = {Neal, RadfordM. and Hinton, GeoffreyE.},
+  title = {A View of the EM Algorithm that Justifies Incremental, Sparse, and other Variants},
+  year = {1998},
+  volume = {89},
+  series = {NATO ASI Series},
+  editor = {Jordan, Michael I.},
+  publisher = {Springer Netherlands},
+  pages = {355-368},
+  isbn = {978-94-010-6104-9},
+  url = {http://dx.doi.org/10.1007/978-94-011-5014-9\_12},
+  doi = {10.1007/978-94-011-5014-9\_12},
+  language={English}
+}
+@comment{
+  booktitle = {Learning in Graphical Models},
 }
 
