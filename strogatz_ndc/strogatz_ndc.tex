@@ -1,0 +1,99 @@
+\documentclass{book}
+\usepackage{amsmath}
+\begin{document}
+
+
+\chapter{5. Linear Systems}
+
+\section{5.1 Definition and Examples}
+
+The set of equations we are interested in is
+$$
+\begin{aligned}
+  \mathbf {\dot x}
+  &= \mathbf f(\mathbf x) \\
+  &= \mathbf A \mathbf x.
+\end{aligned}
+$$
+The $n\times n$ matrix $\mathbf A$ always has $n$ eigenvalues,
+but not always have $n$ eigenvectors (see degenerate node below).
+But if there are $n$ eigenvectors,
+we can diagonalizing the matrix by combinations of $x_i$,
+i.e., for each $j = 1, \dots, n$, we have
+$$
+\dot v_j = \lambda_j v_j,
+$$
+where $v_j = \sum_{j = 1}^n c_{ji} x_i$.
+
+\begin{itemize}
+
+\item
+Fixed point. A fixed point, $\mathbf x^*$, is the solution of
+$$
+\mathbf f(\mathbf x^*) = 0.
+$$
+In our case, $\mathbf x^* = \mathbf 0$ is the origin.
+\\
+
+\item
+Node.
+If all eigenvalues share the same sign, then the fixed point is a \emph{node}.
+If the sign is positive, it unstable; negative, stable.
+\\
+
+\item
+Star.
+A special node with all eigenvalues being identical is a \emph{star}.
+
+\item
+Saddle points.
+If the eigenvalues are all real, but some are positive, some are negative, the fixed point is saddle.
+The space spanned the set of eigenvectors of the negative/positive eigenvalues are called the \emph{stable/unstable manifold}.
+
+\item
+Spiral.
+In two dimensions, $n = 2$,
+if the eigenvalues are complex numbers, then the fixed point is a spiral.
+
+\item
+Center.
+A special spiral with purely imaginary eigenvalues is a center. For example,
+\begin{align*}
+  \dot x &= y \\
+  \dot y &= -x,
+\end{align*}
+has two eigenvalues $\lambda = \pm i$.
+
+\end{itemize}
+
+
+\subsection{Stability Language}
+
+
+\begin{itemize}
+
+\item
+Attracting.
+If any trajectory starting from somewhere near the fixed point, $\mathbf x^*$, ultimately approaches $\mathbf x^*$, then $\mathbf x^*$ is attracting.
+
+\item
+Globally attracting.
+If any trajectory starting from anywhere ultimately approaches $\mathbf x^*$, then $\mathbf x^*$ is \emph{globally attracting}.
+
+\item
+Lyapunov stable.
+A fixed point, $\mathbf x^*$, is \emph{Lyapunov stable} if all trajectories starting close to $\mathbf x^*$ remain close to it at all times.
+
+\item
+\emph{Neutrally stable} means Lyapunov stable but not attracting.  An example is a center.
+
+\item
+\emph{Asymptotically stable} means Lyapunov stable and attracting.
+
+\end{itemize}
+
+
+
+
+
+\end{document}

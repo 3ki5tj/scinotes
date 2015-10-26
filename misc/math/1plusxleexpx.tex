@@ -1,0 +1,29 @@
+\documentclass{article}
+\begin{document}
+
+\section{Short proof for $1 + x \le e^x$}
+
+Here is a short elementary proof for
+\begin{equation}
+1 + x \le e^x.
+\label{eq:expx}
+\end{equation}
+
+
+By using the inequality $1 + x < \left(1 + \frac{x}{2}\right)^2$, we have
+\begin{equation}
+1 + x
+\le
+\left(1 + \frac x 2 \right)^2
+\le
+\left(1 + \frac x 4 \right)^4
+\le
+\left(1 + \frac x 8 \right)^8
+\le
+\dots
+\le
+\left(1 + \frac x {2^k} \right)^{2^k}.
+\end{equation}
+
+Taking the limit of $k \rightarrow \infty$ yields (\ref{eq:expx}).
+\end{document}

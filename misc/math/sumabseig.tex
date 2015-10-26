@@ -1,0 +1,153 @@
+Note. An earlier version of this answer only works for [normal matrices](https://en.wikipedia.org/wiki/Normal_matrix), thanks to [themaker](http://math.stackexchange.com/users/114509/themaker) for pointing this out.
+Fortunately, the answer to [this wonderful post](http://math.stackexchange.com/questions/381808/) appears to furnish the step to generalize the proof to an arbitrary complex square matrix.
+
+
+
+
+### Statement
+
+We want to show that for a complex matrix $\mathbf A$,
+$$
+\sum_{i = 1}^n |\lambda_i| \le \sum_{i, j = 1}^n |a_{ij}|.
+\tag{1}
+$$
+The trick is to use the [SVD decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition), but we shall go through some simpler cases first.
+
+### Diagonal matrix
+
+If the matrix is diagonal, then the eigenvalues coincide with the eigenvalues
+$$
+\lambda_i = a_{ii}.
+$$
+The statement is obviously true, for
+$$
+\sum_{i=1}^n |\lambda_{i}| =
+\sum_{i=1}^n |a_{ii}| \le \sum_{i,j=1}^n |a_{ij}|.
+$$
+
+### Positive definite matrix
+
+Second, we observe that the sum of eigenvalues
+is equal to the trace of the matrix (i.e., the sum of the diagonal).
+Each eigenvalue is a root of
+\begin{align}
+0
+&=
+|\lambda - \mathbf A|
+=
+\lambda^n - \sum_{i = 1}^n a_{ii} \, \lambda^{n-1} + \cdots.
+\end{align}
+By [Vieta's formula](https://en.wikipedia.org/wiki/Vieta%27s_formulas),
+we have
+\begin{align}
+  \sum_{i=1}^n \lambda_i = \sum_{i = 1}^n a_{ii}.
+\end{align}
+
+Now if the matrix is positive definite, we are done, because
+\begin{align}
+  \sum_{i = 1}^n |\lambda_i|
+&=
+  \sum_{i = 1}^n \lambda_i
+=
+\sum_{i = 1}^n a_{ii}
+\le
+\sum_{i,j=1}^n |a_{ij}|.
+\end{align}
+
+
+### General
+
+
+Generally, a complex matrix permits a [singular value decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition#Statement_of_the_theorem):
+$$
+\mathbf A \equiv \mathbf U \mathbf \Sigma \mathbf V^\dagger,
+$$
+where $\mathbf U$ and $\mathbf V$ are unitary matrices,
+and $\mathbf \Sigma$ is a diagonal matrix
+filled by nonnegative numbers, $\sigma_{ii}$, called [the singular values](https://en.wikipedia.org/wiki/Singular_value).
+
+
+Now in [this post](http://math.stackexchange.com/q/386872), [23rd](http://math.stackexchange.com/users/46120/23rd) showed by using [the Schur decomposition](https://en.wikipedia.org/wiki/Schur_decomposition) that
+$$
+\sum_{i = 1}^n |\lambda_i|
+\le \sum_{i = 1}^n \sigma_{ii}
+= \mathrm{Tr} \mathbf \Sigma,
+\tag{2}
+$$
+
+Since the trace is an invariant under a [similarity transformation](https://en.wikipedia.org/wiki/Matrix_similarity):
+$$
+|\lambda - \mathbf A| = |\mathbf P^{-1}(\lambda - \mathbf A)\mathbf P| = |\lambda - \mathbf P^{-1} \mathbf A \mathbf P|,
+$$
+we have
+\begin{align}
+\mathrm{Tr} \mathbf \Sigma
+&=
+\mathrm{Tr} \left(
+  \mathbf U^\dagger \mathbf A \mathbf V
+\right) \\
+&=
+\mathrm{Tr} \left(
+  \mathbf V \, \mathbf U^\dagger \mathbf A
+\right)
+=
+\mathbf{Tr} \left(
+  \mathbf A \mathbf V \, \mathbf U^\dagger
+\right)
+.
+\tag{3}
+\end{align}
+
+If we define $\mathbf W = \mathbf V \mathbf U^\dagger$,
+and denote the $k$th column of $\mathbf A$ by $\mathbf a_k$,
+then
+\begin{align}
+\sum_{i = 1}^n |\lambda_i|
+&\le
+\mathrm{Tr} \mathbf \Sigma \\
+&=
+\mathrm{Tr} \left(
+  \mathbf W \mathbf A
+\right)
+=
+\sum_{i = 1}^n
+\left(
+\mathbf W \mathbf a_i \right)_i.
+\\
+&\le
+\sum_{i = 1}^n
+\| \mathbf W \mathbf a_i  \|
+=
+\sum_{i = 1}^n
+\| \mathbf a_i  \|
+\tag{4}
+\\
+&\le \sum_{i,j=1}^n |a_{ij}|.
+\end{align}
+where, $\| \dots \|$ denotes the Euclidean norm,
+and we have used the fact that $\mathbf W$
+is a unitary matrix, such that
+$$
+\| \mathbf W \mathbf a_i \|^2
+=
+(\mathbf W \mathbf a_i)^\dagger
+(\mathbf W \mathbf a_i)
+=
+\mathbf a_i^\dagger \mathbf W^\dagger
+\mathbf W \mathbf a_i
+=
+\mathbf a_i^\dagger \mathbf a_i = \| \mathbf a_i \|,
+$$
+as well as the inequality
+$$
+\| \mathbf x \|
+= \sqrt{ \sum_{i = 1}^n |x_i|^2 }
+< \sum_{i = 1}^n |x_i|.
+$$
+
+In fact, we have just shown a stronger statement, (4).
+Also note that $\mathbf a_i$ can be replaced
+by a row of $\mathbf A$, if we use the second form of (3)
+and follow a similar line of reasoning.
+
+
