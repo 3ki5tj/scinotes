@@ -18,7 +18,7 @@ $$
 The $n\times n$ matrix $\mathbf A$ always has $n$ eigenvalues,
 but not always have $n$ eigenvectors (see degenerate node below).
 But if there are $n$ eigenvectors,
-we can diagonalizing the matrix by combinations of $x_i$,
+we can diagonalize the matrix by combinations of $x_i$,
 i.e., for each $j = 1, \dots, n$, we have
 $$
 \dot v_j = \lambda_j v_j,
@@ -53,11 +53,11 @@ The space spanned the set of eigenvectors of the negative/positive eigenvalues a
 \item
 Spiral.
 In two dimensions, $n = 2$,
-if the eigenvalues are complex numbers, then the fixed point is a spiral.
+if the eigenvalues are complex numbers, then the fixed point is a \emph{spiral}.
 
 \item
 Center.
-A special spiral with purely imaginary eigenvalues is a center. For example,
+A special spiral with purely imaginary eigenvalues is a \emph{center}. For example,
 \begin{align*}
   \dot x &= y \\
   \dot y &= -x,
@@ -74,7 +74,7 @@ has two eigenvalues $\lambda = \pm i$.
 
 \item
 Attracting.
-If any trajectory starting from somewhere near the fixed point, $\mathbf x^*$, ultimately approaches $\mathbf x^*$, then $\mathbf x^*$ is attracting.
+If any trajectory starting from somewhere near the fixed point, $\mathbf x^*$, ultimately approaches $\mathbf x^*$, then $\mathbf x^*$ is \emph{attracting}.
 
 \item
 Globally attracting.
@@ -95,5 +95,362 @@ A fixed point, $\mathbf x^*$, is \emph{Lyapunov stable} if all trajectories star
 
 
 
+\section{5.2 Classification of linear systems}
+
+
+In two-dimensions, our equation becomes
+\begin{equation}
+  \mathbf {\dot x}
+  = \mathbf A \mathbf x
+  = \left(
+    \begin{array}{cc}
+      a_{11} & a_{12} \\
+      a_{21} & a_{22}
+    \end{array}
+  \right)
+  \mathbf x.
+\end{equation}
+The characteristic equation is
+$|\mathbf A - \lambda| = 0$,
+with the eigenvalues being
+$\lambda_{1,2} = \frac 1 2 \left(\tau \pm \sqrt{\tau^2 -  4 \Delta} \right)$,
+where
+$$
+\begin{aligned}
+  \tau &= \mathrm{Tr} \mathbf A = a_{11} + a_{22} = \lambda_1 + \lambda_2, \\
+  \Delta &= \mathrm{det} \mathbf A = a_{11} a_{22} - a_{12} a_{21} = \lambda_1 \, \lambda_2.
+\end{aligned}
+$$
+
+The fixed point can be classified as follows.
+
+\begin{itemize}
+
+\item
+If $\Delta < 0$, the eigenvalues are real with opposite signs.  So it is a saddle point.
+
+\item
+If $0 < \Delta < \tau^2/4$, the eigenvalues are real with the same sign.  So it is a node.  If $\tau = \lambda_1 + \lambda_2$ is positive, the node is unstable; otherwise, stable.
+
+\item
+If $\Delta > \tau^2/4$, both eigenvalues are complex.  So it is a spiral or a center.  If $\tau > 0$, it is an unstable spiral; if $\tau < 0$, a stable one; it $\tau = 0$ or $\lambda_1 = -\lambda_2$, a center.
+
+\end{itemize}
+
+
+
+\subsection{Conserved quantity}
+
+
+Suppose we have the two eigenvectors, with
+$$
+\begin{aligned}
+  \dot v_1 &= \lambda_1 v_1 \\
+  \dot v_2 &= \lambda_2 v_2,
+\end{aligned}
+$$
+then it is readily show that
+$$
+\frac{d}{dt} (\ln v_1^{1/\lambda_1} - \ln v_2^{1/\lambda_2}) = 0,
+$$
+or
+$$
+v_1^{1/\lambda_1} v_2 \lambda_2 = \mathrm{const.}
+$$
+
+
+Particularly, if $\lambda_1 = -\lambda_2$,
+or the fixed the point is a center,
+then $v_1 v_2$ is a constant,
+and one can show that
+$$
+\frac{1}{2} \frac{a_{21}}{a_{11}} x_1^2
++\frac{1}{2} \frac{a_{12}}{a_{22}} x_2^2
+-x_1 x_2 = \mathrm{const.}
+$$
+This quadratic form gives the closed orbit of the center,
+which is an ellipse.
+
+
+\subsection{Degenerate node}
+
+
+A \emph{degenerate node} occurs if only one eigenvector exists.  For example, if the matrix, $\mathbf A$, assumes the form of
+$$
+\mathbf A =
+\left(
+  \begin{array}{cc}
+    \lambda & b \\
+    0 & \lambda
+  \end{array}
+\right),
+$$
+then both eigenvalues are $\lambda$, but only one eigenvector $(1, 0)^T$ exists.
+The explicit solution for $(x_1, x_2) = (x, y)$ is
+\begin{equation}
+\begin{aligned}
+  x &= (x_0 + b \, y_0 \, t) \, e^{\lambda t} \\
+  y &= y_0 \, e^{\lambda t}.
+\end{aligned}
+\label{eq:degenode}
+\end{equation}
+
+
+\subsubsection{Limit of a node}
+
+A degenerate node can be thought as the limiting case two nearly identical eigenvalues.  Consider
+$$
+\mathbf A =
+\left(
+  \begin{array}{cc}
+    \lambda_1 & b \\
+    0 & \lambda_2
+  \end{array}
+\right),
+$$
+whose two eigenvalues are $\lambda_1$ and $\lambda_2$,
+and the corresponding eigenvectors are
+$(1, 0)^T$ and $(1, \frac{\lambda_2 - \lambda_1}{b})$,
+respectively.
+The explicit solution is
+$$
+\begin{aligned}
+  x &= \left(x_0 + b \, y_0 \frac{ \exp[(\lambda_2 - \lambda_1) t] - 1 }{\lambda_2 -\lambda_1} \right) \, e^{\lambda_1 t} \\
+  y &= y_0 \, e^{\lambda_2 t},
+\end{aligned}
+$$
+which indeed recovers \eqref{eq:degenode} as $\lambda_2 \rightarrow \lambda_1$.
+
+
+\subsubsection{Borderline case of a node and a spiral}
+
+A degenerate node can be thought as the borderline case of a node and a spiral.  Consider
+$$
+\mathbf A_N =
+\left(
+  \begin{array}{cc}
+    \lambda & b \\
+    \epsilon^2/b & \lambda
+  \end{array}
+\right),
+$$
+with a small $\epsilon$.
+The two eigenvalues are $\lambda_{1,2} = \lambda \pm \epsilon$,
+with the corresponding eigenvectors being $(b, \mp \epsilon)$.
+The fixed point is therefore a node.
+Now consider
+$$
+\mathbf A_S =
+\left(
+  \begin{array}{cc}
+    \lambda & b \\
+    -\epsilon^2/b & \lambda
+  \end{array}
+\right),
+$$
+The two eigenvalues are $\lambda_{1,2} = \lambda \pm \epsilon i$,
+with the corresponding eigenvectors being $(b, \mp \epsilon i)$.
+The fixed point is therefore a spiral.
+The explicit solution,
+$$
+\begin{aligned}
+  x &= \left[x_0 \, \cos(\epsilon t)+ b \, y_0 \frac{ \sin(\epsilon t) }{\epsilon} \right] \, e^{\lambda t} \\
+  y &= \left[b \, y_0 \, \cos(\epsilon t) - \epsilon x_0 \, \sin(\epsilon t) \right] \, e^{\lambda t},
+\end{aligned}
+$$
+also recovers \eqref{eq:degenode} as $\epsilon \rightarrow 0$.
+
+
+\subsubsection{Backbending}
+
+The degenerate node shows a backbending trajectory.  Starting from $x_0 > 0, y_0 > 0$, the trajectory will first reach a negative $x$ before converging to the fixed point.
+Differentiate the first equation of \eqref{eq:degenode} with respect to $t$, we get
+$$
+0 = (x_0 + b \, y_0 \, t_m) \lambda \, e^{\lambda t} + b \, y_0 \, e^{\lambda t_m}
+= \lambda \, x_m + b , y_0 \, e^{\lambda t_m},
+$$
+which means the minimal $x$, or $x_m$ in the above, is negative.
+
+
+\section{Love affairs}
+
+The section studied special cases of the two-dimensional linear equation.
+To make it more interesting, $x_1$ and $x_2$ are replaced by $R$ and $J$,
+interpreting Romeo and Juliet's love and hate to the other.
+For example, $R > 0$ ($< 0$) means Romeo loves (hates) Juliet.
+The equations are then
+\begin{equation}
+\begin{aligned}
+  \dot R &= a R + b J, \\
+  \dot J &= c R + d J.
+\end{aligned}
+\label{eq:RJ}
+\end{equation}
+
+
+
+\subsection{Ratio method}
+
+Here we'll give an alternative method to the book.
+The method helps reduce the number of cases by considering only the ratio $R/J$.
+This is useful because often $(-R, -J)$ satisfies the same equation
+as \eqref{eq:RJ}.
+By considering the ratio, we effectively eliminate this degeneracy.
+
+
+We convert \eqref{eq:RJ} to
+\begin{equation}
+  \frac{d}{dt} \left( \frac R J \right)
+  =
+  b + (a - d) \left( \frac R J \right) - c \left( \frac R J  \right)^2,
+  \label{eq:RoverJ}
+\end{equation}
+which becomes a one-dimensional problem in term of $r \equiv R/J$.
+\begin{equation}
+  \frac{dr}{dt}
+  =
+  b + (a - d) \, r - c \, r^2.
+  \label{eq:diffeq_r}
+\end{equation}
+So, we only need to find out the fixed points of $r$
+and analyze their stabilities.
+
+
+Now if the polynomial, $b + (a - d) \, r - c \, r^2$,
+has two real zeros, then the larger one is stable if $c > 0$,
+or the smaller one is stable if $c < 0$.
+%
+If the polynomial has no real zero of $r$, it means a spiral or a center.
+What usually happens is that $r$ continually increases
+from $-\infty$ to $+\infty$, and wraps back to $-\infty$,
+completing a cycle.
+
+
+In fact we can directly integrate \eqref{eq:RoverJ},
+$$
+\frac{R}{J}
+=
+\frac{a - d}{2 c}
+-\frac{ \sqrt D }{2 c}
+\tanh\frac{ \sqrt D \, t } { 2 },
+$$
+where $D = (a - d)^2 + 4 \, b \, c$.
+
+
+Now if $D > 0$, as $t \rightarrow 1$, $\tanh (\sqrt D \,t /2) \rightarrow 1$.
+We get a zero of the polynomial, which is larger root if $c < 0$,
+or the smaller one if $c > 0$, agreeing with the above discussion.
+
+If $D < 0$, then $\tanh(\sqrt D \, t/2) = \tan(\sqrt{-D} \, t/2)$,
+and $R/J$ varies periodically, we then get a spiral or a center.
+Unfortunately, the method cannot tell the difference between
+a spiral and a center.  One way to do this is to see if
+$$
+\frac{1}{2} \frac{c}{a} R^2 + \frac{1}{2} \frac{b}{d} J^2 - R J
+$$
+is a constant.  If so, it's likely a center.
+
+
+
+\subsubsection{Integral}
+
+
+The integral used in the ratio method is evaluated as follows
+$$
+\begin{aligned}
+t &= \int \frac { dr } { A \, r^2 + B \, r + C } \\
+  &= \int \frac { dr } { A \, (r - r_1) \, (r - r_2) } \\
+  &= \frac{1}{A(r_2 - r_1)}
+  \int \frac{ (r - r_1) - (r - r_2) }
+  { (r - r_1) (r - r_2) } \, d r \\
+  &= \frac{1}{A(r_2 - r_1) }
+  \ln \left( \frac{ r_2 - r } { r - r_1 } \right),
+\end{aligned}
+$$
+where we have assumed $r_1 < r_2$ for the case of two real roots.
+
+Then
+\begin{equation}
+r =
+\frac{r_1 + r_2}{2}
+-
+\frac{r_2 - r_1}{2}
+\tanh\frac{A \, (r_2 - r_1) (t - t_0)}{2}.
+\label{eq:intg_r}
+\end{equation}
+Note that this expression is an even function of $r_2 - r_1$,
+so the sign of $r_2 - r_1$ can be decided arbitrarily.
+%
+Now, since
+$$
+\begin{aligned}
+  r_1 + r_2 &= - \frac B A, \\
+  r_1 \, r_2 &= \frac C A,
+\end{aligned}
+$$
+we have
+$$
+r_2 - r_1 = \frac{ \sqrt{ B^2 - 4 \, A \, C } }{ A }.
+$$
+Using this in \eqref{eq:intg_r} yields
+$$
+r = \frac{B}{2A} - \frac{\sqrt{B^2 - 4AC}}{2A} \tanh\frac{\sqrt{B^2 -4AC}\Delta t}{2}.
+$$
+
+
+
+
+
+% Chapter 6
+\chapter{Phase Plane}
+
+In the previous chapter, we studied a special case of
+\begin{equation}
+  \mathbf{\dot x} = \mathbf f(\mathbf x),
+  \label{eq:diffeq}
+\end{equation}
+in which $\mathbf f(\mathbf x) = \mathbf A \mathbf x$ is linear.
+Here we will studied the general case.
+
+
+\section{6.1 Phase portraits}
+
+Definitions
+
+\begin{itemize}
+
+\item
+A \emph{phase portrait} is plotted by following the trajectory of
+$\mathbf x = (x_1, x_2)$ along the flow $\mathbf{\dot x} = (\dot x_1, \dot x_2)$.
+
+\item
+A \emph{fixed point} is where $\mathbf{\dot x} = \mathbf 0$.
+Unlike the linear system, in which the fixed point is unique,
+which is set to $\mathbf 0$ in the previous chapter.
+In general, we can have multiple fixed points.
+
+\item
+A \emph{closed orbit} satisfies $\mathbf x(t + T) = \mathbf x(t)$ for any $t$
+and some $T > 0$.
+
+\item
+\emph{Nullclines} are curves where either $\dot x_1 = 0$ or $\dot x_2 = 0$.
+
+\end{itemize}
+
+
+\subsection{Runge-Kutta method}
+
+The Runge-Kutta method is a method of solving \eqref{eq:diffeq}.
+
+$$
+\begin{aligned}
+\mathbf x_{n+1} &= \mathbf x_n + \frac{1}{6} (\mathbf k_1 + 2 \, \mathbf k_2 + 2 \, \mathbf k_3 + \mathbf k_4), \\
+\mathbf k_1 &= \mathbf f(\mathbf x_n) \, \Delta t, \\
+\mathbf k_2 &= \mathbf f(\mathbf x_n + \frac 1 2 \mathbf k_1) \, \Delta t, \\
+\mathbf k_3 &= \mathbf f(\mathbf x_n + \frac 1 2 \mathbf k_2) \, \Delta t, \\
+\mathbf k_4 &= \mathbf f(\mathbf x_n + \mathbf k_3) \, \Delta t.
+\end{aligned}
+$$
 
 \end{document}
