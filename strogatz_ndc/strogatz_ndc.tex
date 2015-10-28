@@ -33,13 +33,11 @@ $$
 \mathbf f(\mathbf x^*) = 0.
 $$
 In our case, $\mathbf x^* = \mathbf 0$ is the origin.
-\\
 
 \item
 Node.
 If all eigenvalues share the same sign, then the fixed point is a \emph{node}.
 If the sign is positive, it unstable; negative, stable.
-\\
 
 \item
 Star.
@@ -142,6 +140,7 @@ If $\Delta > \tau^2/4$, both eigenvalues are complex.  So it is a spiral or a ce
 \subsection{Conserved quantity}
 
 
+
 Suppose we have the two eigenvectors, with
 $$
 \begin{aligned}
@@ -155,27 +154,71 @@ $$
 $$
 or
 $$
-v_1^{1/\lambda_1} v_2 \lambda_2 = \mathrm{const.}
+v_1^{1/\lambda_1} v_2^{-1/\lambda_2} = \mathrm{const.}
 $$
 
 
 Particularly, if $\lambda_1 = -\lambda_2$,
 or the fixed the point is a center,
-then $v_1 v_2$ is a constant,
-and one can show that
-$$
-\frac{1}{2} \frac{a_{21}}{a_{11}} x_1^2
-+\frac{1}{2} \frac{a_{12}}{a_{22}} x_2^2
--x_1 x_2 = \mathrm{const.}
-$$
+then $v_1 v_2$ is a constant.
+This can be simplified as
+\begin{align}
+A =
+\frac{a_{21}}{2 \, a_{11}} \, x_1^2
++\frac{a_{12}}{2 \, a_{22}} \, x_2^2
+-x_1 x_2
+= \mathrm{const.}
+\label{eq:2lin_conserved}
+\end{align}
 This quadratic form gives the closed orbit of the center,
 which is an ellipse.
+%
+In fact,
+$$
+\frac{dA}{dt}
+=
+-\Delta \left(\frac{1}{a_{11}} + \frac{1}{a_{22}} \right) \, x_1 \, x_2,
+$$
+vanishes when the trace is zero, or $a_{11} + a_{22} = 0$,
+which is equivalent to the fact that $\lambda_1 + \lambda_2 = 0$.
+
+
+An easier way to derive \eqref{eq:2lin_conserved} is the following,
+$$
+\begin{aligned}
+0 &= \dot x_1 \dot x_2 - \dot x_2 \dot x_1 \\
+  &= (a_{11} x_1 + a_{12} x_2) \, \dot x_2
+   - (a_{21} x_1 + a_{22} x_2) \, \dot x_1 \\
+  &= \frac{d}{dt} \left(
+   \frac{1}{2} a_{12} x_2^2
+   -\frac{1}{2} a_{21} x_1^2
+   + a_{11} x_1 x_2
+ \right).
+\end{aligned}
+$$
+To show that the above quantity is proportional to $v_1 v_2$,
+we expanded the latter using
+$$
+\begin{aligned}
+  v_1 &= a_{21} x_1 + (\lambda_1 - a_{11}) x_2, \\
+  v_2 &= a_{21} x_1 + (\lambda_2 - a_{11}) x_2,
+\end{aligned}
+$$
+with $\lambda_1 + \lambda_2 = 0$, and
+$\lambda_1 \lambda_2 = a_{11} a_{22} - a_{12} a_{21} = -a_{11}^2 - a_{12} a_{21}$.
+
+The method of conserved quantity for the nonlinear case
+is discussed in \S 6.5 of the book.
+
+
 
 
 \subsection{Degenerate node}
 
 
-A \emph{degenerate node} occurs if only one eigenvector exists.  For example, if the matrix, $\mathbf A$, assumes the form of
+A \emph{degenerate node} occurs if only one eigenvector exists.
+This happens when two eigenvalues are the same.
+For example, if the matrix, $\mathbf A$, assumes the form of
 $$
 \mathbf A =
 \left(
@@ -185,7 +228,12 @@ $$
   \end{array}
 \right),
 $$
+with $b \ne 0$,
 then both eigenvalues are $\lambda$, but only one eigenvector $(1, 0)^T$ exists.
+Generally, if the two eigenvalues are the same,
+the fixed point is either a degenerate node or a star (the $b = 0$ case).
+The matrix is a rotational invariant for the star,
+but not for the degenerate node.
 The explicit solution for $(x_1, x_2) = (x, y)$ is
 \begin{equation}
 \begin{aligned}
@@ -267,7 +315,7 @@ The degenerate node shows a backbending trajectory.  Starting from $x_0 > 0, y_0
 Differentiate the first equation of \eqref{eq:degenode} with respect to $t$, we get
 $$
 0 = (x_0 + b \, y_0 \, t_m) \lambda \, e^{\lambda t} + b \, y_0 \, e^{\lambda t_m}
-= \lambda \, x_m + b , y_0 \, e^{\lambda t_m},
+= \lambda \, x_m + b \, y_0 \, e^{\lambda t_m},
 $$
 which means the minimal $x$, or $x_m$ in the above, is negative.
 
@@ -326,7 +374,7 @@ from $-\infty$ to $+\infty$, and wraps back to $-\infty$,
 completing a cycle.
 
 
-In fact we can directly integrate \eqref{eq:RoverJ},
+In fact, we can directly integrate \eqref{eq:RoverJ},
 $$
 \frac{R}{J}
 =
@@ -439,6 +487,7 @@ and some $T > 0$.
 \end{itemize}
 
 
+
 \subsection{Runge-Kutta method}
 
 The Runge-Kutta method is a method of solving \eqref{eq:diffeq}.
@@ -452,5 +501,124 @@ $$
 \mathbf k_4 &= \mathbf f(\mathbf x_n + \mathbf k_3) \, \Delta t.
 \end{aligned}
 $$
+
+
+\section{6.2 Existence, uniqueness and topological consequences}
+
+
+The solution of $\mathbf{\dot x} = \mathbf f(\mathbf x)$,
+$\mathbf x(\mathbf 0) = \mathbf x_0$ exists and is unique.
+
+A corollary is that trajectories never intersect.
+
+Another important corollary is that a trajectory start inside a closed orbit $C$ stays in the $C$ forever.
+
+\emph{Poincar\'e-Bendixson theorem.}
+If a trajectory is confined in a closed region, and there is no fixed point inside the region, then the trajectory must ultimately approach a closed orbit.
+
+
+\section{6.5 Conserved systems}
+
+
+This section introduces a technique useful
+in proving the existence of a closed orbit.
+%
+If there is a non-constant quantity $E(\mathbf x) = E(x_1, x_2)$
+such that $dE/dt = 0$, like the energy in mechanics,
+and the curve defined by
+\begin{equation}
+E(x_1, x_2) = \mathrm{constant}.
+\label{eq:conserveE}
+\end{equation}
+encloses an isolated fixed point,
+then closed orbits exist,
+and they are just the curves defined by \eqref{eq:conserveE}.
+
+
+
+Another interesting lemma is that in conservative system,
+no stable/unstable fixed point exists.
+This is because the time evolution starting from
+a nearby point preserves the conserved quantity, $E(\mathbf x)$.
+So if a trajectory ultimately flows into the fixed point,
+it means the fixed point share the same value of $E(\mathbf x)$
+as the starting point.
+Thus the entire neighborhood of the fixed point must
+share the same value of $E(\mathbf x)$,
+meaning that $E(\mathbf x)$ is a constant function,
+contradicting the definition.
+
+
+\subsection{Finding the conserved quantity}
+
+
+
+From the definition, a conserved quantity can be found from integrating
+\begin{equation}
+\frac{dx_2}{dx_1}
+=
+\frac{\dot x_2}{\dot x_1}
+=
+\frac{f_2(\mathbf x)}{f_1(\mathbf x)},
+\label{eq:conserved_trace}
+\end{equation}
+which is a differential equation between $x_2$ and $x_1$ (the time dependence is eliminated).
+But integrating such a curve of $x_2$ and $x_1$ can be difficult.
+So we use the following method.
+
+
+Eq. \eqref{eq:conserved_trace} is equivalent to
+$$
+0 =
+-f_2 \, d x_1
++f_1 \, d x_2.
+$$
+We wish to multiply the right-hand side by a quantity $g$
+such that it becomes a total differential
+$$
+dE(x_1, x_2)
+=
+-g \, f_2(\mathbf x) \, d x_1
++g \, f_1(\mathbf x) \, d x_2,
+$$
+then obviously we have $dE/dt = 0$.
+Now this the requires the consistency of the first order derivatives, namely
+$$
+\frac{\partial (-g \, f_2)}{\partial x_2}
+=
+\frac{\partial^2 E}{\partial x_1 \partial x_2}
+=
+\frac{\partial (g \, f_1)}{\partial x_1},
+$$
+or
+\begin{equation}
+\nabla \cdot (g \, \mathbf f)
+=
+\frac{\partial (g f_1)}{\partial x_1}
++\frac{\partial (g f_2)}{\partial x_2}
+= 0.
+\label{eq:divgf_eq_0}
+\end{equation}
+Note the similarity to Dulac's criterion (\S 7.2).
+There, we want to show that the same quantity has the same sign within a certain region in order rule out the existence of closed orbits.
+Here we are doing the opposite.
+By showing the quantity is identically zero, we prove the existence of closed orbits.
+
+In component form, the above equation is (after divided by $g$)
+\begin{equation}
+\left( \frac{\partial f_1}{\partial x_1}
++\frac{\partial f_2}{\partial x_2} \right)
++\left(
+\frac{\partial \ln g }{\partial x_1} f_1
++\frac{\partial \ln g }{\partial x_2} f_2
+\right)
+=0.
+\label{eq:divfdivlng}
+\end{equation}
+The first term is independent of $g$.
+If it is nonzero, our job is design a $\ln g$
+that makes the second term cancel the first one,
+which is relatively easier.
+
 
 \end{document}

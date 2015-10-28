@@ -1,0 +1,129 @@
+In short, the &ldquo;symmetry&rdquo; means the time-reversal symmetry.  It helps establish the <em>existence</em> of periodic orbits.  If you have a copy of [Strogatz's Nonlinear Dynamics and Chaos](http://www.amazon.com/gp/product/0813349109), section 6.6 Reversible Systems talks about this.
+
+We can also show the existence by constructing a conserved quantity.  Section 6.5 Conservative Systems of the same book talks about the alternative technique.  We'll solve the problem using both techniques below.
+
+### Basic algebra
+
+We first convert the equation to a pair of first-order ones
+$$
+\begin{aligned}
+\frac{dx}{dt} &= v, \\
+\frac{dv}{dt} &= v^2 - x^2 + x,
+\end{aligned}
+\quad \quad (1)
+$$
+
+The equation has two fixed points at $(0, 0)$ and $(1, 0)$.  The first one is an unstable node.  The second is a local linear center, that is, for $x' = x - 1$, we have
+$$
+\begin{aligned}
+\frac{dx'}{dt} &= v, \\
+\frac{dv}{dt} &\approx -x',
+\end{aligned}
+$$
+which is the equation of motion of the harmonic oscillator (spring).
+
+Below we use the time-reversal symmetry to argue that the latter fixed point is a <em>nonlinear</em> center, i.e. its nearby trajectories form closed orbits.
+
+
+### Time reversal symmetry
+
+Now consider the backward time evolution of (1), with $V = -v$, and $T = -t$.
+$$
+\begin{aligned}
+\frac{dx}{dT} &= \frac{dx}{-dt} = -v = V, \\
+\frac{dV}{dT} &= \frac{-dv}{-dt} = V^2 - x^2 + x,
+\end{aligned}
+$$
+we get exactly the same equations!
+
+
+
+If at $t = 0$, we start a trajectory from $(x_0, 0)$, with $0 < x_0 < 1$, the trajectory will first go up (as $dv/dt > 0$) and then bend to the right, and ultimately return to the $x$ axis at a point $x_1 > 1$, at $t = t_1$.
+
+Now consider the backward time evolution.  Since it follows the same equation, the trajectory will first go down and then bend to the right, and ultimately return to the $x$ axis at the same point $x_1 > 1$, at $T = t_1$, or $t = -t_1$.
+
+The point is that backward trajectory is precisely the vertical reflection of the forward trajectory, and they start and end at the same points.
+
+Now consider the forward time evolution in the period of $(-t_1, t_1)$, the first half $(-t_1, 0)$ is the reversal of the backward trajectory, which starts from $(x_1, 0)$ to $(x_0, 0)$ tracing the lower arc; the second half $(0, t_1)$ is the forward trajectory from $(x_0, 0)$ to $(x_1, 0)$ tracing the upper arc.  The two in combine forms a periodic closed orbit, which is precisely what we are looking for!
+
+
+### Alternative method using conserved quantity
+
+
+The same problem can be addressed by find a conserved quantity and thereby showing the existence of periodic closed orbits.  This method is closely related to and kind of the reverse of the Bendixson-Dulac theorem.
+
+We wish to find an energy-like quantity $E(x, v)$ such  that $dE(x, v)/dt = 0$, then there is a theorem that says there are closed orbits that basically trace the curves of $E(x, v) = \mathrm{constant}$.  See, e.g., section 6.5 of [Strogatz](http://www.amazon.com/gp/product/0813349109).
+
+The conserved quantity for this system is
+$$
+E(x, v) = \frac{1}{2} (v^2 - x^2) \, e^{-2x}.
+$$
+Below we'll show how to find it using a technique similar to that for the Dulac's criterion.
+
+### Finding the conserved quantity
+
+If we rewrite (1) as
+$$
+\begin{aligned}
+\frac{dx}{dt} &= f_x(x, v), \\
+\frac{dv}{dt} &= f_v(x, v),
+\end{aligned}
+$$
+then
+$$
+0 = -f_v \, dx + f_x \, dv.
+$$
+Now we wish to multiple the right-hand side by a quantity $g$
+to make it total differential:
+$$
+dE = -g \, f_v \, dx + g \, f_x \, dv.
+$$
+This requires
+$$
+\frac{\partial (-g \, f_v)}{\partial v}
+=
+\frac{\partial^2 E}{\partial x \partial v}
+=
+\frac{\partial (g \, f_x)}{\partial x},
+$$
+or
+$$
+\nabla \cdot (g \, \mathbf f)
+=
+\frac{\partial (g f_x)}{\partial x}
++\frac{\partial (g f_v)}{\partial v}
+= 0.
+\quad \quad (2)
+$$
+Note that in Dulac's criterion, we want to show that the same quantity has the same sign within a certain region in order rule out the existence of closed orbits.  Here we are doing the opposite.  By showing the quantity is identically zero, we show the existence of closed orbits.
+
+In component form, the above equation is (after divided by $g$)
+$$
+\left( \frac{\partial f_v}{\partial v}
++\frac{\partial f_x}{\partial x} \right)
++\left(
+\frac{\partial \ln g }{\partial v} f_v
++\frac{\partial \ln g }{\partial x} f_x
+\right)
+=0.
+\quad \quad (3)
+$$
+
+
+In our case, Eq. (3) means
+$$
+2 \, v
++\left(
+\frac{\partial \ln g }{\partial v} (v^2 - x^2 + x)
++\frac{\partial \ln g }{\partial x} v
+\right)
+=0,
+$$
+which can be readily satisfied by $\ln g = -2 x$, or $g = e^{-2x}$.  Thus
+$$
+\begin{aligned}
+dE
+&= -e^{-2x} \, (v^2 - x^2 + x) \, dx + e^{-2x} \, v \, dv \\
+&= d\left[ \frac12(v^2 - x^2) \, e^{-2x} \right].
+\end{aligned}
+$$

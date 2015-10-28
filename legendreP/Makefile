@@ -1,4 +1,4 @@
-prj = legendre
+prj = legendreP
 
 tex = $(wildcard *.tex)
 pdf = $(patsubst %.tex, %.pdf, $(tex))
