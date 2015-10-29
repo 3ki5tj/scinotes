@@ -1,7 +1,8 @@
 \documentclass{article}
 \begin{document}
 
-\section{Short proof for $1 + x \le e^x$}
+\section{Short proves for $1 + x \le e^x$}
+
 
 Here is a short elementary proof for
 \begin{equation}
@@ -9,6 +10,8 @@ Here is a short elementary proof for
 \label{eq:expx}
 \end{equation}
 
+
+\subsection{Proof 1}
 
 By using the inequality $1 + x < \left(1 + \frac{x}{2}\right)^2$, we have
 \begin{equation}
@@ -26,4 +29,24 @@ By using the inequality $1 + x < \left(1 + \frac{x}{2}\right)^2$, we have
 \end{equation}
 
 Taking the limit of $k \rightarrow \infty$ yields (\ref{eq:expx}).
+
+
+
+\subsection{Proof 2}
+
+Using the arithmetic mean-geometric mean inequality
+with $n - 1$ $1$'s and a $1+x$, we get
+\begin{equation}
+  \sqrt[n]{1 \times \cdots \times 1 \times (1 + x)}
+  \le
+  \frac{1 + \cdots + 1 + (1 + x) } { n }
+  =1 + \frac{x}{n}.
+\end{equation}
+So
+$$
+1 + x \le \left( 1 + \frac{x}{n} \right)^n.
+$$
+Taking the limit of $n \rightarrow \infty$ yields (\ref{eq:expx}).
+
+
 \end{document}
