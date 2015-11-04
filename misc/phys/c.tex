@@ -1,0 +1,7 @@
+\documentclass{article}
+\begin{document}
+This is a sketch of a brute-force solution.  [udrv](http://physics.stackexchange.com/users/87624/udrv)'s explanation is way cooler.  We start from $|\alpha\rangle = e^{-\frac12|\alpha|^2}e^{\alpha\hat a^\dagger}|0\rangle$.  Expanding this yields $|\alpha\rangle = e^{-\frac12|\alpha|^2}\sum_{n=0}^\infty\frac{(\alpha \hat a^\dagger)^n}{n!}|0\rangle=e^{-\frac12|\alpha|^2}\sum_{n=0}^\infty\frac{\alpha^n}{\sqrt{n!}}|n\rangle$.
+
+Since $\hat H|n\rangle = n\hbar \omega|n\rangle$, we have $e^{-i\hat H t/\hbar}|n\rangle = e^{i n \omega t}|n\rangle$.  So $e^{-i\hat H t/\hbar}|\alpha\rangle = e^{-\frac12|\alpha|^2}\sum_{n=0}^\infty e^{i n \omega t}\frac{\alpha^n}{\sqrt{n!}}|n\rangle = |e^{i\omega t} \alpha\rangle$, which differs from $|\alpha\rangle$ only by a phase $\omega t$. The number of particles is given by $\langle n\rangle = \langle\alpha|\hat n|\alpha\rangle = \sum_{n=0}^\infty n |\langle n | \alpha\rangle|^2$, which can be shown to be independent of the phase of $\alpha$.
+
+\end{document}
