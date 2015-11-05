@@ -4,9 +4,9 @@
 
 \section{Chaiken PCMP, Critical dimensions of phase transition}
 
-%I am trying to follow the mean-field argument for that the fluctuation is unimportant in a phase transition for dimensions $d \ge 4$ in 
+%I am trying to follow the mean-field argument for that the fluctuation is unimportant in a phase transition for dimensions $d \ge 4$ in
 %[Principles of Condensed Matter Physics]
-%(http://www.amazon.com/Principles-Condensed-Matter-Physics-Chaikin/dp/0521794501/) by Chaikin and Lubensky.  
+%(http://www.amazon.com/Principles-Condensed-Matter-Physics-Chaikin/dp/0521794501/) by Chaikin and Lubensky.
 The book gives two interesting and important results of phase transitions.
 %
 The first result is that
@@ -47,8 +47,11 @@ F
 \right),
 \end{align}
 where $V$ is the volume.
-If $r > 0$, the minimal of $F$ is achieved at $\phi = 0$,
-if $r < 0$, the minimal of $F$ is achieved at a nonzero $\phi = \sqrt{4u/|r|}$,
+
+
+If $r > 0$, the minimal of $F$ is achieved at $\phi = 0$.
+
+If $r < 0$, the minimal of $F$ is achieved at a nonzero $\phi = \sqrt{4u/|r|}$,
 which is the solution of
 $$
 \partial F/\partial \phi = V \, (r\phi + 4 u \phi^3) = 0.
@@ -56,9 +59,9 @@ $$
 
 
 
-The theory is that the sign of $r$ changes sign around the critical temperature $T = T_c$.
+The theory is that $r$ changes sign around the critical temperature $T = T_c$.
 %
-Thus the qualitative behaviors for $T > T_c$ and $T < T_c$ are qualitatively different.
+Thus the behaviors for $T > T_c$ and $T < T_c$ are qualitatively different.
 
 
 Next, let us see how the fluctuation term modifies the picture.
@@ -85,16 +88,33 @@ V \left(
 \tfrac{1}{2} r \, \delta \phi^2(\mathbf x)
 + c (\nabla \delta \phi(\mathbf x))^2
 + 6 u \, \langle \phi \rangle^2 \delta \phi^2(\mathbf x)
++ u \, \delta \phi^4(\mathbf x)
 \right] \, d^d \mathbf x. \quad
+\label{eq:F_fluc1}
 \end{align}
-The mean-field searches the minimum of the first term, which gives
+The mean-field theory searches the minimum of the first term, which gives
 \begin{align}
-\langle \phi \rangle^2 = \frac{|r|}{4\,u},
+  \langle \phi \rangle^2 = \frac{|r|}{4\,u} = - \frac{r}{4\,u},
 \label{eq:phi_mf}
 \end{align}
 for a negative $r$ under the critical temperature.
 Then we want to see when it is valid to drop the second term
 involving the integral.
+
+
+Using \eqref{eq:phi_mf} in \eqref{eq:F_fluc1},
+we simplify the fluctuation term as
+\begin{align}
+F_\mathrm{fluc}
+&=
+\int_V \left[
+|r| \, \delta \phi^2(\mathbf x)
++ c (\nabla \delta \phi(\mathbf x))^2
++ u \, \delta \phi^4(\mathbf x)
+\right] \, d^d \mathbf x. \quad
+\label{eq:F_fluc2}
+\end{align}
+
 
 
 \subsection{When the fluctuation is unimportant}
@@ -120,26 +140,37 @@ This can be done by normalizing the fluctuation part of the free energy with dim
 \end{align}
 where $\xi$ is the coherent length.
 %
-Then we get, after dropping the
-$6 u \, \langle \phi \rangle^2 \delta \phi^2(\mathbf x)$ term
-(to be justified later),
-\begin{align}
+Then we get,
+$$
+\begin{aligned}
 F_\mathrm{fluc}
 &=
 \int_{V/\xi^d} \left[
-\tfrac{1}{2} r \, A^2\, \xi^d \Phi^2(\mathbf X)
-+ c \, A^2 \, \xi^{d-2} \, \left(
+|r| \, A^2\, \xi^d \Phi^2(\mathbf X)
++ c \, A^2 \, \xi^{d-2} \left(
 \frac{ d \Phi(\mathbf X) }{ d \mathbf X} \right)^2
-\right] \, d^d \mathbf X. \quad
-\label{eq:F_fluc}
-\end{align}
++ u \, A^4 \, \xi^d \, \Phi^4(\mathbf X)
+\right] \, d^d \mathbf X.
+\end{aligned}
+$$
+
 Since $\mathbf X$ and $\Phi(\mathbf X)$ are supposed to be dimensionless,
-the coefficients have to be dimensionless as well.  So we set
+the coefficients have to be dimensionless as well.
+Now we have two parameters $A$ and $\xi$,
+but three coefficients, so one of them must be negligible.
+
+It is reasonable to assume that
+the magnitude of the fluctuation $A$ is small,
+so the $A^4$ term is much smaller than the $A^2$ term.
+Under this assumption,
+we set the first two coefficients to unity, and
 \begin{align}
 |r| \, A^2 \, \xi^d &= 1, \\
-c \, A^2 \, \xi^{d-2} &= 1,
+c \, A^2 \, \xi^{d-2} &= 1, \\
+u \, A^4 \, \xi^d &< 1
+\label{eq:drop_uphi4}
 \end{align}
-Solving the equations for $A$ and $\xi$, we get
+Solving the first two equations for $A$ and $\xi$, we get
 \begin{align}
 \xi &= \sqrt{\frac{c}{|r|}},
 \label{eq:xi_scaling}
@@ -149,19 +180,33 @@ A^2 &= \frac{1}{c \, \xi^{d-2}} = c^{-d/2} \, |r|^{d/2-1},
 \end{align}
 Using $A^2$ from Eq. \eqref{eq:A2_scaling} for $\langle \delta^2 \phi(\mathbf x) \rangle$
 and Eq. \eqref{eq:phi_mf} for $\langle \phi \rangle^2$, we get
-$$
+\begin{align}
 4 \, u \, c^{-\frac{d}{2}} \, |r|^{\frac{d-4}{2}} < 1.
-$$
+\label{eq:upper_condition}
+\end{align}
 Since around the critical temperature, $r \rightarrow 0$,
 Eq. \eqref{eq:phicmp} is always satisfied if $d > 4$,
 and fluctuation is unimportant.
 
 
+
+Now let us check if dropping the $u \, \delta\phi^4$ term is valid.
+To see if this is valid,
+we have to see condition \eqref{eq:drop_uphi4} holds.
+Using \eqref{eq:A2_scaling} and \eqref{eq:phi_mf}, we get
+$$
+u \, c^{-d} \, |r|^{d - 2}
+\left( \frac{c}{|r|} \right)^{d/2}
+=
+u c^{-d/2} |r|^{d/2 - 2}
+< 1.
+$$
+which is the same as \eqref{eq:upper_condition}.
+
+
 \subsection{Lower critical dimension}
 
 
-We have dropped the $6u \langle \phi\rangle^2 \delta\phi^2$ term
-in the previous derivation.
-Let us see if this is valid.
+
 
 \end{document}
