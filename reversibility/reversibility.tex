@@ -1,0 +1,353 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+\begin{document}
+
+\title{Reversibility of molecular dynamics integrators}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+\section{Introduction}
+
+For anyone who has done some molecular dynamics (MD) simulations,
+the word ``reversibility'' should sound familiar.
+%
+This is word associated with MD integrators,
+i.e., numerical algorithms of integrating Newton's equation,
+$\mathbf f = m \ddot{\mathbf x}$
+such as Verlet, velocity Verlet, leapfrog, etc.
+%
+Reversibility appears to be a desirable quantity
+of fancy MD integrators,
+and the above-mentioned integrators are reversible
+(Runge-Kutta is not).
+%
+At least, these facts were all what I cared to know about reversibility
+for a long time.
+%
+We also know that MD integrators are approximate,
+that is, generally we cannot exactly integrate Newton's equation,
+and the precision is associated with
+the size of the MD time step, $\Delta t$.
+%
+So, for something that is supposed to be approximate,
+why should one ever care about a fancy quality, ``reversibility''?
+%
+
+
+
+This note is intended to make sense of the word ``reversibility.''
+%
+I wish to discuss in \emph{very informal} terms,
+1) what ``reversibility'' is,
+2) why it is important for MD integrators,
+3) the accuracy of the reversibility (is it accurate up to $\Delta t$,
+$\Delta t^2$, etc.?)
+and
+4) how to tell if an MD integrator is reversible.
+%
+The discussion below is rather shallow,
+it only summarizes what I know so far.
+
+
+\section{What is reversibility?}
+
+Newton's equation, written in terms of $dx/dt$ and $dv/dt$,
+%
+$$
+\begin{aligned}
+\frac{dx}{dt} &= v, \\
+\frac{dv}{dt} &= \frac{f(x)}{m}
+\end{aligned}
+\label{eq:newton}
+$$
+%
+is \emph{time reversible}. That is, if we change variables with
+$v = -u$ and $t = -\tau$, the resulting equation
+%
+\begin{align}
+\frac{dx}{d\tau} &= u, \\
+\frac{du}{d\tau} &= \frac{f(x)}{m}
+\end{align}
+%
+is identical to \eqref{eq:newton}.
+
+
+Generally, anything, like an MD integrator, that is invariant under
+$t \rightarrow -t$ and $v \rightarrow -v$
+is called time reversible.
+%
+Note that strictly the second transformation rule
+$v \rightarrow -v$
+is itself implied by $t \rightarrow -t$,
+because under timer reversal
+$v = dx/dt \rightarrow dx/d(-t) = -v$.
+
+
+\section{Why is reversibility important for MD integrators?}
+
+
+For MD integrators, reversibility gives some insurance of stability.
+%
+It is a common problem for MD practitioners that
+an MD simulation can blow up with a large time step.
+%
+Now by using a reversible integrator, we can often alleviate the problem a bit.
+%
+Below is a very non-rigorous hand-waving argument (that would probably drive
+any mathematician crazy).
+%
+Reversibility means a symmetry between the forward and backward time evolution.
+%
+If we start from an average-looking initial point, $\mathbf z_0 = (x_0, v_0)$,
+the result of time evolution of $\mathbf z_0$ after a period of $t$,
+denoted by $\mathbf z(t)$, would \emph{roughly} be the same
+as the result of backward time evolution starting from
+$\bar {\mathbf z}_0 = (x_0, -v_0)$.
+%
+If $\mathbf z(t)$ blows up, then so does $\bar{ \mathbf z}(-t)$.
+%
+Now looking at the trajectory of $\mathbf z(t)$,
+we found that our starting point lies near a special point,
+the minimum, of the trajectory.
+%
+But we have assumed that $\mathbf z_0$ is not special,
+so the trajectory should not blow up.
+
+
+
+\section{Reversibility is an accurate measure}
+
+
+
+Although MD integrators have accuracy limited by $\Delta t$,
+reversibility is an exact measure,
+at least up to the accuracy permissible by floating numbers
+of the computer.
+%
+To put the two on scales, an MD step is of the order of magnitude of $0.002$,
+where as the relative accuracy of floating-point numbers
+is about $10^{-7}$ (single-precision) or $10^{-14}$ (double-precision).
+
+For an MD integrator,
+reversibility means that if an initial state $(x_i, v_i)$
+undergoes $n$ MD steps reaching a final state $(x_f, v_f)$,
+then $n$ MD steps using the same integrators
+starting from $(x_f, -v_f)$ will yield $(x_i, -v_i)$.
+
+
+
+Below we shall discuss a few MD integrators.
+%
+We refer to the pair $\mathbf z = (x, v)$ as the state variable,
+and denote its time reversal by $\bar{\mathbf z} = (x, -v)$.
+
+
+
+\section{Leapfrog integrator}
+
+
+The leapfrog integrator is one of the simplest and most popular MD integrators.
+The MD package GROMACS, for example, currently uses leapfrog
+as its default MD integrator.
+%
+It contains two sub-steps:
+\begin{align}
+x &\rightarrow x + v \Delta t
+\tag{X}
+\label{eq:x}
+\\
+v &\rightarrow v + \frac{f(x)}{m} \Delta t.
+\tag{V}
+\label{eq:v}
+\end{align}
+
+It is important to realize that for the leapfrog integrator,
+each sub-step is reversible,
+but the composite step is not.
+Below is a more elaborated analysis.
+
+\subsection{Reversibility of the $x$ half-step}
+
+To see why step \eqref{eq:x} is reversible,
+we observe that this step delivers the state $\mathbf z_1 = (x_1, v_1)$
+to $\mathbf z_2 = (x_2, v_2)$, where
+\begin{equation}
+x_2 = x_1 + v_1 \Delta t.
+\label{eq:x1_x2}
+\end{equation}
+Now if we start with $\bar{\mathbf z}_2 = (x_2, -v_1)$,
+the condition of reversibility requires that the same procedure
+to reproduce $\bar{\mathbf z}_1 = (x_1, -v_1)$.
+%
+This is indeed the case, because step \eqref{eq:x}, applied on $(x_2, -v_1)$
+gives
+\begin{equation}
+y = x_2 + (-v_1) \Delta t,
+\end{equation}
+and after a comparison with step \eqref{eq:x1_x2}, we see that $y = x_1$,
+so the result after a backward step is $(x_1, -v_1) = \bar{\mathbf z}_1$.
+
+\subsection{Reversibility of the $v$ half-step}
+
+Similarly, step \eqref{eq:v} is reversible.
+This step changes the state from $\mathbf z_2 = (x_2, v_1)$
+to $\mathbf z_3 = (x_2, v_2)$, where
+\begin{equation}
+v_2 = v_1 + \frac{f(x_2)}{m} \Delta t.
+\label{eq:v1_v2}
+\end{equation}
+Now if we start from $\bar{\mathbf z}_3 = (x_2, -v_2)$,
+can we recover $\bar{\mathbf z}_2 = (x_2, -v_1)$ in the end
+(reversibility)?
+%
+The answer is yes.
+%
+By applying step \eqref{eq:v} to $(x_2, -v_2)$, we get
+\begin{equation}
+u = (-v_2) + \frac{f(x_2)}{m} \Delta t,
+\end{equation}
+and according to \eqref{eq:v1_v2}, $u = -v_1$.
+%
+Thus, the result of the backward step yields
+$(x_2, -v_1) = \bar{\mathbf z}_2$ as required.
+
+\subsection{Irreversibility of the composite $x$-$v$ step}
+
+Now the bad news is that if we treat the combination
+of \eqref{eq:x} and \eqref{eq:v} as a composite map
+(i.e., a black box),
+the composite map is \emph{not} reversible.
+%
+Continuing from the above argument,
+we see that the composite map transforms ${\mathbf z}_1 = (x_1, v_1)$
+to $\mathbf z_3 = (x_2, v_2)$.
+If the composite map were reversible,
+then starting from $\bar{\mathbf z}_3 = (x_2, -v_2)$,
+we should be able to recover $\bar{\mathbf z}_1 = (x_1, -v_1)$.
+%
+But this is untrue as shown below.
+First, applying step \eqref{eq:x} on $\bar{\mathbf z}_3$, we get
+a state of $\bar{\mathbf z}_4 = (y, -v_2)$ with
+$$
+\begin{aligned}
+y &= x_2 + (-v_2) \, \Delta t \\
+&= x_1 + (v_1 - v_2) \, \Delta t,
+\end{aligned}
+$$
+where we have used \eqref{eq:x1_x2} on the second line.
+Since $v_1 \ne v_2$, we see that $y \ne x_1$.
+%
+Next, by applying step \eqref{eq:v} on $\bar{\mathbf z}_4$,
+we get a state $\bar{\mathbf z}_5 = (y, u)$, with
+$$
+\begin{aligned}
+u &= -v_2  + \frac{f(y)}{m} \, \Delta t \\
+  &= -v_1  + \frac{f(y) - f(x_2)}{m} \, \Delta t
+\end{aligned}
+$$
+where we have used \eqref{eq:v1_v2} on the second line.
+Since $y \ne x_2$, $u \ne -v_1$.
+This means the end result $\bar{\mathbf z}_5 \ne \bar{\mathbf z}_1$.
+
+
+\subsection{Reversibility after a half-step shift}
+
+But why do people still call the leapfrog integrator
+is time reversible?  It turns out a step of \eqref{eq:x}
+followed by a step of \eqref{eq:v} can be exactly reversed
+by a step of \eqref{eq:v} followed by a step of \eqref{eq:x}
+(with reversed order)!
+%
+To understand the reversed ordering,
+it helps to think about matrix multiplication.  The inverse matrix
+of the product $\mathbf{V X} $ is $\mathbf{X^{-1} V^{-1}}$,
+not $\mathbf{V^{-1} X^{-1}}$!
+
+Similarly to inverse a chain of steps
+$$
+v\mbox{ half-step}
+\rightarrow
+x\mbox{ half-step}
+\rightarrow \cdots \rightarrow
+v\mbox{ half-step}
+\rightarrow
+x\mbox{ half-step},
+$$
+we need
+$$
+x\mbox{ half-step}
+\rightarrow
+v\mbox{ half-step}
+\rightarrow \cdots \rightarrow
+x\mbox{ half-step}
+\rightarrow
+v\mbox{ half-step},
+$$
+The two sequences do look similar,
+the only difference is that one starts with a $v$-step
+and the other starts with an $x$-step.
+%
+In other words,
+to reverse the leapfrog integrator,
+we need to shift a half-step first.
+%
+This is an inconvenience of the leapfrog integrator.
+%
+Below we shall show that the velocity Verlet integrator
+does not have this inconvenience.
+
+
+\section{Velocity-Verlet integrator}
+
+
+The velocity Verlet integrator contains three sub-steps:
+
+\begin{align}
+v &\rightarrow v + \frac{f(x)}{2\,m} \Delta t
+\tag{vv-V1}
+\label{eq:vv_v1}
+\\
+x &\rightarrow x + v \Delta t
+\tag{vv-X}
+\label{eq:vv_x}
+\\
+v &\rightarrow v + \frac{f(x)}{2\,m} \Delta t.
+\tag{vv-V2}
+\label{eq:vv_v2}
+\end{align}
+
+Starting from ${\mathbf z}_1 = (x_1, v_1)$, we have
+\begin{align}
+v_2 &= v_1 + \frac{f(x_1)}{2m} \Delta t, \\
+x_2 &= x_1 + v_2 \, \Delta t, \\
+v_3 &= v_2 + \frac{f(x_2)}{2m} \Delta t,
+\end{align}
+which lands at the state ${\mathbf z}_4 = (x_2, v_3)$.
+
+To reverse it, we start from $\bar{\mathbf z}_4 = (x_2, -v_3)$,
+\begin{align}
+u_1 &= (-v_3) + \frac{f(x_2)}{2m} \Delta t = -v_2 , \\
+y &= x_2 + u_1 \, \Delta t = x_1, \\
+u_2 &= u_1 + \frac{f(y)}{2m} \Delta t = -v_2 + \frac{f(x_1)}{2m} \Delta t = -v_1,
+\end{align}
+which means the final state is
+$(y, u_2) = (x_1, -v_2) = \bar{\mathbf z}_1$.
+This shows that velocity Verlet integrator is reversible without
+the need of shifting a half step.
+
+\end{document}
