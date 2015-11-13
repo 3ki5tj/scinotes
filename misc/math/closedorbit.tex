@@ -1,8 +1,15 @@
-In short, the &ldquo;symmetry&rdquo; means the time-reversal symmetry.  It helps establish the <em>existence</em> of periodic orbits.  If you have a copy of [Strogatz's Nonlinear Dynamics and Chaos](http://www.amazon.com/gp/product/0813349109), section 6.6 Reversible Systems talks about this.
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\begin{document}
+\url{http://artofproblemsolving.com/community/c32h376465s1_polish_mo_final_2010_2nd_problem_equation_in_rationals}
+
+
+In short, the ``symmetry'' means the time-reversal symmetry.  It helps establish the <em>existence</em> of periodic orbits.  If you have a copy of [Strogatz's Nonlinear Dynamics and Chaos](http://www.amazon.com/gp/product/0813349109), section 6.6 Reversible Systems talks about this.
 
 We can also show the existence by constructing a conserved quantity.  Section 6.5 Conservative Systems of the same book talks about the alternative technique.  We'll solve the problem using both techniques below.
 
-### Basic algebra
+\section{ Basic algebra }
 
 We first convert the equation to a pair of first-order ones
 $$
@@ -25,7 +32,7 @@ which is the equation of motion of the harmonic oscillator (spring).
 Below we use the time-reversal symmetry to argue that the latter fixed point is a <em>nonlinear</em> center, i.e. its nearby trajectories form closed orbits.
 
 
-### Time reversal symmetry
+\section{ Time reversal symmetry }
 
 Now consider the backward time evolution of (1), with $V = -v$, and $T = -t$.
 $$
@@ -47,7 +54,8 @@ The point is that backward trajectory is precisely the vertical reflection of th
 Now consider the forward time evolution in the period of $(-t_1, t_1)$, the first half $(-t_1, 0)$ is the reversal of the backward trajectory, which starts from $(x_1, 0)$ to $(x_0, 0)$ tracing the lower arc; the second half $(0, t_1)$ is the forward trajectory from $(x_0, 0)$ to $(x_1, 0)$ tracing the upper arc.  The two in combine forms a periodic closed orbit, which is precisely what we are looking for!
 
 
-### Alternative method using conserved quantity
+
+\section{ Alternative method using conserved quantity }
 
 
 The same problem can be addressed by find a conserved quantity and thereby showing the existence of periodic closed orbits.  This method is closely related to and kind of the reverse of the Bendixson-Dulac theorem.
@@ -60,7 +68,8 @@ E(x, v) = \frac{1}{2} (v^2 - x^2) \, e^{-2x}.
 $$
 Below we'll show how to find it using a technique similar to that for the Dulac's criterion.
 
-### Finding the conserved quantity
+
+\section{ Finding the conserved quantity }
 
 If we rewrite (1) as
 $$
@@ -127,3 +136,6 @@ dE
 &= d\left[ \frac12(v^2 - x^2) \, e^{-2x} \right].
 \end{aligned}
 $$
+
+\end{document}
+

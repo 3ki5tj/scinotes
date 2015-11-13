@@ -1,19 +1,20 @@
-Note. An earlier version of this answer only works for [normal matrices](https://en.wikipedia.org/wiki/Normal_matrix), thanks to [themaker](http://math.stackexchange.com/users/114509/themaker) for pointing this out.
-Fortunately, the answer to [this wonderful post](http://math.stackexchange.com/questions/381808/) appears to furnish the step to generalize the proof to an arbitrary complex square matrix.
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\begin{document}
 
 
 
 
-### Statement
+\section{ Statement }
 
 We want to show that for a complex matrix $\mathbf A$,
-$$
+\begin{equation}
 \sum_{i = 1}^n |\lambda_i| \le \sum_{i, j = 1}^n |a_{ij}|.
-\tag{1}
-$$
-The trick is to use the [SVD decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition), but we shall go through some simpler cases first.
+\end{equation}
+The trick is to use the [SVD decomposition]\url{https://en.wikipedia.org/wiki/Singular_value_decomposition}, but we shall go through some simpler cases first.
 
-### Diagonal matrix
+\section{ Diagonal matrix }
 
 If the matrix is diagonal, then the eigenvalues coincide with the eigenvalues
 $$
@@ -25,7 +26,7 @@ $$
 \sum_{i=1}^n |a_{ii}| \le \sum_{i,j=1}^n |a_{ij}|.
 $$
 
-### Positive definite matrix
+\section{ Positive definite matrix }
 
 Second, we observe that the sum of eigenvalues
 is equal to the trace of the matrix (i.e., the sum of the diagonal).
@@ -37,7 +38,7 @@ Each eigenvalue is a root of
 =
 \lambda^n - \sum_{i = 1}^n a_{ii} \, \lambda^{n-1} + \cdots.
 \end{align}
-By [Vieta's formula](https://en.wikipedia.org/wiki/Vieta%27s_formulas),
+By [Vieta's formula]\url{https://en.wikipedia.org/wiki/Vieta\%27s_formulas},
 we have
 \begin{align}
   \sum_{i=1}^n \lambda_i = \sum_{i = 1}^n a_{ii}.
@@ -55,27 +56,26 @@ Now if the matrix is positive definite, we are done, because
 \end{align}
 
 
-### General
+\section{ General }
 
 
-Generally, a complex matrix permits a [singular value decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition#Statement_of_the_theorem):
+Generally, a complex matrix permits a [singular value decomposition]\url{https://en.wikipedia.org/wiki/Singular\_value\_decomposition#Statement\_of\_the\_theorem}:
 $$
 \mathbf A \equiv \mathbf U \mathbf \Sigma \mathbf V^\dagger,
 $$
 where $\mathbf U$ and $\mathbf V$ are unitary matrices,
 and $\mathbf \Sigma$ is a diagonal matrix
-filled by nonnegative numbers, $\sigma_{ii}$, called [the singular values](https://en.wikipedia.org/wiki/Singular_value).
+filled by nonnegative numbers, $\sigma_{ii}$, called [the singular values](https://en.wikipedia.org/wiki/Singular\_value).
 
 
-Now in [this post](http://math.stackexchange.com/q/386872), [23rd](http://math.stackexchange.com/users/46120/23rd) showed by using [the Schur decomposition](https://en.wikipedia.org/wiki/Schur_decomposition) that
-$$
+Now in [this post]\url{http://math.stackexchange.com/q/386872}, [23rd]\url{http://math.stackexchange.com/users/46120/23rd} showed by using [the Schur decomposition]\url{https://en.wikipedia.org/wiki/Schur\_decomposition} that
+\begin{equation}
 \sum_{i = 1}^n |\lambda_i|
 \le \sum_{i = 1}^n \sigma_{ii}
 = \mathrm{Tr} \mathbf \Sigma,
-\tag{2}
-$$
+\end{equation}
 
-Since the trace is an invariant under a [similarity transformation](https://en.wikipedia.org/wiki/Matrix_similarity):
+Since the trace is an invariant under a [similarity transformation]\url{https://en.wikipedia.org/wiki/Matrix\_similarity}:
 $$
 |\lambda - \mathbf A| = |\mathbf P^{-1}(\lambda - \mathbf A)\mathbf P| = |\lambda - \mathbf P^{-1} \mathbf A \mathbf P|,
 $$
@@ -150,4 +150,4 @@ Also note that $\mathbf a_i$ can be replaced
 by a row of $\mathbf A$, if we use the second form of (3)
 and follow a similar line of reasoning.
 
-
+\end{document}
