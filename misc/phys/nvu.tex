@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+\begin{document}
+
+\title{NVU dynamics}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+The commonly-used Verlet molecular dynamics (MD) integrator is given by
+\begin{equation}
+\mathbf r_{n+1} =
+2 \mathbf r_n - \mathbf r_{n-1} + \frac{\Delta t^2}{m} \, \mathbf f_n,
+\end{equation}
+where $n$ is the index of time step.
+This dynamics approximately conserves the total energy.
+It is also symplectic (area preserving),
+so there is little long time drift in the total energy.
+
+Interestingly, it is recently proposed a similar dynamics,
+call $NVU$ dynamics, which approximately conserves
+the potential energy.
+\begin{equation}
+\mathbf r_{n+1}
+= 2 \, \mathbf r_n - r_{n-1}
+- \frac{ 2 \, (\mathbf r_{n} - \mathbf r_{n - 1}) \cdot \mathbf f_n }
+       { \mathbf f_n \cdot \mathbf f_n }
+  \mathbf f_n.
+\label{eq:nvu}
+\end{equation}
+
+The $NVU$ dynamics has several nice properties.
+\begin{enumerate}
+\item
+The step size is constant.
+$$
+|\mathbf r_{n+1} - \mathbf r_n| = |\mathbf r_n - \mathbf r_{n-1}|.
+$$
+
+
+\item
+\begin{equation}
+(\mathbf r_{n+1} - \mathbf r_n) \cdot \mathbf f_n
+=
+(\mathbf r_{n-1} - \mathbf r_n) \cdot \mathbf f_n.
+\label{eq:rfsame}
+\end{equation}
+
+
+\item
+Reversibility. Using \eqref{eq:rfsame}, we have
+$$
+\mathbf r_{n-1} = 2 \, \mathbf r_n - \mathbf r_{n+1}
+- 2 \frac{ ( \mathbf r_n - \mathbf r_{n+1} ) \cdot \mathbf f_n }
+{ \mathbf f_n \cdot \mathbf f_n } \, \mathbf f_n,
+$$
+which shows that the time-reversed version is exactly the same.
+
+
+\item
+From \eqref{eq:rfsame}, we can show that
+the displacement over the two steps is perpendicular to the force:
+\begin{equation}
+(\mathbf r_{n+1} - \mathbf r_{n-1}) \cdot \mathbf f_n = 0.
+\end{equation}
+Geometrically,
+we can show that the vectors
+$\mathbf r_{n+1} - \mathbf r_{n-1}$,
+$-\frac{ 2 (\mathbf r_n - \mathbf r_{n-1}) \cdot \mathbf f_n } { \mathbf f_n \cdot \mathbf f_n } \mathbf f_n$,
+and
+$2 ( \mathbf r_n - \mathbf r_{n-1})$
+form a right triangle.
+
+
+\item
+The dynamics is not symplectic, and the potential energy is only approximately conserved.
+
+\end{enumerate}
+
+
+\section{References}
+
+T. S. Ingebrigtsen et al., J. Chem. Phys. 135 104101 (2011).
+
+\end{document}

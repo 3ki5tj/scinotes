@@ -1,0 +1,234 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+\begin{document}
+
+\title{Quantum mechanical correction and MD time step}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+\section{Quantum mechanical correction}
+
+
+The aim is to obtain first quantum mechanical corrections
+to a classical system.
+%
+We only summarize the result.
+%
+The detailed derivation can be found in
+Statistical Physics by Landau and Liftshits \S 33 (pages 99-102).
+
+
+The partition function can be written as
+\begin{equation}
+Z = \int
+\exp\left[-\beta H(q, p) + \hbar^2 \chi_2 \right] \, dq \, dp.
+\end{equation}
+where
+\begin{align}
+\chi_2
+&=
+-\frac{ \beta^4 } { 8 }
+\left(
+  \sum_i \frac{p_i}{m_i} \frac{\partial U}{\partial q_i}
+\right)^2
++\frac{ \beta^3 } { 6 }
+\sum_{i,k} \frac{p_i}{m_i} \frac{p_k}{m_k}
+  \frac{\partial^2 U}{\partial q_i \partial q_k}
+  \notag \\
+&\quad
++\frac{ \beta^3 }{6}
+  \sum_i \frac{1}{m_i}
+    \left( \frac{ \partial U } { \partial q_i } \right)^2
+-\frac{ \beta^2 }{4}
+  \sum_i \frac{1}{m_i}
+    \frac{ \partial^2 U } { \partial q_i^2 }.
+\end{align}
+Thus, this expression gives a modification to Boltzmann weight.
+
+If we average out the momenta components, then
+\begin{align}
+\chi_2(q)
+&=
+-\frac{ \beta^3 } { 8 }
+  \sum_i \frac{1}{m_i} \left( \frac{\partial U}{\partial q_i} \right)^2
++\frac{ \beta^2 } { 6 }
+\sum_{i} \frac{1}{m_i}
+  \frac{\partial^2 U}{\partial q_i^2}
+  \notag \\
+&\quad
++\frac{ \beta^3 }{6}
+  \sum_i \frac{1}{m_i}
+    \left( \frac{ \partial U } { \partial q_i } \right)^2
+-\frac{ \beta^2 }{4}
+  \sum_i \frac{1}{m_i}
+    \frac{ \partial^2 U } { \partial q_i^2 }
+\notag \\
+&=
+\frac{ \beta^3 }{24}
+  \sum_i \frac{1}{m_i}
+    \left( \frac{ \partial U } { \partial q_i } \right)^2
+-\frac{ \beta^2 }{12}
+  \sum_i \frac{1}{m_i}
+    \frac{ \partial^2 U } { \partial q_i^2 }.
+\end{align}
+This means the effective potential is
+%
+\begin{equation}
+U_{\mathrm{eff}}(q)
+=
+U(q)
++
+\frac{ \beta^2 \, \hbar^2 }{24}
+\sum_i \frac{1}{m_i}
+\left[
+    \frac{2}{\beta}
+    \frac{ \partial^2 U } { \partial q_i^2 }
+-
+    \left( \frac{ \partial U } { \partial q_i } \right)^2
+\right].
+\label{eq:Ueff}
+\end{equation}
+
+
+Similarly,
+if we average over coordinates,
+\begin{align}
+\chi_2(p)
+&=
+-\frac{ \beta^4 } { 8 }
+\sum_{i,k} \frac{p_i}{m_i} \frac{p_k}{m_k}
+  \left\langle
+    \frac{\partial U}{\partial q_i}
+    \frac{\partial U}{\partial q_k}
+  \right\rangle
++\frac{ \beta^3 } { 6 }
+\sum_{i,k} \frac{p_i}{m_i} \frac{p_k}{m_k}
+  \left\langle
+    \frac{\partial^2 U}{\partial q_i \partial q_k}
+  \right\rangle
++ C
+\notag \\
+&=
+\frac{ \beta^4 } { 12 }
+\sum_{i,k} \frac{p_i}{m_i} \frac{p_k}{m_k}
+  \left\langle
+    \frac{\partial U}{\partial q_i}
+    \frac{\partial U}{\partial q_k}
+  \right\rangle
++ C,
+\end{align}
+where we have used
+$$
+\int
+\frac{ \partial^2 U } { \partial q_i \partial q_k} e^{-\beta U} \, dq
+=
+-\int
+\frac{ \partial U } { \partial q_k}
+\frac{ \partial e^{-\beta U} } { \partial q_i } \, dq
+=
+\beta \int
+\frac{ \partial U } { \partial q_k}
+\frac{ \partial U } { \partial q_i}
+e^{-\beta U} \, dq,
+$$
+or
+$$
+\left\langle
+  \frac{ \partial^2 U } { \partial q_i \partial q_k}
+\right\rangle
+=
+\beta \,
+\left\langle
+  \frac{ \partial U } { \partial q_k}
+  \frac{ \partial U } { \partial q_i}
+\right\rangle.
+$$
+
+
+\section{MD time step}
+
+
+In molecular dynamics, Newton's equations are discretized
+by integrators.
+For the velocity Verlet integrator
+$$
+\begin{aligned}
+p_i &\rightarrow  p_i - \frac{ \partial U } { \partial q_i } \frac{\Delta t}{2} \\
+q_i &\rightarrow  q_i + \frac{ p_i } { m_i } \Delta t \\
+p_i &\rightarrow  p_i - \frac{ \partial U } { \partial q_i } \frac{\Delta t}{2},
+\end{aligned}
+$$
+One can show that this dynamics preserves an approximate Hamiltonian,
+called shadow (perturbed, modified) Hamiltonain,
+which is given by
+$$
+\tilde H(q, p)
+=
+H(q, p)
++
+\frac{ \Delta t^2 }{12}
+\sum_{ik} \frac{p_i}{m_i}
+    \frac{p_k}{m_k}
+    \frac{ \partial^2 U } { \partial q_i \partial q_k }
+-
+\frac{ \Delta t^2 } { 24 }
+\sum_i \frac{1}{m_i}
+    \left( \frac{ \partial U } { \partial q_i } \right)^2.
+$$
+If we average out the momenta
+with $\langle p_i \, p_k \rangle = m_i \, \delta_{ik} / \beta$,
+then
+$$
+\tilde U(q)
+=
+U(q)
++
+\frac{ \Delta t^2 }{ 24 }
+\sum_{i}
+  \frac{1}{m_i}
+  \left[
+  \frac{2}{\beta}
+    \frac{ \partial^2 U } { \partial q_i^2 }
+-
+    \left( \frac{ \partial U } { \partial q_i } \right)^2
+\right].
+$$
+This is very similar to the effective potential from the quantum correction.
+%
+This means if choose $\Delta t = \beta \hbar$,
+then we can successfully take into account the quantum mechanical effect.
+
+
+
+Let us estimate this lucky $\Delta t$.
+%
+With
+the reduced Planck constant
+$\hbar = 1.054571800\times10^{-34} \mathrm{J}\cdot \mathrm{s}$,
+the Boltzmann constant
+$k_B = 1.38064852 \times 10^{-23}\mathrm{J}/\mathrm{K}$,
+we find that at $T = 300 \mathrm{K}$,
+$
+\Delta t^* = 25.46 \times 10^{-15}\mathrm{s} \approx 25 \, \mathrm{fs}.
+$
+This is unfortunately 12 times as larger as the usual
+MD time step $2 \, \mathrm{fs}$.
+
+
+\end{document}
