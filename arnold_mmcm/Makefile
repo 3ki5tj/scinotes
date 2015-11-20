@@ -26,7 +26,7 @@ IPO=cz1@129.109.88.204
 #IPO=cz1@he.host.utmb.edu
 
 Bossman: $(pdf)
-	rsync -avzrL *.pdf *.tex $(IPO):/Bossman/cz1/notes/strogatz_ndc
+	rsync -avzrL *.pdf *.tex $(IPO):/Bossman/cz1/notes/arnold_mmcm
 
 # upload to github
 github:

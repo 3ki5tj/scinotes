@@ -1,0 +1,254 @@
+\documentclass{book}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+\begin{document}
+
+% annotation macros
+\newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
+\newcommand{\add}[1]{{\color{blue} #1}}
+\newcommand{\del}[1]{{\color{gray} [#1]}}
+\newcommand{\note}[1]{{\color{OliveGreen}\small [\textbf{Comment.} #1]}}
+
+\newcommand{\hl}[1]{{\color{red} #1}}
+
+\tableofcontents
+
+
+
+
+\chapter{8. Symplectic manifolds}
+
+
+
+\section{37. Symplectic structures on manifolds}
+
+
+
+\subsection{A. Definition}
+
+
+
+Definition.  Let $M^{2n}$ be an even-dimensional differentiable manifold.
+A \emph{symplectic structure} on $M^{2n}$ is a closed nondegenerate differential 2-form
+$\omega^2$ on $M^{2n}$:
+$$
+d\omega^2 = 0
+$$
+and
+$$
+\forall \pmb \xi \ne 0
+\quad
+\exists \pmb \eta:
+\;
+\omega^2(\pmb \xi, \pmb \eta) \ne 0
+\quad
+(\pmb \xi, \pmb \eta \in TM_{\pmb x}).
+$$
+The pair $(M^{2n}, \omega^2)$ is called
+a \emph{symplectic manifold}.
+
+
+Example.
+$\omega^2 = \sum_{i = 1}^n dp_i \wedge dq_i$.
+
+
+
+\subsection{B. The cotangent bundle and its symplectic structure}
+
+
+
+Let $V$ be an $n$-dimensional differentiable manifold.
+%
+A 1-form on the tangent space to $V$ at a point $\mathbf x$ is called
+a \emph{cotangent vector} to $V$ at $\mathbf x$.
+
+This vector space of cotangent vectors is denoted by $T^*V_{\mathbf x}$,
+called the \emph{cotangent space} to $V$ at $\mathbf x$.
+
+The union of the cotangent spaces to the manifold at all of its points
+is called the \emph{cotangent bundle}, and denoted by $T^*V$.
+
+The set $T^*V$ has a natural structure of a differentiable manifold of
+dimension $2 n$.
+(Note. Each point $\mathbf x \in V$ has a $n$-dimensional vectors space;
+the dimensionality of $V$ is $n$).
+%
+A point of $T^*V$ is a 1-form on the tangent space to $V$ at some point of $V$.
+%
+If $\mathbf q$ is a choice of a local coordinates for points in $V$,
+then such a form is given by its $n$ components $\mathbf p$.
+%
+Together, the $2n$ numbers $\mathbf p, \mathbf q$ form a collection of local coordinates
+for points in $T^*V$.
+
+
+There is a natural projection
+$f: T^*V \rightarrow V$
+(note: sending every 1-form on $TV_{\mathbf x}$
+to the point $\mathbf x$).
+%
+The projection $f$ is differentiable and surjective
+(note: each $\mathbf x \in V$ has at least one preimage $T^*V$).
+%
+The preimage of a point $\mathbf x \in V$ under $f$
+is the cotangent space $T^*V_{\mathbf x}$.
+
+
+Theorem.
+The cotangent bundle $T^*V$ has a natural symplectic structure.
+%
+In the local coordinates described above,
+the symplectic structure is given by the formula
+$\omega^2 = d\mathbf p \wedge d\mathbf q = dp_1 \wedge dq_1 + \cdots + dp_n \wedge dq_n$.
+
+Proof.
+Define a distinguished 1-form on $T^*V$.
+%
+Let $\pmb \xi \in T(T^*V)p$ be a vector tangent to the cotangent bundle at
+the point $p \in T^*V_{\mathbf x}$.
+[Note: this means $p$ is a 1-form with coordinates $\mathbf p$,
+and we can express $\pmb \xi$ in local coordinates as $(d\mathbf p, d\mathbf q)$.]
+%
+The derivative $f_{\mathbf x}: T(T^*V) \rightarrow TV$
+of the natural projection $f: T^*V \rightarrow V$,
+which takes $\pmb \xi$ to a vector $f_{\mathbf x} \pmb \xi$ ($d\mathbf q$)
+tangent to $V$ at $\mathbf x$.
+%
+We define a 1-form $\omega^1$ on $T^*V$ by the relation
+$\omega^1(\pmb \xi) \equiv p( f_{\mathbf x}\pmb \xi )$
+[Note: remember that $p$ is a 1-form so it accepts
+  a tangent vector $d\mathbf q = f_{\mathbf x} \pmb \xi$
+as input and returns a number.]
+%
+In the local coordinates described above,
+this form is
+$\omega^1 = \mathbf p \cdot d\mathbf q$,
+and
+$\omega^2 = d\omega^1$ is nondegenerate.
+
+
+Remark.
+Let $L = L(\mathbf q, \dot{\mathbf q})$  be a Lagrangian.
+%
+Then, $\dot{\mathbf q}$ is a tangent vector;
+%
+$\mathbf p = \partial L/\partial \dot{\mathbf q}$
+is a cotangent vector.
+%
+The $\mathbf p, \mathbf q$ phase space of the Lagrangian system
+is the cotangent of the configuration manifold.
+%
+The above theorem shows that the phase space of
+a mechanical problem has a natural symplectic
+manifold structure.
+
+
+
+\subsection{C. Hamiltonian vector fields}
+
+
+
+A Riemann structure on a manifold establishes an isomorphism between
+the spaces of tangent vectors and 1-forms.
+%
+A symplectic structure establishes a similar isomorphism.
+
+
+Definition.
+%
+To each vector $\pmb \xi$
+tangent to a symplectic manifold $(M^{2n}, \omega^2)$
+at point $\mathbf x$, we associate a 1-form $\omega^1_{\pmb \xi}$
+on $TM_{\mathbf x}$ by the formula
+$$
+\omega^1_{\pmb \xi}(\pmb \eta) = \omega^2(\pmb \eta, \pmb \xi),
+\quad \forall \pmb \eta \in TM_{\mathbf x}.
+$$
+%
+The correspondence $\pmb \xi \rightarrow \omega^1_{\mathbf \xi}$
+is an isomorphism between $2n$-dimensional vector spaces of vectors
+and those of 1-forms.
+
+
+Example.
+%
+For $n = 1$,
+$\omega^2 = \pmb \eta \wedge \pmb \xi = \eta_1 \xi_2 - \eta_2 \xi_1$.
+Then
+$\omega^1_{\pmb \xi}(\pmb \eta) = (\pmb \eta, \mathbf J^{-1} \pmb \xi)$,
+where $\mathbf J^{-1}$ means a rotation of $-\pi/2$.
+
+Thus, $\omega^1_{\pmb \xi}$ is represented by the vector $\mathbf J^{-1} \pmb \xi$.
+%
+We will denote by $I$ the isomorphism
+$I: T*M_{\mathbf x} \rightarrow TM_{\mathbf x}$
+(from 1-forms to tangent vectors,
+$\omega^1_{\pmb \xi} \rightarrow \pmb \xi$).
+%
+Now let $H$ be a function on a symplectic manifold $M^{2n}$.
+%
+Then $dH$ is a differential 1-form on $M$ and
+for every point there is a tangent vector to $M$ associated to it.
+%
+In this way, we obtain a vector field $IdH$ on $M$.
+
+
+Definition.
+%
+The vector field $IdH$ is called \emph{Hamiltonian vector field}.
+%
+$H$ is called the \emph{Hamiltonian function}.
+%
+In the above example,
+the 1-form is represented by the vector
+$\nabla H = (\partial H/\partial \mathbf p, \partial H/\partial q)^T$
+to invert this vector to corresponding tangent vector we multiple it by $\mathbf J$
+%
+\[
+\mathbf J \cdot \nabla H
+=
+\left(
+  \begin{array}{ccc}
+    0 & -1 \\
+    1 & 0
+  \end{array}
+\right)
+\left(
+  \begin{array}{ccc}
+    \frac{ \partial H }{ \partial \mathbf p } \\
+    \frac{ \partial H }{ \partial \mathbf q }
+  \end{array}
+\right)
+=
+\left(
+  \begin{array}{ccc}
+    -\frac{ \partial H }{ \partial \mathbf q } \\
+    \frac{ \partial H }{ \partial \mathbf p }
+  \end{array}
+\right)
+=
+\left(
+  \begin{array}{ccc}
+    \dot{\mathbf p} \\
+    \dot{\mathbf q}
+  \end{array}
+\right).
+\]
+
+
+
+
+
+\end{document}
