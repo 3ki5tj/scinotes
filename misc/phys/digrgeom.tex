@@ -1,0 +1,256 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+\begin{document}
+
+\title{}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+\section{\S 3.4 A digression on geometry}
+
+
+\subsection{\S 3.4.1 Some geometry}
+
+\paragraph{Contravariant and covariant vectors.}
+
+Let us fix a point $\mathbf x$.
+$$
+df
+= \sum_i \frac{\partial f}{\partial x^i} dx^i
+= (\nabla f, d\mathbf x).
+$$
+Now under a coordinate transform,
+if a vector behaves like $d\mathbf x$
+then it is a contravariant vector, or a vector field.
+
+If a vector behaves like $\nabla f$,
+then it is a covariant vector,
+which characterize a 1-form.
+%
+That is, we generalize a vector that behaves like
+$(\partial_1 f, \dots, \partial_n f)$
+to a general covariant vector
+$(\alpha_1, \dots, \alpha_n)$;
+this vector corresponds to a 1-form
+$\alpha_1 \, dx^1 + \cdots + \alpha_n \, dx^n$.
+Note in this definition,
+$dx^1, \cdots, dx^n$ only
+are placeholders to accept the components
+of an input tangent vector $d\mathbf x = (dx_1, \cdots, dx_n)$.
+
+
+
+\paragraph{Dirac notation.}
+
+The \emph{value} of a 1-form is denoted by the Dirac notation
+$$
+\alpha(X)
+=
+\langle \alpha, X \rangle
+=
+\sum_i \alpha_i \, X^i.
+$$
+Particularly, a total differential is a 1-form
+$$
+df(X) = \sum_i \partial_i f \, X^i
+= ( \nabla f, \mathbf X ) = \langle df, \mathbf X \rangle.
+$$
+
+
+\subsubsection{Lie derivative}
+
+The above expression can also be expressed as
+$$
+L_{\mathbf X} f,
+$$
+where
+$$
+L_{\mathbf X} \equiv \sum_i X^i \partial_i
+$$
+is the differentiation along the field,
+or the \emph{Lie derivative} along $\mathbf X$.
+
+The Lie derivative of a scalar yields a scalar.
+The Lie derivative of a vector field (contravariant vector) yields a vector field (contravariant).
+The Lie derivative of a 1-form (covariant vector) yields a 1-form (covariant vector).
+%
+The Lie derivative of any object yields an object of the same kind.
+
+
+We also introduce the notation
+$$
+L_{\mathbf X} f \equiv \mathbf X(f).
+$$
+
+\paragraph{Lie derivative applied to a total differential}
+
+Lie derivative applied to a total differential
+$$
+L_{\mathbf X} dx^i
+= L_{\mathbf X} (x^i_B - x^i_A)
+= (L_{\mathbf X} x^i)_B
+- (L_{\mathbf X} x^i)_A
+= d (L_{\mathbf X} x^i).
+$$
+where $\mathbf x_B = \mathbf x_A + d\mathbf x$.
+%
+Generally, for a total differential $df$
+$$
+L_{\mathbf X} df
+= L_{\mathbf X} (f(\mathbf x_B) - f(\mathbf x_A))
+= (L_{\mathbf X} f)_B
+- (L_{\mathbf X} f)_A
+= d (L_{\mathbf X} f).
+$$
+This means that we can freely exchange the order of
+the Lie derivative and $d$.
+
+\paragraph{Leibniz rule}
+
+Let us apply the Lie derivative to a scalar $\langle \omega, \mathbf X\rangle$:
+$$
+L_{\mathbf Y} \langle\omega, \mathbf X\rangle
+=
+\langle L_{\mathbf Y}\omega, \mathbf X\rangle
++
+\langle \omega, L_{\mathbf Y} \mathbf X \rangle.
+$$
+It can be shown that
+$$
+L_{\mathbf Y} \mathbf X
+= L_{\mathbf Y} L_{\mathbf X} - L_{\mathbf X} L_{\mathbf Y}
+\equiv L_{[\mathbf X, \mathbf Y]}.
+$$
+Thus, we can show the Jacobi identity:
+$$
+[[\mathbf X, \mathbf Y], \mathbf Z]
++[[\mathbf Y, \mathbf Z], \mathbf X]
++[[\mathbf Z, \mathbf X], \mathbf Y] = 0.
+$$
+
+
+\subsection{Euler-Lagrange equations}
+
+
+In mechanics $\mathbf x \rightarrow (\mathbf q, \dot{\mathbf q}$,
+and $dx^i \rightarrow q^\alpha, \dot q^\alpha$.
+%
+For a Lagrangian $L=L(q^\alpha, \dot q^\alpha)$,
+define a 1-form,
+$$
+\theta_L = \frac{ \partial L } { \partial \dot q^\alpha } d q^\alpha.
+$$
+This 1-form only has components for $q^\alpha$ but not those for $\dot q^\alpha$.
+
+Consider the vector field for time evolution
+$$
+\pmb \Delta =
+\frac{d}{dt} (\mathbf q, \dot{\mathbf q})
+=
+(\dot{\mathbf q}, \ddot{\mathbf q})
+.
+$$
+Then
+$$
+L_{\pmb \Delta} f = \frac{df}{dt}.
+$$
+
+
+$$
+\begin{aligned}
+L_{\pmb \Delta} \theta_L
+&=
+\sum_\alpha
+  \left(L_{\pmb \Delta} \frac{ \partial L } { \partial {\dot q}^\alpha } \right) d q^\alpha
++
+  \frac{ \partial L } { \partial \dot q^\alpha } ( L_{\pmb \Delta} d q^\alpha )
+\\
+&=
+\sum_\alpha
+  \frac{d}{dt}\left( \frac{ \partial L } { \partial {\dot q}^\alpha} \right) d q^\alpha
++
+  \frac{ \partial L } { \partial {\dot q}^\alpha } d {\dot q}^\alpha
+\\
+&=
+\sum_\alpha
+  \frac{ \partial L } { \partial q^\alpha} d q^\alpha
++
+  \frac{ \partial L } { \partial {\dot q}^\alpha } d {\dot q}^\alpha
+= dL
+\end{aligned}
+$$
+This is the coordinates-independent form of the Euler-Lagrange equations.
+\begin{equation}
+L_{\pmb \Delta} \theta_L = dL
+\end{equation}
+This equation contains multiple components, so it consists of multiple equations.
+
+Proof of
+$
+L_{\mathbf Y} \mathbf X
+=
+L_{\mathbf Y} L_{\mathbf X} - L_{\mathbf X} L_{\mathbf Y}.
+$
+
+Key steps.
+$$
+\begin{aligned}
+(L_{\mathbf Y} L_{\mathbf X} - L_{\mathbf X} L_{\mathbf Y})f
+&=
+L_{\mathbf Y} \langle df, \mathbf X\rangle
+- \langle d(L_{\mathbf Y} f), \mathbf X \rangle
+\\
+&=
+\langle L_{\mathbf Y} df, \mathbf X\rangle
++\langle df, L_{\mathbf Y} \mathbf X\rangle
+- \langle d(L_{\mathbf Y} f), \mathbf X \rangle
+\\
+&=
+\langle df, L_{\mathbf Y} \mathbf X\rangle.
+\end{aligned}
+$$
+Compare this to
+$$
+\begin{aligned}
+L_{\mathbf Z} f = \langle df, \mathbf Z \rangle.
+\end{aligned}
+$$
+
+
+Then
+$$
+L_{\mathbf Y} \mathbf X (f g)
+=
+f (L_{\mathbf Y} \mathbf X g)
++
+g (L_{\mathbf Y} \mathbf X f).
+$$
+There is a theorem that says that if a map $\phi$ satisfies
+$$
+\phi (f g)
+=
+f \phi g
++
+g \phi f,
+$$
+then $\phi$ defines a vector field $\mathbf X$
+with $\phi = L_{\mathbf X}$.
+
+
+\end{document}
