@@ -1,0 +1,409 @@
+\documentclass{book}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+\begin{document}
+
+% annotation macros
+\newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
+\newcommand{\add}[1]{{\color{blue} #1}}
+\newcommand{\del}[1]{{\color{gray} [#1]}}
+\newcommand{\note}[1]{{\color{OliveGreen}\small [\textbf{Comment.} #1]}}
+
+\newcommand{\hl}[1]{{\color{red} #1}}
+
+\tableofcontents
+
+\title{Stochastic Process in Physics and Chemistry}
+\author{N. G. Van Kampen}
+\date{3rd Edition (May 7, 2007)}
+
+
+\chapter{I. Stochastic Variables}
+
+\section{1. Definition}
+
+\section{2. Averages}
+
+\section{3. Multivariate distributions}
+
+\section{4. Addition of stochastic variables}
+
+\section{5. Transformation of variables}
+
+\section{6. The Gaussian distribution}
+
+\section{7. The central limit theorem}
+
+
+
+
+\chapter{II. Random Events}
+
+\section{1. Definition}
+
+\section{2. The Poisson distribution}
+
+\section{3. Alternative description of random events}
+
+\section{4. The inverse formula}
+
+\section{5. The correlation functions}
+
+\section{6. Waiting times}
+
+\section{7. Factorial correlation functions}
+
+
+\chapter{III. Stochastic Processes}
+
+\section{1. Definition}
+
+\section{2. Stochastic process in physics}
+
+\section{3. Fourier transformation of stationary process}
+
+\section{4. The hierarchy of distribution functions}
+
+\paragraph{Stationary Process.}
+
+A process is \emph{stationary} if all $P_n$ depend on the time difference alone.
+
+$$
+P_n(y_1, t_1 + \tau; y_2, t_2 + \tau; \cdots; y_n, t_n + \tau)
+=
+P_n(y_1, t_1; y_2, t_2; \cdots; y_n, t_n).
+$$
+
+
+\paragraph{Gaussian process.}
+
+a process is \emph{Gaussian} if all $P_n$ are
+(multivariate) Gaussian distributions.
+
+
+\section{5. The vibrating string and random fields}
+
+\section{6. Branching process}
+
+
+\chapter{IV. Markov Processes}
+
+
+\section{1. Markov property}
+
+\section{2. The Chapman-Kolmogorov equation}
+
+Page 78.
+A Markov process:
+$$
+P_{1|n-1}(y_n, t_n| y_1, t_1; \dots, y_{n-1}, t_{n-1})
+=
+P_{1|1}(y_n, t_n|y_{n-1},t_{n-1})
+$$
+where, $P_{1|1}$ is the transition probability.
+
+Page 79.
+Wiener process (Wiener-L\'evy process)
+\begin{equation}
+P_{1|1}(y_2, t_2|y_1, t_1)
+=
+\frac{1}{\sqrt{2\,\pi(t_2 - t_1)}}
+\exp\left[
+  -\frac{ (y_2 - y_1)^2 } { 2 \, (t_2 - t_1) }
+\right].
+\tag{2.4}
+\end{equation}
+%
+\begin{equation}
+P_1(y, t)
+=
+\frac{1}{\sqrt{2\,\pi\,t}}
+\exp\left[
+  -\frac{ y^2 } { 2 \, t }
+\right].
+\tag{2.5}
+\end{equation}
+
+
+Page 80.
+Poisson process
+\begin{equation}
+P_{1|1}(n_2, t_2|n_1, t_1)
+=
+\frac{ (t_2 - t_1)^{n_2 - n_1} } { (n_2 - n_1)! }
+e^{ -(t_2 - t_1) },
+\tag{2.6}
+\end{equation}
+where
+$P_1(n, 0) = \delta_{n,0}$.
+
+Page 81. Ex. 5 Eq. (2.8)
+
+$$
+\frac{ \partial P } { \partial t }
+=
+D \frac{ \partial^2 P } { \partial y^2 }.
+$$
+Show (2.5) satisfies this by $D = \frac{1}{2}$.
+Generally, try
+$$
+P = \frac{ 1 } { \sqrt{ 2 \, \pi \, a(t) } }
+\exp\left(
+  - \frac{ y^2 } { 2 \, a(t) }
+\right).
+$$
+Then,
+$$
+\begin{aligned}
+\frac{ \partial P } { \partial y }
+&=
+- \frac{ y } { a } P
+\\
+\frac{ \partial^2 P } { \partial y^2 }
+&=
+- \frac{1}{a} P
++ \frac{ y^2 } { a^2 } P
+\\
+\frac{ \partial P } { \partial t }
+&=
+-\frac{ a' } { 2 \, a } P
++ \frac{ y^2 } { 2 \, a^2 } a' P.
+\end{aligned}
+$$
+So $a'(t) = 2 \, D(t)$,
+and
+$a(t) = 2 \int^t_0 D(s) \, ds$.
+
+
+\section{3. Stationary Markov process}
+
+Page 83.
+Ornstein-Uhlenbeck (OU) process.
+Phys. Rev. 36 823 (1930).
+\begin{equation}
+P_1(y_1)
+=
+\frac{1}{\sqrt{2 \, \pi} e^{-\frac 1 2 y_1^2 } }
+\tag{3.10}
+\end{equation}
+
+\begin{equation}
+  T_\tau(y_2 | y_1)
+=
+\frac{ 1 } { \sqrt{ 2 \, \pi \, (1 - e^{-2\tau}) }  }
+\exp\left[
+  -\frac{ (y_2 - y_1 e^{-\tau})^2 }
+  { 2 ( 1 - e^{-2 \tau } ) }
+\right]
+\tag{3.11}
+\end{equation}
+
+Page 84.
+Doob's theorem.
+J. L. Doob Annals of Math. 43, 351 (1942).
+
+If a process is stationary, Gaussian and Markovian,
+essential OU is the only process with these properties.
+
+Page 85.
+Exercise 8. (3.11) satisfies
+\begin{align}
+\frac{ \partial T } { \partial \tau }
+&=
+\frac{ \partial } { \partial y_2 } \left( y_2 T \right)
++
+\frac{ \partial^2 T } { \partial y_2^2 }
+\quad \mathrm{forward}
+\tag{3.20}
+\\
+\frac{ \partial T } { \partial \tau }
+&=
+-y_1 \frac{ \partial T } { \partial y_1 }
++
+\frac{ \partial^2 T } { \partial y_1^2 }
+\quad \mathrm{backward}
+\tag{3.21}
+\end{align}
+
+
+Page 86.
+Exercise 12.
+Cauchy process.
+\begin{equation}
+  T_\tau(y_2|y_1)
+  =
+  \frac{1}{\pi}
+  \frac{ \tau } { (y_2 - y_1)^2 + \tau^2 }.
+\end{equation}
+Prove it satisfies Chapman-Kolmogorov.
+$$
+\begin{aligned}
+\int T_{\tau'}(y_3|y_2) T_\tau(y_2|y_1) \, dy_2
+&=
+\int \int \int \tilde T_\tau \, \tilde T_\tau' \,
+e^{-i(k + k') y_2 } \frac{dk}{2\pi} \frac{dk'}{2\pi} dy_2
+\\
+&=
+\int e^{ -i|k| (\tau +\tau') + ik (y_1 -y_3) } \frac{dk}{2\pi}
+\\
+&=
+\frac{1}{\pi}
+\frac{ \tau + \tau'}
+{ (\tau + \tau')^2 + (y_3 - y_1)^2 } \\
+&=
+T_{\tau + \tau'}(y_3 | y_1) \\
+\end{aligned}
+$$
+
+
+
+\section{4. The extraction of a subensemble}
+
+\section{5. Markov chains}
+
+\section{6. The decay process}
+
+
+\chapter{V. The Master Equation}
+
+
+\chapter{VI. One-step Processes}
+
+
+\chapter{VII. Chemical reactions}
+
+
+\chapter{VIII. The Fokker-Planck Equation}
+
+\section{1. Introduction}
+
+\begin{equation}
+  \frac{ \partial P(y, t) }  { \partial t }
+=
+-\frac{\partial } {\partial y} A(y) P
++\frac{1}{2} \frac{ \partial^2 } { \partial y^2 } B(y) P.
+\tag{1.1}
+\end{equation}
+
+
+\begin{equation}
+\partial_t \langle y \rangle
+= \langle A(y) \rangle.
+\tag{1.7}
+\end{equation}
+
+$$
+\partial_t \langle y \rangle
+= A(\langle y \rangle).
+$$
+
+\section{2. Derivation of the Fokker-Planck equation}
+
+\section{3. Brownian motion}
+
+\section{4. The Rayleigh particle}
+
+\section{5. Application to one-step process}
+
+\section{6. The multivariate Fokker-Planck equation}
+
+\begin{equation}
+\frac{ \partial P } { \partial t }
+=
+-\sum_i \frac{ \partial } { \partial y_i } (A_i \, P)
++ \frac 1 2
+\sum_{i, j} \frac{ \partial^2 } { \partial y_i \partial y_j } (B_{ij} P ).
+\tag{6.1}
+\end{equation}
+
+To determine the parameters, we use
+\begin{equation}
+\begin{aligned}
+\frac{ \langle \Delta y_i \rangle_y } { \Delta t }
+&=
+A_i(y), \\
+\frac{ \langle \Delta y_i \, \Delta y_j \rangle_y } { \Delta t }
+&=
+B_{ij}(y).
+\end{aligned}
+\tag{6.3}
+\end{equation}
+
+The linear multivariate Fokker-Planck equation is
+\begin{align}
+\frac{  \partial P(y, t) } { \partial t }
+=
+-\sum_{i,j} A_{ij} \frac{ \partial } { \partial y_i } y_j P
++ \frac 1 2 \sum_{ij} B_{ij} \frac{ \partial^2 P } { \partial y_i \partial y_j },
+\tag{6.4}
+\end{align}
+
+\section{7. Kramers' equation}
+
+\chapter{IX. The Langevin Approach}
+
+\section{1. Langevin treatment of Brownian motion}
+
+\section{2. Applications}
+
+\section{3. Relation of Fokker-Planck equation}
+
+\section{4. The Langevin approach}
+
+Page 230.
+
+$$
+\dot y = A(y) + C(y) L(t),
+$$
+where $L(t)$ is the Wiener process,
+and $\langle L(t) L(t') \rangle = \Gamma \delta(t - t')$.
+
+
+$$
+\frac{ \partial P }{ \partial t }
+=
+-{ \partial } { \partial y } [ A(y) \, P ]
++
+\frac{ \Gamma } { 2 } \frac{ \partial } { \partial y }
+\left\{
+  C(y)
+  \frac{ \partial } { \partial y } [ C(y) \, P ]
+\right\}.
+$$
+
+\section{5. Discussion of the It\^o-Stratonovich dilemma}
+
+\section{6. Non-Gaussian white noise}
+
+\section{7. Colored noise}
+
+\chapter{X. The Expansion of the Master Equation}
+
+\chapter{XI. The Diffusion Type}
+
+\chapter{XII. First-passage Problems}
+
+\chapter{XIII. Unstable Systems}
+
+\chapter{XIV. Fluctuations in Continuous Systems}
+
+\chapter{XV. The Statistics of Jump Events}
+
+\chapter{XVI. Stochastic Differential Equations}
+
+\chapter{XVII. Stochastic Behavior of Quantum Systems}
+
+
+\end{document}
