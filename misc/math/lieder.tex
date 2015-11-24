@@ -1,0 +1,268 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+\begin{document}
+
+
+\title{A primer on the Lie derivative}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+The purpose of this article is to give a
+gentle fun introduction
+of the idea of Lie derivative and operators.
+%
+Basically, a Lie derivative is an operator,
+e.g., a partial derivative $\partial/\partial x$,
+or something fancier like $y \, \partial/\partial x$.
+%
+This operator can be applied to a function
+to create another function.
+%
+We can also build more complex operators, like
+$\exp(s \, x \partial/\partial x)$.
+%
+These complex operators are commonly used classical mechanics
+and statisical mechanics.
+%
+A prominent example is the Liouville operator
+which represents the time evolution of a quantity.
+
+
+Below, we shall introduce these ideas through
+a simple problem of manipulating the shape of a function.
+
+
+
+\section{Reshaping a function a through operators}
+
+
+A function $y = f(x)$ can be regarded as a curve of $y$ versus $x$.
+Let us consider the problem of changing the shape of this curve.
+
+
+\subsection{Operations along the $y$ axis}
+
+To translate $f(x)$ along the $y$ axis,
+we only need to add a constant $c$ to it:
+$$
+f(x) \rightarrow f(x) + c.
+$$
+So we can write this operation through an operator
+$$
+T_y f \equiv f + c.
+$$
+
+To scale it along the $y$ axis, we only need to multiply it
+by a constant $A$, that is
+$$
+f(x) \rightarrow A \, f(x).
+$$
+This can be written in terms of an operator
+$$
+S_y f \equiv A f.
+$$
+
+
+\subsection{Operations along the $x$ axis}
+
+But what about the same operations along the $x$ axis?
+
+If we shift a function $f(x)$ to the \emph{left} by $a$,
+the resulting function is $f(x + a)$.
+Can we achieve this result by an operator?
+The answer is yes!
+Consider the Taylor expansion:
+$$
+f(x + a) = \sum_{n = 0}^\infty \frac{a^n}{n!} \frac{d^n f(x) }{dx^n}
+\equiv \exp\left(a \frac{d}{dx} \right) f(x).
+$$
+The last step is a shortcut of
+writing all orders of derivatives,
+$$
+T_x \equiv
+\exp\left(a \frac{d}{dx} \right)
+\equiv
+\sum_{n = 0}^\infty \frac{a^n}{n!} \frac{d^n }{ dx^n}.
+$$
+We shall write convenient shortcut
+a differential operator, $T_x$.
+%
+Applying $T_x$ to any function $f(x)$, we get $f(x+a)$.
+
+Similiarly, if we \emph{compress} the function along the $x$ axis by a factor of $s$,
+then the resulting function is given by $f(s \, x)$.
+To find the corresponding operator note that
+$$
+\begin{aligned}
+f(s \, x)
+&= f( e^{\ln x + \ln s} ) \\
+&= \sum_{n = 0}^\infty \frac{(\ln s)^n}{n!} \frac{d^n f(e^{\ln x + \ln s}) }{ d(\ln x)^n } \\
+&= \exp\left[ \ln s \frac{d}{d\ln x} f(x) \right]
+= s^{x \frac{d}{dx} } f(x).
+\end{aligned}
+$$
+So the scaling operation along the $x$ axis is given by
+$$
+S_x \equiv s^{x \frac{d}{dx} }.
+$$
+
+
+
+\subsection{Composition}
+
+
+We can join two shaping operations by composition.
+%Intuitively, this means two successive substitutions.
+
+
+\subsubsection{Composition of operations along $y$}
+
+For example, if we want to first translate the function by $c$ vertically,
+and then stretch it by a factor of $A$ along the $y$ axis.
+Then the resulting function is $A \, [f(x) + c]$
+and it can be achieved by a composition of the operators
+of $S_y$ and $T_y$:
+\begin{equation}
+S_y T_y f(x) = S_y [f(x) + c] = A \, [f(x) + c].
+\label{eq:SyTy}
+\end{equation}
+Note that the first operation $T_y$ is placed on the right,
+so it is closer to the function $f$.
+
+
+\subsubsection{Composition of operations along $x$}
+
+Now consider the corresponding composite operation along the $x$ axis.
+%
+If we translate the function to the left by $a$ (i.e.,
+the argument of the function should be $x_1 \equiv x + a$)
+and then compress the resulting curve along $x$ by a factor $s$ (i.e.,
+the argument of the function should be $x_2 \equiv s x_1$),
+the resulting function should be
+$$
+  f(s(x+a)).
+$$
+%
+It is naturally to draw analogy from \eqref{eq:SyTy} that
+the above expression can be obtained from
+$$
+S_x \, T_x \, f(x).
+$$
+But this is wrong, because
+$$
+S_x T_x f(x) = S_x f(x + a) = f(s x + a) \ne f(s (x + a)).
+$$
+The correct answer is
+$$
+T_x S_x f(x) = T_x f(s \, x) = f(s (x + a)).
+$$
+
+Admittedly, the reversal of ordering is generally true,
+although it is somewhat surprising.
+To understand it,
+recall that the operators $T_x$ and $S_x$
+are defined in terms of $x$,
+so they always try to manipulate $x$
+instead of the argument of the function.
+Thus the first substitution $x_1 = x + a$
+corresponds to the last (leftmost) differential operator
+to the function such that this differential operator
+can go into the deepest level of the argument.
+
+Generally, if the argument is subject to a sequence of substitutions.
+$$
+\begin{aligned}
+S_1: & x_1 = X_1(x) \\
+S_2: & x_2 = X_2(x_1) \\
+\dots \\
+S_n: & x_n = X_n(x_{n-1})
+\end{aligned}
+$$
+Then, the function $f(X_n(\cdots X_1(x)\cdots))$
+can be obtained by
+$S_1 S_2 \cdots S_n f(x)$.
+
+Proof. It is clear that
+$$
+\begin{aligned}
+S_n \, f(x) &= f(X_n(x))
+\\
+S_{n-1} \, S_n \, f(x) &= S_{n-1} f(X_n(x)) = f(X_n(X_{n-1}(x)))
+\\
+S_1 S_2 \cdots S_{n-1} \, S_n f(x) &= f(X_n(X_{n-1}(\cdots X_2(X_1(x))\cdots))).
+\end{aligned}
+$$
+
+
+\subsubsection{Composition of operations along both $x$ and $y$}
+
+Now how about a sequence of reshaping operations that involve both $x$ and $y$ operations?
+%
+For example,
+what if we want to translate $f$ to the left by $a$,
+then scale it along the $y$ axis by $A$,
+then compress it along the $x$ axis by a factor of $s$,
+and finally translate it upward by $c$.
+
+To solve such a problem, we first write down the desired function
+$$
+\begin{aligned}
+\mathrm{step}\; 1:\;& f(x+a) \\
+\mathrm{step}\; 2:\;& A \, f(x+a) \\
+\mathrm{step}\; 3:\;& A \, f(s(x+a)) \\
+\mathrm{step}\; 4:\;& A \, f(s(x+a)) + c
+\end{aligned}
+$$
+It is readily seen that this result can be obtained by $T_y T_x S_x S_y$,
+$$
+\begin{aligned}
+T_y T_x S_x S_y f(x)
+&= T_y T_x S_x A \, f(x) = T_y T_x A \, f(s x) \\
+&= T_y A \, f(s(x+a)) = A \, f(s(x+a)) + c.
+\end{aligned}
+$$
+But the same result can also be obtained by
+$T_y S_y T_x S_x$ or $T_x S_x T_y S_y$.
+$$
+\begin{aligned}
+T_y S_y T_x S_x f(x)
+&= T_y S_y T_x f(s \, x) = T_y S_y f(s (x + a) ) \\
+&= T_y A \, f(s(x+a)) = A \, f(s(x+a)) + c.
+\end{aligned}
+$$
+or
+$$
+\begin{aligned}
+T_x S_x T_y S_y f(x)
+&= T_x S_x T_y A \, f(x) = T_x S_x [A \, f(x) + c] \\
+&= T_x [A \, f(s \, x) + c] = A \, f(s(x+a)) + c.
+\end{aligned}
+$$
+
+This illustrates a general result:
+since the $x$ and $y$ operators commute,
+we can exchange an $x$ operator
+and an $y$ operator without affecting result.
+%
+We only need to ensure that the $y$ operators are arranged from right to left,
+and the $x$ operators from left to right.
+
+
+
+
+\end{document}
