@@ -1,0 +1,391 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{url}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+\begin{document}
+
+\title{Notes for Quantum mechanics in your face}
+\author{ Sidney Coleman }
+\date{}
+\maketitle
+
+I found an interesting set of lectures on physics in this
+\url{https://www.physics.harvard.edu/events/videos}
+{video archive}.
+
+Particularly I enjoyed the
+\url{http://media.physics.harvard.edu/video/?id=SidneyColeman\_QMIYF}
+{lecture by Sidney Coleman}
+on the nature of quantum mechanics.
+Below are my notes.
+
+\section{Validity of the quantum mechanics}
+
+This section gives a clean demonstration of Bell's theorem without inequalities (from Mermin 1990) for the spooky interactions faster than the speed of light.  This is a thought experiment that shows definitely different outcomes from classical mechanics and quantum mechanics.
+
+We first prepare a state
+$|\psi \rangle = \frac{1}{\sqrt{2}} \left(|+++\rangle - |---\rangle\right)$
+in our lab.
+We then send the first, second and third spins to,
+respectively, stations A, B and C for measurements.
+%
+The stations are far apart so they cannot interfere one another.
+%
+To be precise, Coleman adds that the differences between the events
+of the measurements at A, B and C are space-like intervals,
+and by the Lorentz invariant and causality,
+it is impossible to establish causal relations
+among the events at A, B and C.
+
+Each station (A or B or C) can \emph{independently} decide
+whether to measure the $x$ or $y$ component of spin.
+%
+Then the measurement of $M_1 = \sigma^A_x \sigma^B_y \sigma^C_y$
+(if A decides to measure $x$, B and C $y$)
+yields $+$ for our $|\psi \rangle$.
+This is because $\sigma_x|\pm\rangle = |\mp\rangle$,
+and $i\sigma_y|\pm\rangle = \mp|\mp\rangle$, and
+$$
+\begin{aligned}
+\sigma^A_x \sigma^B_y \sigma^C_y
+ | + + + \rangle
+&= 1\cdot (i) \cdot (i) | - - -\rangle = - | - - -\rangle \\
+\sigma^A_x \sigma^B_y \sigma^C_y | - - -\rangle
+&= 1\cdot (-i) \cdot (-i) | + + +\rangle = - | + + +\rangle \\
+\sigma^A_x \sigma^B_y \sigma^C_y (| + + + \rangle - | - - - \rangle)
+&= -| - - - \rangle + | + + + \rangle \\
+&= | + + + \rangle - | - - - \rangle.
+\end{aligned}
+$$
+This shows $\sigma^A_x \sigma^B_y \sigma^C_y |\psi\rangle = |\psi \rangle$,
+and $|\psi\rangle$ is an eigenstate of the measurement.
+In other words,
+if we keep sending the stations the same state $|\psi\rangle$,
+and A keeps measuring $x$, B and C $y$,
+the product of the results from the three stations is always $+1$.
+
+
+The same result holds $M_2 = \sigma^A_y \sigma^B_x \sigma^C_y$,
+and $M_3 = \sigma^A_y \sigma^B_y \sigma^C_x$.
+Therefore, we conclude that
+if we keep sending the stations the same state $|\psi\rangle$,
+and if one and only one of the three stations measures $x$,
+the result must always be $+1$.
+%
+We shall also add that $M_1$, $M_2$ and $M_3$ mutually commute,
+so they can be determined simultaneously.
+
+
+Similarly,
+if the three stations all measure $x$,
+the result must always be $-1$.
+That is, for $M_4 = \sigma^A_x \sigma^B_x \sigma^C_x$
+we have $\sigma^A_x \sigma^B_x \sigma^C_x|\psi\rangle = -|\psi\rangle$.
+This is the prediction from quantum mechanics.
+
+
+From the view point of classical mechanics,
+we only assume that the lab sends \emph{some unknown information}
+to the three stations.
+But each lab decides \emph{deterministically} from this information
+what the result should be, given its independent choice of measuring $x$ or $y$.
+%
+This appears to be a generous condition.
+However, it turns out that,
+through the patterns shown from the results,
+the information sent by the lab can be partially deduced,
+yielding nontrivial predictions (just like solving a logic puzzle).
+In our case, the observed pattern is that
+if one and only one of the three stations measures $x$,
+the product of the results from the three stations is $+1$.
+Our deduction from this observation is
+that when all three stations measure $x$
+the result is also $+1$
+(see the four-page paper, Mermin 1990, also below for a brief version).
+
+But now we see that there is a difference between
+the predictions from classical mechanics and quantum mechanics,
+for the measurement of $\sigma^A_x \sigma^B_x \sigma^C_x$.
+Thus this experiment will give a decisive answer
+whether quantum mechanics or classical mechanics is correct.
+Of course, quantum mechanics wins.
+
+
+Below we furnish some details that are present in the paper
+to better understand the setup.
+
+
+\subsection{Classical measurements}
+
+Classically, our lab can only send each station information
+through a lookup table instead of a spin in each time.
+%
+The station only decides what to ``measure'',
+but produces the result by looking up the corresponding
+value from the table received from the lab.
+%
+For example, if the lab sends $(+, -)$ to A, it instructs A that
+if you measure $x$, yield the result of $+$, if you measure $y$, yield $-$.
+The lab also needs to do the same thing to B and C.
+So each time, the lab must prepare a $3 \times 2$ lookup table. For example
+$$
+\begin{array}{ccc}
+A: \\
+B: \\
+C:
+\end{array}
+\left(\begin{array}{ccc}
++ & - \\
+- & + \\
+- & +
+\end{array}\right)
+$$
+Then the measurement of
+$\sigma^A_x \sigma^B_x \sigma^C_x$
+will be $(+) (-) (-) = +$;
+the measurement of $\sigma^A_x \sigma^B_y \sigma^C_x$
+will be $(+) (+) (-) = -$.
+
+
+The lookup table is only variable.
+In our case, it has six cells, and hence $2^6 = 64$ possibilities.
+Now let us try to eliminate a few impossible cases.
+
+Since $M_1 = \sigma^A_x \sigma^B_y \sigma^C_y$ always yields $+$,
+we are certain that the product of the cells at $(1, 1)$, $(2, 2)$, and $(3, 2)$ is $+$.
+This shows that our matrix only take one of the follow forms
+$$
+\begin{array}{ccc}
+A: \\
+B: \\
+C:
+\end{array}
+\left(\begin{array}{ccc}
++ &   \\
+  & + \\
+  & +
+\end{array}\right)
+\left(\begin{array}{ccc}
++ &   \\
+  & - \\
+  & -
+\end{array}\right)
+\left(\begin{array}{ccc}
+- &   \\
+  & + \\
+  & -
+\end{array}\right)
+\left(\begin{array}{ccc}
+- &   \\
+  & - \\
+  & +
+\end{array}\right)
+$$
+Continuing the same analyses for $M_2$ and $M_3$ yields eight possibilities
+$$
+\begin{aligned}
+\begin{array}{ccc}
+A: \\
+B: \\
+C:
+\end{array}
+\left(\begin{array}{ccc}
++ & + \\
++ & + \\
++ & +
+\end{array}\right)
+\left(\begin{array}{ccc}
++ & + \\
+- & - \\
+- & -
+\end{array}\right)
+\left(\begin{array}{ccc}
+- & + \\
+- & + \\
++ & -
+\end{array}\right)
+\left(\begin{array}{ccc}
+- & + \\
++ & - \\
+- & +
+\end{array}\right)
+\\
+\begin{array}{ccc}
+A: \\
+B: \\
+C:
+\end{array}
+\left(\begin{array}{ccc}
++ & - \\
+- & + \\
+- & +
+\end{array}\right)
+\left(\begin{array}{ccc}
++ & - \\
++ & - \\
++ & -
+\end{array}\right)
+\left(\begin{array}{ccc}
+- & - \\
++ & + \\
+- & -
+\end{array}\right)
+\left(\begin{array}{ccc}
+- & - \\
+- & - \\
++ & +
+\end{array}\right)
+\end{aligned}
+$$
+There is something in common of the eight choices,
+when all three stations measure $x$,
+the result is always $+1$ (just multiple the cells in the first column).
+
+
+
+
+\subsection{References}
+
+\begin{enumerate}
+\item N. D. Mermin, Quantum mysteries revisited, Am. J. Phys. 58 8 731-734 (1990).  Four-page article that gives the simplest version of the EPR experiment.
+\item N. D. Mermin, Is the moon there when nobody looks? Reality and the quantum theory, Physics Today, April 38-47 (1985)  earlier version.
+\item Daniel M. Greenberger, Michael A. Horne, Abner Shimony, and Anton Zeilinger, Bell's theorem without inequalities, Am. J. Phys. 58 (12) 1131-1143, (1990).
+\end{enumerate}
+
+\section{On the nature of measurements in quantum mechanics}
+
+This section addresses the nature of quantum mechanical measurement.
+According to the Copenhagen interpretation,
+a measurement involves the collapse of the wave function,
+and hence is nonlinear and time irreversible.
+This is in strong contradiction of the nature of Schr\"odinger's equation,
+which is linear and reversible.
+
+\subsection{(N. Mart, 1930) Analogy of cloud chamber}
+
+If we release an ionized particle in the spherical-symmetric s-wave state in a cloud chamber, the ionized particle will make a straight line.  This is puzzling.  How come a spherical symmetric wave function becomes a straight line, which is obviously not spherical symmetrical?
+
+Let $|C\rangle$ is the state of the system, $L$ be the projection operator for a linear track, such that $L | C \rangle = | C \rangle$ if the state $|C\rangle$ corresponds to a straight line, or $L|C \rangle = 0$.  If the particle starts with a state $|\Phi_{\vec k}\rangle$ with momentum $\vec k$, and the chamber with state $| C_0\rangle$, then the initial state is $| \Phi_{\vec k}, C_0 \rangle$ will develop to a straight line along $\vec k$, $| \Psi_{\vec k} \rangle$. If we apply the projection operator $L$ on it, it remains the same,
+$$
+L| \Psi_{\vec k} \rangle = | \Psi_{\vec k} \rangle
+$$
+
+
+Now the clever part is if we integrate the initial state over the solid angle, the resulting state is a linear combination of straight lines
+$$
+\int d\Omega_{\vec k} | \Phi_{\vec k}, C_0 \rangle
+\rightarrow
+|\Psi_C\rangle \equiv \int d\Omega_{\vec k} | \Psi_{\vec k} \rangle.
+$$
+Now by the linearity of the projection operator $L$, we have $L |\Psi_C\rangle = |\Psi_C\rangle$, for each component of $|\Psi_C\rangle$ remains unchanged under the operator $L$, and so is the linear combination. This means $|\Psi_C\rangle$ behaves like a straight line.  But the left hand side is a spherically symmetrical wave function like the s-wave!
+
+Mart said the problem is that people think [the solution of] the Schr\"odinger equation as a wave in the three dimensional space rather than a wave instead of a wave in the multiple dimensional space.  Coleman put it more profoundly, the problem is that people think the particle as a quantum mechanical system, but the cloud chamber as a classical-mechanical system.  If you think of the particle and cloud chamber as an entangled system, there is no problem.
+
+\subsection{Why do we think we have definite outcomes after measurements?}
+
+The above analogy can be generalized to Everett's many-worlds interpretation (MWI).
+When a measurement happens, we think we have entered a state
+that is associated with a certain outcome (like a straight line in the above analogy),
+but in reality there are other parallel worlds
+that are associated with different outcomes.
+If we limit our mind into a definite outcome,
+we have to admit that the wave function has collapsed
+and the measurement represents an irreversible and nonlinear operation.
+But if we include other possible worlds into the picture,
+this wave function of many worlds follows
+a unitary time evolution given by Schr\"odinger's equation.
+
+The problem here is we refuse to think the observer as a quantum mechanical system.
+
+\subsection{References}
+\begin{enumerate}
+\item H. Everett III, ``Relative state'' formulation of quantum mechanics, Rev. Mod. Phys. 29 434 (1957).
+\item J. Hartle, Quantum Mechanics of Individual Systems, J. Am. Phys. 36 204 (1968).
+\end{enumerate}
+
+\section{Problem of probability}
+
+
+The part shows that quantum mechanics challenges our definition of randomness.
+
+\subsection{Is a sequence random?}
+
+Given a sequence, can we tell if it is random?
+If a sequence is infinite,
+we can compute the average and the correlation functions,
+from there we can perhaps judge if the sequence is random.
+
+Consider a sequence of $+1$ and $-1$.
+We can compute the average and the correlation functions
+and if all of them are zeros,
+we can perhaps say if the sequence is random.
+Particularly, for the average
+$$
+\overline{ \sigma } = \lim_{n \rightarrow \infty} \frac{1}{N} \sum_{i = 1}^N \sigma_i.
+$$
+and for the correlation function,
+$$
+\overline{ \sigma_i \sigma_{i+a} } = \lim_{n \rightarrow \infty} \frac{1}{N} \sum_{i = 1}^N \sigma_i \sigma_{i+a}.
+$$
+
+But this classical definition fails for quantum mechanics.
+Consider the sidewise state
+$|\psi\rangle = \frac{1}{\sqrt 2}(|+\rangle + |-\rangle)$,
+and for a sequence of replication of such states,
+$|\Psi\rangle = |\psi^1\rangle \cdots |\psi^N\rangle$,
+let us define an average $\overline{ \sigma_z } = \frac{1}{N} \sum_{i = 1}^N \sigma^i_z$.
+So
+$$
+\overline{ \sigma_z } |\Psi\rangle
+= \frac{1}{N} \sum_{r=1}^N \sigma^r_z |\Psi\rangle.
+$$
+
+Let us compute $\|\overline{ \sigma_z } |\Psi\rangle \|^2$.
+For different spins $\langle \Psi|\sigma^r_z \sigma^s_z | \Psi \rangle = 0$,
+for the same spins $\langle \Psi|\sigma^r_z \sigma^r_z | \Psi \rangle = 1$.
+$$
+\|\overline{ \sigma_z } |\Psi\rangle \|^2
+=
+\frac{1}{N^2} \sum_{r = 1}^N \langle \Psi|\sigma^r_z \sigma^r_z | \Psi \rangle = \frac{1}{N}
+ \rightarrow 0. \qquad (N\rightarrow \infty)
+$$
+A similar argument can be done for correlation functions.
+So Coleman claims that by classical measures this sequence is random.
+But quantum mechanically it reads $|x \rangle \cdots |x\rangle$,
+which is obviously not random! Aha!
+
+
+\section{Miscellaneous quotes}
+
+Paraphrasing.
+
+\begin{enumerate}
+\item
+Every successful physical theory swallows its predecessor alive.
+For example, in statistical mechanics swallows thermodynamics, the concept of entropy or heat is explained in terms of molecular motion. It is not the other way around.
+
+\item
+As Picasso said it doesn't have to be a masterpiece for you get the idea.
+
+\item
+People say that the reduction of the wave packet occurs because it \emph{looks like}
+that the reduction of the wave packet occurs.
+\end{enumerate}
+
+
+
+
+\end{document}
+
