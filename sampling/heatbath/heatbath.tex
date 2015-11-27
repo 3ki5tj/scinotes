@@ -1,0 +1,344 @@
+\documentclass[12pt]{article}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+
+
+\begin{document}
+
+
+
+\title{A variant of the heat-bath algorithm}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+
+We wish to discuss a variant of the heat-bath algorithm that delivers larger transition rates.
+This algorithm may be useful in simulated tempering
+and multi-state Monte Carlo sampling problems.
+
+
+\section{Two-state problem}
+
+Let us start with a simple problem of
+sampling a two-state probability distribution.
+%
+The probability of the two states are $p_1$ and $p_2$,
+with $0 \le p_1 \le p_2 \le 1$ and $p_1 + p_2 = 1$.
+%
+We can do it in two ways.
+
+
+The first is the heat-bath way:
+in every time, we generate a uniform random number $r \in [0, 1]$,
+and we pick state 1 if $r \le p_1$, or state 2 otherwise.
+%
+Keeping doing this yields a Markov chain of states,
+and the fraction of instances with state 1 approaches $p_1$.
+
+The second way is the Metropolis way.
+We first pick a random state, say $1$.
+Then in each step,
+we propose to make an attempt of moving to the other state,
+and accept it with probability
+\begin{equation}
+  A(i \rightarrow j) = \min\left\{1, \; \frac{ p_j } { p_i } \right\},
+  \label{eq:AMetropolis}
+\end{equation}
+where $i$ and $j$ are the current and the opposite states respectively.
+In our case, a transition from the 1 to 2 is always accepted,
+but the reverse transition is accepted
+only with probability $p_1/p_2$.
+
+\section{Transition matrix}
+
+It is easily seen that
+the Metropolis way gives larger transition probabilities,
+and hence is more efficient.
+%
+In the heat-bath way, the transition matrix is
+$$
+\mathbf T_h =
+\left(
+  \begin{array}{ccc}
+    p_1 & p_1 \\
+    p_2 & p_2
+  \end{array}
+\right),
+$$
+where the row and column indices represent final and initial states,
+respectively.
+But in the Metropolis way, the transition matrix reads
+$$
+\mathbf T_M =
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.0}
+  \begin{array}{ccc}
+    0 & \dfrac{ p_1 }{ p_2 }  \\
+    1 & 1 - \dfrac{ p_1 }{ p_2 }
+  \end{array}
+\right).
+$$
+%
+The off-diagonal elements of the transition matrix represent
+probabilities of successful transitions;
+the diagonal elements those of unsuccessful ones.
+%
+So we wish to maximize the former and minimize the latter.
+
+
+Now since $1 > p_2$ for the first column,
+and $p_1/p_2 > p_1$ for the second column,
+we conclude that the Metropolis way is more efficient.
+%
+In fact, we can show that in the two-state case,
+the Metropolis way is the \emph{most} efficient way
+in terms of delivering the largest transition rates.
+
+The last statement has a somewhat counterintuitive consequence.
+If we combine two or more Metropolis transitions
+in a single step, we can only achieve an inferior
+sampling scheme with smaller successful transition rates.
+The reason is that subsequent transitions tend to
+undo a good transition made in the first attempt,
+and hence increase the rate of rejection.
+
+
+
+
+\section{Multiple-state case}
+
+The above analysis shows the superiority of the Metropolis way
+over the heat-bath one in the two-state case.
+%
+Unfortunately, when we have multiple states,
+the straightforward generalization of the Metropolis way
+is often inferior to the heat-bath way.
+%
+The reason is that when there are many options with
+a nonuniform probability distribution,
+the heat-bath way can more readily identify the dominant options.
+%
+We shall illustrate the feature below.
+%
+But first, let us review a few properties of the transition matrix.
+
+
+\section{Properties of the transition matrix}
+
+Let us review a few properties of the transition matrix.
+%
+\begin{enumerate}
+  \item Any element of the matrix is between $0$ and $1$,
+    because it is a probability.
+  \item The sum of any column is $1$, because it
+    gives the total probabilities to all destinations.
+  \item The stationary distribution, arranged in a column vector,
+      $\mathbf p^* = (p_1, p_2)^T$ is an eigenvector of the matrix
+      with eigenvalue $\lambda_1 = 1$. That is,
+      $$
+      \mathbf T \mathbf p^* = \mathbf p^*.
+      $$
+      %
+      This means the transition matrix leaves
+      the stationary distribution invariant.
+  \item
+      In most cases, $\mathbf p^*$ is the only eigenvector
+      with eigenvalue $\lambda_1 = 1$.
+      All other eigenvectors have eigenvalues $\lambda \in [-1, 1)$.
+  \item
+      Particularly, the second largest eigenvalue $\lambda_2$ can be used to represent
+      the overall rate of transition (the smaller the better).
+  \item If detailed balance is satisfied, then
+      $$
+      T_{ij} p_j = T_{ji} p_i
+      \qquad \forall i, j
+      $$
+\end{enumerate}
+%
+These properties are satisfied by both transition matrices
+in the above example.
+
+
+\section{The heat-bath algorithm}
+
+In the multiple state case,
+a step of the heat-bath way is done as follows.
+%
+\begin{enumerate}
+  \item Compute the cumulative distribution function,
+    $$
+    P_k = \sum_{i=1}^k p_i = P_{k-1} + p_k,
+    $$
+    with $P_0 = 0$.
+  \item Generate a uniform random number $r \in [0, 1]$.
+  \item Find the $i$ such that $P_{i-1} \le r < P_i$,
+    and choose state $i$.
+\end{enumerate}
+
+The transition matrix is
+$$
+\mathbf T_h =
+\left(
+  \begin{array}{cccccc}
+    p_1 & p_1 & \dots & p_1 \\
+    p_2 & p_2 & \dots & p_2 \\
+    \vdots & \vdots  &  & \vdots \\
+    p_n & p_n & \dots & p_n
+  \end{array}
+\right).
+$$
+It can be shown that
+the largest eigenvalue is $1$, the rest of the eigenvalues are $0$
+because it contains only one independent column (rank 1).
+
+
+
+\section{The Metropolis algorithm}
+
+
+The straightforward generalization of the Metropolis way is the following.
+We randomly choose a state $j$ that is not the current one $i$,
+and the Metropolis rule Eq. \eqref{eq:AMetropolis} to accept it.
+
+The transition matrix is
+$$
+\mathbf T_M =
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.0}
+  \begin{array}{cccccc}
+    0   & \frac{1}{n-1}\frac{p_1}{p_2} & \dots & \frac{1}{n-1}\frac{p_1}{p_n} \\
+    \frac{1}{n-1} & \frac{1}{n-1}\frac{p_2-p_1}{p_2} & \dots & \frac{1}{n-1}\frac{p_2}{p_n} \\
+    \vdots & \vdots  &  & \vdots \\
+    \frac{1}{n-1} & \frac{1}{n-1} & \dots & 1 - \frac{1}{n-1}\frac{p_1 + \cdots + p_{n-1}}{p_n}
+  \end{array}
+\right).
+$$
+
+To compare this matrix with the heat-bath one.
+Let us consider the three-state case
+$$
+\mathbf T_M =
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.5}
+  \begin{array}{cccccc}
+    0   & \dfrac{p_1}{2 \, p_2} & \dfrac{p_1}{2 \, p_3} \\
+    \dfrac{1}{2} & \dfrac{p_2-p_1}{2 \, p_2} & \dfrac{p_2}{2 \, p_3} \\
+    \dfrac{1}{2} & \dfrac{1}{2} & 1 - \dfrac{p_1 + p_{2}}{2 \, p_3}
+  \end{array}
+\right).
+$$
+The three eigenvalues are
+$1$, $1 - \frac{1}{2 p_3}$, and $-\frac{p_1}{2 p_2}$.
+%
+Now if $p_3 > \frac{1}{2}$, the second largest eigenvalue
+is greater than zero, meaning that the Metropolis algorithm
+is less efficient than the heat-bath algorithm.
+For more states, the heat-bath will gain further advantage.
+\footnote{
+Generally, one can show that
+the second largest eigenvalue is $1- \frac{1}{(n-1)p_n}$,
+with the eigenvector being
+$(-p_1, \cdots, -p_{n-1}, p_1 + \cdots + p_{n-1})^T$,
+which represents a mode of entering or leaving the last state.
+This means as long as the largest probability $p_n > 1/(n-1)$,
+the Metropolis way is always inferior to the heat-bath way!
+}
+
+
+\section{Improved transition matrix (three-state case)}
+
+So the question is that if there is a way to generalize
+the Metropolis way without loss of the advantage in the two-state case.
+%
+The answer is yes.
+%
+Let us work on the three-state case.
+%
+For the first column we shall demand that $T_{1,1} = 0$
+and let the rest of the cells be proportional to
+the stationary distribution. That is
+$$
+\mathbf T =
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.5}
+  \begin{array}{cccccc}
+    0   &  X & X \\
+    \dfrac{p_2}{p_2+p_3} &  & \\
+    \dfrac{p_3}{p_2+p_3} &  &
+  \end{array}
+\right).
+$$
+Next by detailed balance, we can determine the first row.
+For the example for $T_{1,2}$,
+we have $T_{1,2} p_2 = T_{2,1} p_1$,
+and $T_{1,2} = p_1/(p_2 + p_3)$.
+$$
+\mathbf T =
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.5}
+  \begin{array}{cccccc}
+    0   &  \dfrac{p_1}{p_2+p_3} & \dfrac{p_1}{p_2+p_3} \\
+    \dfrac{p_2}{p_2+p_3} &  & \\
+    \dfrac{p_3}{p_2+p_3} &  &
+  \end{array}
+\right).
+$$
+But now we are facing a similar problem to the previous one,
+only with a submatrix to be filled.
+Again, if we assume $T_{2,2} = 0$, and define $q_2 = 1- p_1/(p_2 + p_3)$,
+we have
+$$
+\mathbf T =
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.5}
+  \begin{array}{cccccc}
+    0   &  \dfrac{p_1}{p_2+p_3} & \dfrac{p_1}{p_2+p_3} \\
+    \dfrac{p_2}{p_2+p_3} &  0 & \\
+    \dfrac{p_3}{p_2+p_3} &  q_2 &
+  \end{array}
+\right).
+$$
+and by detailed balance, we get
+$$
+\mathbf T =
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.5}
+  \begin{array}{cccccc}
+    0   &  \dfrac{p_1}{p_2+p_3} & \dfrac{p_1}{p_2+p_3} \\
+    \dfrac{p_2}{p_2+p_3} &  0 & q_2 \dfrac{p_2}{p_3} \\
+    \dfrac{p_3}{p_2+p_3} &  q_2 & q_3
+  \end{array}
+\right).
+$$
+The last cell has been filled by $q_3 = 1 - T_{3,1} - T_{3,2} = q_2 (1 - p_2/p_3)$,
+according to the normalization.
+
+This matrix has two zeros on the diagonal.
+So we expect it to be more efficient than the heat-bath matrix.
+Indeed we can show that it has three eigenvalues
+$1$, $-\frac{p_1}{p_2+p_3}$, and $-\frac{p_2}{p_3}\left( 1 - \frac{p_1}{p_2+p_3} \right)$
+in descending order.
+Thus, the second largest eigenvalue is less than zero,
+improving the heat-bath result.
+
+\section{Improved transition matrix (general case)}
+
+Generally, we give the transition matrix
+$$
+T_{ij} =
+\begin{cases}
+  0 & \mbox{if $i = j < n$} \\
+  q_n & \mbox{if $i = j = n$} \\
+  \dfrac{p_i \, q_{j-1}}{p_{i+1} + \cdots + p_n} & \mbox{if $i < j$} \\
+  \dfrac{p_i \, q_j}{p_{i+1} + \cdots + p_n} & \mbox{if $i > j$}
+\end{cases}
+$$
+where $q_j$ is defined recursively from $q_1 = 1$, and
+$$
+q_{j+1} \equiv \left(1 - \frac{ p_j } { p_{j+1} + \cdots + p_n }\right) q_j.
+$$
+
+\end{document}
