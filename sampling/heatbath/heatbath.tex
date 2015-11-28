@@ -9,13 +9,23 @@
 
 
 
-\title{A variant of the heat-bath algorithm}
+\title{Improving acceptance probability}
 \author{ \vspace{-10ex} }
 \date{ \vspace{-10ex} }
 \maketitle
 
 
-We wish to discuss a variant of the heat-bath algorithm that delivers larger transition rates.
+A key step of many Markov chain Monte Carlo methods,
+is the propose-and-accept scheme.
+%
+The efficiency depends the acceptance probability
+for the frequency of accepting proposed moves.
+%
+Here, we wish to discuss some variants of
+the commonly used Metropolis algorithm,
+and the heat-bath algorithm,
+which can deliver higher transition rates.
+%
 This algorithm may be useful in simulated tempering
 and multi-state Monte Carlo sampling problems.
 
@@ -47,8 +57,8 @@ and accept it with probability
   A(i \rightarrow j) = \min\left\{1, \; \frac{ p_j } { p_i } \right\},
   \label{eq:AMetropolis}
 \end{equation}
-where $i$ and $j$ are the current and the opposite states respectively.
-In our case, a transition from the 1 to 2 is always accepted,
+where $i$ and $j$ are the current and proposed states, respectively.
+In our case, a transition from state 1 to state 2 is always accepted,
 but the reverse transition is accepted
 only with probability $p_1/p_2$.
 
@@ -134,32 +144,44 @@ Let us review a few properties of the transition matrix.
   \item Any element of the matrix is between $0$ and $1$,
     because it is a probability.
   \item The sum of any column is $1$, because it
-    gives the total probabilities to all destinations.
+    sums over the total probabilities to all destinations.
   \item The stationary distribution, arranged in a column vector,
-      $\mathbf p^* = (p_1, p_2)^T$ is an eigenvector of the matrix
+      $\mathbf p^* = (p_1, \dots, p_n)^T$ is an eigenvector of the matrix
       with eigenvalue $\lambda_1 = 1$. That is,
-      $$
-      \mathbf T \mathbf p^* = \mathbf p^*.
-      $$
+      \begin{equation}
+        \mathbf T \mathbf p^* = \mathbf p^*.
+        \label{eq:balance}
+      \end{equation}
       %
       This means the transition matrix leaves
       the stationary distribution invariant.
+      This condition is often called the balance condition.
   \item
       In most cases, $\mathbf p^*$ is the only eigenvector
       with eigenvalue $\lambda_1 = 1$.
-      All other eigenvectors have eigenvalues $\lambda \in [-1, 1)$.
+      All other eigenvectors have eigenvalues $\lambda \in [-1, 1)$
+        or complex values with $|\lambda| \le 1$.
   \item
       Particularly, the second largest eigenvalue $\lambda_2$ can be used to represent
       the overall rate of transition (the smaller the better).
-  \item If detailed balance is satisfied, then
-      $$
-      T_{ij} p_j = T_{ji} p_i
-      \qquad \forall i, j
-      $$
 \end{enumerate}
 %
 These properties are satisfied by both transition matrices
 in the above example.
+
+\paragraph*{Detailed balance.}
+
+In practice, we often use a stronger condition than Eq. \eqref{eq:balance}.
+\begin{equation}
+  T_{ij} \, p_j = T_{ji} \, p_i.
+  \label{eq:detailedbalance}
+\end{equation}
+This condition is called detailed balance,
+which implies the balance condition Eq. \eqref{eq:balance}:
+$$
+\sum_j T_{ij} p_j = \sum_j T_{ji} p_i = p_i.
+$$
+However, detailed balance is not a necessary condition.
 
 
 \section{The heat-bath algorithm}
@@ -248,7 +270,10 @@ the Metropolis way is always inferior to the heat-bath way!
 }
 
 
-\section{Improved transition matrix (three-state case)}
+
+\section{Improved transition matrix (with detailed balance)}
+
+
 
 So the question is that if there is a way to generalize
 the Metropolis way without loss of the advantage in the two-state case.
@@ -272,8 +297,8 @@ $$
 \right).
 $$
 Next by detailed balance, we can determine the first row.
-For the example for $T_{1,2}$,
-we have $T_{1,2} p_2 = T_{2,1} p_1$,
+For $T_{1,2}$,
+we have $T_{1,2} \, p_2 = T_{2,1} \, p_1$,
 and $T_{1,2} = p_1/(p_2 + p_3)$.
 $$
 \mathbf T =
@@ -287,7 +312,7 @@ $$
 \right).
 $$
 But now we are facing a similar problem to the previous one,
-only with a submatrix to be filled.
+but for the $2\times 2$ submatrix on the lower-right corner.
 Again, if we assume $T_{2,2} = 0$, and define $q_2 = 1- p_1/(p_2 + p_3)$,
 we have
 $$
@@ -319,12 +344,17 @@ according to the normalization.
 This matrix has two zeros on the diagonal.
 So we expect it to be more efficient than the heat-bath matrix.
 Indeed we can show that it has three eigenvalues
-$1$, $-\frac{p_1}{p_2+p_3}$, and $-\frac{p_2}{p_3}\left( 1 - \frac{p_1}{p_2+p_3} \right)$
+\begin{align}
+  \lambda_1 &= 1 \\
+  \lambda_2 &= -\frac{p_1}{p_2+p_3} \\
+  \lambda_3 &= -\frac{p_2}{p_3}\left( 1 - \frac{p_1}{p_2+p_3} \right)
+  \label{eq:dbimproved}
+\end{align}
 in descending order.
 Thus, the second largest eigenvalue is less than zero,
 improving the heat-bath result.
 
-\section{Improved transition matrix (general case)}
+\paragraph{General case.}
 
 Generally, we give the transition matrix
 $$
@@ -332,13 +362,163 @@ T_{ij} =
 \begin{cases}
   0 & \mbox{if $i = j < n$} \\
   q_n & \mbox{if $i = j = n$} \\
-  \dfrac{p_i \, q_{j-1}}{p_{i+1} + \cdots + p_n} & \mbox{if $i < j$} \\
-  \dfrac{p_i \, q_j}{p_{i+1} + \cdots + p_n} & \mbox{if $i > j$}
+  \dfrac{p_i \, q_i } { p_{i+1} + \cdots + p_n} & \mbox{if $i < j$} \\
+  \dfrac{p_i \, q_j}{p_{j+1} + \cdots + p_n} & \mbox{if $i > j$}
 \end{cases}
 $$
-where $q_j$ is defined recursively from $q_1 = 1$, and
+where $q_j$ is defined recursively defined as
 $$
-q_{j+1} \equiv \left(1 - \frac{ p_j } { p_{j+1} + \cdots + p_n }\right) q_j.
+\begin{aligned}
+  q_{i+1} &\equiv \left(1 - \frac{p_i}{p_{i+1} + \cdots + p_n} \right) q_i,
+\end{aligned}
 $$
+with $q_1 = 1$.
+
+It is readily shown that detailed balance Eq. \eqref{eq:detailedbalance} is satisfied.
+Further we can show that the second largest eigenvalue
+is given by $\lambda_2 = -p_1/(p_2 + \cdots + p_n)$,
+corresponding to the eigenvector
+$\mathbf v = (-p_2 - \cdots - p_n, p_2, \cdots, p_n)^T$.
+\footnote{
+The proof is given below. We want to show
+$$
+\sum_{j = 1}^n T_{ij} \, v_j = \lambda_2 \, v_i.
+$$
+For $i = 1$,
+$$
+\sum_{j=1}^n T_{1j} v_j =
+\frac{ p_1 } { p_2 + \cdots + p_n } \sum_{j=2}^n p_j
+= p_1
+= \lambda_2 v_1.
+$$
+For $i = 2, \dots, n-1$,
+$$
+\begin{aligned}
+\sum_{j=1}^n T_{ij} v_j
+&=
+-\frac{ p_i \, q_1 \, (p_2 + \cdots + p_n) } { p_{2} + \cdots + p_n }
++p_i \sum_{j = 2}^{i-1} \frac{ q_j \, p_j } { p_{j+1} + \cdots + p_n }
++\frac{ p_i \, q_i } { p_{i+1} + \cdots + p_n } \sum_{j=i+1}^n p_j \\
+&=
+-p_i \, q_1
++ p_i \sum_{j = 2}^{i-1} (q_j - q_{j+1})
++p_i \, q_i
+=p_i (q_2 - q_1) = p_i \, \lambda_2 = \lambda_2 \, v_i.
+\end{aligned}
+$$
+For $i = n$,
+$$
+\begin{aligned}
+\sum_{j=1}^n T_{nj} v_j
+&=
+-\frac{ p_n \, q_1 \, (p_2 + \cdots + p_n) } { p_{2} + \cdots + p_n }
++p_n \sum_{j = 2}^{n-1} \frac{ q_j \, p_j } { p_{j+1} + \cdots + p_n }
++q_n \, p_n \\
+&=
+-p_n \, q_1
++p_n \sum_{j = 2}^{n-1} (q_j - q_{j+1})
++q_n \, p_n
+=p_n \, (q_2 - q_1) = p_n \, \lambda_2 = \lambda_2 \, v_n.
+\end{aligned}
+$$
+}
+
+This scheme is indeed better.
+But if $p_1$ is small,
+the improvement over the heat-bath algorithm is minimal,
+since $\lambda_2$ would be very close to $0$.
+So can we do better?
+%
+Below we show that
+if we are willing to give up detailed balance,
+this can indeed be done.
+
+
+
+\section{Improved transition matrix (without detailed balance)}
+
+
+Let us consider the three-state case.
+$$
+\mathbf T_c
+=
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.5}
+  \begin{array}{ccc}
+    0     &   0   &   \dfrac{p_1}{p_3}   \\
+    1     &   0   &   \dfrac{p_2 - p_1}{p_3} \\
+    0     &   1   &   1 - \dfrac{p_2}{p_3}
+  \end{array}
+\right)
+$$
+It is readily verified that this matrix satisfies balance.
+That is, $\lambda_1 = 1$ with eigenvector $(p_1, p_2, p_3)^T$.
+The other two eigenvalues are
+$$
+\lambda_{2,3}
+=
+\frac{-p_2 \pm \sqrt{p_2^2 - 4 \, p_1 \, p_3} } { 2 \, p_3 }.
+$$
+
+However, this matrix does not satisfy detailed balance,
+$$
+p_1 = T_{21} p_1 \ne T_{12} p_2 = 0.
+$$
+
+
+This formula is interesting.
+Let us first consider the case of $p_2^2 \ge 4 \, p_1 \, p_3$,
+then
+$$
+\lambda_2 =
+\frac{-p_2 + \sqrt{p_2^2 - 4 \, p_1 \, p_3} } { 2 \, p_3 }
+=
+-\frac{2 \, p_1 }{p_2 + \sqrt{p_2^2 - 4 \, p_1 \, p_3} },
+$$
+which is less than the value given by Eq. \eqref{eq:dbimproved},
+showing improvements.
+
+But more interestingly, if $p_2^2 \le 4 \, p_1 \, p_3$
+the eigenvalues are complex!
+$$
+\lambda_{2,3}
+=
+\frac{-p_2 \pm \sqrt{4 \, p_1 \, p_3 - p_2^2} \, i } { 2 \, p_3 },
+$$
+and $\|\lambda_{2,3}\| = p_1/p_3$.
+%
+Particularly, if $p_1 = p_2 = p_3$, we get
+$$
+\mathbf T_c
+=
+\left(
+  \begin{array}{ccc}
+    0     &   0   &   1   \\
+    1     &   0   &   0 \\
+    0     &   1   &   0
+  \end{array}
+\right)
+$$
+which represents a deterministic convective flow
+$1\rightarrow 2 \rightarrow 3 \rightarrow 1$.
+Thus, this convective way can more uniformly
+sample the desired distribution by reducing fluctuations.
+
+The general case is
+$$
+\mathbf T_c
+=
+\left(
+  \arraycolsep=15.0pt\def\arraystretch{2.5}
+  \begin{array}{cccccc}
+    0     &   0   &   0   &   \dots  &   \dfrac{p_1}{p_n}       \\
+    1     &   0   &   0   &   \dots  &   \dfrac{p_2 - p_1}{p_n} \\
+    0     &   1   &   0   &   \dots  &   \dfrac{p_3 - p_2}{p_n} \\
+    \vdots&\vdots &\vdots &   \ddots &   \vdots \\
+    0     &   0   &   0   &   \dots  &   1- \dfrac{p_{n-1}}{p_n} \\
+  \end{array}
+\right).
+$$
+
 
 \end{document}
