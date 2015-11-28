@@ -15,18 +15,19 @@
 \maketitle
 
 
-A key step of many Markov chain Monte Carlo methods,
+A key step of many Markov chain Monte Carlo methods
 is the propose-and-accept scheme.
 %
-The efficiency depends the acceptance probability
-for the frequency of accepting proposed moves.
+The efficiency depends on the acceptance probability,
+the rate of accepting proposed moves.
 %
-Here, we wish to discuss some variants of
-the commonly used Metropolis algorithm,
-and the heat-bath algorithm,
-which can deliver higher transition rates.
+Two commonly-used formulae for the acceptance probability
+are the Metropolis and heat bath formulas.
 %
-This algorithm may be useful in simulated tempering
+Here, we wish to discuss some variants
+that can deliver higher transition rates.
+%
+The algorithms may be useful in simulated tempering
 and multi-state Monte Carlo sampling problems.
 
 
@@ -344,12 +345,14 @@ according to the normalization.
 This matrix has two zeros on the diagonal.
 So we expect it to be more efficient than the heat-bath matrix.
 Indeed we can show that it has three eigenvalues
-\begin{align}
+\begin{equation}
+\begin{aligned}
   \lambda_1 &= 1 \\
   \lambda_2 &= -\frac{p_1}{p_2+p_3} \\
   \lambda_3 &= -\frac{p_2}{p_3}\left( 1 - \frac{p_1}{p_2+p_3} \right)
-  \label{eq:dbimproved}
-\end{align}
+\end{aligned}
+\label{eq:lambda_dbimproved}
+\end{equation}
 in descending order.
 Thus, the second largest eigenvalue is less than zero,
 improving the heat-bath result.
@@ -475,7 +478,7 @@ $$
 =
 -\frac{2 \, p_1 }{p_2 + \sqrt{p_2^2 - 4 \, p_1 \, p_3} },
 $$
-which is less than the value given by Eq. \eqref{eq:dbimproved},
+which is less than the value given by Eq. \eqref{eq:lambda_dbimproved},
 showing improvements.
 
 But more interestingly, if $p_2^2 \le 4 \, p_1 \, p_3$
