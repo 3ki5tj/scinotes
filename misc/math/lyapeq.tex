@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Lyapunov equation}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+Let $\mathbf A$, $\mathbf X$, and $\mathbf B$ be square matrices.
+We know that the solution of
+\begin{equation}
+\mathbf A \mathbf X = \mathbf B,
+\label{eq:AXB}
+\end{equation}
+is
+$$
+\mathbf X = \mathbf A^{-1} \mathbf B.
+$$
+Similarly the solution of
+\begin{equation}
+\mathbf X \mathbf A = \mathbf B,
+\label{eq:XAB}
+\end{equation}
+is
+$$
+\mathbf X = \mathbf B \mathbf A^{-1}.
+$$
+
+Now consider the solution of the Lyapunov equation
+for symmetric matrices $\mathbf X$ and $\mathbf B$:
+\begin{equation}
+\mathbf A \mathbf X + \mathbf X \mathbf A^T = \mathbf B,
+\label{eq:lyap}
+\end{equation}
+The question turns out to be nontrivial.
+Below is a nice trick of handling this.
+
+However, if $\mathbf A$ is positive definite,
+we can write the solution of Eq. \eqref{eq:AXB} as
+$$
+\mathbf X = \int_0^\infty \exp(-\mathbf A t) \mathbf B \, dt,
+$$
+which is borrowed from the nonmatrix version:
+$$
+\int_0^\infty \exp(-at) \, b \, dt  = a^{-1} b.
+$$
+And the solution of Eq. \eqref{eq:XAB} is
+$$
+\mathbf X = \int_0^\infty \mathbf B \, \exp(-\mathbf A t) \, dt.
+$$
+So naturally, we guess that the solution of Eq. \eqref{eq:lyap} is
+given by
+\begin{equation}
+\mathbf X =
+\int_0^\infty
+\exp(-\mathbf A t) \, \mathbf B \, \exp(-\mathbf A^T t) \, dt.
+\label{eq:lyapsol}
+\end{equation}
+
+To verify Eq. \eqref{eq:lyapsol},
+we have
+$$
+\begin{aligned}
+\mathbf A \, \mathbf X + \mathbf X \, \mathbf A^T
+&=
+-\int_0^\infty
+\Big\{
+\frac{d}{dt}[ \exp(-\mathbf A t) ] \, \mathbf B \, \exp(-\mathbf A^T t)
+\\
+&\qquad +
+\exp(-\mathbf A t) \, \mathbf B \, \frac{d}{dt}[\exp(-\mathbf A^T t) ]
+\Big\}
+ \, dt \\
+&=
+-\int_0^\infty
+\frac{d}{dt}[ \exp(-\mathbf A t) \, \mathbf B \, \exp(-\mathbf A^T t) ]
+ \, dt \\
+&=
+-\exp(-\mathbf A t) \, \mathbf B \, \exp(-\mathbf A^T t) \Big|_0^\infty
+= \mathbf B.
+\end{aligned}
+$$
+
+
+\end{document}

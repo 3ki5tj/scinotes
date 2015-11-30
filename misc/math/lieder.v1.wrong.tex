@@ -174,20 +174,120 @@ so it is closer to the function $f$.
 
 Now consider the corresponding composite operation along the $x$ axis.
 %
-If we translate the function to the left by $a$,
-and then compress the resulting curve along $x$
-by a factor $s$,
+If we translate the function to the left by $a$ (i.e.,
+the argument of the function should be $x_1 \equiv x + a$)
+and then compress the resulting curve along $x$ by a factor $s$ (i.e.,
+the argument of the function should be $x_2 \equiv s x_1$),
 the resulting function should be
 $$
-  f(sx+a).
+  f(s(x+a)).
 $$
 %
 It is naturally to draw analogy from Eq. \eqref{eq:SyTy} that
-the above expression can be obtained from $S_x \, T_x \, f(x)$.
-Indeed,
+the above expression can be obtained from
 $$
-S_x T_x f(x) = S_x f(x + a) = f(s x + a).
+S_x \, T_x \, f(x).
 $$
+But this is wrong, because
+$$
+S_x T_x f(x) = S_x f(x + a) = f(s x + a) \ne f(s (x + a)).
+$$
+The correct answer is
+$$
+T_x S_x f(x) = T_x f(s \, x) = f(s (x + a)).
+$$
+
+Admittedly, the reversal of ordering is generally true,
+although it is somewhat surprising.
+To understand it,
+recall that the operators $T_x$ and $S_x$
+are defined in terms of $x$,
+so they always try to manipulate $x$
+instead of the argument of the function.
+Thus the first substitution $x_1 = x + a$
+corresponds to the last (leftmost) differential operator
+to the function such that this differential operator
+can go into the deepest level of the argument.
+
+Generally, if the argument is subject to a sequence of substitutions.
+$$
+\begin{aligned}
+S_1: & x_1 = X_1(x) \\
+S_2: & x_2 = X_2(x_1) \\
+\dots \\
+S_n: & x_n = X_n(x_{n-1})
+\end{aligned}
+$$
+Then, the function $f(X_n(\cdots X_1(x)\cdots))$
+can be obtained by
+$S_1 S_2 \cdots S_n f(x)$.
+
+Proof. It is clear that
+$$
+\begin{aligned}
+S_n \, f(x) &= f(X_n(x))
+\\
+S_{n-1} \, S_n \, f(x) &= S_{n-1} f(X_n(x)) = f(X_n(X_{n-1}(x)))
+\\
+S_1 S_2 \cdots S_{n-1} \, S_n f(x) &= f(X_n(X_{n-1}(\cdots X_2(X_1(x))\cdots))).
+\end{aligned}
+$$
+
+
+\subsubsection{Composition of operations along both $x$ and $y$}
+
+Now how about a sequence of reshaping operations that involve both $x$ and $y$ operations?
+%
+For example,
+what if we want to translate $f$ to the left by $a$,
+then scale it along the $y$ axis by $A$,
+then compress it along the $x$ axis by a factor of $s$,
+and finally translate it upward by $c$.
+
+To solve such a problem, we first write down the desired function
+$$
+\begin{aligned}
+\mathrm{step}\; 1:\;& f(x+a) \\
+\mathrm{step}\; 2:\;& A \, f(x+a) \\
+\mathrm{step}\; 3:\;& A \, f(s(x+a)) \\
+\mathrm{step}\; 4:\;& A \, f(s(x+a)) + c
+\end{aligned}
+$$
+It is readily seen that this result
+can be obtained by $T_y^* T_x S_x S_y^*$,
+$$
+\begin{aligned}
+T_y^* T_x S_x S_y^* f(x)
+&= T_y^* T_x S_x A \, f(x) = T_y^* T_x A \, f(s x) \\
+&= T_y^* A \, f(s(x+a)) = A \, f(s(x+a)) + c.
+\end{aligned}
+$$
+But the same result can also be obtained by
+$T_y^* S_y^* T_x S_x$ or $T_x S_x T_y^* S_y^*$.
+$$
+\begin{aligned}
+T_y^* S_y^* T_x S_x f(x)
+&= T_y^* S_y^* T_x f(s \, x) = T_y^* S_y^* f(s (x + a) ) \\
+&= T_y^* A \, f(s(x+a)) = A \, f(s(x+a)) + c.
+\end{aligned}
+$$
+or
+$$
+\begin{aligned}
+T_x S_x T_y^* S_y^* f(x)
+&= T_x S_x T_y^* A \, f(x) = T_x S_x [A \, f(x) + c] \\
+&= T_x [A \, f(s \, x) + c] = A \, f(s(x+a)) + c.
+\end{aligned}
+$$
+
+This illustrates a general result:
+since the $x$ and $y$ operators commute,
+we can exchange an $x$ operator
+and an $y$ operator without affecting result.
+%
+We only need to ensure that the $y$ operators are arranged from right to left,
+and the $x$ operators from left to right.
+
 
 \subsection{Unification of $x$ and $y$ operations}
 
@@ -271,6 +371,18 @@ $$
 which agrees with Eq. \eqref{eq:y_shift} with $A = 1/s_y$.
 
 
+Lastly, the ordering of operators now follows
+the $x$ form as well.
+Consider the composition of a $y$ translation
+followed by a $y$ scaling.
+This should be accomplished by applying $T_y \, S_y$ on $F(x, y)$
+(cf. Eq. \eqref{eq:SyTy} for $S_y^* T_y^* f$):
+$$
+T_y \, S_y \, F(x, y)
+= T_y F(x, s_y \, y)
+= F(x, s_y (y + a_y))
+= f(x) - s_y (y + a_y).
+$$
 
 
 \end{document}
