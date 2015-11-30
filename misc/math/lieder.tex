@@ -271,6 +271,191 @@ $$
 which agrees with Eq. \eqref{eq:y_shift} with $A = 1/s_y$.
 
 
+\subsection{Generalization}
 
+Of course, we can generally develop the corresponding
+operator $T_x^*$ and $S_x^*$, by writing $y = f(x)$ inversely as
+$$
+x = f^{-1}(y).
+$$
+The $x$-type (non-star) operators, such as $T_x$ and $S_y$, turns
+out to be much easier to handle for a multivariate
+function $F(x_1, \dots, x_n)$.  Because, we simply cannot invert
+this function to
+$$
+x_n = f_n(x_1, \dots, x_{n-1}).
+$$
+On the other hand, the operation along the $k$ axis is
+simply some function of $x_k$ and $\frac{ \partial }{ \partial x_k}$
+$$
+O_{x_k} = O\left(x_k,  \frac{ \partial } { \partial x_k }\right).
+$$
+For example, a shift along the $-x_k$ axis is given by
+$$
+T_{x_k} = \exp\left( a_k \frac{ \partial } { \partial x_k } \right).
+$$
+
+
+Further, we can mix different components, for example,
+consider a rotation of $\theta$ in the $x$-$y$ plane is given by
+$$
+R = \exp\left[i\theta \left(x \frac{\partial}{\partial y} - y \frac{\partial }{\partial x} \right) \right]
+$$
+To verify this, let us denote
+$$
+L = x \frac{\partial}{\partial y} - y \frac{\partial }{\partial x}.
+$$
+So for an infinitesimal $\Delta \theta$, we have
+$$
+\begin{aligned}
+\exp( \Delta \theta \, L) f(x, y)
+&= (1 + \Delta \theta \, L) f(x, y) \\
+&= f(x, y) + \Delta \theta \, x \frac{ \partial f } { \partial y }
+- \Delta \theta \, y \frac{ \partial f } { \partial x }
+\\
+&\approx f(x - \Delta \theta \, y, y + \Delta \theta \, x).
+\end{aligned}
+$$
+This means the argument of function $f$ is now
+$$
+\left(
+  \begin{array}{ccc}
+    1 & -\Delta \theta \\
+    \Delta \theta & 1
+  \end{array}
+\right)
+\left(
+  \begin{array}{ccc}
+    x \\
+    y
+  \end{array}
+\right)
+=
+\exp\left[\Delta \theta \left(
+  \begin{array}{ccc}
+    0 & -1 \\
+    1 & 0
+  \end{array}
+\right)
+\right]
+\left(
+  \begin{array}{ccc}
+    x \\
+    y
+  \end{array}
+\right)
+$$
+So if we apply $\exp(\Delta \theta \, L)$ twice,
+we the argument of function would be
+$$
+\begin{aligned}
+&
+\exp\left[
+  \Delta \theta
+\left(
+  \begin{array}{ccc}
+    0 & -1 \\
+    1 & 0
+  \end{array}
+\right)\right]
+\exp\left[
+  \Delta \theta
+\left(
+  \begin{array}{ccc}
+    0 & -1 \\
+    1 & 0
+  \end{array}
+\right)\right]
+\left(
+  \begin{array}{ccc}
+    x \\
+    y
+  \end{array}
+\right)
+\\
+&=
+\exp\left[
+  2\Delta \theta
+\left(
+  \begin{array}{ccc}
+    0 & -1 \\
+    1 & 0
+  \end{array}
+\right)\right]
+\left(
+  \begin{array}{ccc}
+    x \\
+    y
+  \end{array}
+\right).
+\end{aligned}
+$$
+%
+We can show that with a large number of applications
+and $\Delta \theta = \theta / n$,
+the vector $(x, y)^T$ is right multiplied by the following matrix
+$$
+\exp\left[
+  \theta
+\left(
+  \begin{array}{ccc}
+    0 & -1 \\
+    1 & 0
+  \end{array}
+\right)\right]
+=
+\left(
+  \begin{array}{ccc}
+    \cos \theta & -\sin \theta \\
+    \sin \theta & \cos \theta
+  \end{array}
+\right).
+$$
+To show this we denote
+$$
+\mathbf J
+=
+\left(
+  \begin{array}{ccc}
+    0 & -1 \\
+    1 & 0
+  \end{array}
+\right),
+$$
+then
+$$
+\mathbf J^2 = -\mathbf I, \quad
+\mathbf J^3 = -\mathbf J, \quad
+\mathbf J^4 = \mathbf I,
+$$
+where $\mathbf I$ is the identity matrix.
+So
+$$
+\exp(\theta \mathbf J)
+=
+\sum_{n = 0}^\infty \frac{\theta^n}{n!} \mathbf J^n
+=
+\sum_{n = 0}^\infty \frac{\theta^{2n}}{(2n)!} (-)^n \mathbf I
++
+\sum_{n = 0}^\infty \frac{\theta^{2n+1}}{(2n+1)!} (-)^n \mathbf J
+=
+\cos\theta \mathbf I
++
+\sin \theta \mathbf J.
+$$
+which is the identity to be shown.
+
+Generally, a geometric operator (such as a shift, scaling and rotation)
+can be written as am exponential operator:
+$$
+\mathbf O = \exp(t \mathbf G),
+$$
+where $\mathbf G$ is called the \emph{generator},
+and the parameter $t$ is the magnitude.
+
+
+% application
+% the derivation of the perturbation formula
+% the method of characteristics
 
 \end{document}
