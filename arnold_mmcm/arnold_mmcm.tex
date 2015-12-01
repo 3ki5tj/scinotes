@@ -15,38 +15,40 @@
     urlcolor={blue!80!black}
 }
 
-%\renewcommand{\thechapter}{\Roman{chapter}}
-%\makeatletter
-%  \renewcommand\l@chapter{\@dottedtocline{2}{1.5em}{2.5em}}
-%  \renewcommand\l@section{\@dottedtocline{2}{2.5em}{3.5em}}
-%\makeatother
-
 \counterwithout{section}{chapter}
+\renewcommand{\thesubsection}{\Alph{subsection}}
 \numberwithin{equation}{section}
 \renewcommand{\theequation}{\textbf{\arabic{section}}.\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{figure}}
 
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[section]
-\newtheorem{lem}[thm]{Lemma}
+\newtheorem{lem}[thm]{Lemma} % same numbering with theorem
 \newtheorem{prop}{Proposition}
 \newtheorem{cor}{Corollary}
 
 \renewcommand{\thethm}{\arabic{thm}}
 
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{cor*}{Corollary}
+
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}[section]
-
 \renewcommand{\thedefn}{\arabic{defn}}
+\newtheorem*{defn*}{Definition}
 
 \theoremstyle{remark}
 \newtheorem{rem}{Remark}
+\newtheorem*{rem*}{Remark}
 
-\renewcommand{\therem}{}
 
 \theoremstyle{remark}
 \newtheorem{ex}{Example}
+\newtheorem*{ex*}{Example}
 
-\renewcommand{\theex}{}
+
 
 \begin{document}
 
@@ -54,7 +56,7 @@
 \newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
 \newcommand{\add}[1]{{\color{blue} #1}}
 \newcommand{\del}[1]{{\color{gray} [#1]}}
-\newcommand{\note}[1]{{\color{OliveGreen}\small [\textbf{Comment.} #1]}}
+\newcommand{\note}[1]{{\color{OliveGreen}\small [\textsc{Note.} #1]}}
 
 \newcommand{\hl}[1]{{\color{red} #1}}
 
@@ -157,13 +159,15 @@
 
 \chapter{Symplectic manifolds}
 
+% section 37
 \section{Symplectic structures on manifolds}
 
-\subsection{A. Definition}
+% subsection A
+\subsection{Definition}
 
 
 
-\begin{defn}
+\begin{defn*}
 Let $M^{2n}$ be an even-dimensional differentiable manifold.
 A \emph{symplectic structure} on $M^{2n}$ is a closed nondegenerate differential 2-form
 $\omega^2$ on $M^{2n}$:
@@ -178,18 +182,19 @@ $$
 \;
 \omega^2(\pmb \xi, \pmb \eta) \ne 0
 \quad
-(\pmb \xi, \pmb \eta \in TM_{\pmb x}).
+(\pmb \xi, \pmb \eta \in TM_{\mathbf x}).
 $$
 The pair $(M^{2n}, \omega^2)$ is called
 a \emph{symplectic manifold}.
-\end{defn}
+\end{defn*}
 
-\begin{ex}
+\begin{ex*}
 $\omega^2 = \sum_{i = 1}^n dp_i \wedge dq_i$.
-\end{ex}
+\end{ex*}
 
 
-\subsection{B. The cotangent bundle and its symplectic structure}
+% subsection B
+\subsection{The cotangent bundle and its symplectic structure}
 
 
 
@@ -219,24 +224,24 @@ for points in $T^*V$.
 
 
 There is a natural projection
-$f: T^*V \rightarrow V$
-(note: sending every 1-form on $TV_{\mathbf x}$
-to the point $\mathbf x$).
+$f: T^*V \rightarrow V$.
+\note{$f$ sends every 1-form on $TV_{\mathbf x}$
+to the point $\mathbf x$}
 %
-The projection $f$ is differentiable and surjective
-(note: each $\mathbf x \in V$ has at least one preimage $T^*V$).
+The projection $f$ is differentiable and surjective.
+\note{Each $\mathbf x \in V$ has at least one preimage on $T^*V$}
 %
 The preimage of a point $\mathbf x \in V$ under $f$
 is the cotangent space $T^*V_{\mathbf x}$.
 
 
-\begin{thm}
+\begin{thm*}
 The cotangent bundle $T^*V$ has a natural symplectic structure.
 %
 In the local coordinates described above,
 the symplectic structure is given by the formula
 $\omega^2 = d\mathbf p \wedge d\mathbf q = dp_1 \wedge dq_1 + \cdots + dp_n \wedge dq_n$.
-\end{thm}
+\end{thm*}
 
 \begin{proof}
 Define a distinguished 1-form on $T^*V$.
@@ -264,7 +269,7 @@ and
 $\omega^2 = d\omega^1$ is nondegenerate.
 \end{proof}
 
-\begin{rem}
+\begin{rem*}
 Let $L = L(\mathbf q, \dot{\mathbf q})$  be a Lagrangian.
 %
 Then, $\dot{\mathbf q}$ is a tangent vector;
@@ -278,10 +283,11 @@ is the cotangent of the configuration manifold.
 The above theorem shows that the phase space of
 a mechanical problem has a natural symplectic
 manifold structure.
-\end{rem}
+\end{rem*}
 
 
-\subsection{C. Hamiltonian vector fields}
+% subsection C
+\subsection{Hamiltonian vector fields}
 
 
 
@@ -291,7 +297,7 @@ the spaces of tangent vectors and 1-forms.
 A symplectic structure establishes a similar isomorphism.
 
 
-\begin{defn}
+\begin{defn*}
 %
 To each vector $\pmb \xi$
 tangent to a symplectic manifold $(M^{2n}, \omega^2)$
@@ -305,17 +311,17 @@ $$
 The correspondence $\pmb \xi \rightarrow \omega^1_{\mathbf \xi}$
 is an isomorphism between $2n$-dimensional vector spaces of vectors
 and those of 1-forms.
-\end{defn}
+\end{defn*}
 
 
-\begin{ex}
+\begin{ex*}
 %
 For $n = 1$,
 $\omega^2 = \pmb \eta \wedge \pmb \xi = \eta_1 \xi_2 - \eta_2 \xi_1$.
 Then
 $\omega^1_{\pmb \xi}(\pmb \eta) = (\pmb \eta, \mathbf J^{-1} \pmb \xi)$,
 where $\mathbf J^{-1}$ means a rotation of $-\pi/2$.
-\end{ex}
+\end{ex*}
 
 Thus, $\omega^1_{\pmb \xi}$ is represented by the vector $\mathbf J^{-1} \pmb \xi$.
 %
@@ -332,7 +338,7 @@ for every point there is a tangent vector to $M$ associated to it.
 In this way, we obtain a vector field $IdH$ on $M$.
 
 
-\begin{defn}
+\begin{defn*}
 %
 The vector field $IdH$ is called \emph{Hamiltonian vector field}.
 %
@@ -373,9 +379,10 @@ to invert this vector to corresponding tangent vector we multiple it by $\mathbf
   \end{array}
 \right).
 \]
-\end{defn}
+\end{defn*}
 
 
+%section 38
 \section{Hamiltonian phase flows and their integral invariants}
 
 Liouville's theorem asserts that the phase flow
@@ -384,15 +391,16 @@ preserve the symplectic structure.
 Poincar\'e found a whole series of differential forms
 which are preserved by the hamiltonian flow.
 
+%\subsection A
 \subsection{Hamiltonian phase flows preserve the symplectic structure}
 
 Let $(M^{2n}, \omega^2)$ be a symplectic manifold and
-$H: M^{2n} \rightarrow \Re$ a function.
+$H: M^{2n} \rightarrow \mathbb{R}$ a function.
 Assume that the vector field $IdH$
 corresponds to $H$ gives a 1-parameter group
 of diffeomorphism: $g^t: M^{2n} \rightarrow M^{2n}$:
 $$
-\frac{d}{dt}\Big|_{t = 0}
+\left.\frac{d}{dt}\right|_{t = 0}
 = I dH(\mathbf x).
 $$
 This group $g^t$ is the hamiltonian phase flow with
@@ -406,11 +414,12 @@ $$
 $$
 \end{thm}
 
-Notes on the notation.
-$g^t$ applies to $\mathbf x$,
-$(g^t)^*$ applies to $\omega$.
+\note{Difference between $g^t$ and $(g^t)^*$:
+  $g^t$ applies to $\mathbf x$,
+  $(g^t)^*$ applies to $\omega$.}
 
-In the case $n = 1$, $M^{2n} = \Re^2$, this theorem says
+
+In the case $n = 1$, $M^{2n} = \mathbb{R}^2$, this theorem says
 that the phase flow $g^t$ preserves area (Liouville's theorem).
 %
 For the proof of this theorem, it is useful to introduce
@@ -422,21 +431,100 @@ a one-parameter family of differentiable mappings.
 We will construct a $(k+1)$-chain $Jc$ on $M$,
 which we will call the
 \emph{track of the chain $c$ under the homotopy
-$g^t$, $0 \le t \le \tau$.}
+$g^t$, $0 \le t \le \tau$}.
+\note{Roughly, ``homotopy'' means time evolution.}
 
-[Note. The ``homotopy'' means ``time evolution''.]
 
-Let $(D, f, \mathrm{Or})$ be one of the cells in the chain $c$\footnote{
-  $D$ is the domain, convex polygon in $\Re^k$,
-  $f$ is a mapping from the euclidean space to the manifold $\Re^k \rightarrow M$,
+Let $(D, f, \mathrm{Or})$ be one of the cells in the chain $c$.
+\note{$D$ is the domain, a convex polygon in $\mathbb{R}^k$,
+  $f$ is a mapping from the euclidean space to the manifold $\mathbb{R}^k \rightarrow M$,
   $\mathrm{Or}$ is the orientation.
-  see page 184, \S 35.D.
-},
+  See page 184, \S 35.D.}
+%
+To this cell will be associated a cell $(D', f', \mathrm{Or}')$
+  in the chain $Jc$ where $D' = I\times D$ is the direct product
+  of the interval of $0 \le t \le \tau$ and $D$;
+  the mapping $f': D' \rightarrow M$ is obtained from
+  $f: D \rightarrow M$ by the formula
+  $f'(t, x) = g^t f(x)$;
+  and the orientation $\mathrm{Or}'$ of the space $\mathbb{R}^{k+1}$
+  containing $D'$ is given by the frame
+  $\mathbf e_0, \mathbf e_1, \dots, \mathbf e_k$,
+  where $\mathbf e_0$ is the unit vector of the $t$ axis,
+  and $\mathbf e_1, \dots, \mathbf e_k$ is an oriented frame for $D$.
 
+
+We could say that $Jc$ is the chain swept out by $c$
+  under the homotopy $g^t$, $0 \le t \le \tau$.
+  The boundary of the chain $Jc$ consists of ``end-walls''
+  made up of the initial and final positions of $c$, 
+  and the ``side surfaces'' filled in by the boundary of $c$.
+\note{Below, we want to prove that the integrals on the side surfaces
+  vanishes, so is the integral on the volume enclosed by the tube.
+  Then the integrals at the two end walls, which are opposite
+  in the signs must add to zero.}
+
+\tikzset{
+  big arrow/.style={
+    decoration={markings,mark=at position 1 with {\arrow[scale=4]{>}}},
+    postaction={decorate},
+    shorten >=0.4pt}}
+
+\setcounter{figure}{166}
+\begin{figure}
+\centering
+  \begin{tikzpicture}
+    % end-wall 1
+    \draw [thick] plot [smooth cycle, tension=1]
+      coordinates{(0, 0) (0.5, 1) (0, 2) (-0.5, 1)};
+    % bottom of side surface
+    \draw [thick] plot [smooth, tension=1]
+      coordinates{(0, 0) (2.5, -0.2) (5, 0)};
+    % top of the side surface
+    \draw [thick] plot [smooth, tension=1]
+      coordinates{(0, 2) (2.5,  1.8) (5, 2)};
+    % end-wall 2
+    \draw [thick, ->] plot [smooth, tension=1.8]
+      coordinates{(5, 0) (5.5, 1) (5, 2)};
+
+    % dc
+    \draw [->, thick] plot [smooth, tension=1]
+      coordinates{(0.1, 0.2) (0.3, 0.6) (0.3, 1.2)};
+    \node[](dc) at (0, -0.3){$\partial c$};
+
+    % c
+    \node[](c) at (0, 1.0){$c$};
+
+    % J c
+    \draw [->, thick] plot [smooth, tension=0.5]
+      coordinates{(2, 0.2) (3.5, 0.3) (3.5, 1.2)};
+    \node[](Jc) at (3, 0.8){$Jc$};
+
+    % g c
+    \node[](gc) at (5.9, 1.0){$g^\tau c$};
+
+    % k = 2
+    \node[](gc) at (2.7, -0.7){$k = 2$};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw [thick] plot [smooth]
+      coordinates{(0, 0) (1.5, -0.2) (3, 0)};
+  \end{tikzpicture}
+  \caption{Track of a cycle under homotopy.}
+\end{figure}
 
 \section{The Lie algebra of vector fields}
 
 \section{The Lie algebra of hamiltonian functions}
+
+\begin{figure}
+\centering
+ \begin{tikzpicture}
+    \draw (-1,0) to[bend left] (1,0);
+    \draw (-1.2,.1) to[bend right] (1.2,.1);
+    \draw[rotate=0] (0,0) ellipse (100pt and 50pt);
+  \end{tikzpicture}
+\end{figure}
 
 \section{Symplectic geometry}
 
