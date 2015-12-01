@@ -1,5 +1,8 @@
 \documentclass{book}
 \usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{chngcntr}
 \usepackage{bm}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{tikz}
@@ -12,6 +15,38 @@
     urlcolor={blue!80!black}
 }
 
+%\renewcommand{\thechapter}{\Roman{chapter}}
+%\makeatletter
+%  \renewcommand\l@chapter{\@dottedtocline{2}{1.5em}{2.5em}}
+%  \renewcommand\l@section{\@dottedtocline{2}{2.5em}{3.5em}}
+%\makeatother
+
+\counterwithout{section}{chapter}
+\numberwithin{equation}{section}
+\renewcommand{\theequation}{\textbf{\arabic{section}}.\arabic{equation}}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollary}
+
+\renewcommand{\thethm}{\arabic{thm}}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+
+\renewcommand{\thedefn}{\arabic{defn}}
+
+\theoremstyle{remark}
+\newtheorem{rem}{Remark}
+
+\renewcommand{\therem}{}
+
+\theoremstyle{remark}
+\newtheorem{ex}{Example}
+
+\renewcommand{\theex}{}
 
 \begin{document}
 
@@ -26,21 +61,110 @@
 \tableofcontents
 
 
+\part{NEWTONIAN MECHANICS}
+\chapter{Experimental facts}
+
+\section{The principles of relativity and determinancy}
+
+\section{The galilean group and Newton's equations}
+
+\section{Examples of mechanical systems}
 
 
-\chapter{8. Symplectic manifolds}
+
+\chapter{Investigation of the equations of motion}
+
+\section{Systems with one degree of freedom}
+
+\section{Systems with two degrees of freedom}
+
+\section{Conservative force fields}
+
+\section{Angular momentum}
+
+\section{Investigation of motion in a central field}
+
+\section{The motion of a point in three-space}
+
+\section{Motions of a system of $n$ points}
+
+\section{The method of similarity}
+
+\part{LAGRANGIAN MECHANICS}
+
+\chapter{Variational principles}
+
+\section{Calculus of variations}
+
+\section{Lagrange's equations}
+
+\section{Legendre transformations}
+
+\section{Hamilton's equations}
+
+\section{Liouville's theorem}
+
+\chapter{Lagrangian mechanics on manifolds}
+
+\section{Holonomic constraints}
+
+\section{Differentiable manifolds}
+
+\section{Lagrangian dynamical systems}
+
+\section{E. Noether's theorem}
+
+\section{D'Alembert's principle}
+
+\chapter{Oscillations}
+
+\section{Linearization}
+
+\section{Small oscillations}
+
+\section{Behavior of characteristic frequencies}
+
+\section{Parametric resonance}
+
+\chapter{Rigid bodies}
+
+\section{Motion in a moving coordinate system}
+
+\section{Inertial forces and the Coriolis force}
+
+\section{Rigid bodies}
+
+\section{Euler's equations. Poinsot's description of the motion}
+
+\section{Lagrange's top}
+
+\section{Sleeping tops and fast tops}
+
+\part{HAMILTONIAN MECHANICS}
+
+\chapter{Differential forms}
+
+\section{Exterior forms}
+
+\section{Exterior multiplication}
+
+\section{Differential forms}
+
+\section{Integration of differential forms}
+
+\section{Exterior differentiation}
 
 
+\chapter{Symplectic manifolds}
 
-\section{37. Symplectic structures on manifolds}
-
-
+\section{Symplectic structures on manifolds}
 
 \subsection{A. Definition}
 
 
 
-Definition.  Let $M^{2n}$ be an even-dimensional differentiable manifold.
+\begin{defn}
+Let $M^{2n}$ be an even-dimensional differentiable manifold.
 A \emph{symplectic structure} on $M^{2n}$ is a closed nondegenerate differential 2-form
 $\omega^2$ on $M^{2n}$:
 $$
@@ -58,11 +182,11 @@ $$
 $$
 The pair $(M^{2n}, \omega^2)$ is called
 a \emph{symplectic manifold}.
+\end{defn}
 
-
-Example.
+\begin{ex}
 $\omega^2 = \sum_{i = 1}^n dp_i \wedge dq_i$.
-
+\end{ex}
 
 
 \subsection{B. The cotangent bundle and its symplectic structure}
@@ -106,14 +230,15 @@ The preimage of a point $\mathbf x \in V$ under $f$
 is the cotangent space $T^*V_{\mathbf x}$.
 
 
-Theorem.
+\begin{thm}
 The cotangent bundle $T^*V$ has a natural symplectic structure.
 %
 In the local coordinates described above,
 the symplectic structure is given by the formula
 $\omega^2 = d\mathbf p \wedge d\mathbf q = dp_1 \wedge dq_1 + \cdots + dp_n \wedge dq_n$.
+\end{thm}
 
-Proof.
+\begin{proof}
 Define a distinguished 1-form on $T^*V$.
 %
 Let $\pmb \xi \in T(T^*V)p$ be a vector tangent to the cotangent bundle at
@@ -137,9 +262,9 @@ this form is
 $\omega^1 = \mathbf p \cdot d\mathbf q$,
 and
 $\omega^2 = d\omega^1$ is nondegenerate.
+\end{proof}
 
-
-Remark.
+\begin{rem}
 Let $L = L(\mathbf q, \dot{\mathbf q})$  be a Lagrangian.
 %
 Then, $\dot{\mathbf q}$ is a tangent vector;
@@ -153,7 +278,7 @@ is the cotangent of the configuration manifold.
 The above theorem shows that the phase space of
 a mechanical problem has a natural symplectic
 manifold structure.
-
+\end{rem}
 
 
 \subsection{C. Hamiltonian vector fields}
@@ -166,7 +291,7 @@ the spaces of tangent vectors and 1-forms.
 A symplectic structure establishes a similar isomorphism.
 
 
-Definition.
+\begin{defn}
 %
 To each vector $\pmb \xi$
 tangent to a symplectic manifold $(M^{2n}, \omega^2)$
@@ -180,15 +305,17 @@ $$
 The correspondence $\pmb \xi \rightarrow \omega^1_{\mathbf \xi}$
 is an isomorphism between $2n$-dimensional vector spaces of vectors
 and those of 1-forms.
+\end{defn}
 
 
-Example.
+\begin{ex}
 %
 For $n = 1$,
 $\omega^2 = \pmb \eta \wedge \pmb \xi = \eta_1 \xi_2 - \eta_2 \xi_1$.
 Then
 $\omega^1_{\pmb \xi}(\pmb \eta) = (\pmb \eta, \mathbf J^{-1} \pmb \xi)$,
 where $\mathbf J^{-1}$ means a rotation of $-\pi/2$.
+\end{ex}
 
 Thus, $\omega^1_{\pmb \xi}$ is represented by the vector $\mathbf J^{-1} \pmb \xi$.
 %
@@ -205,7 +332,7 @@ for every point there is a tangent vector to $M$ associated to it.
 In this way, we obtain a vector field $IdH$ on $M$.
 
 
-Definition.
+\begin{defn}
 %
 The vector field $IdH$ is called \emph{Hamiltonian vector field}.
 %
@@ -246,9 +373,137 @@ to invert this vector to corresponding tangent vector we multiple it by $\mathbf
   \end{array}
 \right).
 \]
+\end{defn}
 
 
+\section{Hamiltonian phase flows and their integral invariants}
+
+Liouville's theorem asserts that the phase flow
+preserve the symplectic structure.
+%
+Poincar\'e found a whole series of differential forms
+which are preserved by the hamiltonian flow.
+
+\subsection{Hamiltonian phase flows preserve the symplectic structure}
+
+Let $(M^{2n}, \omega^2)$ be a symplectic manifold and
+$H: M^{2n} \rightarrow \Re$ a function.
+Assume that the vector field $IdH$
+corresponds to $H$ gives a 1-parameter group
+of diffeomorphism: $g^t: M^{2n} \rightarrow M^{2n}$:
+$$
+\frac{d}{dt}\Big|_{t = 0}
+= I dH(\mathbf x).
+$$
+This group $g^t$ is the hamiltonian phase flow with
+hamiltonian function $H$.
 
 
+\begin{thm}
+A hamiltonian phase flow preserves the symplectic structure:
+$$
+(g^t)^* \omega^2 = \omega^2.
+$$
+\end{thm}
+
+Notes on the notation.
+$g^t$ applies to $\mathbf x$,
+$(g^t)^*$ applies to $\omega$.
+
+In the case $n = 1$, $M^{2n} = \Re^2$, this theorem says
+that the phase flow $g^t$ preserves area (Liouville's theorem).
+%
+For the proof of this theorem, it is useful to introduce
+the following notation.
+
+Let $M$ be an arbitrary manifold,
+$c$ a $k$-chain on $M$ and $g^t: M \rightarrow M$
+a one-parameter family of differentiable mappings.
+We will construct a $(k+1)$-chain $Jc$ on $M$,
+which we will call the
+\emph{track of the chain $c$ under the homotopy
+$g^t$, $0 \le t \le \tau$.}
+
+[Note. The ``homotopy'' means ``time evolution''.]
+
+Let $(D, f, \mathrm{Or})$ be one of the cells in the chain $c$\footnote{
+  $D$ is the domain, convex polygon in $\Re^k$,
+  $f$ is a mapping from the euclidean space to the manifold $\Re^k \rightarrow M$,
+  $\mathrm{Or}$ is the orientation.
+  see page 184, \S 35.D.
+},
+
+
+\section{The Lie algebra of vector fields}
+
+\section{The Lie algebra of hamiltonian functions}
+
+\section{Symplectic geometry}
+
+\section{Parametric resonance in systems with many degrees of freedom}
+
+\section{A symplectic atlas}
+
+\chapter{Canonical formalism}
+
+\section{The integral invariant of Poincar\'e-Cartan}
+
+\section{Applications of the integral invariant of Poincar\'e-Cartan}
+
+\section{Huygens' principle}
+
+\section{The Hamilton-Jacobi method for integrating Hamilton's canonical equations}
+
+\section{Generating functions}
+
+\chapter{Introduction to perturbation theory}
+
+\section{Integrable systems}
+
+\section{Action-angle variables}
+
+\section{Averaging}
+
+\section{Averaging of perturbations}
+
+\appendix
+\renewcommand{\thechapter}{\arabic{chapter}}
+
+\chapter{Riemannian curvature}
+
+\chapter{Geodesics of left-invariant metrics on Lie groups and
+the hydrodynamics of ideal fluids}
+
+\chapter{Symplectic structures on algebraic manifolds}
+
+\chapter{Contact structures}
+
+\chapter{Dynamical systems with symmetries}
+
+\chapter{Normal forms of quadratic hamiltonians}
+
+\chapter{Normal forms of hamiltonian systems near stationary points
+and closed trajectories}
+
+\chapter{Theory of perturbations of conditionally periodic motion,
+and Kolmogorov's theorem}
+
+\chapter{Poincar\'e's geometric theorem, its generalizations and
+applications}
+
+\chapter{Multiplicities of characteristic frequencies, and ellipoids
+depending on parameters}
+
+\chapter{Short wave asymptotics}
+
+\chapter{Lagrangian singularities}
+
+\chapter{The Korteweg-de Vries equation}
+
+\chapter{Poisson structures}
+
+\chapter{On elliptic coordinates}
+
+\chapter{Singularities of ray systems}
 
 \end{document}
