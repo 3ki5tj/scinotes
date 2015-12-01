@@ -20,6 +20,8 @@
   \renewcommand\l@section{\@dottedtocline{2}{2.5em}{3.5em}}
 \makeatother
 
+\numberwithin{equation}{section}
+\renewcommand{\theequation}{\textbf{\arabic{section}}.\arabic{equation}}
 
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}
@@ -138,7 +140,196 @@ p(n) = \sum_{i = 0}^n \frac{ (-)^{k} } { k! } \rightarrow e^{-1}.
 $$
 
 
+
+
 \section{Averages}
+
+Given a distribution $P(X)$, the average of $f(X)$ is computed by
+$$
+\langle f(X) \rangle
+=
+\int f(x) \, P(x) \, dx.
+$$
+
+A most commonly-used average is the $m$-th moment:
+$$
+\mu_m = \langle X^m \rangle.
+$$
+Here, $\mu_1$ is the mean, and
+\begin{equation}
+\sigma^2 =
+\left\langle
+  (X - \langle X \rangle )^2
+\right\rangle
+= \mu_2 - \mu_1^2,
+\end{equation}
+is the variance, and $\sigma$ is the standard deviation.
+
+An interesting observation is that
+not all probability distributions have a finite variance.
+%
+A famous example is the Lorentz distribution
+\begin{equation}
+P(x) = \frac{1}{\pi} \frac{\gamma}{ (x-a)^2 + \gamma^2 },
+\qquad (-\infty < x < \infty).
+\end{equation}
+
+\subsection*{Exercises}
+
+1. For the \emph{square distribution},
+\begin{equation}
+P(x) =
+\begin{cases}
+  0,          \qquad &\mathrm{for\;} |x| > a, \\
+  (2a)^{-1},  \qquad &\mathrm{for\;} |x| < a. \\
+\end{cases}
+\end{equation}
+We have $\mu_{2n+1} = 0$, and
+$$
+\mu^{2n}
+=
+\int_{-a}^a \frac{x^{2n}}{2a} \, dx
+=
+\frac{ a^{2n} }{ 2n + 1 }.
+$$
+
+
+2. For the \emph{Gauss distribution},
+\begin{equation}
+  P(x) = (2 \pi)^{-\frac 1 2} e^{-\frac{1}{2} x^2}.
+\end{equation}
+We have
+$$
+\begin{aligned}
+  \mu_{2n+1} &= 0, \\
+  \mu_{2n}  &= (2n-1)!!.
+\end{aligned}
+$$
+
+3. Find a distribution whose moments $\mu_n$ exists up to but not beyond a prescribed $n$.
+
+The answer is
+$$
+P(x) = \frac{ \alpha } { (x^2 + 1)^{1 + \frac{n}{2} } }.
+$$
+The normalization $\alpha$ is determined as follows.
+$$
+\begin{aligned}
+1 &= \int_{-\infty}^\infty P(x) \, dx
+  = \alpha \int_{-\pi/2}^{\pi/2} \frac{ \sec^2\theta } { \sec^{n+2}\theta } \, d\theta
+  =\alpha \int_{-\pi/2}^{\pi/2} \cos^n\theta \, d\theta
+  = B\left(\frac{n+1}{2}, \frac{1}{2}\right).
+\end{aligned}
+$$
+So
+$$
+\alpha = \frac{ \Gamma(\frac n  2 + 1) } { \Gamma(\frac{n+1}{2}) \, \Gamma(\frac 1 2) }
+=
+\begin{cases}
+  \frac{n!!}{(n-1)!! }\frac{1}{\pi}, & n \mathrm{\; is \; even} \\
+  \frac{n!!}{(n-1)!! }\frac{1}{2}, & n \mathrm{\; is \; odd}
+\end{cases}
+$$
+
+4. From
+$$
+f = \langle
+|\lambda_0 + \lambda_1 \, X + \cdots + \lambda_n \, X^n|^2 \rangle \ge 0,
+$$
+we have
+$$
+\mathbf \Lambda^T
+\left(
+  \begin{array}{ccccc}
+    1     & \mu_1 & \dots & \mu_n \\
+    \mu_1 & \mu_2 & \dots & \mu_{n+1} \\
+    \vdots& \vdots&       & \vdots \\
+    \mu_n &\mu_{n+1}&\dots& \mu_{2n}
+  \end{array}
+\right)
+\mathbf \Lambda
+\ge 0.
+$$
+Since $\Lambda = (\lambda_0, \dots, \lambda_n)^T$ is arbitrary,
+the matrix in the middle is nonnegative-definite,
+meaning that every eigenvalue is nonnegative,
+so is their product, or the determinant.
+$$
+\left|
+  \begin{array}{ccccc}
+    1     & \mu_1 & \dots & \mu_n \\
+    \mu_1 & \mu_2 & \dots & \mu_{n+1} \\
+    \vdots& \vdots&       & \vdots \\
+    \mu_n &\mu_{n+1}&\dots& \mu_{2n}
+  \end{array}
+\right| \ge 0
+$$
+
+
+5. Eq. \eqref{eq:Px_nonneg} can be replaced with the condition
+$$
+\int f(x) P(x) \, dx \ge 0,
+$$
+for any continuous $f(x)$.
+
+
+6. Show that for $n = 1, 2, 3, \dots$,
+$$
+P(x) = n \frac{e^{-x}}{x} I_n(x),
+$$
+has no average.
+
+Notes.
+$$
+e^{ \frac{x}{2} \left( t + \frac{1}{t} \right) }
+= \sum_{n = -\infty}^\infty I_n(x) \, t^n.
+$$
+And
+$$
+I_n(x) = \sum_{r = 0}^\infty \frac{1}{r! (r + n)!} \left(\frac x 2\right)^{n+2r}.
+$$
+
+
+\subsection*{Characteristic function}
+
+\begin{defn}
+The \emph{characteristic function} is defined as
+\begin{equation}
+G(k) = \langle e^{ikX} \rangle
+=
+\int e^{ikx} P(x) \, dx.
+\end{equation}
+\end{defn}
+
+The characteristic function satisfies
+\begin{equation}
+  G(0) = 1, \qquad
+  |G(k)| \le 1.
+\end{equation}
+
+
+The characteristic function is also the \emph{moment generating function}
+because
+\begin{equation}
+  G(k) = \sum_{k = 0}^\infty \frac{(tk)^m } {m!} \mu_m.
+  \label{eq:mugen}
+\end{equation}
+Similarly $\log G(k)$
+\begin{equation}
+  \log G(k) = \sum_{k = 0}^\infty \frac{(tk)^m } {m!} \kappa_m,
+  \label{eq:kappagen}
+\end{equation}
+is the generating function of cumulants $\kappa_m$.
+The first few are listed below.
+\begin{equation}
+  \begin{aligned}
+    \kappa_1 &= \mu_1, \\
+    \kappa_2 &= \mu_2 - \mu_1^2, \\
+    \kappa_3 &= \mu_3 -3 \, \mu_2 \, \mu_1 + 2 \, \mu_1^3, \\
+    \kappa_4 &= \mu_4 -4 \, \mu_3 \, \mu_1 - 3 \, \mu_2^2 + 12 \, \mu_2 \, \mu_1^2 - 6 \, \mu_1^4.
+  \end{aligned}
+\end{equation}
+
 
 \section{Multivariate distributions}
 
