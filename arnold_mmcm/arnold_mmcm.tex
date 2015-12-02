@@ -166,6 +166,7 @@
 
 
 
+\setcounter{subsection}{2}
 %subsection C
 \subsection{Behavior under mappings}
 
@@ -181,6 +182,7 @@ $$
 \omega^k(f\pmb\xi_1, \dots, f\pmb\xi_k).
 $$
 
+\setcounter{prob}{7}
 \begin{prob}
   Verify that $f^*\omega^k$ is an exterior form.
 
@@ -249,6 +251,7 @@ to the space of $k$-forms on $\mathbb R^m$
 \end{prob}
 
 \begin{prob}
+  \label{prob:fstar_exprod}
 Verify that $f^*$ preserves exterior multiplication:
 $f^*(\omega^k \wedge \omega^l) = (f^*\omega^k) \wedge (f^*\omega^l).$
 
@@ -992,59 +995,24 @@ Let $g:M\rightarrow M$ be a differentiable map.
   then the form $\omega^k \wedge \omega^l$
   is also an integral invariant of $g$.
 
-%\answer{
-%  We expand
-%  $\omega^k = \sum_{i} a_{i_1, \dots, i_k} dx_{i_1} \wedge \dots \wedge dx_{i_k}$,
-%  and
-%  $\omega^l = \sum_{j} b_{j_1, \dots, j_k} dx_{j_1} \wedge \dots \wedge dx_{j_l}$.
-%  By the linearity, we only need to show for a pair of the terms
-%  with no overlap of the indices in $i\equiv{i_1, \dots, i_k}$
-%  and $j \equiv{j_1, \dots, j_l}$.
-%  The exterior product of the pair of terms,
-%  denoted by
-%  $\omega^k_{i_1\dots i_k} \wedge \omega^l_{j_1\dots j_k}$
-%  with
-%  $\omega^k_{i_1\dots i_k} \equiv a_{i_1, \dots, i_k} dx_{i_1} \wedge \dots \wedge dx_{i_k}$
-%  and
-%  $\omega^l_{j_1\dots j_l} \equiv b_{j_1, \dots, j_k} dx_{j_1} \wedge \dots \wedge dx_{j_k}$
-%  is nonzero only on the hyperplane of
-%  $x_{i_1}-\dots-x_{i_k}-x_{j_1}-\dots-x_{j_l}$,
-%  Let $c$ be a cell in hyperplane;
-%  it can be written as $c = c_1 \times c_2$, where
-%  $c_1$ be a cell in hyperplane of $x_{i_1}-\dots-x_{i_k}$,
-%  $c_2$ be a cell in hyperplane of $x_{j_1}-\dots-x_{j_l}$,
-%  %$c_1$ be a cell in hyperplane of $x_{u_1}-\dots-x_{u_k}$,
-%  %$c_2$ be a cell in hyperplane of $x_{v_1}-\dots-x_{v_l}$,
-%  %where
-%  %$u={u_1, \dots, u_k}$ and $v = {v_1, \dots, v_l}$
-%  %are two disjoint index sets whose union is $i\cup j$.
-%  $$
-%  \begin{aligned}
-%  \int_{gc}
-%  \omega^k_{i_1\dots i_k}
-%  \wedge
-%  \omega^l_{j_1\dots j_l}
-%  &=
-%  \int_{g c_1}
-%  \omega^k_{i_1\dots i_k}
-%  \int_{g c_2}
-%  \omega^l_{v_1\dots v_l}
-%  \\
-%  &=
-%  \int_{c_1 \times c_2}
-%  \omega^k_{i_1\dots i_k}
-%  \wedge
-%  \omega^l_{j_1\dots j_l}
-%  \\
-%  &=
-%  \int_{c_1\times c_2}
-%  \omega^k_{i_1\dots i_k}
-%  \wedge
-%  \omega^l_{j_1\dots j_l}.
-%  \end{aligned}
-%  $$
-%}
-
+  \answer{
+    It follows from Problem \ref{prob:fstar_exprod} in Sec. 33.
+    Not sure this is correct.
+    $$
+    \begin{aligned}
+    \int_{gc} (\omega^k \wedge \omega^l)
+    &=
+    \int_{c} (\omega^k \wedge \omega^l)(g\pmb\xi_1, \dots, g\pmb\xi_{k+l})
+    \\
+    &=
+    \int_{c} g^*(\omega^k \wedge \omega^l)(\pmb\xi_1, \dots, \pmb\xi_{k+l})
+    \\
+    &=\int_{c} (g^*\omega^k \wedge g^*\omega^l)(\pmb\xi_1, \dots, \pmb\xi_{k+l})
+    \\
+    &=\int_{c} (\omega^k \wedge \omega^l)(\pmb\xi_1, \dots, \pmb\xi_{k+l}).
+    \end{aligned}
+    $$
+  }
 \end{prob*}
 
 The theorem in subsection A can be reformulated as follows.
@@ -1057,10 +1025,91 @@ The theorem in subsection A can be reformulated as follows.
 We now consider the exterior powers of $\omega^2$,
 $$
 (\omega^2)^2 = \omega^2 \wedge \omega^2,
+\quad
 (\omega^2)^3 = \omega^2 \wedge \omega^2 \wedge \omega^2,
 \dots
 $$
 
+\begin{cor*}
+  Each of the forms $(\omega^2)^2$, $(\omega^2)^3$, $(\omega^2)^4$, \dots
+  is an integral invariant of a hamiltonian phase flow.
+\end{cor*}
+
+\begin{prob*}
+Suppose that the dimension of the symplectic manifold
+$(M^{2n}, \omega^2)$ is $2n$,
+show that $(\omega^2)^k = 0$ for $k > n$,
+and that $(\omega^2)^n$ is a nondegenerate $2n$-form on $M^{2n}$.
+\end{prob*}
+
+We define a volume element on $M^{2n}$ using $(\omega^2)^n$.
+Then, a hamiltonian phase flow preserves volume,
+and we obtain Liouville's theorem from the corollary above.
+
+\begin{ex*}
+  Consider the symplectic coordinate space
+  $M^{2n} = \mathbb R^{2n} = \{(\mathbf p, \mathbf q)\}$,
+  $\omega^2 = d\mathbf p \wedge d\mathbf q = \sum dp_i \wedge dq_i$.
+  In this case the form $(\omega^2)^k$ is proportional to the form
+  $$
+  \omega^{2k} = \sum_{i_1 < \dots < i_k}
+  dp_{i_1} \wedge \dots \wedge dp_{i_k} \wedge
+  dq_{i_1} \wedge \dots \wedge dq_{i_k}.
+  $$
+  The integral of $\omega^{2k}$ is equal to the sum of
+  the oriented volumes of projections on to the coordinate planes
+  $(p_{i_1}, \dots, p_{i_k}, q_{i_1}, \dots, q_{i_k})$.
+\end{ex*}
+
+The map
+$g: \mathbb R^{2n} \rightarrow \mathbb R^{2n}$
+is called \emph{canonical} if it has $\omega^2$ as an integral invariant.
+A canonical map is generally called a \emph{canonical transformation}.
+Each of the forms $\omega^4, \omega^6, \dots, \omega^{2n}$
+is an integral invariant of every canonical transformation.
+Therefore, \emph{under a canonical transformation,
+  the sum of the oriented areas of projections onto the coordinate planes
+  $(p_{i_1}, \dots, p_{i_k}, q_{i_1}, \dots, q_{i_k})$,
+  $1 \le k \le n$, is preserved}.
+In particular, \emph{canonical transformations preserve volume}.
+
+The hamiltonian phase flow given by the equations
+$\dot{\mathbf p} = -\partial H/\partial \mathbf q$,
+$\dot{\mathbf q} = \partial H/\partial \mathbf p$
+consists of canonical transformations $g^t$.
+
+The integral invariants considered above are also called
+\emph{absolute integral invariants}.
+
+\begin{defn*}
+  A differential $k$-form is called a
+  \emph{relative integral invariant} of the map
+  $g: M \rightarrow M$ if
+  $\int_{gc} \omega = \int_c \omega$
+  for every \emph{closed} $k$-chain $c$.
+\end{defn*}
+
+\begin{thm*}
+  Let $\omega$ be a relative integral invariant of a map $g$.
+  Then $d\omega$ is an absolute integral invariant of $g$.
+\end{thm*}
+
+\begin{proof}
+  Let $c$ be a $k+1$-chain. Then
+  $$
+  \int_c d\omega \stackrel{1}{=}
+  \int_{\partial c} \omega
+  \stackrel{2}{=}
+  \int_{g\partial c} \omega
+  \stackrel{3}{=}
+  \int_{\partial gc} \omega
+  \stackrel{4}{=}
+  \int_{gc} d\omega.
+  $$
+  (1 and 4 are by Stokes' formula,
+  2 by the definition of relative invariant,
+  and 3 by the definition of boundary).
+\end{proof}
 
 
 \section{The Lie algebra of vector fields}
