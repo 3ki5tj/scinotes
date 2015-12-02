@@ -64,12 +64,13 @@
 \begin{document}
 
 \definecolor{DarkBlue}{RGB}{0,0,64}
+\definecolor{DarkBrown}{RGB}{64,20,10}
 % annotation macros
 \newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
 \newcommand{\add}[1]{{\color{blue} #1}}
 \newcommand{\del}[1]{{\color{gray} [#1]}}
-\newcommand{\note}[1]{{\color{OliveGreen}\small [\textsc{Note.} #1]}}
-\newcommand{\answer}[1]{{\color{DarkBlue}\small [\textsc{Answer.} #1]}}
+\newcommand{\note}[1]{{\color{DarkBrown}\small [\textsc{Note.} #1]}}
+\newcommand{\answer}[1]{{\color{DarkBlue}\small \textsc{Answer.} #1}}
 
 \newcommand{\hl}[1]{{\color{red} #1}}
 
@@ -162,6 +163,122 @@
 \section{Exterior forms}
 
 \section{Exterior multiplication}
+
+
+
+%subsection C
+\subsection{Behavior under mappings}
+
+
+Let $f: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a linear map,
+and $\omega^k$ an exterior $k$-form on $\mathbb{R}^n$.
+Then there is a $k$-form $f^*\omega^k$ on $\mathbb{R}^m$,
+whose value on the $k$ vectors $\pmb\xi_1, \dots, \pmb\xi_k \in \mathbb{R}^m$
+is equal to the value of $\omega^k$ on their images:
+$$
+(f^*\omega^k)(\pmb\xi_1, \dots, \pmb\xi_k)
+=
+\omega^k(f\pmb\xi_1, \dots, f\pmb\xi_k).
+$$
+
+\begin{prob}
+  Verify that $f^*\omega^k$ is an exterior form.
+
+\answer{Antisymmetry:
+  $$
+  \begin{aligned}
+  (f^*\omega^k)(\pmb\xi_1, \dots, \pmb\xi_i, \dots, \pmb\xi_j, \dots, \pmb\xi_k)
+  &=
+  \omega^k(f\pmb\xi_1, \dots, f\pmb\xi_i, \dots, f\pmb\xi_j, \dots, f\pmb\xi_k)
+  \\
+  &=
+  -\omega^k(f\pmb\xi_1, \dots, f\pmb\xi_j, \dots, f\pmb\xi_i, \dots, f\pmb\xi_k)
+  \\
+  &=
+  -(f^*\omega^k)(\pmb\xi_1, \dots, \pmb\xi_j, \dots, \pmb\xi_i, \dots, \pmb\xi_k).
+  \end{aligned}
+  $$
+}
+\end{prob}
+
+\begin{prob}
+Verify that $f^*$ is a linear operator from the space of $k$-forms on $\mathbb R^n$
+to the space of $k$-forms on $\mathbb R^m$
+(the star \emph{superscript} means that $f^*$ acts in the opposite direction from $f$).
+
+\answer{
+  $$
+  \begin{aligned}
+  [f^*(\omega_1^k + \omega_2^k)](\pmb\xi_1, \dots, \pmb\xi_k)
+  &=
+  (\omega_1^k + \omega_2^k)(f\pmb\xi_1, \dots, f\pmb\xi_k)
+  \\
+  &=
+  \omega_1^k(f\pmb\xi_1, \dots, f\pmb\xi_k)
+  +\omega_2^k(f\pmb\xi_1, \dots, f\pmb\xi_k)
+  \\
+  &=
+  (f^*\omega_1^k)(\pmb\xi_1, \dots, \pmb\xi_k)
+  +
+  (f^*\omega_2^k)(\pmb\xi_1, \dots, \pmb\xi_k).
+  \end{aligned}
+  $$
+}
+\end{prob}
+
+\begin{prob}
+  Let $f: \mathbb R^m \rightarrow \mathbb R^n$ and
+  $g: \mathbb R^n \rightarrow \mathbb R^p$.
+  Verify that $(g\circ f)^* = f^* \circ g^*$.
+
+\answer{
+  $$
+  \begin{aligned}
+  (g\circ f)^*\omega^k(\pmb\xi_1, \dots, \pmb\xi_k)
+  &=
+  \omega^k((g\circ f)\, \pmb\xi_1, \dots, (g\circ f)\, \pmb\xi_k)
+  \\
+  &=
+  (g^*\omega^k)(f\pmb\xi_1, \dots, f\pmb\xi_k)
+  \\
+  &=
+  (f^*\circ g^*) \, \omega^k(\pmb\xi_1, \dots, \pmb\xi_k).
+  \end{aligned}
+  $$
+}
+\end{prob}
+
+\begin{prob}
+Verify that $f^*$ preserves exterior multiplication:
+$f^*(\omega^k \wedge \omega^l) = (f^*\omega^k) \wedge (f^*\omega^l).$
+
+\answer{
+  $$
+  \begin{aligned}
+  f^*(\omega^k\wedge \omega^l)(\pmb\xi_1, \dots, \pmb\xi_{k+l})
+  &=
+  (\omega^k\wedge \omega^l)(f\pmb\xi_1, \dots, f\pmb\xi_{k+l})
+  \\
+  &=
+  \sum_{i}
+  (\pm)
+    \omega^k(f\pmb\xi_{i_1}, \dots, f\pmb\xi_{i_k}) \
+    \omega^l(f\pmb\xi_{i_{k+1}}, \dots, f\pmb\xi_{i_{k+l}})
+  \\
+  &=
+  \sum_{i}
+  (\pm)
+    (f^*\omega^k)(\pmb\xi_{i_1}, \dots, \pmb\xi_{i_k}) \
+    (f^*\omega^l)(\pmb\xi_{i_{k+1}}, \dots, \pmb\xi_{i_{k+l}}).
+  \\
+  &=
+    (f^*\omega^k \wedge f^*\omega^l)
+    (\pmb\xi_{i_1}, \dots, \pmb\xi_{i_{k+l}}).
+  \end{aligned}
+  $$
+}
+\end{prob}
+
 
 \section{Differential forms}
 
@@ -842,6 +959,109 @@ It is easy to verify that under the choice of orientation made above
   Thus the integrals of the form $\omega^2$
   on any chain $c$ and on its image $g^\tau c$ are the same.
 \end{proof}
+
+
+% subsection B
+\subsection{Integral invariants}
+
+Let $g:M\rightarrow M$ be a differentiable map.
+
+\begin{defn*}
+  A differential $k$-form $\omega$ is called an \emph{integral invariant}
+  of the map $g$ if the integrals of $\omega$ on
+  any $k$-chain $c$ and on its image under $g$ are the same:
+  $$
+  \int_{gc}\omega = \int_c \omega.
+  $$
+\end{defn*}
+
+\begin{ex*}
+  If $M = \mathbb{R}^2$ and $\omega^2 = dp \wedge dq$ is the area element,
+  then $\omega^2$ is an integral invariant of any map $g$
+  with jacobian $1$.
+\end{ex*}
+
+\begin{prob*}
+  Show that a form $\omega^k$ is an integral invariant
+  of a mapping if and only if $g^*\omega^k = \omega^k$.
+\end{prob*}
+
+\begin{prob*}
+  Show that if the forms $\omega^k$ and $\omega^l$
+  are integral invariants of the map,
+  then the form $\omega^k \wedge \omega^l$
+  is also an integral invariant of $g$.
+
+%\answer{
+%  We expand
+%  $\omega^k = \sum_{i} a_{i_1, \dots, i_k} dx_{i_1} \wedge \dots \wedge dx_{i_k}$,
+%  and
+%  $\omega^l = \sum_{j} b_{j_1, \dots, j_k} dx_{j_1} \wedge \dots \wedge dx_{j_l}$.
+%  By the linearity, we only need to show for a pair of the terms
+%  with no overlap of the indices in $i\equiv{i_1, \dots, i_k}$
+%  and $j \equiv{j_1, \dots, j_l}$.
+%  The exterior product of the pair of terms,
+%  denoted by
+%  $\omega^k_{i_1\dots i_k} \wedge \omega^l_{j_1\dots j_k}$
+%  with
+%  $\omega^k_{i_1\dots i_k} \equiv a_{i_1, \dots, i_k} dx_{i_1} \wedge \dots \wedge dx_{i_k}$
+%  and
+%  $\omega^l_{j_1\dots j_l} \equiv b_{j_1, \dots, j_k} dx_{j_1} \wedge \dots \wedge dx_{j_k}$
+%  is nonzero only on the hyperplane of
+%  $x_{i_1}-\dots-x_{i_k}-x_{j_1}-\dots-x_{j_l}$,
+%  Let $c$ be a cell in hyperplane;
+%  it can be written as $c = c_1 \times c_2$, where
+%  $c_1$ be a cell in hyperplane of $x_{i_1}-\dots-x_{i_k}$,
+%  $c_2$ be a cell in hyperplane of $x_{j_1}-\dots-x_{j_l}$,
+%  %$c_1$ be a cell in hyperplane of $x_{u_1}-\dots-x_{u_k}$,
+%  %$c_2$ be a cell in hyperplane of $x_{v_1}-\dots-x_{v_l}$,
+%  %where
+%  %$u={u_1, \dots, u_k}$ and $v = {v_1, \dots, v_l}$
+%  %are two disjoint index sets whose union is $i\cup j$.
+%  $$
+%  \begin{aligned}
+%  \int_{gc}
+%  \omega^k_{i_1\dots i_k}
+%  \wedge
+%  \omega^l_{j_1\dots j_l}
+%  &=
+%  \int_{g c_1}
+%  \omega^k_{i_1\dots i_k}
+%  \int_{g c_2}
+%  \omega^l_{v_1\dots v_l}
+%  \\
+%  &=
+%  \int_{c_1 \times c_2}
+%  \omega^k_{i_1\dots i_k}
+%  \wedge
+%  \omega^l_{j_1\dots j_l}
+%  \\
+%  &=
+%  \int_{c_1\times c_2}
+%  \omega^k_{i_1\dots i_k}
+%  \wedge
+%  \omega^l_{j_1\dots j_l}.
+%  \end{aligned}
+%  $$
+%}
+
+\end{prob*}
+
+The theorem in subsection A can be reformulated as follows.
+
+\begin{thm*}
+  The form $\omega^2$ giving the symplectic structure
+  is an integral invariant of a hamiltonian phase flow.
+\end{thm*}
+
+We now consider the exterior powers of $\omega^2$,
+$$
+(\omega^2)^2 = \omega^2 \wedge \omega^2,
+(\omega^2)^3 = \omega^2 \wedge \omega^2 \wedge \omega^2,
+\dots
+$$
+
+
 
 \section{The Lie algebra of vector fields}
 
