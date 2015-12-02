@@ -3,6 +3,7 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{chngcntr}
+\usepackage{caption}
 \usepackage{bm}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{tikz}
@@ -18,7 +19,7 @@
 \counterwithout{section}{chapter}
 \renewcommand{\thesubsection}{\Alph{subsection}}
 \numberwithin{equation}{section}
-\renewcommand{\theequation}{\textbf{\arabic{section}}.\arabic{equation}}
+\renewcommand{\theequation}{\arabic{equation}}
 \renewcommand{\thefigure}{\arabic{figure}}
 
 \theoremstyle{plain}
@@ -48,15 +49,27 @@
 \newtheorem{ex}{Example}
 \newtheorem*{ex*}{Example}
 
+\newtheorem{prob}{Problem}
+\newtheorem*{prob*}{Problem}
 
+% fix the arrow direction for tikz
+\makeatletter
+\def\pgf@plot@curveto@handler@finish{%
+  \ifpgf@plot@started%
+    \pgfpathcurvebetweentimecontinue{0}{0.95}{\pgf@plot@curveto@first}{\pgf@plot@curveto@first@support}{\pgf@plot@curveto@second}{\pgf@plot@curveto@second}%
+  \fi%
+}
+\makeatother
 
 \begin{document}
 
+\definecolor{DarkBlue}{RGB}{0,0,64}
 % annotation macros
 \newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
 \newcommand{\add}[1]{{\color{blue} #1}}
 \newcommand{\del}[1]{{\color{gray} [#1]}}
 \newcommand{\note}[1]{{\color{OliveGreen}\small [\textsc{Note.} #1]}}
+\newcommand{\answer}[1]{{\color{DarkBlue}\small [\textsc{Answer.} #1]}}
 
 \newcommand{\hl}[1]{{\color{red} #1}}
 
@@ -167,7 +180,7 @@
 
 
 
-\begin{defn*}
+%\begin{defn*}
 Let $M^{2n}$ be an even-dimensional differentiable manifold.
 A \emph{symplectic structure} on $M^{2n}$ is a closed nondegenerate differential 2-form
 $\omega^2$ on $M^{2n}$:
@@ -186,12 +199,37 @@ $$
 $$
 The pair $(M^{2n}, \omega^2)$ is called
 a \emph{symplectic manifold}.
-\end{defn*}
+%\end{defn*}
 
 \begin{ex*}
-$\omega^2 = \sum_{i = 1}^n dp_i \wedge dq_i$.
+  Consider the vector space $\mathbb R^{2n}$
+  with coordinates $p_i, q_i$ and let
+  $\omega^2 = \sum d p_i \wedge dq_i$.
 \end{ex*}
 
+\begin{prob*}
+  Verify that $(\mathbb R^{2n}, \omega^2)$
+  is a symplectic manifold.
+  For $n = 1$ the pair $(\mathbb R^2, \omega^2)$
+  is the pair (the plain, area).
+
+\answer{
+  Since $\omega^2 = d\omega^1$, with $\omega^1 = \sum_i p_i dq_i$,
+  $d\omega^2 = dd\omega^1 = 0$ is closed.
+  To show $\omega^2$ is degenerate, take a vector $\pmb\xi$,
+  with at least one nonzero component, say it is $p_i$.
+  Then, we construct another vector $\pmb\eta$ with $q_i = 1$,
+  and other components being zeros.
+  Obviously $\omega^2(\pmb\xi, \pmb\eta) = p_i \ne 0$.
+  We can similarly show the case for a nonzero $q_i$ component.
+  So the 2-form is nondegenerate.
+}
+\end{prob*}
+
+
+The following example explains the appearance of symplectic manifolds
+in dynamics.  Along with the tangent bundle of a differentiable manifold,
+it is often useful to look at its dual--the cotangent bundle.
 
 % subsection B
 \subsection{The cotangent bundle and its symplectic structure}
@@ -208,11 +246,11 @@ called the \emph{cotangent space} to $V$ at $\mathbf x$.
 
 The union of the cotangent spaces to the manifold at all of its points
 is called the \emph{cotangent bundle}, and denoted by $T^*V$.
-
+%
 The set $T^*V$ has a natural structure of a differentiable manifold of
 dimension $2 n$.
-(Note. Each point $\mathbf x \in V$ has a $n$-dimensional vectors space;
-the dimensionality of $V$ is $n$).
+\note{Each point $\mathbf x \in V$ has a $n$-dimensional vectors space;
+the dimensionality of $V$ is $n$}.
 %
 A point of $T^*V$ is a 1-form on the tangent space to $V$ at some point of $V$.
 %
@@ -270,21 +308,57 @@ $\omega^2 = d\omega^1$ is nondegenerate.
 \end{proof}
 
 \begin{rem*}
-Let $L = L(\mathbf q, \dot{\mathbf q})$  be a Lagrangian.
-%
-Then, $\dot{\mathbf q}$ is a tangent vector;
-%
-$\mathbf p = \partial L/\partial \dot{\mathbf q}$
+Consider a lagrangian mechanical system with configuration manifold $V$
+and lagrangian function $L$.
+It is easy to see that the lagrangian ``generalized velocity''
+$\dot{\mathbf q}$ is a tangent vector to the configuration manifold $V$,
+and the ``generalized momentum''
+$\dot{\mathbf p} = \partial L/\partial \dot{\mathbf q}$
 is a cotangent vector.
-%
-The $\mathbf p, \mathbf q$ phase space of the Lagrangian system
-is the cotangent of the configuration manifold.
-%
-The above theorem shows that the phase space of
-a mechanical problem has a natural symplectic
-manifold structure.
+Therefore, the ``$\mathbf p, \mathbf q$'' phase space of the lagriangian
+system is the cotangent bundle of the configuration manifold.
+The theorem above shows that the phase space of a mechanical problem
+has a natural symplectic manifold structure.
+%Let $L = L(\mathbf q, \dot{\mathbf q})$  be a Lagrangian.
+%%
+%Then, $\dot{\mathbf q}$ is a tangent vector;
+%%
+%$\mathbf p = \partial L/\partial \dot{\mathbf q}$
+%is a cotangent vector.
+%%
+%The $\mathbf p, \mathbf q$ phase space of the Lagrangian system
+%is the cotangent of the configuration manifold.
+%%
+%The above theorem shows that the phase space of
+%a mechanical problem has a natural symplectic
+%manifold structure.
 \end{rem*}
 
+\begin{prob*}
+  Show that the Legendre transform does not depend on the coordinate system:
+  it takes a fucntion $:TV \rightarrow \mathbb R$ on the tangent bundle
+  to a function $H: T^*V \rightarrow \mathbb R$ on the cotangent bundle.
+
+
+\answer{
+  Consider a coordinate transform $\mathbf q = \mathbf q(\mathbf Q)$,
+  $$
+  \begin{aligned}
+  H
+  &= \sum_i \dot q_i\frac{ \partial L } { \partial \dot q_i } - L
+  = \sum_{ijk}
+    \dot Q_j \frac{\partial q_i}{\partial Q_j}
+    \frac{ \partial Q_k } { \partial q_i }
+    \frac{ \partial L } { \partial Q_k } - L \\
+  &= \sum_{jk}
+    \dot Q_j \delta_{jk}
+    \frac{ \partial L } { \partial Q_k } - L
+  = \sum_j \dot Q_j \frac{ \partial L } { \partial Q_j } - L.
+  \end{aligned}
+  $$
+  Thus the hamiltonian function is the same in the two coordinates.
+}
+\end{prob*}
 
 % subsection C
 \subsection{Hamiltonian vector fields}
@@ -307,26 +381,103 @@ $$
 \omega^1_{\pmb \xi}(\pmb \eta) = \omega^2(\pmb \eta, \pmb \xi),
 \quad \forall \pmb \eta \in TM_{\mathbf x}.
 $$
-%
-The correspondence $\pmb \xi \rightarrow \omega^1_{\mathbf \xi}$
-is an isomorphism between $2n$-dimensional vector spaces of vectors
-and those of 1-forms.
 \end{defn*}
 
+\begin{prob*}
+Show that the correspondence $\pmb \xi \rightarrow \omega^1_{\mathbf \xi}$
+is an isomorphism between the $2n$-dimensional vector spaces of vectors
+and of 1-forms.
+\end{prob*}
 
 \begin{ex*}
-%
+  In $\mathbb{R}^{2n}=\{(\mathbf p, \mathbf q)\}$
+  we will identify vectors and 1-forms by using the euclidean structure
+  $(\mathbf x, \mathbf x) = \mathbf p^2 + \mathbf q^2$.
+  Then the correspondences $\pmb\xi \rightarrow \omega^1_{\pmb\xi}$
+  determines a transformation
+  $\mathbb{R}^{2n} \rightarrow \mathbb{R}^{2n}$.
+\end{ex*}
+
+\begin{prob*}
+  Calculate the matrix of this transformation in the basis
+  $\mathbf p,\mathbf q$.
+
+\answer{
 For $n = 1$,
 $\omega^2 = \pmb \eta \wedge \pmb \xi = \eta_1 \xi_2 - \eta_2 \xi_1$.
 Then
 $\omega^1_{\pmb \xi}(\pmb \eta) = (\pmb \eta, \mathbf J^{-1} \pmb \xi)$,
-where $\mathbf J^{-1}$ means a rotation of $-\pi/2$.
-\end{ex*}
+where $\mathbf J^{-1}$ means a rotation of $-\pi/2$, where
+$$
+\mathbf J =
+\left(
+  \begin{array}{cc}
+    0  & -1 \\
+    1  & 0
+  \end{array}
+\right)
+\qquad
+\mathbf J^{-1} =
+\left(
+  \begin{array}{cc}
+    0  & 1 \\
+    -1 & 0
+  \end{array}
+\right),
+$$
+with the indices of $p$ and $q$ being $1$ and $2$, respectively
+(the convention of this book).
 
-Thus, $\omega^1_{\pmb \xi}$ is represented by the vector $\mathbf J^{-1} \pmb \xi$.
+For higher dimensions, we just replace $1$ by the $n\times n$
+identity matrix $E$,
+$$
+\mathbf J =
+\left(
+  \begin{array}{cc}
+    0  & -E \\
+    E  & 0
+  \end{array}
+\right)
+\qquad
+\mathbf J^{-1} =
+\left(
+  \begin{array}{cc}
+    0  & E \\
+    -E & 0
+  \end{array}
+\right).
+$$
+
+
+Generally, we have
+$$
+\omega^1_{\pmb \xi}(\pmb \eta) = (\pmb \eta, \mathbf I^{-1} \pmb \xi)
+=\eta' \mathbf J^{-1} \pmb\xi.
+$$
+with the prime``$'$'' denoting the transpose.
+
+However, later in this book, the author will frequently use the result
+$$
+\omega^2(\pmb\eta,\pmb\xi) = (I\pmb\eta, \pmb\xi) = \pmb\eta'\mathbf J' \pmb\xi,
+$$
+for this case. This is not generally true.
+It requires the isomorphism $I$ to be equivalent to a matrix multiplication
+of the symplectic matrix $\mathbf J$, and $\mathbf J' = \mathbf J^{-1}$.
+
+In general,
+$\omega^1_{\pmb \xi}$ is represented by the vector $I^{-1} \pmb \xi$,
+and a 1-form $\omega_1$ is represented by the vector $I\, \omega_1$.
+}
+\end{prob*}
 %
+
+
+
+
+
+
 We will denote by $I$ the isomorphism
-$I: T*M_{\mathbf x} \rightarrow TM_{\mathbf x}$
+$I: T^*M_{\mathbf x} \rightarrow TM_{\mathbf x}$
 (from 1-forms to tangent vectors,
 $\omega^1_{\pmb \xi} \rightarrow \pmb \xi$).
 %
@@ -343,13 +494,27 @@ In this way, we obtain a vector field $IdH$ on $M$.
 The vector field $IdH$ is called \emph{Hamiltonian vector field}.
 %
 $H$ is called the \emph{Hamiltonian function}.
-%
-In the above example,
+\end{defn*}
+
+\begin{ex*}
+  If $M^{2n} = R^{2n} = {(\mathbf p, \mathbf q)}$,
+  then we obtain the phase velocity field
+  of Hamilton's canonical equation:
+  $$
+  \dot{\mathbf x} = I\,dH(\mathbf x)
+  \Longleftrightarrow
+  \dot{\mathbf p} = - \frac{\partial H }{ \partial \mathbf q}
+  \mathrm{\quad and \quad}
+  \dot{\mathbf q} = \frac{\partial H}{\partial \mathbf p}.
+  $$
+\note{In the above example,
 the 1-form is represented by the vector
-$\nabla H = (\partial H/\partial \mathbf p, \partial H/\partial q)^T$
+$\nabla H = \left(\frac{\partial H}{\partial \mathbf p},
+\frac{\partial H}{\partial q}\right)^T$
 to invert this vector to corresponding tangent vector we multiple it by $\mathbf J$
 %
 \[
+\arraycolsep=3.0pt\def\arraystretch{1.5}
 \mathbf J \cdot \nabla H
 =
 \left(
@@ -378,8 +543,8 @@ to invert this vector to corresponding tangent vector we multiple it by $\mathbf
     \dot{\mathbf q}
   \end{array}
 \right).
-\]
-\end{defn*}
+\]}
+\end{ex*}
 
 
 %section 38
@@ -457,7 +622,7 @@ To this cell will be associated a cell $(D', f', \mathrm{Or}')$
 We could say that $Jc$ is the chain swept out by $c$
   under the homotopy $g^t$, $0 \le t \le \tau$.
   The boundary of the chain $Jc$ consists of ``end-walls''
-  made up of the initial and final positions of $c$, 
+  made up of the initial and final positions of $c$,
   and the ``side surfaces'' filled in by the boundary of $c$.
 \note{Below, we want to prove that the integrals on the side surfaces
   vanishes, so is the integral on the volume enclosed by the tube.
@@ -484,8 +649,22 @@ We could say that $Jc$ is the chain swept out by $c$
     \draw [thick] plot [smooth, tension=1]
       coordinates{(0, 2) (2.5,  1.8) (5, 2)};
     % end-wall 2
-    \draw [thick, ->] plot [smooth, tension=1.8]
-      coordinates{(5, 0) (5.5, 1) (5, 2)};
+    \draw [thick, ->] plot [smooth, tension=1.5]
+      coordinates{(5, 0) (5.3, 0.4) (5.4, 1.2)};
+    \draw [thick] plot [smooth, tension=1.2]
+    coordinates{(5.4, 1.2) (5.2, 1.8) (5, 2)};
+
+    % intermediate rings
+    \draw [] plot [smooth, tension=1]
+      coordinates{(0.8, -0.1) (1.0, 1.0) (0.8, 1.9)};
+    \draw [] plot [smooth, tension=1]
+      coordinates{(1.6, -0.15) (1.8, 0.9) (1.6, 1.82)};
+    \draw [] plot [smooth, tension=1]
+      coordinates{(2.4, -0.18) (2.6, 0.9) (2.4, 1.82)};
+    \draw [] plot [smooth, tension=1]
+      coordinates{(3.3, -0.18) (3.5, 0.9) (3.3, 1.82)};
+    \draw [] plot [smooth, tension=1]
+      coordinates{(4.3, -0.1) (4.5, 0.9) (4.3, 1.92)};
 
     % dc
     \draw [->, thick] plot [smooth, tension=1]
@@ -497,28 +676,179 @@ We could say that $Jc$ is the chain swept out by $c$
 
     % J c
     \draw [->, thick] plot [smooth, tension=0.5]
-      coordinates{(2, 0.2) (3.5, 0.3) (3.5, 1.2)};
+      coordinates{(2, 0.2) (3.5, 0.3) (3.6, 1.2)};
     \node[](Jc) at (3, 0.8){$Jc$};
 
     % g c
     \node[](gc) at (5.9, 1.0){$g^\tau c$};
 
     % k = 2
-    \node[](gc) at (2.7, -0.7){$k = 2$};
+    \node[](keq2) at (2.7, -0.7){$k = 2$};
   \end{tikzpicture}
+%
   \begin{tikzpicture}
-    \draw [thick] plot [smooth]
-      coordinates{(0, 0) (1.5, -0.2) (3, 0)};
+    % c
+    \draw [thick, ->] plot [smooth, tension=1]
+      coordinates{(0, 0) (1, -0.1) (2, 0)};
+    \node[](c) at (1, -0.3){$c$};
+    % g c
+    \draw [thick, ->] plot [smooth, tension=1]
+      coordinates{(0, 2) (1., 1.9) (2, 2)};
+    \node[](gc) at (1, 2.1){$g^\tau c$};
+    % J c, left
+    \draw [thick, ->] plot [smooth, tension=1]
+      coordinates{(0, 1.9) (0.1, 1) (0, 0.1)};
+    \node[](Jcleft) at (-0.5, 1){$J\partial c$};
+    % J c, right
+    \draw [thick, ->] plot [smooth, tension=1]
+      coordinates{(2, 0.1) (2.1, 1) (2, 1.9)};
+    \node[](Jcright) at (2.5, 1){$J\partial c$};
+
+    % the circle
+    \draw [thick, ->] plot [smooth, tension=1.0]
+      coordinates{(0.5, 1.5) (1.5, 1.5) (1.5, 0.3) (0.5, 0.3)};
+    \node[](Jc) at (1, 1){$Jc$};
+    % k = 3
+    \node[](gc) at (1.0, -0.8){$k = 3$};
   \end{tikzpicture}
   \caption{Track of a cycle under homotopy.}
 \end{figure}
+
+It is easy to verify that under the choice of orientation made above
+\begin{equation}
+\partial (J c_k) = g^\tau c_k - c_k - J \partial c_k.
+\label{eq:H_homotopy}
+\end{equation}
+
+\begin{lem*}
+  Let $\gamma$ be a 1-chain in the symplectic manifold $(M^{2n}, \omega^2)$.
+  Let $g^t$ be phase flow on $M$ with hamiltonian function $H$.
+  Then
+  $$
+  \frac{d}{d\tau} \int_{J\gamma} \omega^2
+  =
+  \int_{g^\tau\gamma} dH.
+  $$
+\end{lem*}
+
+\begin{proof}
+  It is sufficient to consider a chain $\gamma$ with one cell
+  $f: [0,1] \rightarrow M$.\note{$\gamma$ is a curve.}
+  We introduce the notation
+  $$
+  \begin{aligned}
+    f'(s, t) &= g^t f(s), \\
+    \pmb\xi = \frac{ \partial f' } { \partial s },
+    &\mathrm{\quad and \quad}
+    \pmb\eta = \frac{ \partial f' } { \partial t }
+    = TM_{f'(s, t)}.
+  \end{aligned}
+  $$
+  By the definition of the integral,
+  $$
+  \int_{J\gamma} \omega^2
+  =
+  \int_0^1 \int_0^\tau \omega^2(\pmb\xi, \pmb\eta) \, dt \, ds.
+  $$
+  But the by the definition of the phase flow,
+  $\pmb \eta$ is a vector (at the point $f'(s, t)$)
+  of the hamiltonian flow with hamiltonian function $H$.
+  \note{$\pmb\eta = I dH$.}
+  By defintion of a hamiltonian field
+  $\omega^2(\pmb\xi, \pmb\eta) = dH(\pmb\xi)$.
+  \begin{figure*}
+    \centering
+    \begin{tikzpicture}
+      \draw [very thick, ->] (0,0) -- (0,3.5);
+      \node[](q) at (-0.3, 3.2){$\mathbf q$};
+
+      \draw [very thick, ->] (0,0) -- (5,0);
+      \node[](p) at (5.5, 0){$\mathbf p$};
+
+      \draw [fill=gray!50!white] (0, 0) -- (1.2, 2) -- (3.6, 3.5) -- (2.4, 1.5) -- cycle;
+
+      \draw [thick, ->, blue] (0, 0) -- (2.4, -1.2);
+      \node[](dH) at (2.4, -0.7){$\nabla H$};
+
+      \draw [thick, ->, blue] (0, 0) -- (1.2, 2);
+      \node[](IdH) at (0.8, 2.4){$\pmb\eta = I dH$};
+
+      \draw [thick, ->, red] (0, 0) -- (2.4, 1.5);
+      \node[](eta) at (2.5, 1.2){$\pmb\xi$};
+    \end{tikzpicture}
+    \caption*{$\omega^2(\pmb\xi, \pmb\eta) = (\pmb\xi, \nabla H)$:
+    The area spanned by $\pmb\xi$ and $\pmb\eta = IdH$ is equal
+    to the projection of $\nabla H$ on $\pmb \xi$.}
+  \end{figure*}
+    \note{$\omega^2(\pmb\xi, \pmb\eta) = \omega^1_{\pmb\eta}(\pmb\xi)
+      = \omega^1_{IdH}(\pmb\xi) = (\pmb\xi, I^{-1} IdH)
+    = dH(\pmb\xi)$.}
+  Thus,
+  $$
+  \int_{J\gamma}\omega^2 = \int_0^\tau
+  \left(
+    \int_{g^t\tau} dH
+  \right) dt.
+  $$
+  \note{$\int_0^1 \omega^2(\pmb\xi, \pmb\eta) \, ds
+    = \int_0^1 dH(\pmb\xi) \, ds = \int_0^1 dH(\pmb\xi \, ds).$
+    But $\pmb\xi = \frac{ \partial f' } { \partial s }
+    = g^t \frac{ d f }{ d s } \rightarrow
+    \pmb\xi\, ds = g^t \, df = d(g^t f)$,
+    So
+    $\int_0^1 dH(\pmb\xi ds) = \int dH(d g^t f) = \int_{g^t\gamma} dH.$
+  }
+\end{proof}
+
+
+\begin{cor*}
+  If the chain $\gamma$ is closed ($\partial \gamma = 0$)
+  then $\int_{J\gamma} \omega^2 = 0$.
+
+\end{cor*}
+
+\begin{proof}
+  $\int_\gamma dH = \int_{\partial \gamma} H = 0.$
+
+  \note{
+    $\int_{J\gamma} \omega^2 = \int_0^\tau \int_{g^t\gamma} dH \, dt
+    = \int_0^\tau dt \int_{\partial(g^t \gamma)} H
+    = \int_0^\tau dt \int_{g^t\partial\gamma} H = 0.$
+  }
+\end{proof}
+
+\begin{proof}[Proof of the theorem.]
+  We consider any 2-chain $c$. We have
+  $$
+  0 \stackrel{1}{=} \int_{Jc} d\omega^2
+  \stackrel{2}{=} \int_{\partial Jc} \omega^2
+  \stackrel{3}{=}
+  \left(
+    \int_{g^\tau c}
+    -\int_{c}
+    -\int_{J\partial c}
+  \right)
+  \omega^2
+  \stackrel{4}{=}
+  \left(
+    \int_{g^\tau c}
+    -\int_{c}
+  \right)
+  \omega^2.
+  $$
+  (1 since $\omega^2$ is closed, 2 by Stokes formula,
+  3 by formula \eqref{eq:H_homotopy},
+  4 by the corollary above with $\gamma = \partial c$).
+  Thus the integrals of the form $\omega^2$
+  on any chain $c$ and on its image $g^\tau c$ are the same.
+\end{proof}
 
 \section{The Lie algebra of vector fields}
 
 \section{The Lie algebra of hamiltonian functions}
 
 \begin{figure}
-\centering
+  \centering
  \begin{tikzpicture}
     \draw (-1,0) to[bend left] (1,0);
     \draw (-1.2,.1) to[bend right] (1.2,.1);
