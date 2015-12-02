@@ -52,6 +52,9 @@
 \newtheorem{prob}{Problem}
 \newtheorem*{prob*}{Problem}
 
+\newtheorem{ans}{Answer}
+\newtheorem*{ans*}{Answer}
+
 % fix the arrow direction for tikz
 \makeatletter
 \def\pgf@plot@curveto@handler@finish{%
@@ -1110,6 +1113,101 @@ The integral invariants considered above are also called
   2 by the definition of relative invariant,
   and 3 by the definition of boundary).
 \end{proof}
+
+
+\begin{ex*}
+  A canonical map $g:\mathbb R^{2n} \rightarrow \mathbb R^{2n}$
+  has the 1-form
+  $$
+  \omega^1 = \mathbf p \, d\mathbf q = \sum_{i = 1}^n p_i \, dq_i
+  \mbox{ as a relative integral invariant.}
+  $$
+  \note{This is more like a converse of the above theorem,
+  not a deduction.}
+  In fact, every closed chain $c$ on $\mathbb R^{2n}$
+  is the boundary of some chain $\sigma$
+  \note{Recall the cone construction in Sec. 36},
+  and we find
+  $$
+  \int_{gc} \omega^1
+  \stackrel{1}{=}
+  \int_{g\partial \sigma} \omega^1
+  \stackrel{2}{=}
+  \int_{\partial g\sigma} \omega^1
+  \stackrel{3}{=}
+  \int_{g\sigma} d\omega^1
+  \stackrel{4}{=}
+  \int_{\sigma} d\omega^1
+  \stackrel{5}{=}
+  \int_{\partial \sigma} \omega^1
+  \stackrel{6}{=}
+  \int_{c} \omega^1.
+  $$
+  (1 and 6 are by definition of $\sigma$,
+  2 by definition of $\partial$,
+  3 and 5 by Stokes' formula,
+  and 4 since $g$ is canonical and
+  $d\omega^1 = d(pdq) = dp \wedge dq = \omega^2$).
+\end{ex*}
+
+
+\begin{prob*}
+  Let $d\omega^k$ be an absolute integral invariant of the map
+  $g: M \rightarrow M$. Does it follow that $\omega^k$ is a
+  relative integral invariant?
+\end{prob*}
+
+\begin{ans*}
+  No, if there is a closed $k$-chain on $M$ which is not a boundary.
+  \note{
+  We still have
+  $
+  \int_{g\partial c} \omega^k =
+  \int_{gc} d\omega^k =
+  \int_c d\omega^k =
+  \int_{\partial c} \omega^k.
+  $
+  The problem is that there are closed chains $\gamma$ that cannot be
+  written as $\partial c$, like an equator of the torus, $T^2$,
+  which will fail $\omega^k$.
+  }
+\end{ans*}
+
+
+% subsection C
+\subsection{The law of conservation of energy}
+
+\begin{thm*}
+  The function $H$ is a first integral of the hamiltonian phase flow
+  with hamiltonian function $H$.
+\end{thm*}
+
+\begin{proof}
+  The derivative of $H$ in the direction of a vector $\pmb\eta$
+  is equal to the value of $dH$ on $\pmb\eta$.
+  By definition of the hamiltonian field
+  $\pmb\eta = IdH$ we find
+  $$
+  dH(\pmb\eta) = \omega^2(\pmb\eta, IdH)
+  = \omega^2(\pmb\eta, \pmb\eta) = 0.
+  $$
+\end{proof}
+
+\begin{prob*}
+  Show that the 1-form $dH$ is an integral invariant
+  of the phase flow with hamiltonian function $H$.
+
+\answer{
+  $$
+  \left( \int_{g\gamma} - \int_{\gamma} \right) dH
+  =
+  \int_{\partial(Jc) } dH + \int_{J\partial c} dH
+  =
+  \int_{Jc} ddH + \int_0^1 dH(\pmb\eta) \, dt
+  = 0 + 0 = 0.
+  $$
+}
+\end{prob*}
 
 
 \section{The Lie algebra of vector fields}
