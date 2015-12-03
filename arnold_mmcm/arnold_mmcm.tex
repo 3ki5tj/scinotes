@@ -64,6 +64,13 @@
 }
 \makeatother
 
+% larger arrow
+\tikzset{
+  big arrow/.style={
+    decoration={markings,mark=at position 1 with {\arrow[scale=4]{>}}},
+    postaction={decorate},
+    shorten >=0.4pt}}
+
 \begin{document}
 
 \definecolor{DarkBlue}{RGB}{0,0,64}
@@ -72,8 +79,8 @@
 \newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
 \newcommand{\add}[1]{{\color{blue} #1}}
 \newcommand{\del}[1]{{\color{gray} [#1]}}
-\newcommand{\note}[1]{{\color{DarkBrown}\small [\textsc{Note.} #1]}}
-\newcommand{\answer}[1]{{\color{DarkBlue}\small \textsc{Answer.} #1}}
+\newcommand{\note}[1]{{\color{DarkBrown}\footnotesize \textsc{Note.} #1}}
+\newcommand{\answer}[1]{{\color{DarkBlue}\footnotesize \textsc{Answer.} #1}}
 
 \newcommand{\hl}[1]{{\color{red} #1}}
 
@@ -171,7 +178,7 @@
 
 \setcounter{subsection}{2}
 %subsection C
-\subsection{Behavior under mappings}
+\subsection{\label{sec:exterior_mapping}Behavior under mappings}
 
 
 Let $f: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a linear map,
@@ -295,6 +302,23 @@ $f^*(\omega^k \wedge \omega^l) = (f^*\omega^k) \wedge (f^*\omega^l).$
 
 \chapter{Symplectic manifolds}
 
+
+A symplectic structure on a manifold is a closed nondegenerate differential
+2-form.  The phase space of a mechanical system has a natural symplectic
+structure.
+
+On a symplectic manifold, as on a riemannian manifold, there is a natural
+isomorphism between vector fields and 1-forms.  A vector field on a symplectic
+manifold corresponds to the differential of a function is called a
+hamiltonian vector field.  A vector field on a manifold determines a phase
+flow, i.e., a one-parameter group of diffeomorphisms.  The phase flow of a
+hamiltonian vector field on a symplectic manifold preserves the symplectic
+structure of phase space.
+
+The vector fields on a manifold form a Lie algebra.  The hamiltonian
+vector fields on a symplectic manifold also form a Lie algebra. The operation
+in this algebra is called the Poisson bracket.
+
 % section 37
 \section{Symplectic structures on manifolds}
 
@@ -405,29 +429,75 @@ $\omega^2 = d\mathbf p \wedge d\mathbf q = dp_1 \wedge dq_1 + \cdots + dp_n \wed
 \end{thm*}
 
 \begin{proof}
-Define a distinguished 1-form on $T^*V$.
+First, we define a distinguished 1-form on $T^*V$.
 %
-Let $\pmb \xi \in T(T^*V)p$ be a vector tangent to the cotangent bundle at
-the point $p \in T^*V_{\mathbf x}$.
-[Note: this means $p$ is a 1-form with coordinates $\mathbf p$,
-and we can express $\pmb \xi$ in local coordinates as $(d\mathbf p, d\mathbf q)$.]
+Let $\pmb \xi \in T(T^*V)_p$ be a vector
+\emph{tangent to the cotangent bundle at the point $p \in T^*V_{\mathbf x}$}
+(Figure 166).
+\note{This means $p$ is a 1-form with coordinates $\mathbf p$,
+and we can express $\pmb \xi$ in local coordinates as $(d\mathbf p, d\mathbf q)$.}
 %
-The derivative $f_{\mathbf x}: T(T^*V) \rightarrow TV$
+The derivative $f_*: T(T^*V) \rightarrow TV$
 of the natural projection $f: T^*V \rightarrow V$,
-which takes $\pmb \xi$ to a vector $f_{\mathbf x} \pmb \xi$ ($d\mathbf q$)
+which takes $\pmb \xi$ to a vector $f_* \pmb \xi$ ($d\mathbf q$)
 tangent to $V$ at $\mathbf x$.
 %
 We define a 1-form $\omega^1$ on $T^*V$ by the relation
-$\omega^1(\pmb \xi) \equiv p( f_{\mathbf x}\pmb \xi )$
-[Note: remember that $p$ is a 1-form so it accepts
-  a tangent vector $d\mathbf q = f_{\mathbf x} \pmb \xi$
-as input and returns a number.]
+$\omega^1(\pmb \xi) \equiv p( f_*\pmb \xi )$
+\note{Remember that $p$ is a 1-form so it accepts
+  a tangent vector $d\mathbf q = f_* \pmb \xi$
+  as input and returns a number.}
 %
 In the local coordinates described above,
 this form is
 $\omega^1 = \mathbf p \cdot d\mathbf q$,
 and
 $\omega^2 = d\omega^1$ is nondegenerate.
+
+\setcounter{figure}{165}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    % T^*V
+    \draw [] (0, 2) -- (0, 5.5);
+    \draw [] (1, 2) -- (1, 5.5);
+    \draw [] (2, 2) -- (2, 5.5);
+    \draw [] (3, 2) -- (3, 5.5);
+
+    \node [] at (-0.7, 4.5) {$T^*V_{\mathbf x}$};
+
+    % the mapping f
+    \node [] at (1.2, 1.2) {$f$};
+    \draw [ultra thick, ->] (1.5, 1.5) -- (1.5, 0.7);
+
+    \node [] at (4.0, 3.2) {$T^*V$};
+    \draw [ultra thick, ->] (4.0, 2.5) -- (4.0, 0.7);
+    \node [] at (4.0, 0.1) {$V$};
+
+    % vector xi
+    \draw [ultra thick, ->] (0, 3.5) -- (0.9, 4.8);
+    \node [] at (0.5, 3.8) {$\pmb\xi$};
+
+    % point p
+    \node [] at (-0.2, 3.5) {$p$};
+    \draw [fill=white] (0, 3.5) circle (0.07);
+
+    % V space
+
+    \draw [thick] plot [smooth, tension=1]
+      coordinates{(-0.3, -0.13) (1.5, 0.3) (3.3, -0.13)};
+    \node [] at (1.5, 0) {$f_*\pmb\xi$};
+
+    \draw [ultra thick, ->] (0, 0) -- (1.0, 0.4);
+    \draw [fill=white] (0, 0) circle (0.07);
+
+  \end{tikzpicture}
+  \label{fig:1form_cotangent}
+  \caption{The 1-form $\mathbf p \, d\mathbf q$ on
+    the cotangent bundle}
+\end{figure}
+
+
 \end{proof}
 
 \begin{rem*}
@@ -694,6 +764,14 @@ $$
 This group $g^t$ is the hamiltonian phase flow with
 hamiltonian function $H$.
 
+\note{
+A \emph{diffeomorphism} is an isomorphism of smooth manifolds.
+It is a smooth invertible function that maps one differentiable manifold
+to another.
+
+Not all differentiable maps are diffeomorphism, because of the one-to-one requirement.
+For example, $(x, y) \rightarrow (y^2 \sin x, y^2 \cos x)$ is not invertible.
+}
 
 \begin{thm}
 A hamiltonian phase flow preserves the symplectic structure:
@@ -702,9 +780,12 @@ $$
 $$
 \end{thm}
 
-\note{Difference between $g^t$ and $(g^t)^*$:
-  $g^t$ applies to $\mathbf x$,
-  $(g^t)^*$ applies to $\omega$.}
+\note{The definition of $(g^t)^*$:
+  $g^t$ applies to $\mathbf x$ or a tangent vector,
+  $(g^t)^*$ applies to $\omega$.
+  The definition of
+  $[(g^t)^*\omega^2](\pmb\xi, \pmb\eta) \equiv \omega^2(g^t\pmb\xi, g^t\pmb\eta).$
+  See details in Sec. 33C.}
 
 
 In the case $n = 1$, $M^{2n} = \mathbb{R}^2$, this theorem says
@@ -751,12 +832,6 @@ We could say that $Jc$ is the chain swept out by $c$
   vanishes, so is the integral on the volume enclosed by the tube.
   Then the integrals at the two end walls, which are opposite
   in the signs must add to zero.}
-
-\tikzset{
-  big arrow/.style={
-    decoration={markings,mark=at position 1 with {\arrow[scale=4]{>}}},
-    postaction={decorate},
-    shorten >=0.4pt}}
 
 \setcounter{figure}{166}
 \begin{figure}
@@ -882,24 +957,30 @@ It is easy to verify that under the choice of orientation made above
   \begin{figure*}
     \centering
     \begin{tikzpicture}
+      % q axis
       \draw [very thick, ->] (0,0) -- (0,3.5);
       \node[](q) at (-0.3, 3.2){$\mathbf q$};
 
+      % p axis
       \draw [very thick, ->] (0,0) -- (5,0);
       \node[](p) at (5.5, 0){$\mathbf p$};
 
-      \draw [fill=gray!50!white] (0, 0) -- (1.2, 2) -- (3.6, 3.5) -- (2.4, 1.5) -- cycle;
+      % the parallelogram
+      \draw [dashed, fill=gray!30!white] (0, 0) -- (1.2, 2) -- (3.6, 3.5) -- (2.4, 1.5) -- cycle;
 
+      % dH
       \draw [thick, ->, blue] (0, 0) -- (2.4, -1.2);
       \node[](dH) at (2.4, -0.7){$\nabla H$};
 
+      % eta = IdH
       \draw [thick, ->, blue] (0, 0) -- (1.2, 2);
       \node[](IdH) at (0.8, 2.4){$\pmb\eta = I dH$};
 
+      % xi
       \draw [thick, ->, red] (0, 0) -- (2.4, 1.5);
       \node[](eta) at (2.5, 1.2){$\pmb\xi$};
     \end{tikzpicture}
-    \caption*{$\omega^2(\pmb\xi, \pmb\eta) = (\pmb\xi, \nabla H)$:
+    \caption*{Illustration of $\omega^2(\pmb\xi, \pmb\eta) = (\pmb\xi, \nabla H)$.
     The area spanned by $\pmb\xi$ and $\pmb\eta = IdH$ is equal
     to the projection of $\nabla H$ on $\pmb \xi$.}
   \end{figure*}
@@ -1000,19 +1081,16 @@ Let $g:M\rightarrow M$ be a differentiable map.
 
   \answer{
     It follows from Problem \ref{prob:fstar_exprod} in Sec. 33.
-    Not sure this is correct.
     $$
     \begin{aligned}
     \int_{gc} (\omega^k \wedge \omega^l)
     &=
     \int_{c} (\omega^k \wedge \omega^l)(g\pmb\xi_1, \dots, g\pmb\xi_{k+l})
-    \\
-    &=
+    =
     \int_{c} g^*(\omega^k \wedge \omega^l)(\pmb\xi_1, \dots, \pmb\xi_{k+l})
     \\
     &=\int_{c} (g^*\omega^k \wedge g^*\omega^l)(\pmb\xi_1, \dots, \pmb\xi_{k+l})
-    \\
-    &=\int_{c} (\omega^k \wedge \omega^l)(\pmb\xi_1, \dots, \pmb\xi_{k+l}).
+    =\int_{c} (\omega^k \wedge \omega^l)(\pmb\xi_1, \dots, \pmb\xi_{k+l}).
     \end{aligned}
     $$
   }
@@ -1210,8 +1288,310 @@ The integral invariants considered above are also called
 \end{prob*}
 
 
+% section 39
 \section{The Lie algebra of vector fields}
 
+
+Every pair of vector fields on a manifold determines a new vector field,
+called their Poisson bracket\footnote{Or Lie bracket}.
+%
+The Poisson bracket operation makes the vector space of
+infinitely differentiable vector fields
+on a manifold into a Lie algebra.
+
+% subsection 39A
+\subsection{Lie algebras}
+
+One example of a Lie algebra is a three-dimensional oriented euclidean
+vector space equipped with the operation of vector multiplication.
+%
+The vector product is bilinear, skew symmetric, and satisfies the
+\emph{Jacobi identity}
+  $$
+    [[A, B], C] + [[B, C], A] + [[C, A], B].
+  $$
+
+\note{The Jacobi identity for the vector product reads
+$$
+\mathbf{
+  (A \times B) \times C
++ (B \times C) \times A
++ (C \times A) \times B
+= 0}.
+$$
+To show this, we recall
+$\mathbf{[(A \times B) \times C]}_k = \epsilon_{ijk}\epsilon_{imn} A_m B_n C_j
+= (\delta_{jm}\delta_{kn} - \delta_{jn}\delta_{mk}) A_m B_n C_j
+= C_j A_j B_k - B_j C_j A_k
+= \mathbf{[(C\cdot A) \, B - (B\cdot C) A]}_k$;
+similarly
+$\mathbf{
+  (B\times C)\times A
+=(A\cdot B) \, C - (C \cdot A) \, B}$,
+and
+$\mathbf{(C\times A)\times B
+=(B\cdot C) \, A - (A \cdot B) \, C}$.
+The three sum to $0$.
+Poisson bracket can be viewed as a generalization of
+the idea of vector cross product in higher spaces.
+}
+
+\begin{defn*}
+  A \emph{Lie algebra} is a vector space $L$,
+  together with a bilinear skew-symmetric operation
+  $L\times L \rightarrow L$ which satisfies the Jacobi identity.
+
+  The operation is usually denoted by square brackets
+  and called the commutator.
+\end{defn*}
+
+\begin{prob*}
+  Show that the set of $n\times n$ matrices becomes a Lie algebra
+  if we define the commutator by $[A, B] = AB - BA$.
+
+  \answer{The bilinearity is easy. Let us verify the Jacobi identity.
+    After expansion, each term on the left-hand side is a product of
+    three matrices.  Let us collect all terms that end with $C$:
+    $[[A, B], C]$ contributes $[A, B] C$;
+    $[[B, C], A]$ contributes $-ABC$ through $-A[B,C]$,
+    $[[C, A], B]$ contributes $BAC$ through $-B[C,A]$,
+    and
+    $$[A, B] C - ABC + BAC = 0.$$
+    By the cyclic symmetry, the same holds for terms end with $A$ or $B$,
+    so the Jacobi identity is satisfied.
+  }
+\end{prob*}
+
+
+% subsection B
+\subsection{Vector fields and differential operators}
+
+Let $M$ be a smooth manifold and $\mathbf A$ a smooth vector field on $M$:
+at every point $\mathbf x \in M$ we are given a tangent vector
+$\mathbf{ A(x) } \in TM_{\mathbf x}$.
+With every such vector field we associate the following two objects:
+\begin{enumerate}
+  \item
+    \emph{The one-parameter group of diffeomorphisms} or \emph{flow}
+    of $A^t: M \rightarrow M$ for which $\mathbf A$ is the velocity vector field
+    (Figure 168):\footnote{
+    By theorems of existence, uniqueness and differentiability
+    in the theory of ordinary differential equations,
+    the group $A^t$ is defined if the manifold is compact.
+    In the general case, the maps $A^t$ are defined only in a neighborhood
+    of $\mathbf x$ and only for small $t$; this is enough
+    for the following constructions.
+    \note{A subset is
+      ``compactness'' if it is \emph{closed}
+      (containing all its limit points)
+      and \emph{bounded} (having all its points lie
+      within some fixed distance of each other).
+      Examples of compact manifolds include
+      the circle and $n$-dimensional sphere and torus.
+    }
+    }
+    $$
+    \frac{d}{dt}\bigg|_{t = 0} A^t \mathbf x = \mathbf{ A(x) }.
+    $$
+
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}
+        % parallelogram
+        \draw [] plot [smooth, tension=1]
+        coordinates{(1, 0) (2, 0.4) (3, 0.5)};
+        \draw [] plot [smooth, tension=1]
+          coordinates{(3, 0.5) (2.6, 1.5) (2, 2.2)};
+        \draw [] plot [smooth, tension=1]
+          coordinates{(2, 2.2) (1, 1.9) (0, 1.2)};
+        \draw [] plot [smooth, tension=1]
+          coordinates{(0, 1.2) (0.5, 0.7) (1, 0)};
+
+        % A
+        \node [] at (-0.1, 0.8) {$\mathbf A$};
+
+        % x
+        \node [] at (0.9, 0.7) {$\mathbf x$};
+
+        % A^t(x)
+        \node [] at (2.2, 0.9) {$A^t(\mathbf x)$};
+
+        % A(x)
+        \node [] at (1.1, 1.5) {$\mathbf{ A(x)}$};
+        % the curve A^t(x)
+        \draw [thick] plot [smooth, tension=1]
+          coordinates{(0.8, 0.9) (1.7, 1.3) (2.6, 1.2)};
+
+        % the tangent vector
+        \draw [ultra thick, ->] (0.9, 1.0) -- (2.0, 1.6);
+
+        \draw [fill=white] (0.9, 1.0) circle (0.07);
+
+      \end{tikzpicture}
+      \label{fig:flow_vecfield}
+      \caption{The group of diffeomorphism given by
+      a vector field}
+    \end{figure}
+
+  \item
+    The first-order differential operator $L_\mathbf{A}$.
+    We refer here to the differentiation of functions
+    in the direction of the field $\mathbf A$:
+    for any function $\varphi: M \rightarrow \mathbb F$,
+    the \emph{derivative in the direction of $\mathbb A$}
+    is a new function $L_{\mathbf A} \varphi$,
+    whose value at a point $\mathbf x$ is
+    $$
+    (L_{\mathbf A}\varphi) (\mathbf x)
+    =
+    \frac{d}{dt}\bigg|_{t = 0} \varphi(A^t\mathbf x).
+    $$
+
+\end{enumerate}
+
+\begin{prob*}
+  Show that the operator $L_\mathbf{A}$ is linear:
+  $$
+  L_\mathbf{A}(\lambda_1 \varphi_1 + \lambda_2 \varphi_2)
+  =
+  \lambda_1 L_\mathbf{A}\varphi_1
+  +
+  \lambda_2 L_\mathbf{A}\varphi_2
+  \qquad
+  (\lambda_1, \lambda_2 \in \mathbb{R}).
+  $$
+  Also, prove the Leibniz's formula
+  $
+  L_\mathbf{A}(\varphi_1\varphi_2)
+  = \varphi_1 L_\mathbf{A} \varphi_2 + \varphi_2 L_\mathbf{A} \varphi_1.
+  $
+
+  \answer{
+    For the linearity:
+    $$
+    \begin{aligned}
+    L_\mathbf{A}(\lambda_1 \varphi_1 + \lambda_2 \varphi_2)
+    &=
+    \frac{d}{dt}\bigg|_{t = 0}
+    \left[
+    \lambda_1 \varphi_1(A^t\mathbf x)
+    +
+    \lambda_2 \varphi_2(A^t\mathbf x)
+    \right]
+    \\
+    &=
+    \lambda_1
+    \frac{d}{dt}\bigg|_{t = 0}
+    \varphi_1(A^t\mathbf x)
+    +
+    \lambda_2
+    \frac{d}{dt}\bigg|_{t = 0}
+    \varphi_2(A^t\mathbf x) \\
+    &=
+    \lambda_1
+    (L_{\mathbf A}\varphi_1) (\mathbf x)
+    +
+    \lambda_2
+    (L_{\mathbf A}\varphi_2) (\mathbf x).
+    \end{aligned}
+    $$
+
+    For the Leibniz's formula:
+    $$
+    \begin{aligned}
+    L_\mathbf{A}(\varphi_1 \varphi_2)
+    &=
+    \frac{d}{dt}\bigg|_{t = 0}
+    \varphi_1(A^t\mathbf x)
+    \varphi_2(A^t\mathbf x)
+    \\
+    &=
+    \varphi_1(\mathbf x)
+    \frac{d}{dt}\bigg|_{t = 0}
+    \varphi_2(A^t\mathbf x)
+    +
+    \varphi_2(\mathbf x)
+    \frac{d}{dt}\bigg|_{t = 0}
+    \varphi_1(A^t\mathbf x) \\
+    &=
+    \varphi_1(\mathbf x)
+    (L_{\mathbf A}\varphi_2) (\mathbf x)
+    +
+    \varphi_2(\mathbf x)
+    (L_{\mathbf A}\varphi_1) (\mathbf x).
+    \end{aligned}
+    $$
+  }
+\end{prob*}
+
+\begin{ex*}
+  Let $(x_1, \dots, x_n$ be local coordinates on $M$.
+  In this coordinate system the vector $\mathbf{ A(x) }$
+  is given by its components
+  $(A_1(\mathbf x), \dots, A_n(\mathbf x))$;
+  the flow $A^t$ is given by the system of differential equations
+  $$
+  \dot x_1 = A_1(\mathbf x), \dots
+  \dot x_n = A_n(\mathbf x)
+  $$
+  and, therefore, the derivative of
+  $\varphi = \varphi(x_1, \dots, x_n)$
+  in the direction $\mathbf A$ is
+  $$
+  L_\mathbf{A} \varphi = A_1 \frac{\partial \varphi}{\partial x_1}
+  + \dots A_n \frac{ \partial \varphi }{ \partial x_n }.
+  $$
+  We could say that in the coordinates $(x_1, \dots, x_n)$
+  the operator $L_\mathbf{A}$ has the form
+  $$
+  L_\mathbf{A} = A_1 \frac{\partial }{\partial x_1}
+  + \dots + A_n \frac{ \partial }{ \partial x_n}.
+  $$
+  This is the general form of a first-order linear differential operator
+  on coordinate space.
+\end{ex*}
+
+\begin{prob*}
+  Show that the correspondences between vector fields $\mathbf A$,
+  flows $A^t$, and differentiations $L_\mathbf{A}$ are one-to-one.
+
+  \answer{
+    The correspondence between the vector field $\mathbf A$
+    and the differentiations $L_\mathbf{A}$ are apparent
+    from the above example.
+    For $\mathbf A$ and the flow, we first note that
+    by definition the vector field $\mathbf{ A(x)}$ is determined by the flow.
+    Conversely, we can trace the flow
+    by following the vector field $\mathbf{ A(x) }$,
+    That is,
+    for a sufficiently small $\Delta t$,
+    the flow approximately satisfies the recurrence relation
+    $$
+    A^t(\mathbf x) \approx
+    A^{t-\Delta t}(\mathbf x + \Delta t \mathbf{A(x)})
+    =
+    A^{t-\Delta t} (1 + \Delta t \mathbf{A})\mathbf x.
+    $$
+    Or,
+    $$
+    A^t(\mathbf x)
+    =
+    \lim_{n\rightarrow \infty}
+    \left(1 + \frac{t}{n} \mathbf{A}\right)^{n} \mathbf x.
+    =
+    \exp(t\mathbf{A}) \, \mathbf x.
+    $$
+    which means the flow is completely determined by the vector field.
+  }
+\end{prob*}
+
+% subsection C
+\subsection{Poisson bracket of vector fields}
+
+
+
+
+% section 40
 \section{The Lie algebra of hamiltonian functions}
 
 \begin{figure}
