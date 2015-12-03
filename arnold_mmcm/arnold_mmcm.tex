@@ -77,11 +77,12 @@
 
 \definecolor{DarkBlue}{RGB}{0,0,64}
 \definecolor{DarkBrown}{RGB}{64,20,10}
+\definecolor{DarkGreen}{RGB}{0,64,0}
 % annotation macros
 \newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
 \newcommand{\add}[1]{{\color{blue} #1}}
 \newcommand{\del}[1]{{\color{gray} [#1]}}
-\newcommand{\note}[1]{{\color{DarkBrown}\footnotesize \textsc{Note.} #1}}
+\newcommand{\note}[1]{{\color{DarkGreen}\footnotesize \textsc{Note.} #1}}
 \newcommand{\answer}[1]{{\color{DarkBlue}\footnotesize \textsc{Answer.} #1}}
 
 \newcommand{\hl}[1]{{\color{red} #1}}
@@ -193,6 +194,23 @@ $$
 =
 \omega^k(f\pmb\xi_1, \dots, f\pmb\xi_k).
 $$
+
+\note{
+  We should note that besides the explicit mapping
+  of the tangent vectors, the actual point $\mathbf x \in \mathbb R^m$,
+  at which the $k$-form is evaluated is also mapped.
+  More explicitly,
+$$
+(f^*\omega^k_{\mathbf x})(\pmb\xi_1, \dots, \pmb\xi_k)
+=
+\omega^k_{f\mathbf x}(f\pmb\xi_1, \dots, f\pmb\xi_k),
+$$
+  The $\omega^k_{\mathbf x}$ on the left
+  is a $k$-form on $\mathbb R^m$,
+  the $\omega^k_{f\mathbf x}$ on the right is a $k$-form
+  on $\mathbb R^n$ for $f\mathbf x \in \mathbb R^n$.
+  The subscript usually is omitted in this book.
+}
 
 \setcounter{prob}{7}
 \begin{prob}
@@ -782,17 +800,30 @@ $$
 $$
 \end{thm}
 
-\note{The definition of $(g^t)^*$:
-  $g^t$ applies to $\mathbf x$ or a tangent vector,
-  $(g^t)^*$ applies to $\omega$.
+\note{The difference between $g^t$ and $(g^t)^*$:
+  $g^t$ applies to a point $\mathbf x$ or a tangent vector on the manifold $M$,
+  $(g^t)^*$ applies to a differential form $\omega$.
   The definition of
-  $[(g^t)^*\omega^2](\pmb\xi, \pmb\eta) \equiv \omega^2(g^t\pmb\xi, g^t\pmb\eta).$
-  See details in Sec. 33C.}
+  $$
+  \left[ (g^t)^*\omega^2_{\mathbf x} \right](\pmb\xi, \pmb\eta)
+  \equiv
+  \omega^2_{g^t \mathbf x}(g^t\pmb\xi, g^t\pmb\eta).
+  $$
+  Here $\omega^2_{\mathbf x}$ means the 2-form evaluated at $\mathbf x$.
+  See details in Sec. 33C.
+  Generally, a 2-form depends on not only the tangent vectors,
+    $\pmb\xi$ and $\pmb\eta$,
+    but also the point $\mathbf x$ on the manifold.
+  But for $\omega^2 = d\mathbf p \wedge \mathbf q$,
+    this dependence is missing.
+  In this book, the subscript is often omitted.
+  We shall sometimes add it back in the notes for clarity.
+}
 
 
 In the case $n = 1$, $M^{2n} = \mathbb{R}^2$, this theorem says
 that the phase flow $g^t$ preserves area (Liouville's theorem).
-%
+
 For the proof of this theorem, it is useful to introduce
 the following notation.
 
@@ -874,10 +905,10 @@ We could say that $Jc$ is the chain swept out by $c$
     % c
     \node[](c) at (0, 1.0){$c$};
 
-    % J c
+    % J dc
     \draw [->, thick] plot [smooth, tension=0.5]
       coordinates{(2, 0.2) (3.5, 0.3) (3.6, 1.2)};
-    \node[](Jc) at (3, 0.8){$Jc$};
+    \node[](Jc) at (3, 0.8){$J\partial c$};
 
     % g c
     \node[](gc) at (5.9, 1.0){$g^\tau c$};
@@ -908,16 +939,80 @@ We could say that $Jc$ is the chain swept out by $c$
     \draw [thick, ->] plot [smooth, tension=1.0]
       coordinates{(0.5, 1.5) (1.5, 1.5) (1.5, 0.3) (0.5, 0.3)};
     \node[](Jc) at (1, 1){$Jc$};
-    % k = 3
-    \node[](gc) at (1.0, -0.8){$k = 3$};
+    % k = 1
+    \node[](gc) at (1.0, -0.8){$k = 1$};
   \end{tikzpicture}
-  \caption{Track of a cycle under homotopy.}
+  \caption{Track of a cycle under homotopy. \\
+    %
+    \note{ On the sign of the terms in \eqref{eq:c_homotopy}.\\
+      %
+      For $k = 2$ (left panel),
+      $c$ represents an oriented area,
+      which is positive for $-\mathbf x = \mathbf z \times \mathbf y$ direction;
+      so the boundary $\partial c$ is positive
+      for a counterclockwise rotation around the axis $-\mathbf x$.
+      %
+      The positive direction of $J$ represents a vector along $+\mathbf x$.
+      %
+      Thus for a correctly oriented volume element $Jc$,
+      its sign should be negative, as
+      $(\mathbf x, \mathbf z, \mathbf y) = \mathbf x \cdot (\mathbf z \times \mathbf y) < 0$.
+      %
+      $\partial (Jc)$, pointing to a direction of increasing $Jc$,
+      or equivalently decreasing the absolute volume,
+      is positive along the direction into the volume.
+      %
+      $J \partial c$ representing an oriented area element,
+      is positive for the counterclockwise direction
+      on the face facing the reader, as indicated by the arrow in the figure.
+      %
+      This means $J \partial c$ points out of the side surfaces,
+      opposite to the direction of $\partial (Jc)$.
+      %
+      Since the positive direction of $c$ ($-\mathbf x$) is pointing out of the volume,
+      it is opposite to the sign of $\partial (Jc)$.
+      %
+      Since the positive direction of $g^\tau c$ ($-\mathbf x$) is pointing into the volume,
+      it shares the same sign as $\partial (Jc)$.
+      %
+      \\
+      %
+      For $k = 1$ (right panel),
+      $c$ is an oriented line element
+      which is positive along the $+\mathbf x$ direction.
+      %
+      The boundary $\partial c$ is the difference between the two points,
+      positive for the final (larger $x$) point,
+      and negative for the initial (smaller $x$) point.
+      %
+      The direction of $J$ is along the $+\mathbf y$ axis.
+      %
+      Thus, the positive direction of $Jc$ should be along
+      $\mathbf y \times \mathbf x$
+      ($c$ for $+\mathbf x$),
+      a direction pointing into the paper.
+      %
+      It follows that the direction of $\partial(Jc)$ should be clockwise,
+      according to the right-hand rule.
+      %
+      In this case, $J\partial c$ is $J$ multiplied by the sign of $\partial c$
+      Thus, $J \partial c$ is positive for the right edge,
+      and negative for the left edge (this is why $J\partial c$
+      goes downwards there).
+      %
+      Clearly, $J\partial c$ and $\partial (Jc)$ run in the opposite directions;
+      %
+      $c$ and $\partial (Jc)$ also run in the opposite directions;
+      but
+      $g^\tau c$ and $\partial (Jc)$ run int the same direction.
+    }
+  }
 \end{figure}
 
 It is easy to verify that under the choice of orientation made above
 \begin{equation}
 \partial (J c_k) = g^\tau c_k - c_k - J \partial c_k.
-\label{eq:H_homotopy}
+\label{eq:c_homotopy}
 \end{equation}
 
 \begin{lem*}
@@ -933,16 +1028,16 @@ It is easy to verify that under the choice of orientation made above
 
 \begin{proof}
   It is sufficient to consider a chain $\gamma$ with one cell
-  $f: [0,1] \rightarrow M$.\note{$\gamma$ is a curve.}
+  $f: [0,1] \rightarrow M$.
+  \note{$\gamma$ is a curve, which will be $\partial c$.}
   We introduce the notation
   $$
-  \begin{aligned}
-    f'(s, t) &= g^t f(s), \\
+    f'(s, t) = g^t f(s),
+    \qquad
     \pmb\xi = \frac{ \partial f' } { \partial s },
-    &\mathrm{\quad and \quad}
+    \mathrm{\quad and \quad}
     \pmb\eta = \frac{ \partial f' } { \partial t }
     = TM_{f'(s, t)}.
-  \end{aligned}
   $$
   By the definition of the integral,
   $$
@@ -950,7 +1045,17 @@ It is easy to verify that under the choice of orientation made above
   =
   \int_0^1 \int_0^\tau \omega^2(\pmb\xi, \pmb\eta) \, dt \, ds.
   $$
-  But the by the definition of the phase flow,
+  \note{There might be a missing minus sign:
+    $\int_{J\gamma} \omega^2$ should really mean
+    $\int_0^\tau \int_0^1 \omega^2(\pmb\eta, \pmb\xi) \, dt \, ds$,
+    for, by literal translation, $J$ goes before $\gamma$,
+    hence $\pmb\eta$ before $\pmb\xi$.
+    This doesn't cause trouble, because we only consider
+    closed chains (see the next Corollary).
+    For closed chains, the integral vanishes, and
+    the sign doesn't matter.
+  }
+  But by the definition of the phase flow,
   $\pmb \eta$ is a vector (at the point $f'(s, t)$)
   of the hamiltonian flow with hamiltonian function $H$.
   \note{$\pmb\eta = I dH$.}
@@ -996,7 +1101,8 @@ It is easy to verify that under the choice of orientation made above
     \int_{g^t\tau} dH
   \right) dt.
   $$
-  \note{$\int_0^1 \omega^2(\pmb\xi, \pmb\eta) \, ds
+  \note{
+    $\int_0^1 \omega^2(\pmb\xi, \pmb\eta) \, ds
     = \int_0^1 dH(\pmb\xi) \, ds = \int_0^1 dH(\pmb\xi \, ds).$
     But $\pmb\xi = \frac{ \partial f' } { \partial s }
     = g^t \frac{ d f }{ d s } \rightarrow
@@ -1010,14 +1116,13 @@ It is easy to verify that under the choice of orientation made above
 \begin{cor*}
   If the chain $\gamma$ is closed ($\partial \gamma = 0$)
   then $\int_{J\gamma} \omega^2 = 0$.
-
 \end{cor*}
 
 \begin{proof}
   $\int_\gamma dH = \int_{\partial \gamma} H = 0.$
 
   \note{
-    $\int_{J\gamma} \omega^2 = \int_0^\tau \int_{g^t\gamma} dH \, dt
+    $-\int_{J\gamma} \omega^2 = \int_0^\tau \int_{g^t\gamma} dH \, dt
     = \int_0^\tau dt \int_{\partial(g^t \gamma)} H
     = \int_0^\tau dt \int_{g^t\partial\gamma} H = 0.$
   }
@@ -1043,7 +1148,7 @@ It is easy to verify that under the choice of orientation made above
   \omega^2.
   $$
   (1 since $\omega^2$ is closed, 2 by Stokes formula,
-  3 by formula \eqref{eq:H_homotopy},
+  3 by formula \eqref{eq:c_homotopy},
   4 by the corollary above with $\gamma = \partial c$).
   Thus the integrals of the form $\omega^2$
   on any chain $c$ and on its image $g^\tau c$ are the same.
@@ -1059,10 +1164,52 @@ Let $g:M\rightarrow M$ be a differentiable map.
   A differential $k$-form $\omega$ is called an \emph{integral invariant}
   of the map $g$ if the integrals of $\omega$ on
   any $k$-chain $c$ and on its image under $g$ are the same:
-  $$
+  \begin{equation}
   \int_{gc}\omega = \int_c \omega.
-  $$
+  \label{eq:integral_invariant}
+  \end{equation}
 \end{defn*}
+
+\note{The precise meaning of \eqref{eq:integral_invariant} is the following.
+  Let $f$ be a mapping from $\mathbb R$ to $M$,
+  For a $k$-chain $c$ with one cell:
+  $f:[0, 1]^k \rightarrow M$,
+  we have $f(\mathbf s) \in M$ for $\mathbf s \in [0,1]^k$.
+  %
+  The $k$ tangent vectors are defined as
+  $\pmb\xi_i = \partial f/\partial s_i$
+  for $i = 1, \dots k$.
+  %
+  Then, for a $k$-form $\omega = \omega^k$,
+  the right-hand side reads
+  $$
+  \int_{c} \omega
+  =
+  \int_0^1 \dots \int_0^1
+    \omega^k_{f \mathbf s}(\pmb\xi_1,\dots, \pmb\xi_k)
+    \, ds_1 \cdots ds_k
+  =
+  \int_0^1 \dots \int_0^1
+    \omega^k_{\mathbf x}(\pmb\xi_1,\dots, \pmb\xi_k)
+    \, ds_1 \cdots ds_k.
+  $$
+  The left-hand side reads
+  $$
+  \int_{gc} \omega
+  =
+  \int_0^1 \dots \int_0^1
+    \omega^k_{(g \circ f)\, \mathbf s}(g \pmb\xi_1,\dots, g \pmb\xi_k)
+    \, ds_1 \cdots ds_k
+  =
+  \int_0^1 \dots \int_0^1
+    \omega^k_{g \mathbf x}(g \pmb\xi_1,\dots, g \pmb\xi_k)
+    \, ds_1 \cdots ds_k.
+  $$
+  The point to note here is that \eqref{eq:integral_invariant}
+  implicitly assumes the transformation $g$ on the coordinates $\mathbf x$
+  and the tangent vectors $\pmb\xi_1, \dots, \pmb\xi_k$,
+  on the left-hand side.
+}
 
 \begin{ex*}
   If $M = \mathbb{R}^2$ and $\omega^2 = dp \wedge dq$ is the area element,
@@ -1073,6 +1220,59 @@ Let $g:M\rightarrow M$ be a differentiable map.
 \begin{prob*}
   Show that a form $\omega^k$ is an integral invariant
   of a mapping if and only if $g^*\omega^k = \omega^k$.
+
+  \answer{
+    It is sufficient to consider a chain $c$ with one cell
+    $f: [0, 1]^k \rightarrow M$.
+    Then using the above notation,
+    for $\mathbf x = f\mathbf s \in M$, and
+    $\xi_i = \partial f/\partial s_i$,
+    we have
+    $$
+    \begin{aligned}
+      \int_{gc} \omega^k
+      &=
+      \int_0^1 \dots \int_0^1 \omega^k_{g\mathbf x}
+      (g\pmb\xi_1, \dots, g\pmb\xi_k)
+          \,ds_1 \dots ds_k
+      \\
+      &=
+      \int_0^1 \dots \int_0^1 \left( g^*\omega^k_{\mathbf x} \right)
+      (\pmb\xi_1, \dots, \pmb\xi_k)
+          \,ds_1 \dots ds_k
+      =
+      \int_c g^*\omega^k.
+    \end{aligned}
+    $$
+    Note that $\omega^k$ on the left is integrated over $gc$,
+    $g^*\omega^k$ on the right over $c$.
+    Conceptually, $gc$ and $c$ can be thought as chains
+    of two different manifolds $gM$ and $M$.
+
+    If $g^*\omega^k = \omega^k$, then
+    $\int_{gc} \omega^k = \int_c \omega^k$,
+    and $\omega^k$ is an integral invariant of $g$.
+
+    Conversely, if $\omega^k$ is an integral invariant,
+    then
+    $\int_{c} \omega^k = \int_{gc} \omega^k = \int_c g^*\omega^k$,
+    for any $k$-chain $c$, so
+    $g^*\omega^k = \omega^k$.
+
+    While this result is somewhat trivial.
+    It expresses two different ways of thinking
+    of integral invariants.
+    First,
+    $\int_{gc}\omega = \int_c \omega$
+    means that we get the same number from integrating
+    the chains before and after the mapping $g$.
+    %
+    Alternatively,
+    $g^* \omega = \omega$ means that if we stick
+    to the chain before the mapping but
+    inversely transform the form $\omega$ by $g^*$,
+    we get the same result after integration.
+  }
 \end{prob*}
 
 \begin{prob*}
@@ -1932,6 +2132,54 @@ also corresponds to some vector field $L_\mathbf{C}$.
     is the natural one).
   }
 \end{prob*}
+
+% subsection 39D
+\subsection{The Jacobi identity}
+
+\begin{thm*}
+  The Poisson bracket  makes the vector space of vector fields on a manifold $M$
+  into a Lie algebra.
+\end{thm*}
+
+\begin{proof}
+  Linearity and skew-symmetry of the Poisson bracket are clear.
+  We will prove the Jacobi identity. By the definition of Poisson bracket,
+  we have
+  $$
+  L_\mathbf{ [[A, B], C]} =
+  L_{\mathbf C} L_\mathbf{ [A, B] } -L_\mathbf{ [A, B]} L_{\mathbf C}
+  =
+   L_{\mathbf C} L_{\mathbf B} L_{\mathbf A}
+  -L_{\mathbf C} L_{\mathbf A} L_{\mathbf B}
+  -L_{\mathbf B} L_{\mathbf A} L_{\mathbf C}
+  +L_{\mathbf A} L_{\mathbf B} L_{\mathbf C}
+  $$
+  There will be 12 terms in all in the sum
+  $ L_{\mathbf [[A, B], C]} + L_{\mathbf [[B, C], A]} + L_{\mathbf [[C, A], B]}$.
+  Each term appears in the sum twice with opposite signs.
+  \note{The other 8 terms:
+  $$
+  \begin{aligned}
+  L_\mathbf{ [[B, C], A]}
+  &=
+  L_{\mathbf A} L_\mathbf{ [B, C] } -L_\mathbf{ [B, C]} L_{\mathbf A}
+  =
+   L_{\mathbf A} L_{\mathbf C} L_{\mathbf B}
+  -L_{\mathbf A} L_{\mathbf B} L_{\mathbf C}
+  -L_{\mathbf C} L_{\mathbf B} L_{\mathbf A}
+  +L_{\mathbf B} L_{\mathbf C} L_{\mathbf A},  \\
+  L_\mathbf{ [[C, A], B]}
+  &=
+  L_{\mathbf B} L_\mathbf{ [C, A] } -L_\mathbf{ [C, A]} L_{\mathbf B}
+  =
+   L_{\mathbf B} L_{\mathbf A} L_{\mathbf C}
+  -L_{\mathbf B} L_{\mathbf C} L_{\mathbf A}
+  -L_{\mathbf A} L_{\mathbf C} L_{\mathbf B}
+  +L_{\mathbf C} L_{\mathbf A} L_{\mathbf B}.
+  \end{aligned}
+  $$
+  }
+\end{proof}
 
 % section 40
 \section{The Lie algebra of hamiltonian functions}
