@@ -78,14 +78,15 @@
 \definecolor{DarkBlue}{RGB}{0,0,64}
 \definecolor{DarkBrown}{RGB}{64,20,10}
 \definecolor{DarkGreen}{RGB}{0,64,0}
+\definecolor{DarkPurple}{RGB}{64,0,42}
 % annotation macros
 \newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
 \newcommand{\add}[1]{{\color{blue} #1}}
 \newcommand{\del}[1]{{\color{gray} [#1]}}
 \newcommand{\note}[1]{{\color{DarkGreen}\footnotesize \textsc{Note.} #1}}
 \newcommand{\answer}[1]{{\color{DarkBlue}\footnotesize \textsc{Answer.} #1}}
+\newcommand{\summary}[1]{{\color{DarkPurple}\footnotesize \textsc{Summary.} #1}}
 
-\newcommand{\hl}[1]{{\color{red} #1}}
 
 \tableofcontents
 
@@ -760,6 +761,68 @@ to invert this vector to corresponding tangent vector we multiple it by $\mathbf
 \end{ex*}
 
 
+
+
+\summary{
+  \begin{enumerate}
+    \item
+      A $2n$-dimensional differentiable manifold, $M^{2n}$,
+      along with a \emph{closed nondegenerate} 2-form $\omega^2$,
+      is called a \emph{symplectic manifold}.
+      The 2-form is the \emph{symplectic structure}.
+      In most cases, the manifold has $n$ momentum components
+      and $n$ coordinate components,
+      and the 2-form is $\omega^2 = \sum_{i = 1}^n dp_i \wedge dq_i$.
+
+    \item
+      We can construct a $2n$-dimensional symplectic manifold
+      from an $n$-dimensional differentiable manifold $V$.
+      %
+      At each point $\mathbf x \in V$, the 1-forms, written as
+      $\omega^1 = \sum_{i=1}^n p_i dq_i$ in local coordinates,
+      span an $n$-dimensional vector space for the coefficients
+      $(p_1, \dots, p_n)$.
+      This vector space is the \emph{cotangent space} $T^*V_\mathbf{x}$.
+      %
+      By supplementing each point $\mathbf x$
+      by the cotangent space $T^V_\mathbf{x}$,
+      we get a $2n$-dimensional joint space of
+      $\mathbf x$ (with local coordinates $q_1, \dots, q_n$,
+      and 1-forms $p_1, \dots, p_n$),
+      called the \emph{cotangent bundle} $T^*V$.
+      %
+      Then we get a symplectic manifold $(T^*V, \omega^2)$,
+      with $\omega^2 = \sum_i dp_i \wedge dq_i = d(p_i dq_i)$.
+
+    \item
+      There is an isomorphism $I$ between 1-forms $\omega^1$
+      and tangent vector, $\pmb\xi = I\omega^1$
+      through the 2-form of the symplectic structure
+      $$
+      \omega^1_{\pmb\xi}(\pmb\eta)
+      =
+      \omega^2(\pmb\xi, \pmb\eta).
+      $$
+      In local coordinates of the euclidean space,
+      $I$ is equivalent to the jacobian matrix
+      $$
+      \mathbf J =
+      \left(
+        \begin{array}{ccc}
+          0 & -E \\
+          E & 0
+        \end{array}
+      \right).
+      $$
+
+
+  \end{enumerate}
+}
+
+
+
+
+
 %section 38
 \section{Hamiltonian phase flows and their integral invariants}
 
@@ -769,7 +832,7 @@ preserve the symplectic structure.
 Poincar\'e found a whole series of differential forms
 which are preserved by the hamiltonian flow.
 
-%\subsection A
+%\subsection 38A
 \subsection{Hamiltonian phase flows preserve the symplectic structure}
 
 Let $(M^{2n}, \omega^2)$ be a symplectic manifold and
@@ -778,7 +841,7 @@ Assume that the vector field $IdH$
 corresponds to $H$ gives a 1-parameter group
 of diffeomorphism: $g^t: M^{2n} \rightarrow M^{2n}$:
 $$
-\left.\frac{d}{dt}\right|_{t = 0}
+\left.\frac{d}{dt}\right|_{t = 0} g^t\mathbf x
 = I dH(\mathbf x).
 $$
 This group $g^t$ is the hamiltonian phase flow with
@@ -1259,8 +1322,8 @@ Let $g:M\rightarrow M$ be a differentiable map.
     for any $k$-chain $c$, so
     $g^*\omega^k = \omega^k$.
 
-    While this result is somewhat trivial.
-    It expresses two different ways of thinking
+    While this result follows straightforwardly from definition,
+    it expresses two different ways of thinking
     of integral invariants.
     First,
     $\int_{gc}\omega = \int_c \omega$
@@ -1490,12 +1553,58 @@ The integral invariants considered above are also called
 \end{prob*}
 
 
+
+\summary{
+  \begin{enumerate}
+    \item \emph{A hamiltonian phase flow preserves the symplectic structure.}
+      $\int \omega^2_{g\mathbf x}(g^t\pmb\xi, g\pmb\eta)
+      = \int \omega^2_{\mathbf x}(\pmb\xi, \pmb\eta)$,
+      which means the integral of $\omega^2$ over any chain $c$
+      gives the same value as the integral of $\omega^2$
+      over the time evolved chain $g^t c$.
+
+    \item The result is shown using the homotopy formula
+      by constucting a tube of phase flow connecting the two chains
+      $c$ and $g^tc$.
+
+    \item Generally, if a form $\omega$ is invariant under a differentiable map $g$
+      $\int_{gc} \omega = \int_c \omega$ is called an \emph{integral invariant} of $g$.
+
+    \item If two forms $\omega^k$ and $\omega^l$ are integral invariants of $g$,
+      so is their exterior product $\omega^k \wedge \omega^l$.
+
+    \item So $\omega^2$ of the symplectic structure is an integral invariant
+      of \emph{any} phase flow, so are the powers of
+      $(\omega^2)^2, \dots, (\omega^2)^n$.
+
+    \item A \emph{relative integral invariant} is a less restrict concept
+      than the above \emph{absolute} integral invariant.
+      It requires $\int_{gc} \omega = \int_c \omega$
+      only for closed $c$-chains.
+
+    \item If $\omega$ is a relative integral invariant,
+      then $d\omega$ is an absolute integral invariant.
+      However, the converse is not always true
+      (although true for vector space):
+      if $d\omega$ is an aboslute integral invariant,
+      $\omega$ is not necessarily a relative integral invariant
+      ($\omega$ is invariant for boundaries $\partial c$,
+      but not all closed chains are not boundaries,
+      e.g., when $M$ is a torus).
+
+    \item The hamiltonian function $H$ is conserved
+      along the phase flow $IdH$.
+  \end{enumerate}
+}
+
+
+
 % section 39
 \section{The Lie algebra of vector fields}
 
 
 Every pair of vector fields on a manifold determines a new vector field,
-called their Poisson bracket\footnote{Or Lie bracket}.
+called their Poisson bracket\footnote{Or Lie bracket.}.
 %
 The Poisson bracket operation makes the vector space of
 infinitely differentiable vector fields
@@ -2031,13 +2140,16 @@ At first glance this is a \emph{second}-order differential operator.
   the first (innermost) operator applied to the coordinates $B^s$　　
   corresponds to the last (outermost) differential operator
   applied to the function $e^{s L_\mathbf{B}}$.
-  This is because
-  flow operators operates, such as $A^t$ and $B^s$,
-  apply on the current coordinates, so the first geometric operation
-  goes in the innermost level.
+  %
+  For a chain of opertions,
+  $\mathbf x \rightarrow B^s \mathbf x \rightarrow A^t B^s \mathbf x$,
+  a flow operator, such as $A^t$ or $B^s$,
+  applies on the current argument, or the current coordinates,
+  so the first geometric operation
+  goes into the innermost level.
   %
   On the other hand,
-  function differential operators,
+  differential operators for functions,
   like $e^{s L_\mathbf{B}}$ and $e^{t L_\mathbf{A}}$, always operate
   on $\mathbf x$ (instead of the argument of the function),
   so the operator corresponds to the first operation
@@ -2076,9 +2188,9 @@ also corresponds to some vector field $L_\mathbf{C}$.
     $$
     [\mathbf A, \mathbf B]_j =
     \sum_{i = 1}^n
-      B_i \frac{ \partial A_j }{ x_i }
+      B_i \frac{ \partial A_j }{ \partial x_i }
       -
-      A_i \frac{ \partial B_j }{ x_i }.
+      A_i \frac{ \partial B_j }{ \partial x_i }.
     $$
   }
 \end{prob*}
@@ -2181,8 +2293,76 @@ also corresponds to some vector field $L_\mathbf{C}$.
   }
 \end{proof}
 
+% subsection 39E
+\subsection{A condition for the commutativity flows}
+
+Let $\mathbf{A}$ and $\mathbf{B}$ be vector fields
+on a manifold $M$.
+
+\begin{thm*}
+  The two flows $A^t$ and $B^s$ commute if and only if
+  the Poisson bracket of the corresponding vectors fields
+  $[\mathbf A, \mathbf B]$ is equal to zero.
+\end{thm*}
+
+% continue from clip 18
+
+
+\summary{
+  \begin{enumerate}
+    \item A \emph{Lie algebra} is a vector space $L$ equipped with a
+      \emph{Poisson bracket}, or \emph{commutator}, $[A, B]$,
+      which is bilinear and satisfies the Jacobi identity:
+      $$
+      [[A, B], C] + [[B, C], A] + [[C, A], B] = 0.
+      $$
+      The Poisson bracket can be thought as a generalization
+      of the vector product in three-dimensional space.
+
+    \item Particularly, we studied the Lie algebra of vector fields
+        $\mathbf A(\mathbf x)$.
+        Each vector fields corresponds to a flow $A^t$
+        and a Lie derivative
+        $L_{\mathbf A} = \mathbf A \cdot \nabla
+        = \sum_i A_i \frac{ \partial } { \partial x_i } $,
+        which is a linear differential operator.
+
+    \item The Poisson bracket $[\mathbf A, \mathbf B]$
+        of two vector fields $\mathbf A$ and $\mathbf B$
+        is defined through the Lie deriviative, such that
+        $$
+        L_\mathbf{[A, B]} = L_\mathbf{B} L_\mathbf{A} - L_\mathbf{A} L_\mathbf{B}.
+        $$
+        In components,
+        $$
+        [A, B]_j
+        = \sum_i \left(
+          B_i \frac{\partial A_j } { \partial x_i}
+        - A_i \frac{\partial B_j } { \partial x_i}
+          \right).
+        $$
+        (Remember the opposite sign, for Lie derivatives
+        apply to functions, instead of points on the manifold.)
+
+    \item The above Poisson bracket satisfies the Jacobi identity.
+  \end{enumerate}
+}
+
+
+
 % section 40
 \section{The Lie algebra of hamiltonian functions}
+
+The hamiltonian vector fields on a symplectic manifold
+form a subalgebra of the Lie algebra of all fields.
+%
+The hamiltonian functions also form a Lie algebra:
+the operation in this algebra is called the Poisson bracket
+of functions.
+%
+The first integrals of a hamiltonian phase flow form
+a subalgebra ofthe Lie algebra of hamiltonian functions.
+
 
 \begin{figure}
   \centering
