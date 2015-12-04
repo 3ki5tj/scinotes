@@ -51,11 +51,14 @@
 
 \newtheorem{prob}{Problem}
 \newtheorem*{prob*}{Problem}
+\numberwithin{prob}{section}
+\renewcommand{\theprob}{\arabic{prob}}
 
 \newtheorem{ans}{Answer}
 \newtheorem*{ans*}{Answer}
 
 \newcommand{\solution}[1]{\textit{Solution.} #1}
+\newcommand{\hint}[1]{\textit{Hint.} #1}
 
 % fix the arrow direction for tikz
 \makeatletter
@@ -369,6 +372,30 @@ The pair $(M^{2n}, \omega^2)$ is called
 a \emph{symplectic manifold}.
 %\end{defn*}
 
+\note{
+  A \emph{closed} form $\omega^k$ means $d\omega^k = 0$.
+  %
+  Intuitively, a closed form has ``no source,'' at least locally.
+  %
+  On a vector space, being closed means
+  $\omega^k$ itself is a differential
+  $\omega^k = d\Omega^{k-1}$ for some $\Omega^{k-1}$,
+  but this is not necessarily so in general.
+  %
+  For $\omega^1 = \sum_i a_i dx_i$,
+  being closed means $\partial a_i /\partial x_j = \partial a_j/\partial x_i$
+  any $i$ and $j$.
+  %
+  If $\Omega^0$ exists, then $a_i = \partial \Omega^0/\partial x_i$.
+  %
+  For $\omega^2 = \sum_{ij} a_{ij}dx_i \wedge dx_j$,
+  being closed means that
+  $\partial a_{ij}/\partial x_k
+  = \partial a_{jk}/\partial x_i
+  = \partial a_{ki}/\partial x_j$
+  for any $i$, $j$, and $k$.
+}
+
 \begin{ex*}
   Consider the vector space $\mathbb R^{2n}$
   with coordinates $p_i, q_i$ and let
@@ -661,8 +688,10 @@ $$
   \end{array}
 \right).
 $$
+}
 
-
+\note{
+  \label{note:J_R2n}
 Generally, we have
 $$
 \omega^1_{\pmb \xi}(\pmb \eta) = (\pmb \eta, \mathbf I^{-1} \pmb \xi)
@@ -705,9 +734,9 @@ In this way, we obtain a vector field $IdH$ on $M$.
 
 \begin{defn*}
 %
-The vector field $IdH$ is called \emph{Hamiltonian vector field}.
+The vector field $IdH$ is called \emph{hamiltonian vector field}.
 %
-$H$ is called the \emph{Hamiltonian function}.
+$H$ is called the \emph{hamiltonian function}.
 \end{defn*}
 
 \begin{ex*}
@@ -769,8 +798,8 @@ to invert this vector to corresponding tangent vector we multiple it by $\mathbf
       A $2n$-dimensional differentiable manifold, $M^{2n}$,
       along with a \emph{closed nondegenerate} 2-form $\omega^2$,
       is called a \emph{symplectic manifold}.
-      The 2-form is the \emph{symplectic structure}.
-      In most cases, the manifold has $n$ momentum components
+      The 2-form is called the \emph{symplectic structure}.
+      Usually, the manifold has $n$ momentum components
       and $n$ coordinate components,
       and the 2-form is $\omega^2 = \sum_{i = 1}^n dp_i \wedge dq_i$.
 
@@ -792,10 +821,11 @@ to invert this vector to corresponding tangent vector we multiple it by $\mathbf
       called the \emph{cotangent bundle} $T^*V$.
       %
       Then we get a symplectic manifold $(T^*V, \omega^2)$,
-      with $\omega^2 = \sum_i dp_i \wedge dq_i = d(p_i dq_i)$.
+      with $\omega^2 = \sum_i dp_i \wedge dq_i = d\left(\sum_i p_i dq_i \right)$.
 
     \item
-      There is an isomorphism $I$ between 1-forms $\omega^1$
+      In the symplectic space,
+      there is an isomorphism $I$ between 1-forms $\omega^1$
       and tangent vector, $\pmb\xi = I\omega^1$
       through the 2-form of the symplectic structure
       $$
@@ -804,7 +834,7 @@ to invert this vector to corresponding tangent vector we multiple it by $\mathbf
       \omega^2(\pmb\xi, \pmb\eta).
       $$
       In local coordinates of the euclidean space,
-      $I$ is equivalent to the jacobian matrix
+      $I$ is equivalent to multiplying symplectic matrix
       $$
       \mathbf J =
       \left(
@@ -812,9 +842,10 @@ to invert this vector to corresponding tangent vector we multiple it by $\mathbf
           0 & -E \\
           E & 0
         \end{array}
-      \right).
+      \right)
       $$
-
+      to a vector corresponding to the 1-form,
+      e.g., $\nabla H = (\partial H/\partial \mathbf p, \partial H/\partial \mathbf q)$.
 
   \end{enumerate}
 }
@@ -2359,12 +2390,350 @@ form a subalgebra of the Lie algebra of all fields.
 The hamiltonian functions also form a Lie algebra:
 the operation in this algebra is called the Poisson bracket
 of functions.
+\note{The hamiltonian functions
+also form a vector space.}
 %
 The first integrals of a hamiltonian phase flow form
-a subalgebra ofthe Lie algebra of hamiltonian functions.
+a subalgebra of the Lie algebra of hamiltonian functions.
 
 
-\begin{figure}
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \node (vf) at (0, 0)
+      [draw, align=center, minimum size=9em, minimum width=15em]
+      { \\[7em] Lie algebra of vector fields};
+    \node (hamiltonianvf) at (0, 0)
+      [draw, align=center, minimum size=6em, minimum width=10em]
+      { Lie algebra \\ of hamiltonian \\ vector fields};
+
+    \node (hamiltonianfunc) at (15em, 0)
+      [draw, align=center, minimum size=6em, minimum width=10em]
+      { \\[3em] Lie algebra of \\ hamiltonian functions}
+      edge[ultra thick, ->] (hamiltonianvf);
+
+    \node (firstintegrals) at (15em, 1em)
+      [draw, align=center, minimum size=3em, minimum width=9em]
+      { Lie algebra of the \\ first integrals of $H$ };
+  \end{tikzpicture}
+\end{figure}
+
+% subsection 40A
+\subsection{The Poisson bracket of two functions}
+
+Let $(M^{2n}, \omega^2)$ be a symplectic manifold.
+To a given function $H: M^{2n} \rightarrow \mathbb R$
+on the symplectic manifold
+there corresponds to a one-parameter
+$g_H^t: M^{2n} \rightarrow M^{2n}$
+of canonical transformations of $M^{2n}$--the
+phase flow of the hamiltonian function equal to $H$.
+%
+Let $F: M^{2n} \rightarrow \mathbb R$
+be another function on $M^{2n}$.
+
+\begin{defn*}
+  The \emph{Poisson bracket} $(F, H)$ of functions $F$ and $H$
+  given on a symplectic manifold $(M^{2n}, \omega^2)$
+  is the derivative of the function $F$ in the direction of
+  the phase flow with hamiltonian function $H$:
+  $$
+  (F, H)(\mathbf x)
+  =
+  \left. \frac{ d }{ dt } \right|_{t = 0}
+  F( g_H^t( \mathbf x ) ).
+  $$
+  Thus, the Poisson bracket of two functions on $M$ is again
+  a function on $M$.
+\end{defn*}
+
+% Corollary 1
+\begin{cor}
+  A function $F$ is a first integral of the phase flow
+  with hamiltonian function $H$ if and only if its Poisson bracket
+  with $H$ is identically zero: $(F, H) \equiv 0$.
+\end{cor}
+
+We can give the definition of Poisson bracket in a slightly
+different from if we use the isomorphism $I$ between 1-forms
+and vector fields on a symplectic manifold $(M^{2n}, \omega^2)$.
+%
+%\note{Cf. Sec. 39C. The 1-form $\omega^1$ is mapped to $I\omega^1$
+%such that $\omega^1(\pmb\eta) \equiv \omega^2(\pmb\eta, I\omega^1)$.
+%}
+%
+This isomorphism is defined by the relation (cf. Section 37)
+$$
+\omega^2(\pmb\eta, I\omega^1)
+=
+\omega^1(\pmb\eta).
+$$
+The velocity vector of the phase flow $g_H^t$ is $IdH$.
+This implies
+(\note{$\omega^1 = dF$, $\pmb\eta = IdH$.})
+
+% Corollary 2
+\begin{cor}
+  The Poisson bracket of the functions $F$ and $H$
+  is equal to the value of the 1-form $dF$
+  on the velocity vector $IdH$ of the phase flow with
+  hamiltonian function $H$:
+  $$
+  (F, H) = dF(IdH).
+  $$
+\end{cor}
+
+Using the preceding formula again, we obtain
+
+% Corollary 3
+\begin{cor}
+  The Poisson bracket of the functions $F$ and $H$ is equal to the
+  ``skew scalar product'' of the velocity vectors of the phase flows
+  with hamiltonian functions $H$ and $F$:
+  $$
+  (F, H) = \omega^2(IdH, IdF).
+  $$
+\end{cor}
+
+It is now clear that
+
+% Corollary 4
+\begin{cor}
+  The Poisson bracket of the functions $F$ and $H$
+  is a skew-symmetric bilinear function of $F$ and $H$:
+  $$
+  (F, H) = -(H, F)
+  $$
+  and
+  $$
+  (H, \lambda_1 F_1 + \lambda_2 F_2)
+  =
+  \lambda_1 (H, F_1)
+  +
+  \lambda_2 (H, F_2)
+  \qquad
+  (\lambda_1 \in \mathbb R).
+  $$
+\end{cor}
+
+Although the above arguments are obvious,
+they lead to nontrivial deductions,
+including the following generalization
+of a theorem of E. Noether.
+
+\begin{thm*}
+  If a hamiltonian function $H$ on a symplectic manifold $(M^{2n}, \omega^2)$
+  admits the one-parameter group of canonical transformations
+  given by a hamiltonian $F$,
+  then $F$ is a first integral of the system with hamiltonian function $H$.
+\end{thm*}
+
+\begin{proof}
+  Since $H$ is a first integral of the flow $g_F^t$,
+  $(H, F) = 0$ (Corollary 1).
+  Therefore $(F, H) = 0$ (Corollary 4)
+  and $F$ is a first integral (Corollary 1).
+
+  \note{
+    $(F, H) = \left.\frac{d}{dt}\right|_{t = 0}F(g_H^t(\mathbf x)) = 0$.
+  }
+\end{proof}
+
+% Problem 1
+\begin{prob}
+  Compute the Poisson bracket of two functions $F$ and $H$
+  in the canonical coordinates
+  $\mathbb R^{2n} = \{(\mathbf p, \mathbf q)\}$,
+  $\omega^2(\pmb\xi, \pmb\eta) = (I\pmb\xi, \pmb\eta)$.
+  \note{The last formula is only true in
+  the canonical coordinates.
+  Cf. the note in subsection 37C.}
+
+  \solution{
+    By the Corollary 3 we have
+    $$
+    (F, H) =
+    \sum_{i = 1}^n
+      \frac{ \partial H } { \partial p_i } \frac{ \partial F } { \partial q_i }
+      -
+      \frac{ \partial H } { \partial q_i } \frac{ \partial F } { \partial p_i }
+    $$
+    (we use the fact that $I$ is symplectic and has the form
+    $$
+    I = \left(\begin{array}{ccc}
+        0 & -E \\
+        E & 0
+    \end{array}\right)
+    $$
+    in the basis $(\mathbf p, \mathbf q)$).
+  }
+\end{prob}
+
+% Problem 2
+\begin{prob}
+  Compute the Poisson brackets of the basic functions $p_i$ and $q_i$.
+
+  \solution{
+    The gradients of the basic functions form a ``symplectic basis'':
+    their skew-scalar products are
+    $$
+    (p_i, p_j) = (p_i, q_j) = (q_i, q_j) = 0 \quad (\mathrm{if}\; i\ne j)
+    \qquad
+    (q_i, p_i) = -(p_i, q_i) = 1.
+    $$
+  }
+\end{prob}
+
+% Problem 3
+\begin{prob}
+  Show that the map $A: \mathbb R^{2n} \rightarrow R^{2n}$
+  sending $(\mathbf p, \mathbf q) \rightarrow
+  (\mathbf P(\mathbf p, \mathbf q), \mathbf Q(\mathbf p, \mathbf q))$
+  is canonical if and only if the Poisson brackets of any two
+  functions in the variables $(\mathbf p, \mathbf q)$
+  and $(\mathbf P, \mathbf Q)$ coincide:
+  $$
+  (F, H)_\mathbf{p, q}
+  =
+  \frac{\partial H}{\partial \mathbf p} \frac{\partial F}{\partial \mathbf q}
+  -
+  \frac{\partial H}{\partial \mathbf q} \frac{\partial F}{\partial \mathbf p}
+  =
+  \frac{\partial H}{\partial \mathbf P} \frac{\partial F}{\partial \mathbf Q}
+  -
+  \frac{\partial H}{\partial \mathbf Q} \frac{\partial F}{\partial \mathbf P}
+  =
+  (F, H)_\mathbf{P, Q}.
+  $$
+
+  \solution{
+    \note{The ``only if'' part: canonical $\rightarrow$ Poisson brackets coincide.}
+    Let $A$ be canonical.
+    %
+    Then the symplectic structure $d\mathbf p \wedge d\mathbf q$
+    and $d\mathbf P \wedge d\mathbf Q$ coincide.
+    \note{This is equivalent to saying $\int_c \omega^2 = \int_{gc} \omega^2$.}
+    But the definition of the Poisson bracket $(F, H)$
+    was given invariably in terms of the symplectic structure;
+    it did not involve the coordinates. Therefore,
+    $$
+    (F, H)_\mathbf{p, q} = (F, H) = (F, H)_\mathbf{P, Q}.
+    $$
+    \note{The ``if'' part: Poisson brackets coincide $\rightarrow$ canonical.}
+    Conversely, suppose that the Poisson brackets
+    $(P_i, Q_j)_\mathbf{p, q}$ have the standard form
+    of Problem 2.
+    Then, clearly $d\mathbf P \wedge d\mathbf Q = d\mathbf p \wedge d\mathbf q$,
+    i.e., the map is canonical.
+
+    \note{
+      Alternative argument for the ``if'' part:
+      if $(F, H)_\mathbf{p, q} = (F, H)_\mathbf{P, Q}$ for $\forall F, H$,
+      then $d\mathbf p \wedge d\mathbf q = d\mathbf P \wedge d\mathbf Q$.
+
+      Let $\mathbf x = (\mathbf p, \mathbf q)$,
+      $\mathbf X = (\mathbf P, \mathbf Q)$,
+      we have
+      $$
+      \begin{aligned}
+      (F, H)_\mathbf{p, q}
+      &=
+      \sum_{k,l} J^{kl}
+        \frac{ \partial F } { \partial x^k }
+        \frac{ \partial H } { \partial x^l }
+      =
+      \sum_{k,l,K,L} J^{kl}
+        \frac{ \partial F } { \partial X^K }
+        \frac{ \partial X^K } { \partial x^k }
+        \frac{ \partial H } { \partial X^L }
+        \frac{ \partial X^L } { \partial x^l }
+      \\
+      (F, H)_\mathbf{P, Q}
+      &=
+      \sum_{K,L} J^{KL}
+        \frac{ \partial F } { \partial X^K }
+        \frac{ \partial H } { \partial X^L }.
+      \end{aligned}
+      $$
+      Since the two expression are supposed to be the same,
+      we conclude
+      \begin{equation}
+      \sum_{k,l} J^{kl}
+        \frac{ \partial X^K } { \partial x^k }
+        \frac{ \partial X^L } { \partial x^l }
+      = J^{KL}.
+      \label{eq:symplectic_condition}
+      \end{equation}
+
+      Now let us expand the 2-form $\omega^2(\pmb\xi,\pmb\eta)$
+      in components.
+      First we shall review the meaning of ``components'' $\xi_k$ of a vector $\pmb\xi$.
+      For a scalar $\phi$, we have
+      $$
+      d\phi = \sum_k \frac{ \partial \phi } { \partial x^k } dx^k
+      \qquad \mathrm{and} \qquad
+      d\phi
+      = \sum_K \frac{ \partial \phi } { \partial X^K } dX^K
+      = \sum_{k, K} \frac{ \partial \phi } { \partial X^K }
+      \frac{ \partial X^K } { \partial x^k } d x^k.
+      $$
+      So
+      $$
+      \frac{ \partial \phi } { \partial x^k }
+      =
+      \sum_K \frac{ \partial \phi } { \partial X^K } \frac { \partial X^K } { \partial x^k },
+      $$
+      The components $\xi_k$ of a (covariant) vector $\pmb\xi$ are quantities
+      behaves like $\partial \phi/\partial x^k$.  So
+      %
+      $$
+      \xi_k = \sum_K \xi_K \frac { \partial X^K } { \partial x^k }.
+      $$
+
+      Now for the 2-form
+      $$
+      \begin{aligned}
+      \omega^2(\pmb\xi, \pmb\eta)
+      &=
+      \sum_{k,l} J^{kl} \xi_k \eta_l
+      =
+      \sum_{k,l,K,L} J^{kl} \frac{ \partial X^K } { \partial x^k }
+        \frac{ \partial X^L } { \partial x^l } \xi_K \xi_L \\
+      &\stackrel{\eqref{eq:symplectic_condition}}{=\joinrel=}
+      \sum_{K,L} J^{KL} \xi_K \xi_L.
+      \end{aligned}
+      $$
+      The last expression is $\omega^2(\pmb\xi, \pmb\eta)$
+      written in coordinates $\mathbf X = (\mathbf P, \mathbf Q)$.
+      So this is precisely the statement
+      $d\mathbf p \wedge d\mathbf q = d\mathbf P \wedge d\mathbf Q$
+      in component form.
+    }
+  }
+\end{prob}
+
+% Problem 4
+\begin{prob}
+  Show that the Poisson bracket of a product can be calculated by Leibniz's rule:
+  $$
+  (F_1 F_2, H) = F_1 (F_2, H) + F_2 (F_1, H).
+  $$
+
+  \hint{The Poisson bracket $(F_1 F_2, H)$ is the derivative of the product $F_1 F_2$
+  in the direction of the field $IdH$.}
+
+  \answer{
+    $$(F_1 F_2, H) = d(F_1 F_2)(IdH) = F_1 dF_2(IdH) + F_2 dF_1(IdH)
+    = F_1(F_2, H) + F_2 (F_1, H).$$
+  }
+\end{prob}
+
+
+
+
+
+
+\begin{figure}[h]
   \centering
  \begin{tikzpicture}
     \draw (-1,0) to[bend left] (1,0);
@@ -2372,6 +2741,8 @@ a subalgebra ofthe Lie algebra of hamiltonian functions.
     \draw[rotate=0] (0,0) ellipse (100pt and 50pt);
   \end{tikzpicture}
 \end{figure}
+
+
 
 \section{Symplectic geometry}
 
