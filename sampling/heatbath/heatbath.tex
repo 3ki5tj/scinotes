@@ -19,10 +19,9 @@ A key step of many Markov chain Monte Carlo methods
 is the propose-and-accept scheme.
 %
 The efficiency depends on the acceptance probability,
-the rate of accepting proposed moves.
+or the rate of accepting proposed moves.
 %
-Two commonly-used formulae for the acceptance probability
-are the Metropolis and heat bath formulas.
+Two common choices are the Metropolis and heat bath formulas.
 %
 Here, we wish to discuss some variants
 that can deliver higher transition rates.
@@ -111,7 +110,7 @@ in terms of delivering the largest transition rates.
 The last statement has a somewhat counterintuitive consequence.
 If we combine two or more Metropolis transitions
 in a single step, we can only achieve an inferior
-sampling scheme with smaller successful transition rates.
+sampling scheme with lower success rates.
 The reason is that subsequent transitions tend to
 undo a good transition made in the first attempt,
 and hence increase the rate of rejection.
@@ -134,7 +133,7 @@ the heat-bath way can more readily identify the dominant options.
 %
 We shall illustrate the feature below.
 %
-But first, let us review a few properties of the transition matrix.
+But first, let us review basic properties of the transition matrix.
 
 
 \section{Properties of the transition matrix}
@@ -156,7 +155,7 @@ Let us review a few properties of the transition matrix.
       %
       This means the transition matrix leaves
       the stationary distribution invariant.
-      This condition is often called the balance condition.
+      This condition is often called the \emph{balance} condition.
   \item
       In most cases, $\mathbf p^*$ is the only eigenvector
       with eigenvalue $\lambda_1 = 1$.
@@ -177,7 +176,7 @@ In practice, we often use a stronger condition than Eq. \eqref{eq:balance}.
   T_{ij} \, p_j = T_{ji} \, p_i.
   \label{eq:detailedbalance}
 \end{equation}
-This condition is called detailed balance,
+This condition is called the \emph{detailed balance} condition,
 which implies the balance condition Eq. \eqref{eq:balance}:
 $$
 \sum_j T_{ij} p_j = \sum_j T_{ji} p_i = p_i.
@@ -185,7 +184,8 @@ $$
 However, detailed balance is not a necessary condition.
 
 
-\section{The heat-bath algorithm}
+\section{\label{sec:heatbath}
+The heat-bath algorithm}
 
 In the multiple state case,
 a step of the heat-bath way is done as follows.
@@ -200,8 +200,8 @@ a step of the heat-bath way is done as follows.
   \item Find the $i$ such that $P_{i-1} \le r < P_i$,
     and choose state $i$.
 \end{enumerate}
-It is easily seen that the rate of selecting state $i$
-is given by $p_i$.
+Thus, the rate of selecting state $i$
+is given by $p_i$, independent of the current state.
 
 The transition matrix is
 $$
@@ -218,63 +218,93 @@ $$
 It can be shown that
 the largest eigenvalue is $1$, the rest of the eigenvalues are $0$
 because it contains only one independent column (rank 1).
+%
+The diagonal elements represent rejections,
+thus the average rejection ratio is given by
+\begin{equation}
+  R_h = \sum_{i = 1}^n p_i^2 = \overline { p_i }.
+\label{eq:rejection_heatbath}
+\end{equation}
+If the distribution is uniform, then $R_h = 1/n$.
+But if the distribution is dominated by $p_n = 1 - \delta$
+(with $\delta \ll 1$),
+then
+\begin{equation}
+  R_h \approx p_n^2 \approx 1 - 2 \, \delta.
+\label{eq:rejection_heatbath_domlimit}
+\end{equation}
 
 
 
-\section{The Metropolis algorithm}
+
+\section{\label{sec:Metropolis}
+The Metropolis algorithm}
 
 
 The straightforward generalization of the Metropolis way is the following.
 We randomly choose a state $j$ that is not the current one $i$,
-and the Metropolis rule Eq. \eqref{eq:AMetropolis} to accept it.
+and use Eq. \eqref{eq:AMetropolis} to accept it.
 
 The transition matrix is
 $$
 \mathbf T_M =
 \left(
-  \arraycolsep=10.0pt\def\arraystretch{2.0}
+  \arraycolsep=8.0pt\def\arraystretch{2.0}
   \begin{array}{cccccc}
-    0   & \frac{1}{n-1}\frac{p_1}{p_2} & \dots & \frac{1}{n-1}\frac{p_1}{p_n} \\
-    \frac{1}{n-1} & \frac{1}{n-1}\frac{p_2-p_1}{p_2} & \dots & \frac{1}{n-1}\frac{p_2}{p_n} \\
+    0   & \dfrac{1}{n-1}\dfrac{p_1}{p_2} & \dots & \dfrac{1}{n-1}\dfrac{p_1}{p_n} \\
+    \dfrac{1}{n-1} & \dfrac{1}{n-1}\dfrac{p_2-p_1}{p_2} & \dots & \dfrac{1}{n-1}\dfrac{p_2}{p_n} \\
     \vdots & \vdots  &  & \vdots \\
-    \frac{1}{n-1} & \frac{1}{n-1} & \dots & 1 - \frac{1}{n-1}\frac{p_1 + \cdots + p_{n-1}}{p_n}
+    \dfrac{1}{n-1} & \dfrac{1}{n-1} & \dots & 1 - \dfrac{1}{n-1}\dfrac{p_1 + \cdots + p_{n-1}}{p_n}
   \end{array}
 \right).
 $$
-
-To compare this matrix with the heat-bath one.
-Let us consider the three-state case
-$$
-\mathbf T_M =
-\left(
-  \arraycolsep=10.0pt\def\arraystretch{2.5}
-  \begin{array}{cccccc}
-    0   & \dfrac{p_1}{2 \, p_2} & \dfrac{p_1}{2 \, p_3} \\
-    \dfrac{1}{2} & \dfrac{p_2-p_1}{2 \, p_2} & \dfrac{p_2}{2 \, p_3} \\
-    \dfrac{1}{2} & \dfrac{1}{2} & 1 - \dfrac{p_1 + p_{2}}{2 \, p_3}
-  \end{array}
-\right).
-$$
-The three eigenvalues are
-$1$, $1 - \frac{1}{2 p_3}$, and $-\frac{p_1}{2 p_2}$.
-%
-Now if $p_3 > \frac{1}{2}$, the second largest eigenvalue
-is greater than zero, meaning that the Metropolis algorithm
-is less efficient than the heat-bath algorithm.
-For more states, the heat-bath will gain further advantage.
-\footnote{
-Generally, one can show that
-the second largest eigenvalue is $1- \frac{1}{(n-1)p_n}$,
-with the eigenvector being
-$(-p_1, \cdots, -p_{n-1}, p_1 + \cdots + p_{n-1})^T$,
-which represents a mode of entering or leaving the last state.
-This means as long as the largest probability $p_n > 1/(n-1)$,
-the Metropolis way is always inferior to the heat-bath way!
+We can compute the average rejection rate\footnote{
+\begin{align*}
+  R_M
+  &= \sum_{i = 2}^n p_i \sum_{j = 1}^{i-1} \frac{1}{n-1} \frac{p_i - p_j} { p_i }
+  = \frac{1}{n-1} \sum_{1 \le j < i \le n} (p_i - p_j)
+  \notag \\
+  &= \frac{1}{n-1} \left( \sum_{i=1}^n (i - 1) \, p_i - \sum_{j = 1}^{n-1} (n - j) \, p_j \right)
+  = \frac{2}{n-1} \sum_{i=1}^n i \, p_i - \frac{n+1}{n-1}.
+\end{align*}
 }
+\begin{align}
+  R_M
+  &= \frac{2 \sum_{i=1}^n i \, p_i - (n + 1) }{n-1}
+  = \frac{ 2 \, \overline i - (n + 1) } { n - 1 }.
+\label{eq:rejection_Metropolis}
+\end{align}
+For a uniform distribution, $p_i = 1/n$, then $R_M = 0$
+(better than the heat-bath case).
+But if the distribution is dominated by
+the last entry $p_n = 1 - \delta$
+with ($\delta \ll 1$),
+then\footnote{
+Consider two limits.
+The first is $p_1 = \dots = p_{n-1} = (1-\delta)/(n-1)$.
+$$
+R_M = \frac{2}{n-1}
+\left( n (1 - \delta) + \frac{n(n-1)}{2} \frac{\delta}{n-1} \right)
+- \frac{ n + 1 } { n - 1 } = 1 - \frac{n}{n-1}\delta.
+$$
+The other limit is $p_{n-1} = \delta$, $p_1 = \dots = p_{n-2} = 0$.
+$$
+R_M = \frac{2}{n-1}
+\left( n (1 - \delta) + (n-1)\delta \right)
+- \frac{ n + 1 } { n - 1 } = 1 - \frac{2}{n-1}\delta,
+$$
+which is even worse.
+}
+$$
+R_M \ge 1 - \frac{n}{n-1}\delta.
+$$
+which is worse than the heat-bath case for $n \ge 3$.
+%
 
 
 
-\section{Improved transition matrix (with detailed balance)}
+\section{\label{sec:convective}
+Convective Metropolis algorithm}
 
 
 
@@ -282,248 +312,193 @@ So the question is that if there is a way to generalize
 the Metropolis way without loss of the advantage in the two-state case.
 %
 The answer is yes.
-%
-Let us work on the three-state case.
-%
-For the first column we shall demand that $T_{1,1} = 0$
-and let the rest of the cells be proportional to
-the stationary distribution. That is
-$$
-\mathbf T =
-\left(
-  \arraycolsep=10.0pt\def\arraystretch{2.5}
-  \begin{array}{cccccc}
-    0   &  X & X \\
-    \dfrac{p_2}{p_2+p_3} &  & \\
-    \dfrac{p_3}{p_2+p_3} &  &
-  \end{array}
-\right).
-$$
-Next by detailed balance, we can determine the first row.
-For $T_{1,2}$,
-we have $T_{1,2} \, p_2 = T_{2,1} \, p_1$,
-and $T_{1,2} = p_1/(p_2 + p_3)$.
-$$
-\mathbf T =
-\left(
-  \arraycolsep=10.0pt\def\arraystretch{2.5}
-  \begin{array}{cccccc}
-    0   &  \dfrac{p_1}{p_2+p_3} & \dfrac{p_1}{p_2+p_3} \\
-    \dfrac{p_2}{p_2+p_3} &  & \\
-    \dfrac{p_3}{p_2+p_3} &  &
-  \end{array}
-\right).
-$$
-But now we are facing a similar problem to the previous one,
-but for the $2\times 2$ submatrix on the lower-right corner.
-Again, if we assume $T_{2,2} = 0$, and define $q_2 = 1- p_1/(p_2 + p_3)$,
-we have
-$$
-\mathbf T =
-\left(
-  \arraycolsep=10.0pt\def\arraystretch{2.5}
-  \begin{array}{cccccc}
-    0   &  \dfrac{p_1}{p_2+p_3} & \dfrac{p_1}{p_2+p_3} \\
-    \dfrac{p_2}{p_2+p_3} &  0 & \\
-    \dfrac{p_3}{p_2+p_3} &  q_2 &
-  \end{array}
-\right).
-$$
-and by detailed balance, we get
-$$
-\mathbf T =
-\left(
-  \arraycolsep=10.0pt\def\arraystretch{2.5}
-  \begin{array}{cccccc}
-    0   &  \dfrac{p_1}{p_2+p_3} & \dfrac{p_1}{p_2+p_3} \\
-    \dfrac{p_2}{p_2+p_3} &  0 & q_2 \dfrac{p_2}{p_3} \\
-    \dfrac{p_3}{p_2+p_3} &  q_2 & q_3
-  \end{array}
-\right).
-$$
-The last cell has been filled by $q_3 = 1 - T_{3,1} - T_{3,2} = q_2 (1 - p_2/p_3)$,
-according to the normalization.
 
-This matrix has two zeros on the diagonal.
-So we expect it to be more efficient than the heat-bath matrix.
-Indeed we can show that it has three eigenvalues
-\begin{equation}
-\begin{aligned}
-  \lambda_1 &= 1 \\
-  \lambda_2 &= -\frac{p_1}{p_2+p_3} \\
-  \lambda_3 &= -\frac{p_2}{p_3}\left( 1 - \frac{p_1}{p_2+p_3} \right)
-\end{aligned}
-\label{eq:lambda_dbimproved}
-\end{equation}
-in descending order.
-Thus, the second largest eigenvalue is less than zero,
-improving the heat-bath result.
+We assume that $p_1 \le \dots \le p_n$ as before.
+We will show below that if $p_1 + \dots + p_{n-1} \ge p_n$,
+it is possible to design a rejection-free transition scheme.
+Even for $p_1 + \dots + p_{n-1} < p_n$,
+our scheme will deliver a high success rate
+that the heat-bath algorithm.
 
-\paragraph{General case.}
+We consider several cases.
 
-Generally, we give the transition matrix
-$$
-T_{ij} =
-\begin{cases}
-  0 & \mbox{if $i = j < n$} \\
-  q_n & \mbox{if $i = j = n$} \\
-  \dfrac{p_i \, q_i } { p_{i+1} + \cdots + p_n} & \mbox{if $i < j$} \\
-  \dfrac{p_i \, q_j}{p_{j+1} + \cdots + p_n} & \mbox{if $i > j$}
-\end{cases}
-$$
-where $q_j$ is defined recursively defined as
-$$
-\begin{aligned}
-  q_{i+1} &\equiv \left(1 - \frac{p_i}{p_{i+1} + \cdots + p_n} \right) q_i,
-\end{aligned}
-$$
-with $q_1 = 1$.
+\subsection{Type I.}
 
-It is readily shown that detailed balance Eq. \eqref{eq:detailedbalance} is satisfied.
-Further we can show that the second largest eigenvalue
-is given by $\lambda_2 = -p_1/(p_2 + \cdots + p_n)$,
-corresponding to the eigenvector
-$\mathbf v = (-p_2 - \cdots - p_n, p_2, \cdots, p_n)^T$.
-\footnote{
-The proof is given below. We want to show
-$$
-\sum_{j = 1}^n T_{ij} \, v_j = \lambda_2 \, v_i.
-$$
-For $i = 1$,
-$$
-\sum_{j=1}^n T_{1j} v_j =
-\frac{ p_1 } { p_2 + \cdots + p_n } \sum_{j=2}^n p_j
-= p_1
-= \lambda_2 v_1.
-$$
-For $i = 2, \dots, n-1$,
-$$
-\begin{aligned}
-\sum_{j=1}^n T_{ij} v_j
-&=
--\frac{ p_i \, q_1 \, (p_2 + \cdots + p_n) } { p_{2} + \cdots + p_n }
-+p_i \sum_{j = 2}^{i-1} \frac{ q_j \, p_j } { p_{j+1} + \cdots + p_n }
-+\frac{ p_i \, q_i } { p_{i+1} + \cdots + p_n } \sum_{j=i+1}^n p_j \\
-&=
--p_i \, q_1
-+ p_i \sum_{j = 2}^{i-1} (q_j - q_{j+1})
-+p_i \, q_i
-=p_i (q_2 - q_1) = p_i \, \lambda_2 = \lambda_2 \, v_i.
-\end{aligned}
-$$
-For $i = n$,
-$$
-\begin{aligned}
-\sum_{j=1}^n T_{nj} v_j
-&=
--\frac{ p_n \, q_1 \, (p_2 + \cdots + p_n) } { p_{2} + \cdots + p_n }
-+p_n \sum_{j = 2}^{n-1} \frac{ q_j \, p_j } { p_{j+1} + \cdots + p_n }
-+q_n \, p_n \\
-&=
--p_n \, q_1
-+p_n \sum_{j = 2}^{n-1} (q_j - q_{j+1})
-+q_n \, p_n
-=p_n \, (q_2 - q_1) = p_n \, \lambda_2 = \lambda_2 \, v_n.
-\end{aligned}
-$$
-}
+\paragraph{Case 1.}
 
-This scheme is indeed better.
-But if $p_1$ is small,
-the improvement over the heat-bath algorithm is minimal,
-since $\lambda_2$ would be very close to $0$.
-So can we do better?
-%
-Below we show that
-if we are willing to give up detailed balance,
-this can indeed be done.
-
-
-
-\section{Improved transition matrix (without detailed balance)}
-
-
-Let us consider the three-state case.
+First, if $p_1 \le p_n \le p_1+ p_2$,
+consider the matrix
 $$
-\mathbf T_c
+  \mathbf T_{c}
 =
 \left(
-  \arraycolsep=10.0pt\def\arraystretch{2.5}
-  \begin{array}{ccc}
-    0     &   0   &   \dfrac{p_1}{p_3}   \\
-    1     &   0   &   \dfrac{p_2 - p_1}{p_3} \\
-    0     &   1   &   1 - \dfrac{p_2}{p_3}
-  \end{array}
-\right)
-$$
-It is readily verified that this matrix satisfies balance.
-That is, $\lambda_1 = 1$ with eigenvector $(p_1, p_2, p_3)^T$.
-The other two eigenvalues are
-$$
-\lambda_{2,3}
-=
-\frac{-p_2 \pm \sqrt{p_2^2 - 4 \, p_1 \, p_3} } { 2 \, p_3 }.
-$$
-
-However, this matrix does not satisfy detailed balance,
-$$
-p_1 = T_{21} p_1 \ne T_{12} p_2 = 0.
-$$
-
-
-This formula is interesting.
-Let us first consider the case of $p_2^2 \ge 4 \, p_1 \, p_3$,
-then
-$$
-\lambda_2 =
-\frac{-p_2 + \sqrt{p_2^2 - 4 \, p_1 \, p_3} } { 2 \, p_3 }
-=
--\frac{2 \, p_1 }{p_2 + \sqrt{p_2^2 - 4 \, p_1 \, p_3} },
-$$
-which is less than the value given by Eq. \eqref{eq:lambda_dbimproved},
-showing improvements.
-
-But more interestingly, if $p_2^2 \le 4 \, p_1 \, p_3$
-the eigenvalues are complex!
-$$
-\lambda_{2,3}
-=
-\frac{-p_2 \pm \sqrt{4 \, p_1 \, p_3 - p_2^2} \, i } { 2 \, p_3 },
-$$
-and $\|\lambda_{2,3}\| = p_1/p_3$.
-%
-Particularly, if $p_1 = p_2 = p_3$, we get
-$$
-\mathbf T_c
-=
-\left(
-  \begin{array}{ccc}
-    0     &   0   &   1   \\
-    1     &   0   &   0 \\
-    0     &   1   &   0
-  \end{array}
-\right)
-$$
-which represents a deterministic convective flow
-$1\rightarrow 2 \rightarrow 3 \rightarrow 1$.
-Thus, this convective way can more uniformly
-sample the desired distribution by reducing fluctuations.
-
-The general case is
-$$
-\mathbf T_c
-=
-\left(
-  \arraycolsep=15.0pt\def\arraystretch{2.5}
+  \arraycolsep=10.0pt\def\arraystretch{2.0}
   \begin{array}{cccccc}
     0     &   0   &   0   &   \dots  &   \dfrac{p_1}{p_n}       \\
-    1     &   0   &   0   &   \dots  &   \dfrac{p_2 - p_1}{p_n} \\
-    0     &   1   &   0   &   \dots  &   \dfrac{p_3 - p_2}{p_n} \\
+    1-\dfrac{p_n - p_2}{p_1}   &   0   &   0   &   \dots  &   1 - \dfrac{p_1}{p_n} \\
+    \dfrac{p_3 - p_2}{p_1}     &   1   &   0   &   \dots  &   0 \\
+    \dfrac{p_4 - p_3}{p_1}     &   0   &   1   &   \dots  &   0 \\
     \vdots&\vdots &\vdots &   \ddots &   \vdots \\
-    0     &   0   &   0   &   \dots  &   1- \dfrac{p_{n-1}}{p_n} \\
+    \dfrac{p_n - p_{n-1}}{p_1} &   0   &   0   &   \dots  &   0 \\
   \end{array}
 \right).
 $$
+It is readily verified that $(p_1, \dots, p_n)^T$
+is a right eigenvector with eigenvalue $1$.
+%
+So the stationary distribution is preserved.
+%
+But more interestingly,
+the diagonal elements of the matrix are all zeros,
+meaning that the new scheme is rejection-free!
+%
+However, it only works for $p_1 + p_2 \ge p_n$,
+for otherwise the element $T_c(2,1)$ is negative.
+
+\paragraph{Case 2.}
+
+Second, if $p_1 + p_2 \le p_n \le p_1 + p_2 + p_3$,
+we give
+$$
+  \mathbf T_{c}
+=
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.0}
+  \begin{array}{cccccc}
+    0     &   0   &   0   &   \dots  &   \dfrac{p_1}{p_n}       \\
+    0     &   0   &   0   &   \dots  &   \dfrac{p_2}{p_n} \\
+    1 - \dfrac{p_n - p_3}{p_1 + p_2}  &   1 - \dfrac{p_n - p_3}{p_1 + p_2}  &   0   &   \dots  &   1 - \dfrac{p_1+p_2}{p_n} \\
+    \dfrac{p_4 - p_3}{p_1 + p_2}     &  \dfrac{p_4 - p_3}{p_1 + p_2}   &   1   &   \dots  &   0 \\
+    \vdots&\vdots &\vdots &   \ddots &   \vdots \\
+    \dfrac{p_n - p_{n-1}}{p_1 + p_2} &  \dfrac{p_n - p_{n-1}}{p_1 + p_2} &   0   &   \dots  &   0 \\
+  \end{array}
+\right).
+$$
+Again, the stationary distribution is preserved,
+and the diagonal elements of the matrix are zeros,
+meaning a rejection-free scheme.
+
+\paragraph{Case 3.}
+
+We give one more example, just to make the pattern clear.
+%
+For $n \ge 5$, and
+if $p_1 + p_2 + p_3 \le p_n \le p_1 + p_2 + p_3 + p_4$,
+then
+$$
+  \mathbf T_{c}
+=
+\left(
+  \arraycolsep=7.0pt\def\arraystretch{1.5}
+  \begin{array}{cccccccc}
+    0     &   0   &   0   &   0 & \dots  &   \frac{p_1}{p_n}       \\
+    0     &   0   &   0   &   0 & \dots  &   \frac{p_2}{p_n} \\
+    0     &   0   &   0   &   0 & \dots  &   \frac{p_3}{p_n} \\
+    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  &
+    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  &
+    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  & 0   &   \dots  &   1 - \frac{p_1+p_2 + p_3}{p_n} \\
+    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
+    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
+    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
+    1   &   \dots  &   0 \\
+    \vdots&\vdots &\vdots & \vdots  &   \vdots \\
+    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
+    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
+    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
+    0   &   \dots  &   0 \\
+  \end{array}
+\right).
+$$
+
+\paragraph{Case $n$.}
+
+However, if $p_n > p_1 + \dots + p_{n-1}$, we no longer
+have a rejection free matrix.  The best we can get is
+\begin{equation}
+  \mathbf T_{c}
+=
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.0}
+  \begin{array}{cccccc}
+    0     &   0   &   \dots  &   \dfrac{p_1}{p_n}       \\
+    0     &   0   &   \dots  &   \dfrac{p_2}{p_n} \\
+    \vdots&\vdots &   \ddots &   \vdots \\
+    1 &  1 &   \dots  &   1 - \dfrac{p_1 + \cdots + p_{n-1}}{p_n} \\
+  \end{array}
+\right).
+\label{eq:T_convective_n}
+\end{equation}
+Even in this case,
+the rejection rate is
+\begin{equation}
+R_c = p_n - (p_1 + \dots + p_{n-1}) = 2 p_n - 1,
+\label{eq:rejection_convective}
+\end{equation}
+which is always lower than the rate
+in the heat-bath case,
+Eq. \eqref{eq:rejection_heatbath}.
+\footnote{
+  Because
+  $(p_1^2 + \dots + p_n^2) -  (2 \, p_n - 1)
+  = p_1^2 + \dots + p_{n-1}^2 + (1 - p_n)^2 \ge 0$.
+}
+
+\subsection{Type II.}
+
+Interestingly, the rejection-free scheme are not unique.
+
+\paragraph{Case 1.}
+
+If $p_n \le p_{n-1} + p_{n-2}$.
+$$
+  \mathbf T_{c}
+=
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.0}
+  \begin{array}{ccccccc}
+    0  & \dfrac{p_1}{p_2}   &   0   &   \dots  & 0  & 0 \\
+    0  &   0   & \dfrac{p_2}{p_3}  &   \dots  &  0 & 0 \\
+    \vdots&\vdots &\vdots &   \ddots &   \vdots & \vdots\\
+    0 & 0 &0 &   \cdots &   1 - \dfrac{ p_n - p_{n-2} } {p_{n-1}} & 1 - \dfrac{p_{n-1}}{p_n}\\
+    0 & 0 &0 &   \cdots &  0 & \dfrac{p_{n-1}}{p_n}\\
+    1 &  1 - \dfrac{p_1}{p_2} &   1 - \dfrac{p_2}{p_3}   &   \dots  &  \dfrac{p_n - p_{n-2}}{p_{n-1}} & 0
+  \end{array}
+\right).
+$$
+
+\paragraph{Case 2.}
+
+If $p_{n-1} + p_{n-2} < p_n \le p_{n-1} + p_{n-2} + p_{n-3}$.
+$$
+  \mathbf T_{c}
+=
+\left(
+  \arraycolsep=6.0pt\def\arraystretch{1.5}
+  \begin{array}{ccccccc}
+    0  & \frac{p_1}{p_2}   &   \dots  & 0  & 0 & 0\\
+    0  &   0   &   \dots  &  0 & 0 & 0\\
+    \vdots&\vdots &   \ddots &   \vdots & \vdots & \vdots \\
+    0 & 0 &   \cdots &
+    1 - \frac{ p_n - p_{n-3} } { p_{n-2} + p_{n-1}} &
+    1 - \frac{ p_n - p_{n-3} } { p_{n-2} + p_{n-1}} &
+    1 - \frac{p_{n-2} + p_{n-1}}{p_n}\\
+    0 & 0 &   \cdots &  0 & 0 & \frac{p_{n-2}}{p_n}\\
+    0 & 0 &   \cdots &  0 & 0 & \frac{p_{n-1}}{p_n}\\
+    1 &  1 - \frac{p_1}{p_2} &   \dots  &
+    \frac{p_n - p_{n-3}}{p_{n-2} + p_{n-1}} &
+    \frac{p_n - p_{n-3}}{p_{n-2} + p_{n-1}} & 0
+  \end{array}
+\right).
+$$
+
+The trend is clear.
+
+\paragraph{Case $n$.}
+
+If $p_n > p_1 + \cdots + p_{n-1}$,
+the transition matrix coincides
+with the one given by Eq. \eqref{eq:T_convective_n}
+
 
 
 \end{document}
