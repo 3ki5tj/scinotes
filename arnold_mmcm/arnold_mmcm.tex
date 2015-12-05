@@ -35,6 +35,13 @@
 \newtheorem*{prop*}{Proposition}
 \newtheorem*{cor*}{Corollary}
 
+% change the style of the proof
+\expandafter\let\expandafter\oldproof\csname\string\proof\endcsname
+\let\oldendproof\endproof
+\renewenvironment{proof}[1][\proofname]{%
+  \oldproof[\textsc{#1}]%
+}{\oldendproof}
+
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}[section]
 \renewcommand{\thedefn}{\arabic{defn}}
@@ -44,8 +51,23 @@
 \newtheorem{rem}{Remark}
 \newtheorem*{rem*}{Remark}
 
+\makeatletter
+\newtheoremstyle{smallcap}
+  {3pt}% space before
+  {3pt}% space after
+  {%\addtolength{\@totalleftmargin}{3.5em}
+   %\addtolength{\linewidth}{-3.5em}
+   %\parshape 1 3.5em \linewidth
+   \small
+  }% body font
+  {}% indent
+  {\small \sc}% header font
+  {.}% punctuation
+  {.3em}% after theorem header
+  {}% header specification (empty for default)
+\makeatother
 
-\theoremstyle{remark}
+\theoremstyle{smallcap}
 \newtheorem{ex}{Example}
 \newtheorem*{ex*}{Example}
 
@@ -2738,9 +2760,178 @@ of a theorem of E. Noether.
 \end{prob}
 
 
+% subsection 40B
+\subsection{The Jacobi identity}
 
+\begin{thm*}
+  The Poisson bracket of three functions $A$, $B$ and $C$
+  satisfies the Jacobi identity:
+  $$
+  ((A, B), C) + ((B, C), A) + ((C, A), B) = 0.
+  $$
+\end{thm*}
 
+\begin{cor*}[Poisson's theorem]
+  The Poisson bracket of two first integrals $F_1, F_2$
+  of a system with hamiltonian function $H$
+  is again a first integral.
+\end{cor*}
 
+\begin{proof}[Proof of the corollary]
+  By the Jacobi identity,
+  $$
+  ((F_1, F_2), H)
+  =
+  (F_1, (F_2, H))
+  +
+  (F_2, (H, F_1)) = 0 + 0.
+  $$
+  as was to be shown.
+\end{proof}
+
+In this way, by knowing two first integrals we can find a third, fourth, etc.
+by a simple computation.
+%
+Of course, not all the integrals we get will be essentially new,
+since there cannot be more than $2n$ independent functions on $M^{2n}$.
+%
+Sometimes we may get functions of old integrals or constants,
+which may be zero.
+%
+But sometimes we do obtain new integrals.
+
+\begin{prob*}
+  Calculate the Poisson brackets of the components
+  $p_1$, $p_2$, $p_3$, $M_1$, $M_2$, $M_3$ of the
+  linear and angular momentum vectors of
+  a mechanical system.
+
+  \begin{ans*}
+    $(M_1, M_2) = M_3, (M_1, p_1) = 0, (M_1, p_2) = p_3, (M_1, p_3) = -p_2.$
+  \end{ans*}
+
+  \note{
+    $M_i = \epsilon_{ijk} q_j \, p_k, \quad M_r = \epsilon_{rst} q_s \, p_t.$
+    $$
+    \begin{aligned}
+      (M_i, M_r)
+      &=
+      \frac{ \partial M_i } { \partial q_n }
+      \frac{ \partial M_r } { \partial p_n }
+      -
+      \frac{ \partial M_i } { \partial p_n }
+      \frac{ \partial M_r } { \partial q_n }
+      =
+      \epsilon_{ink} p_k \epsilon_{rsn} q_s
+      -
+      \epsilon_{ijn} q_j \epsilon_{rnt} p_t
+      \\
+      &=
+      (p_r \, q_i - p_k q_k \delta_{ir})
+      -
+      (q_r \, p_i - q_j p_j \delta_{ir})
+      \\
+      &=
+      p_r \, q_i - q_r \, p_i
+      =
+      \epsilon_{mir} \epsilon_{muv} q_u p_v
+      =
+      \epsilon_{mir} M_m.
+      \\
+      (M_i, p_m)
+      &=
+      \frac{ \partial M_i } { \partial q_n }
+      \frac{ \partial p_m } { \partial p_n }
+      =
+      \epsilon_{ink} p_k \delta_{mn}
+      =
+      \epsilon_{imk} p_k.
+    \end{aligned}
+    $$
+  }
+\end{prob*}
+
+This implies
+
+{\small
+\begin{thm*}
+  If two components $M_1$ and $M_2$ of the angular momentum
+  of some mechanical problem are conserved,
+  then the third component is also conserved.
+\end{thm*}
+}
+
+\begin{proof}[Proof of the Jacobi identity]
+  Consider the sum
+  $$
+  ((A, B), C) + ((B, C), A) + ((C, A), B)
+  $$
+  This sum is a ``linear combination of second partial derivatives''
+  \note{Every term in $(A, B)$ is either
+    $\frac{ \partial }{ \partial q_i } \frac{ \partial }{ \partial p_i }$,
+    which subject to $(, C)$,
+    this becomes
+    $\frac{ \partial }{ \partial q_j } \left( \frac{ \partial }{ \partial q_i } \frac{ \partial }{ \partial p_i } \right)$
+    or
+    $\frac{ \partial }{ \partial p_j } \left( \frac{ \partial }{ \partial q_i } \frac{ \partial }{ \partial p_i } \right)$,
+    which contains a second partial derivative of a function
+  in the inner bracket $(, )$
+  }
+  of the functions $A$, $B$ and $C$.
+  We will compute the terms in the second derivatives of $A$:
+  $$
+  ((A, B), C) + ((C, A), B)
+  =
+  (L_\mathbf{C} L_\mathbf{B} - L_\mathbf{B} L_\mathbf{C}) A
+  $$
+  \note{$= (L_{IdB} A, C) - (L_{IdC} A, B) = L_{IdC} L_{IdB} A - L_{IdB} L_{IdC} A$,}
+  where $L_{\pmb\xi}$ is differentiation in the direction of $\pmb\xi$
+  and $\mathbf F$ is the hamiltonian field with hamiltonian function $F$.
+  But by Lemma 2, Section 39,
+  the commutator of the differentiation
+  $L_\mathbf{C} L_\mathbf{B} - L_\mathbf{B} L_\mathbf{C}$
+  is a first-order differential operator.
+  %
+  This means that none of the second derivatives of $A$
+  are contained in our sum.
+  The same thing is true for the second derivatives of $B$ and $C$.
+  Therefore the sum is zero.
+\end{proof}
+
+% Corollary 5
+\begin{cor}
+  Let $\mathbf B$ and $\mathbf C$ be hamiltonian fields
+  with hamiltonian function $B$ and $C$.
+  Consider the Poisson bracket $[\mathbf B, \mathbf C$]
+  of the vector fields.
+  This vector field is hamiltonian,
+  and its hamiltonian function is equal to the Poisson bracket
+  of the hamiltonian functions $(B, C)$.
+\end{cor}
+
+\begin{proof}
+  Set $(B, C) = D$.
+  The Jacobi identity can be written in the form
+  \begin{align}
+    &(A, D) = ((A, B), C) - ((A, C), B)
+    \label{eq:jacobi_D} \\
+    &L_\mathbf{D} = L_\mathbf{C} L_\mathbf{B} - L_\mathbf{B} L_\mathbf{C}
+    \qquad L_\mathbf{D} = L_{[\mathbf B, \mathbf C]}
+    \notag
+  \end{align}
+  as was to be shown.
+
+  \note{The left-hand side of \eqref{eq:jacobi_D}
+    can be written as $L_{IdD} A = L_\mathbf{D} A$.
+    The right-hand side of \eqref{eq:jacobi_D} is
+    $
+      (L_{IdB} A, C) - (L_{IdC} A, B)
+    = L_{IdC} L_{IdB} A - L_{IdB} L_{IdC} A
+    = (L_\mathbf{C} L_\mathbf{B} - L_\mathbf{B} L_\mathbf{C}) A
+    = L_{[\mathbf B, \mathbf C]} A.
+    $
+  }
+\end{proof}
 
 \begin{figure}[h]
   \centering
