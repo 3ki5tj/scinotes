@@ -2933,16 +2933,272 @@ This implies
   }
 \end{proof}
 
-\begin{figure}[h]
-  \centering
- \begin{tikzpicture}
-    \draw (-1,0) to[bend left] (1,0);
-    \draw (-1.2,.1) to[bend right] (1.2,.1);
-    \draw[rotate=0] (0,0) ellipse (100pt and 50pt);
-  \end{tikzpicture}
-\end{figure}
+
+% subsection 40C
+\subsection{The Lie algebra of hamiltonian fields,
+hamiltonian functions, and first integrals}
+
+A linear subspace of a Lie algebra is called a \emph{subalgebra}
+if the commutator of any two elements of the subspace
+belongs to it.
+%
+A subalgebra of a Lie algebra is itself a Lie algebra.
+%
+The preceding corollary implies, in particular,
+
+% Corollary 6
+\begin{cor}
+  The hamiltonian vector fields on a symplectic manifold
+  form a subalgebra of the Lie algebra of all vector fields.
+\end{cor}
+
+Poisson's theorem of the first integrals
+can be reformulated as
+
+% Corollary 7
+\begin{cor}
+  The first integrals of a hamiltonian phase flow
+  form a subalgebra of the Lie algebra of all functions.
+\end{cor}
+
+The Lie algebra of hamiltonian functions can be
+mapped naturally onto the Lie algebra of hamiltonian
+vector fields.
+\note{A function $f$ from $X$ to $Y$ is \emph{surjective}
+  (or \emph{onto}), if every element $y \in Y$
+  has at least one preimage $x \in X$, such that $f(x) = y$.
+  On the other hand, a function is \emph{injective}
+  if every element $y \in Y$ has at most one preimage $x$
+  such $f(x) = y$. If a function is surjective and injective,
+  then it is \emph{bijective}, or \emph{one-to-one}.
+}
+%
+To do this, to every function $H$ we associate the hamiltonian
+vector field $\mathbf H$ with \emph{hamiltonian function} $H$.
+
+% Corollary 8
+\begin{cor}
+  The map of the Lie algebra of functions
+  onto the Lie algebra of hamiltonian fields
+  is an algebra homomorphism.
+  Its kernel consists of the locally constant
+  functions.
+  If $M^{2n}$ is connected,
+  the kernel is one-dimensional and consists of constants.
+\end{cor}
+
+\note{A homomorphism is a mapping between two algebras
+  preserving some structure
+  (here it is the Poisson bracket for Lie algebra,
+  and the mapping is linear).
+  Here, the ``kernel'' means the set of functions
+  that are mapped to the null hamiltonian field.
+}
+
+\begin{proof}
+  Our map is linear. Corollary 5 says that our map carries
+  the Poisson bracket of functions into the Poisson bracket
+  of vector fields. The kernel consists of functions
+  for which $IdH \equiv 0$.
+  Since $I$ is an isomorphism, $dH \equiv 0$ and $H = \mathrm{const}$.
+\end{proof}
+
+% Corollary 9
+\begin{cor}
+  The phase flows with hamiltonian functions $H_1$ and $H_2$
+  commute if and only if the Poisson bracket of the functions
+  $H_1$ and $H_2$ is (locally) constant.
+\end{cor}
+
+\begin{proof}
+  By the theorem in Section 39, E, it is necessary and sufficient
+  that $[\mathbf H_1, \mathbf H_2] \equiv 0$,
+  and by Corollary 8 this condition is equivalent to
+  $d(H_1, H_2) \equiv 0$.
+\end{proof}
+
+We obtain yet another generalization of E. Noether's theorem:
+given a flow \note{$g_{H_2}^t$}
+which commutes with the one under consideration \note{$g_{H_1}^t$},
+one can construct a first integral \note{$(H_1, H_2)$}.
+
+% subsection 40D
+\subsection{Locally hamiltonian vector fields}
+
+Let $(M^{2n}, \omega^2)$ be a symplectic manifold and
+$g^t: M^{2n} \rightarrow M^{2n}$
+a one-parameter group of diffeomorphisms preserving
+the symplectic structure.
+%
+Will $g^t$ be a hamiltonian flow?
 
 
+\begin{ex*}
+  Let $M^{2n}$ be a two-dimensional torus $T^2$,
+  a point of which is given by a pair of coordinates
+  $(p, q) \mod 1$.
+  Let $\omega^2$ be the usual area element $dp \wedge dq$.
+  Consider the family of translations
+  $g^t(p, q) = (p + t, q)$ (Figure 173).
+  The maps $g^t$ preserve the symplectic structure
+  (i.e., area). Can we find a hamiltonian function
+  corresponding to the vector field ($\dot p=1, \dot q = 0$)?
+  If $\dot p = -\partial H/\partial q$
+  and $\dot q = \partial H/\partial p$,
+  we would have $\partial H/\partial p = 0$ and
+  $\partial H/\partial q = -1$, i.e.,
+  $H = -q + C$.
+  But $q$ is only a \emph{local} coordinate on $T^2$;
+  \note{over a period $1$, $q$ has to increase by $1$,
+  so is $H$. So the value of $H$ is not uniquely defined.}
+  there is no map $H: T^2 \rightarrow \mathbb R$
+  for which $\partial H/\partial p = 0$ and
+  $\partial H/\partial q = 1$.
+  Thus $g^t$ is not a hamiltonian phase flow.
+
+  \setcounter{figure}{172}
+  \begin{figure}[h]
+    \centering
+   \begin{tikzpicture}
+      %\draw (-1,0) to[bend left] (1,0);
+      %\draw (-1.2,.1) to[bend right] (1.2,.1);
+      \draw[rotate=0] (0,0.1) ellipse (0.8 and 0.3);
+      \draw[rotate=0] (0,0) ellipse (2 and 1);
+      \draw[ultra thick] plot [smooth,tension=1.2]
+        coordinates{(-1.95, -0.2) (0, -0.8) (1.95, -0.2)};
+
+      % arrows
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{(-0.7,  0.95) (-0.5,  0.8) (-0.3, 0.4)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{(-1.5,  0.65) (-1.2,  0.6) (-0.75, 0.2)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{(-1.95, -0.2) (-1.5, 0.05) (-0.8, 0)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{(-1.5, -0.7) (-1.2, -0.3) (-0.7, -0.1)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{(-0.8, -0.9) (-0.6, -0.55) (-0.3, -0.2)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{( 0.0, -1.0) ( 0, -0.2)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{( 0.8, -0.9) ( 0.6, -0.55) ( 0.3, -0.2)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{( 1.5, -0.7) ( 1.2, -0.3) ( 0.7, -0.1)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{( 1.95, -0.2) ( 1.5, 0.05) ( 0.8, 0)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{( 1.5,  0.65) ( 1.2,  0.6) ( 0.75, 0.2)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{( 0.7,  0.95) ( 0.5,  0.8) ( 0.3, 0.4)};
+
+      \draw[thick,->] plot [smooth,tension=1.0]
+        coordinates{( 0.0,  1.0)  ( 0.0,  0.4)};
+
+      \node[] at (-1.0, -1.1) {$q$};
+      \node[] at (-1.8,  0.6) {$p$};
+    \end{tikzpicture}
+    \caption{A locally hamiltonian field on the torus}
+  \end{figure}
+
+\end{ex*}
+
+
+\begin{defn*}
+  A \emph{locally hamiltonian vector field}
+  on a symplectic manifold $(M^{2n}, \omega^2)$
+  is the vector field $I\omega^1$,
+  where $\omega^1$ is closed 1-form on $M^{2n}$.
+\end{defn*}
+
+Locally, a closed 1-form is the differential of a function,
+$\omega^1 = dH$.
+However, in attempting to extend the function $H$
+to the whole manifold $M^{2n}$,
+we may obtained a ``many-valued hamiltonian function,''
+since a closed 1-form on a non-simply-connected manifold
+may not be a differential (for example, the form $dq$ on $T^2$).
+%
+A phase flow given by a locally hamiltonian vector field
+is called a \emph{locally hamiltonian flow}.
+
+\begin{prob*}
+  Show that a one-parameter group of diffeomorphisms of
+  a symplectic manifold preserves the symplectic structure
+  if and only if it is a locally hamiltonian phase flow.
+
+  \hint{ Cf. Section 38A. }
+
+  \answer{
+    For a chain $c$ of one cell,
+    $$
+    \begin{aligned}
+     \left( \int_{gc} - \int_{c} \right) \omega^2
+     &\stackrel{1}{=}
+     \int_{\partial(Jc)} \omega^2 + \int_{J\partial c} \omega^2
+     \stackrel{2}{=}
+     \int_{Jc} d\omega^2
+     - \int_0^\tau \int_0^1 \omega^2(\pmb\xi, \pmb\eta) \, ds \, dt
+      \\
+      &\stackrel{3}{=}
+     - \int_0^\tau \int_0^1 \omega^2(\pmb\xi, I\omega^1) \, ds \, dt
+     \stackrel{4}{=} - \int_0^\tau \int_0^1 \omega^1(\pmb\xi) \, ds \, dt
+     \\
+     &= - \int_0^\tau \int_{g^\tau \partial c} \omega^1 \, ds \, dt
+     \stackrel{5}{=} - \int_0^\tau \int_{\partial (g^\tau c)} \omega^1 \, ds \, dt
+     \\
+     &= - \int_0^\tau \int_{g^\tau c} d\omega^1 \, ds \, dt
+     \stackrel{6}{=} 0.
+     \end{aligned}
+     $$
+     (1 by the homotopy formula in Section 38A;
+     2 by Stokes' formula;
+     3 by the definition of $\pmb\eta$;
+     4 by the definition of isomorphism $I$;
+     5 by the definition of boundary;
+     6 because $\omega^1$ is closed.
+
+     For the other direction, invert the above steps.
+   }
+\end{prob*}
+
+\begin{prob*}
+  Show that in the symplectic space $\mathbb R^{2n}$,
+  every one-parameter group of canonical diffeomorphisms
+  (preserving $d\mathbf p \wedge d\mathbf q$)
+  is a hamiltonian flow.
+
+  \hint{Every closed 1-form on $\mathbb R^{2n}$ is the differential of a function.}
+
+  \answer{
+    Every one-parameter group of canonical diffeomorphisms
+    is generated by a closed 2-form $\omega^1$.
+    But $\mathbb^{2n}$ is a vector space,
+    so by Section 36, we know $\omega^1$ is a differential $dH$
+    by the cone construction.
+    Thus, the flow generated by $I\omega^1 = IdH$ is a hamiltonian flow.
+  }
+\end{prob*}
+
+\begin{prob*}
+  Show that the locally hamiltonian vector fields form
+  a subalgebra of the Lie algebra of all vector fields.
+  In addition, the Poisson bracket of two locally hamiltonian fields
+  is actually a hamiltonian field, with a hamiltonian function
+  uniquely determined by the given fields $\pmb\xi$ and $\pmb\eta$,
+  by the formula $H=\omega^2(\pmb\xi, \pmb\eta)$.
+  Thus, the hamiltonian fields form an ideal
+  in the Lie algebra of locally hamiltonian fields.
+\end{prob*}
 
 \section{Symplectic geometry}
 
