@@ -3095,7 +3095,8 @@ This implies
   ((A, B), C) + ((B, C), A) + ((C, A), B)
   $$
   This sum is a ``linear combination of second partial derivatives''
-  \note{Every term in $(A, B)$ is either
+  \note{
+    Every term in $(A, B)$ is of the form of
     $\frac{ \partial }{ \partial q_i } \frac{ \partial }{ \partial p_i }$,
     which subject to $(, C)$,
     this becomes
@@ -3103,7 +3104,7 @@ This implies
     or
     $\frac{ \partial }{ \partial p_j } \left( \frac{ \partial }{ \partial q_i } \frac{ \partial }{ \partial p_i } \right)$,
     which contains a second partial derivative of a function
-  in the inner bracket $(, )$
+    in the inner bracket $(, )$.
   }
   of the functions $A$, $B$ and $C$.
   We will compute the terms in the second derivatives of $A$:
@@ -3124,13 +3125,116 @@ This implies
   are contained in our sum.
   The same thing is true for the second derivatives of $B$ and $C$.
   Therefore the sum is zero.
+
+  \note{
+    The above argument appears to require the 2-form $\omega^2$
+    giving the symplectic structure to be
+    independent of the coordinates.
+    %
+    Below we shall handle the general case.
+    %
+    In component form, we have
+    $
+    \omega^2(\pmb\xi, \pmb\eta)
+    =
+    \sum_{ij} \omega^2_{ij} \xi_i \eta_j,
+    $
+    where $\omega^2_{ij}$ may depend on the coordinates.
+    %
+    Note that $\omega^2_{ij} = I^{-1}_{ij}$
+    also gives the coefficents for the inverse isomorphism
+    from 1-forms to vector fields, for
+    $
+    \omega^2(\pmb\xi, \pmb\eta) = I^{-1}\pmb\eta(\pmb\xi)
+    = I^{-1}_{ij}\eta_j \, \xi_i.
+    $
+    Thus $\omega^2_{ij}$ and $I^{-1}_{ij}$ have to coincide.
+
+    By Corollary 3, we have
+    $$
+    (A, B) = \omega^2(\mathbf B, \mathbf A)
+    = \sum_{ij} \omega_{ij} B_i \, A_j,
+    $$
+    and by Corollary 2
+    $$
+    ((A, B), C)
+    = d(A,B)(\mathbf C)
+    = \sum_{k} \frac{ \partial (A, B) } { \partial x_k } C_k
+    = \sum_{ijk} \frac{ \partial (\omega^2_{ij} B_i \, A_j) } { \partial x_k } C_k,
+    $$
+    where $F_i$ is the component of $\mathbf F$.
+    $$
+    \frac{ \partial (\omega^2_{ij} B_i \, A_j) } { \partial x_k } C_k
+    =
+    \frac{ \partial \omega^2_{ij} } { \partial x_k } B_i \, A_j \, C_k
+    + \frac{ \partial B_i } { \partial x_k } \omega^2_{ij} A_j \, C_k
+    + \frac{ \partial A_j } { \partial x_k } \omega^2_{ij} B_i \, C_k.
+    $$
+    Summing over cyclic versions, and taking into account of
+    the antisymmetry of $\omega^2_{ij}$, we get
+    \begin{align}
+    \sum_{\operatorname{cyc}} ((A, B), C)
+    &=
+    \sum_{\substack{\operatorname{cyc}\\ i,j,k}}
+    \left[
+    \frac{ \partial \omega^2_{ij} } { \partial x_k } B_i \, A_j \, C_k
+    + \frac{ \partial C_j } { \partial x_k } \omega^2_{ij} (A_i \, B_k - A_k \, B_i).
+    \right]
+    \notag \\
+    &=
+    \sum_{\substack{\operatorname{cyc}\\ i,j,k}}
+    \left[
+    -\frac{ \partial \omega^2_{ij} } { \partial x_k } A_i \, B_j \, C_k
+    + \frac{ \partial \omega^2_{ij} } { \partial x_k } (A_i \, B_k \, C_j - A_k \, B_i \, C_j)
+    \right]
+    \notag \\
+    &\hphantom{=}
+    + \sum_{\substack{\operatorname{cyc}\\ i,j,k}}
+    \frac{ \partial (\omega^2_{ij} \, C_j) } { \partial x_k } (A_i \, B_k - A_k \, B_i).
+    \notag \\
+    &=
+    \sum_{\substack{\operatorname{cyc}\\ i,j,k}}
+    -\left[
+    \frac{ \partial \omega^2_{ij} } { \partial x_k }
+    +
+    \frac{ \partial \omega^2_{jk} } { \partial x_i }
+    +
+    \frac{ \partial \omega^2_{ki} } { \partial x_j }
+    \right]
+    A_i \, B_j \, C_k
+    +
+    \frac{ \partial (\omega^1_C)_i } { \partial x_k } (A_i \, B_k - A_k \, B_i),
+    \label{eq:jacobi_hf_proof}
+    \end{align}
+    where in the second step, we have used
+    $\partial (\omega^2_{ij} C_j) = C_j \partial \omega^2_{ij} + \omega^2_{ij} C_j$.
+    In the last step, we used the fact that
+    $\omega^2_{ij} C_j = I^{-1}_{ij} C_j$
+    gives the 1-form corresponds to the vector field $\mathbf C$,
+    which is $\omega^1_C = dC$.
+    %
+    Now for the first term of \eqref{eq:jacobi_hf_proof},
+    the sum in the square brackets for any $i$, $j$, and $k$
+    vanishes because $\omega^2$ is closed.
+    %
+    For the second term,
+    $\partial (\omega^1_C)_i /\partial x_k = \partial^2 C/\partial x_i \partial x_k$
+    is symmetric with respect to $i$ and $k$;
+    and its product with the antisymmetric tensor $A_i B_k - A_k B_i$
+    is zero.
+
+    The argument given in the book might not address the term
+    containing the square brackets,
+    although it obviously vanishes when $\omega^2$ does not depend on
+    coordinates.
+  }
 \end{proof}
 
 % Corollary 5
 \begin{cor}
   Let $\mathbf B$ and $\mathbf C$ be hamiltonian fields
   with hamiltonian function $B$ and $C$.
-  Consider the Poisson bracket $[\mathbf B, \mathbf C$]
+  Consider the Poisson bracket $[\mathbf B, \mathbf C]$
   of the vector fields.
   This vector field is hamiltonian,
   and its hamiltonian function is equal to the Poisson bracket
@@ -3426,6 +3530,127 @@ is called a \emph{locally hamiltonian flow}.
   by the formula $H=\omega^2(\pmb\xi, \pmb\eta)$.
   Thus, the hamiltonian fields form an ideal
   in the Lie algebra of locally hamiltonian fields.
+
+  \answer{
+    We shall establish a mapping from closed 1-forms
+    to locally hamiltonian vector fields
+    in a similar fashion of establishing the mapping from
+    hamiltonian functions to hamiltonian vector fields,
+    as done in the book.
+
+    For two closed 1-forms $\omega_A$ and $\omega_B$, we define
+    the Poisson bracket as
+    \begin{equation}
+    (\omega_A, \omega_B)
+    = d [ \omega^2(I\omega_B, I\omega_A) ]
+    = d [ \omega^2(\mathbf B, \mathbf A) ],
+    \label{eq:PB_closed_1-form}
+    \end{equation}
+    which is clearly also a closed 1-form
+    (in fact, a total differential).
+    The bilinearity and antisymmetry are readily seen.
+    To verify the Jacobi identity,
+    we use the component form
+    $(\omega_A, \omega_B) = d\left(\sum_{ij} \omega^2_{ij} A_i B_j \right)$.
+    If we denote $H_{AB} = \omega^2(\mathbf B, \mathbf A)$,
+    then
+    $$
+    \begin{aligned}
+    ((\omega_A, \omega_B), \omega_C)
+    &= (dH_{AB}, \omega_C)
+    = d[ \omega^2(\mathbf C, IdH_{AB}) ]
+    = d[ dH_{AB}(\mathbf C) ]
+    \\
+    &= d\left[
+      \sum_k \frac{ \partial H_{AB} } { \partial x_k } C_k
+    \right]
+    = d\left[
+      \sum_{ijk} \frac{ \partial (\omega^2_{ij} A_i B_j) } { \partial x_k } C_k
+    \right]
+    = d H_{ABC},
+    \end{aligned}
+    $$
+    where we have denoted the sum in the square brackets by $H_{ABC}$.
+    Below we shall show that the cyclic sum $H_{ABC} + H_{BCA} + H_{CAB} = 0$,
+    then the Jacobi identity follows naturally.
+    %
+    The proof follows that leading to \eqref{eq:jacobi_hf_proof}, and
+    \begin{align}
+    \sum_{\operatorname{cyc}} H_{ABC}
+    &=
+    \sum_{\substack{\operatorname{cyc}\\ i,j,k}}
+    -\left[
+    \frac{ \partial \omega^2_{ij} } { \partial x_k }
+    +
+    \frac{ \partial \omega^2_{jk} } { \partial x_i }
+    +
+    \frac{ \partial \omega^2_{ki} } { \partial x_j }
+    \right]
+    A_i \, B_j \, C_k
+    +
+    \frac{ \partial (\omega_C)_i } { \partial x_k } (A_i \, B_k - A_k \, B_i)
+    =
+    0.
+    \notag
+    \end{align}
+    %
+    Again, for the first term,
+    the sum in the square brackets for any $i$, $j$, and $k$
+    vanishes because $\omega^2$ is closed.
+    %
+    The second term vanishes because
+    $\partial (\omega_C)_i /\partial x_k = \partial (\omega_C)_k/\partial x_i$
+    is symmetric with respect to $i$ and $k$;
+    whereas $A_i B_k - A_k B_i$ is antisymmetric.
+    Thus $\sum_{\operatorname{cyc}} ((\omega_A, \omega_B), \omega_C)
+    = d\left( \sum_{\operatorname{cyc}} H_{ABC} \right) = 0.$
+
+    Let us establish a homeomorphism from closed 1-forms to
+    locally hamiltonian vector fields.
+    This is simply the isomorphism $I$
+    of the symplectic structure: $\mathbf A = I \omega_A$.
+    %
+    From \eqref{eq:PB_closed_1-form}, we have
+    $$
+    (\omega_A, \omega_B)
+    =
+    d[ \omega^2(\mathbf B, I\omega_A) ]
+    =
+    d[ \omega_A(\mathbf B) ]
+    =
+    d (i_\mathbf{B} \omega_A)
+    =
+    L_\mathbf{B} \omega_A,
+    $$
+    where $i_\mathbf B \omega^1 \equiv \omega^1(\mathbf B)$
+    is the interior derivative defined in Sec. 36;
+    and we have used the homotopy formula
+    $L_\mathbf{B} = d i_\mathbf{B} + i_\mathbf{B} d$,
+    with $d\omega_A = 0$ (closed 1-form).
+    %
+    So
+    $$
+    ((\omega_A, \omega_B), \omega_C)
+    -
+    ((\omega_A, \omega_C), \omega_B)
+    =
+    L_\mathbf{C}L_\mathbf{B} \omega_A
+    -
+    L_\mathbf{B}L_\mathbf{C} \omega_A
+    =
+    L_{\mathbf{[B, C]}} \omega_A.
+    $$
+    By the Jacobi identity of closed 1-forms, this is equal to
+    $$
+    (\omega_A, (\omega_B, \omega_C))
+    =
+    L_{I(\omega_B, \omega_C)} \omega_A.
+    $$
+    This shows that the Poisson bracket $[\mathbf B, \mathbf C]$
+    of the vector fields
+    corresponds to a hamiltonian (hence locally hamiltonian) vector field
+    $I(\omega_B, \omega_C)$.
+  }
 \end{prob*}
 
 \section{Symplectic geometry}
