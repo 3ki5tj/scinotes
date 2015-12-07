@@ -2367,7 +2367,235 @@ on a manifold $M$.
   $[\mathbf A, \mathbf B]$ is equal to zero.
 \end{thm*}
 
-% continue from clip 18
+\begin{proof}
+  If $A^tB^s = B^s A^t$ then $[\mathbf A, \mathbf B] = 0$ by Lemma 1.
+  If $[\mathbf A, \mathbf B] = 0$,
+  then by Lemma 1,
+  $$
+  \varphi(A^tB^s\mathbf x)
+  -
+  \varphi(B^sA^t\mathbf x)
+  = o(s^2 + t^2)
+  \qquad
+  s \rightarrow 0
+  \; \mathrm{and} \;
+  t \rightarrow 0
+  $$
+  for any function $\varphi$ at any point $\mathbf x$.
+  \note{This is the ``little $o$'' notation instead of the ``big $O$'' notation.
+    $o(s^2+t^2)$ means the leading term of the expansion is smaller than
+  (instead of as large as) a multiple of $s^2 +t^2$,
+  i.e., the leading term start with the third power of $s$ and $t$.}
+  We will show that this implies
+  $\varphi(A^tB^s\mathbf x) = \varphi(B^sA^t\mathbf x)$
+  for sufficiently small $s$ and $t$.
+  %
+  If we apply this to the local coordinates,
+  $(\varphi = x_1, \dots, \varphi = x_n)$
+  we obtain $A^tB^s = B^s A^t$.
+
+  Consider the rectangle $0 \le t \le t_0$, $0 \le s \le s_0$
+  (Figure 170) in the $t,s$-plane.
+  %
+  To every path going from $(0,0)$ to $(t_0, s_0)$
+  and consisting of a finite number of intervals
+  in the coordinate directions, we associate
+  a product of transformations of the flows $A^t$ and $B^s$.
+  %
+  Namely to each interval $t_1 \le t \le t_2$,
+  we associate $A^{t_2 - t_1}$
+  and to each interval $s_1 \le t \le s_2$,
+  we associate $B^{s_2 - s_1}$;
+  the transformations are applied to
+  the order in which the intervals occur
+  in the path, beginning at $(0,0)$.
+  %
+  For example,
+  the sides $(0 \le t \le t_0, s = 0)$
+  and $(t = t_0, 0 \le s \le s_0)$
+  corresponds to the product $B^{s_0} A^{t_0}$,
+  and the sides $(t = 0, 0 \le s \le s_0)$
+  and $(s = s_0, 0 \le t \le t_0)$
+  to the product $A^{t_0} B^{s_0}$.
+
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \draw [thick,->] (0,0) -- (4,0);
+      \draw [thick,->] (0,0) -- (0,3.5);
+
+      % horizontal lines
+      \draw (0, 0.4) -- (2.8, 0.4)
+            (0, 0.8) -- (2.8, 0.8)
+            (0, 1.2) -- (2.8, 1.2)
+            (0, 1.6) -- (2.8, 1.6)
+            (0, 2.0) -- (2.8, 2.0)
+            (0, 2.4) -- (2.8, 2.4)
+            (0, 2.8) -- (2.8, 2.8);
+      % vertical lines
+      \draw (0.4, 0) -- (0.4, 2.8)
+            (0.8, 0) -- (0.8, 2.8)
+            (1.2, 0) -- (1.2, 2.8)
+            (1.6, 0) -- (1.6, 2.8)
+            (2.0, 0) -- (2.0, 2.8)
+            (2.4, 0) -- (2.4, 2.8)
+            (2.8, 0) -- (2.8, 2.8);
+
+      \draw [ultra thick]
+        (0, 0) -- (0.8, 0) -- (0.8, 1.6) -- (2.4, 1.6)
+        -- (2.4, 2.4) -- (2.8, 2.4) -- (2.8, 2.8)
+        (2.0, 1.6) -- (2.0, 2.0) -- (2.4, 2.0);
+      \node [] at (0,-0.2) {$0$};
+      \node [] at (2.8,-0.2) {$t_0$};
+      \node [] at (4.2,0) {$t$};
+      \node [] at (-0.2,2.8) {$s_0$};
+      \node [] at (0, 3.6) {$s$};
+      \node [] at (2.8,3.0) {$t_0, s_0$};
+    \end{tikzpicture}
+    \caption{Proof of the commutativity of flows}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      [
+        % frame node (empty)
+        fnode/.style={minimum size=0, inner sep=0},
+        % circle node
+        cnode/.style={draw, circle, minimum size=0.2cm, inner sep=0.0cm}
+      ]
+      % frame
+      \node[fnode] (f1) at (-1.0, -1.0) {};
+      \node[fnode] (f2) at ( 5.0, -1.2) {} edge [bend right=10] (f1);
+      \node[fnode] (f3) at (-1.8,  4.8) {} edge [bend left=15] (f1);
+      \node[fnode] (f4) at ( 5.2,  5.0) {}
+          edge [bend left=10] (f2)
+          edge [bend right=10] (f3);
+
+      \node (M) at (-0.5, -0.5) {$M$};
+
+      \node[cnode, label={below:$\mathbf x$}] (x) at ( 0.0,  0.0) {};
+      \node[fnode] (x1) at ( 1.5, 0.0) {}
+          edge [ultra thick, bend right=5] (x);
+      \node[fnode] (x1y2) at ( 1.5, 2.0) {}
+          edge [ultra thick, bend left=5] (x1);
+      \node[cnode, label={below:$\pmb\delta$}] (delta) at ( 2.0, 1.95) {}
+          edge [ultra thick] (x1y2);
+      \node[cnode, label={below:$\pmb\gamma$}] (gamma) at ( 3.0, 1.85) {}
+          edge [ultra thick] (delta);
+      \node[cnode, label={right:$\pmb\beta$}] (beta) at ( 3.1, 2.65) {}
+          edge [ultra thick] (gamma);
+      \node[cnode, label={left:$\pmb\epsilon$}] (epsilon) at ( 2.1, 2.75) {}
+          edge [ultra thick] (delta);
+      \node[cnode, label={115:$\pmb\alpha$}] (alpha) at ( 2.8, 2.7) {}
+          edge [ultra thick] (epsilon);
+      \node[fnode] (pt2) at ( 2.95, 3.75) {}
+          edge [ultra thick] (alpha);
+      \node[fnode] (pt3) at ( 3.40, 3.70) {}
+          edge [ultra thick] (pt2);
+      \node[cnode, label={left:$\pmb\alpha'$}] (alphap) at ( 3.45, 4.05) {}
+          edge [ultra thick] (pt3);
+      \node[fnode] (pt4) at ( 3.20, 3.55) {}
+          edge [ultra thick] (beta);
+      \node[fnode] (pt5) at ( 3.65, 3.50) {}
+          edge [ultra thick] (pt4);
+      \node[cnode, label={right:$\pmb\beta'$}] (betap) at ( 3.70, 4.00) {}
+          edge [ultra thick] (pt5);
+
+
+      % right edge
+      \node [cnode, label={below:$A^{t_0}\mathbf x$}] (At0x) at (4.1, -0.3) {}
+          edge [dotted, bend right=5] (x1);
+      \node [cnode, label={right:$B^{s_0}A^{t_0}\mathbf x$}] (Bs0At0x) at (4.5, 3.9) {}
+          edge [ultra thick, bend left=5] (At0x);
+
+      % top edge
+      \node [cnode, label={100:$B^{s_0}\mathbf x$}] (Bs0x) at (-0.3, 4.0) {};
+      \node [cnode, label={above:$A^{t_0}B^{s_0}\mathbf x$}] (At0Bs0x) at (3.2, 4.5) {}
+          edge [ultra thick, bend right=10] (Bs0x);
+    \end{tikzpicture}
+    \caption{
+      Curvilinear quadrilateral $\beta\gamma\delta\epsilon\alpha$
+    }
+  \end{figure}
+  In addition, we associate to each such path in the $(t, s)$-plane
+  a path on the manifold $M$ starting at the point $\mathbf x$
+  and composed of trajectories of the flows $A^t$ and $B^s$
+  (Figure 171).
+  %
+  If a path in the $(t, s)$-plane corresponds to the product
+  $A^{t_1} B^{s_1} \cdots A^{t_n} B^{s_n}$,
+  then on the manifold $M$
+  the corresponding path ends at the point
+  $A^{t_1} B^{s_1} \cdots A^{t_n} B^{s_n} \mathbf x$.
+  %
+  Our goal will be to show that all these paths
+  actually terminate at one point
+  $A^{t_0} B^{s_0} \mathbf x = B^{s_0} A^{t_0} \mathbf x$.
+
+
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \draw[ultra thick] (0,0) -- (4,0) -- (4,4) -- (0,4) -- cycle;
+      \draw[] (0.3, 0) -- (0.3, 2.4) -- (2.2, 2.4) -- (2.2, 4);
+      \draw[] (0.6, 0) -- (0.6, 2.0) -- (3.6, 2.0) -- (3.6, 4);
+      \draw[] (2.2, 0) -- (2.2, 1.6) -- (4.0, 1.6);
+
+      \node[] at (4.6, 3.0) {$N = 2$};
+      \node[] at (2.4, 1.4) {$1$};
+      \node[] at (0.8, 1.8) {$2$};
+      \node[] at (2.4, 3.8) {$3$};
+      \node[] at (0.2, 3.8) {$4$};
+    \end{tikzpicture}
+    \caption{Going from one pair of sides to the other}
+  \end{figure}
+  We partition the intervals $0 \le t \le t_0$
+  and $0 \le s \le s_0$ into $N$ equal parts,
+  so that the whole rectangle is divided into $N^2$
+  small triangles.
+  %
+  The passage from the sides $(0,0) - (t_0, 0) -(t_0, s_0)$
+  to the sides $(0, 0) - (0, s_0) - (t_0, s_0)$
+  can be accomplished in $N^2$ steps,
+  in each of which a pair of neighboring sides of
+  a small rectangle is exchanged for the other pair (Figure 172).
+  %
+  In general,
+  this small rectangle corresponds to a non-closed curvilinear
+  quadrilateral $\pmb\beta\pmb\gamma\pmb\delta\pmb\epsilon\pmb\alpha$
+  on the manifold (Figure 171).
+  %
+  Consider the distance\footnote{In some riemannian metric on $M$.}
+  \note{The distance is denoted by $\rho$}
+  between its vertices $\pmb\alpha$ and $\pmb\beta$
+  corresponding to the largest values of $s$ and $t$.
+  %
+  As we saw earlier,
+  $\rho(\pmb\alpha, \pmb\beta) \le C_1 N^{-3}$
+  (where the constant $C_1 > 0$ does not depend on $N$).
+  %
+  Using the theorem of the differentiability of solutions
+  of differential equations with respect to the initial data,
+  it is not difficult to derive from this a bound on the distance
+  between the ends $\pmb\alpha'$ and $\pmb\beta'$ of the paths
+  $\mathbf x\pmb\delta\pmb\gamma\pmb\beta\pmb\beta'$
+  and
+  $\mathbf x\pmb\delta\pmb\epsilon\pmb\alpha\pmb\alpha'$
+  on $M$:
+  $\rho(\pmb\alpha', \pmb\beta') < C_2 N^{-3}$,
+  where the constant $C_2 > 0$ again does not depend on $N$.
+  %
+  But we broke up the whole journey from $B^{s_0}A^{t_0}\mathbf x$
+  to $A^{t_0}B^{s_0}\mathbf x$ into $N^2$ such pieces.
+  %
+  Thus, $\rho(A^{t_0}B^{s_0}\mathbf x, B^{s_0}A^{t_0}\mathbf x)
+  \le N^2 C_2 N^{-3} \; \forall N$.
+  Therefore, $A^{t_0}B^{s_0}\mathbf x = B^{s_0}A^{t_0}\mathbf x$.
+
+\end{proof}
+
+
 
 
 \summary{
@@ -3182,7 +3410,7 @@ is called a \emph{locally hamiltonian flow}.
   \answer{
     Every one-parameter group of canonical diffeomorphisms
     is generated by a closed 2-form $\omega^1$.
-    But $\mathbb^{2n}$ is a vector space,
+    But $\mathbb R^{2n}$ is a vector space,
     so by Section 36, we know $\omega^1$ is a differential $dH$
     by the cone construction.
     Thus, the flow generated by $I\omega^1 = IdH$ is a hamiltonian flow.
