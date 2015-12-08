@@ -2072,7 +2072,7 @@ We will calculate this principal bilinear term of $\Delta$ at $0$.
 }
 
 \begin{lem}
-  The mixed partial derivative $\partial \Delta/\partial s \partial t$ at $0$
+  The mixed partial derivative $\partial^2 \Delta/\partial s \partial t$ at $0$
   is equal to the commutator of differentiation in the directions
   $\mathbf A$ and $\mathbf B$:
   $$
@@ -2598,6 +2598,207 @@ on a manifold $M$.
 
 
 
+% subsection 39F Appendix
+\subsection{Appendix: Lie algebras and Lie groups}
+
+
+A \emph{Lie group} is a group $G$ which is a differentiable manifold,
+and for which the operations (product and inverse)
+are differentiable maps $G\times G \rightarrow G$
+and $G \rightarrow G$.
+%
+\note{
+The differentiable manifold defining the Lie group
+is a manifold of diffeomorphisms
+(i.e., generalized geometric transformations,
+like rotations and translations).
+Since there are so many possible transformations
+even in one dimension,
+the dimension of this manifold is infinite,
+different from the $2n$-dimensional symplectic manifold.
+}
+
+The tangent space $TG_e$ to a Lie group $G$
+at the identity has a natural Lie algebra structure;
+it is defined as follows:
+\note{
+  The identity element is the identity transformation.
+  So the tangent space consists of
+  infinitesimal transformations.
+}
+
+For each tangent vector $\mathbf A \in TG_e$
+there is a one-parameter subgroup $A^t \subset G$
+with velocity vector $\mathbf A = (d/dt)|_{t = 0} A^t$.
+
+The degree of non-commutativity of two subgroups $A^t$ and $B^s$
+is measured by the product $A^tB^sA^{-t}B^{-s}$.
+%
+It turns out that there is one and only one subgroup $C^r$ for which
+$$
+\rho(A^tB^sA^{-t}B^{-s}, C^{st}) = o(s^2 + t^2)
+\quad
+\mathrm{as \;}
+s \mathrm{\; and \;} t \rightarrow 0.
+$$
+The corresponding vector $\mathbf C =(d/dr)|_{r = 0} C^r$
+is called the \emph{Lie bracket}
+%
+$\mathbf C = [\mathbf A, \mathbf B]$
+of the vectors $\mathbf A$ and $\mathbf B$.
+%
+It can be verified that the operation of Lie bracket
+introduced in this way makes the space $TG_e$
+into a Lie algebra (i.e., the operation
+is bilinear, skew-symmetric, and satisfies the
+Jacobi identity).
+%
+This algebra is called the \emph{Lie algebra of the Lie group $G$}.
+
+\begin{prob*}
+  Compute the bracket operation in the Lie algebra
+  of the group SO(3) of rotations in three-dimensional
+  euclidean space.
+
+  \answer{
+    Consider the rotation $A^t$ around the axis $\mathbf a$
+    (a unit vector)
+    by angle theta $t$.
+    %
+    Any vector $\mathbf x$ can be decomposed to
+    parallel $\mathbf x_\parallel = \mathbf a \, (\mathbf a \cdot \mathbf x)$
+    and
+    perpendicular $\mathbf x_\perp = \mathbf x - \mathbf x_\parallel$
+    components to $\mathbf a$.
+    The former is unchanged under rotation,
+    the latter is rotated by $t$.
+    So
+    %
+    $$
+    A^t\mathbf x
+    =
+    \mathbf x_\parallel
+    +
+    \mathbf x_\perp \, \cos t
+    +
+    (\mathbf a \times \mathbf x_\perp) \, \sin t.
+    $$
+    %
+    So
+    $
+    (d/dt)|_{t = 0} A^t\mathbf x
+    = \mathbf a \times \mathbf x_\perp
+    = \mathbf a \times \mathbf x,
+    $
+    and the vector field $\mathbf{A(x)} = \mathbf a \times \mathbf x$.
+    Or in component form:
+    $\sum_j A_{ij} x_j = \sum_{jk} \epsilon_{ikj} a_k x_j$,
+    which means
+    $A_{ij} = \sum_k \epsilon_{ikj} a_k$.
+
+    We now compute the product
+    $P_{s,t}\,\mathbf x = A^tB^sA^{-t}B^{-s}\mathbf x$
+    $$
+    \begin{aligned}
+    P_{s, t} \, \mathbf x
+    &=
+    \exp(t \mathbf A) \,
+    \exp(s \mathbf B) \,
+    \exp(-t \mathbf A) \,
+    \exp(-s \mathbf B) \, \mathbf x
+    \\
+    &\approx
+    \left(1 + t \mathbf A + \tfrac{t^2 \mathbf A^2}{2}\right) \,
+    \left(1 + s \mathbf B + \tfrac{s^2 \mathbf B^2}{2}\right) \,
+    \left(1 - t \mathbf A + \tfrac{t^2 \mathbf A^2}{2}\right) \,
+    \left(1 - s \mathbf B + \tfrac{s^2 \mathbf B^2}{2}\right) \, \mathbf x
+    \\
+    &=
+    \mathbf x
+    +
+    ts (\mathbf{A B - BA}) \, \mathbf x + \dots.
+    \end{aligned}
+    $$
+    (The series has to start with the $st$ term
+    since $P_{t=0, s} = P_{t, s=0} = 1$.)
+    This shows
+    $$
+    \mathbf C = \mathbf A \mathbf B - \mathbf B \mathbf A.
+    $$
+    Now
+    $$
+    (\mathbf A \mathbf B)_{ij}
+    = \sum_k A_{ik} B_{kj}
+    = \sum_{k, p, q} \epsilon_{ipk} a_p \epsilon_{kqj} b_q
+    = \sum_{k, p, q} (\delta_{iq} \delta_{pj} - \delta_{ij} \delta_{pg}) a_p \, b_q
+    = a_j b_i - \delta_{ij} a_p b_p,
+    $$
+    and
+    $$
+    (\mathbf A \mathbf B - \mathbf B \mathbf A)_{ij}
+    = a_j b_i - a_i b_j
+    = \sum_{p, q} (\delta_{jp} \delta_{iq} - \delta_{ip} \delta_{jq}) \, a_p \, b_q
+    = \sum_{k, p, q} \epsilon_{ikj} \epsilon_{kpq} a_p \, b_q.
+    $$
+    But this quantity is expected to be $\mathbf C_{ij} = \sum_k \epsilon_{ikj} c_k$,
+    so
+    $c_k = \epsilon_{kpq} a_p \, b_q$,
+    or in vector form $\mathbf c = \mathbf a \times \mathbf b$.
+  }
+\end{prob*}
+
+
+Lemma 1 shows that the Poisson bracket of vector fields
+can be defined as the Lie bracket for the
+``infinite-dimensional Lie group''
+of diffeomorphism\footnote{
+  Our choice of sign in the definition of Poisson bracket
+  was determined by the correspondence.
+}
+of the manifold $M$.
+
+On the other hand,
+the Lie bracket can be defined
+can be defined using the Poisson bracket of vector fields
+on a Lie group $G$.
+%
+Let $g \in G$.
+%
+Right translation $R_g$ is the map
+$R_g: G \rightarrow G, R_g h = h g$.
+%
+The differential of $R_g$ at the point $e$
+maps $TG_e$ into $TG_g$.
+%
+\note{
+  Using $A^t$ for $h$,
+  $R_g \, A^t = A^t \, g$.
+  As $t \rightarrow 0$,
+  we map an infinitesimal transformation $A^t = 1 + t \mathbf A$
+  to a transformation that is infinitely close to $g$.
+  %
+  So $(d/dt)|_{t = 0} R_g \, A^t = (d/dt)|_{t = 0} A^t g = \mathbf A \, g$,
+  where $\mathbf A \in TG_e$,
+  and $\mathbf A \, g \in TG_g$.
+}
+%
+In this way, every vector $\mathbf A \in TG_e$
+corresponds to a vector field on the group:
+it consists of the right translations $(R_g)_* \mathbf A$
+and is called a \emph{right-invariant vector field}.
+%
+Clearly, a right-invariant vector field
+on a group is uniquely determined by its value
+at the identity.
+
+\begin{prob*}
+  Show that the Poisson bracket of right-invariant vector fields
+  on a Lie group $G$ is a right-invariant vector field,
+  and its value at the identity of the group is equal to
+  the Lie bracket of the values of the original vector fields
+  at the identity.
+\end{prob*}
+
 \summary{
   \begin{enumerate}
     \item A \emph{Lie algebra} is a vector space $L$ equipped with a
@@ -2616,16 +2817,25 @@ on a manifold $M$.
         $L_{\mathbf A} = \mathbf A \cdot \nabla
         = \sum_i A_i \frac{ \partial } { \partial x_i } $,
         which is a linear differential operator.
+        %
+        The flow applies to the points on the manifold $M$,
+        the Lie derivative to function of the points on the manifold $M$.
+        The composition of two flows $A^t B^s$
+        is equivalent to the reverse composition of Lie derivatives
+        $L_\mathbf{B} L_\mathbf{A}$:
+        $\varphi(A^t \, B^s \mathbf x)
+        = e^{s L_\mathbf{B}} e^{t L_\mathbf{A}} \varphi(\mathbf x)$.
 
     \item The Poisson bracket $[\mathbf A, \mathbf B]$
         of two vector fields $\mathbf A$ and $\mathbf B$
-        is defined through the Lie deriviative, such that
+        is defined through the commutator of the Lie deriviatives,
+        such that
         $$
         L_\mathbf{[A, B]} = L_\mathbf{B} L_\mathbf{A} - L_\mathbf{A} L_\mathbf{B}.
         $$
         In components,
         $$
-        [A, B]_j
+        [\mathbf A, \mathbf B]_j
         = \sum_i \left(
           B_i \frac{\partial A_j } { \partial x_i}
         - A_i \frac{\partial B_j } { \partial x_i}
@@ -2634,7 +2844,11 @@ on a manifold $M$.
         (Remember the opposite sign, for Lie derivatives
         apply to functions, instead of points on the manifold.)
 
-    \item The above Poisson bracket satisfies the Jacobi identity.
+    \item The above Poisson bracket of vector fields
+      satisfies the Jacobi identity.
+
+    \item If the Poisson bracket $[\mathbf A, \mathbf B]$ of two vector fields vanishes,
+      the two flows commute $A^t B^s = B^s A^t$, vice versa.
   \end{enumerate}
 }
 
