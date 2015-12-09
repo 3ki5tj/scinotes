@@ -21,6 +21,9 @@
 \date{ \vspace{-10ex} }
 \maketitle
 
+\tableofcontents
+
+\vspace{3ex}
 
 The purpose of this article is to give a
 gentle introduction to the idea of
@@ -66,17 +69,18 @@ can be regarded as a curve of $y$ versus $x$.
 Let us consider the problem of changing the shape of this curve.
 
 
-\subsection{Operations along the $y$ axis}
+\subsection{Translation and scaling}
+\subsubsection{Operations along the $y$ axis}
 
-To translate $f(x)$ along the $-y$ axis by $b$,
-we only need to add a constant $c$ to it:
+To translate $f(x)$ along the $y$ axis by $b$,
+we only need to add a constant $b$ to it:
 \begin{equation}
-  f(x) \rightarrow f(x) + c.
+  f(x) \rightarrow f(x) + b.
   \label{eq:ys_shift}
 \end{equation}
 So we can write this operation through an operator
 \begin{equation}
-  T_y^* f \equiv f + c.
+  T_y^* f \equiv f + b.
   \label{eq:ys_shift2}
 \end{equation}
 
@@ -93,7 +97,7 @@ This can be written in terms of an operator
 \end{equation}
 
 
-\subsection{Operations along the $x$ axis}
+\subsubsection{Operations along the $x$ axis}
 
 But how about the same operations along the $x$ axis?
 
@@ -106,28 +110,31 @@ $$
 f(x + a) = \sum_{n = 0}^\infty \frac{a^n}{n!} \frac{d^n f(x) }{dx^n}
 \equiv \exp\left(a \frac{d}{dx} \right) f(x).
 $$
-The last step is a shortcut of
-writing all orders of derivatives,
+The last step is merely a nice shortcut of
+writing all orders of derivatives:
 $$
 T_x \equiv
 \exp\left(a \frac{d}{dx} \right)
 \equiv
-\sum_{n = 0}^\infty \frac{a^n}{n!} \frac{d^n }{ dx^n}.
+\sum_{n = 0}^\infty \frac{a^n}{n!} \frac{d^n }{ dx^n},
 $$
+In real calculation,
+we still need to do the above expansion.
+%
 We shall write convenient shortcut
 a differential operator, $T_x$.
 %
-This operator obviously behaves kind of different from $T_y^*$,
-so we shall drop the $*$ on the superscript to distinguish
-the two.
+This operator looks different from $T_y^*$,
+so we use the superscript $*$
+to distinguish them.
 %
 Another point to note is that the $+$ sign in $T_y^*$
 means moving the curve along $+y$ axis,
 while the $+$ sign in $T_x$ means
 moving the curve along $-x$ axis.
 %
-The point is that
-applying $T_x$ to any function $f(x)$, we get $f(x+a)$.
+%The point is that
+%applying $T_x$ to any function $f(x)$, we get $f(x+a)$.
 
 Similarly, if we \emph{compress} the function along the $x$ axis by a factor of $s$,
 then the resulting function is given by $f(s \, x)$.
@@ -137,33 +144,113 @@ $$
 f(s \, x)
 &= f( e^{\ln x + \ln s} ) \\
 &= \sum_{n = 0}^\infty \frac{(\ln s)^n}{n!} \frac{d^n f(e^{\ln x + \ln s}) }{ d(\ln x)^n } \\
-&= \exp\left[ \ln s \frac{d}{d\ln x} f(x) \right]
-= s^{x \frac{d}{dx} } f(x).
+&= \exp\left[ \ln s \frac{d}{d\ln x} f(x) \right].
 \end{aligned}
 $$
 So the scaling operation along the $x$ axis is given by
 $$
-S_x \equiv s^{x \frac{d}{dx} }.
+S_x \equiv \exp\left(\ln s \, x \frac{d}{dx} \right).
 $$
+
+\subsection{Lie derivative}
+
+One thing the operators $T_x$ and $S_x$ share in common
+is that they are both the exponential of a \emph{linear}
+differential operator.
+%
+That is, they can be written in the form of
+\begin{equation}
+O_x(t) = \exp\left( t \, \alpha(x) \frac{d}{dx} \right),
+\label{eq:exponential_operator_1D},
+\end{equation}
+where $t$ is a parameter that
+represents the magnitude of the transformation,
+such that when $t = 0$, $O_x = 1$
+is reduced to the identity transformation.
+%
+For $T_x$, $t$ means the displacement $a$, and $\alpha(x) = 1$;
+and $S_x$, $t$ means $\ln s$, and $\alpha(x) = x$.
+%
+
+Thus, for infinitesimal transformation, with $t \rightarrow 0$,
+we can write
+$$
+O_x(t) = 1 + t \, \alpha(x) \frac{d}{dx}
+= 1 + t \, L_x,
+$$
+where the linear operator and we can compute $L_x$ by
+\begin{equation}
+L_x = \frac{d}{dt} O_x(t) \Bigg|_{t\rightarrow 0}
+= \alpha(x) \frac{d}{dx}.
+\label{eq:lieder_1D}
+\end{equation}
+This operator is called a \emph{Lie derivative}.
+%
+The derivative is linear, because it contains only $d/dx$,
+but not $d^2/dx^2$, $d^3/dx^3$, etc.
+%
+
+
+A Lie derivative represents
+a type of geometric transformation.
+%
+Given the Lie derivative, $L_x$,
+the geometric transformation of magnitude $t$
+is given by
+\begin{equation}
+O_x(t) = \exp(t \, L_x).
+\label{eq:exponentialrule}
+\end{equation}
+
+
+\subsubsection{Power operator}
+
+
+As a fun exercise, let us find out
+the operator that transforms
+the function $f(x)$ to $f(x^2)$.
+
+Answer.
+Since $x = e^{\ln x}$
+and $x^a = e^{2 \, \ln x}$,
+the desired operator is just scaling operator
+for the variable $\ln x$.
+Thus,
+$$
+P_x
+\equiv \exp\left(\ln 2  \ln x \frac{d}{d\ln x} \right)
+= 2^{ x \, \ln x \frac{d}{dx} }.
+$$
+
+Generally, the power operator that transforms
+$f(x)$ to $f(x^{\exp(t)})$
+is given by
+$$
+P_x
+\equiv \exp\left(t \, \ln(x) \, x \, \frac{d}{dx} \right).
+$$
+and the corresponding Lie derivative is
+$L_x = \ln(x) \, x \, (d/dx)$.
+
 
 
 
 \subsection{Composition}
 
 
-We can join two shaping operations by composition.
+We can join two geometric operations by composition.
 %Intuitively, this means two successive substitutions.
 
 
 \subsubsection{Composition of operations along $y$}
 
-For example, if we want to first translate the function by $c$ vertically,
+For example, if we want to first translate the function by $b$ vertically,
 and then stretch it by a factor of $A$ along the $y$ axis.
-Then the resulting function is $A \, [f(x) + c]$
+Then the resulting function is $A \, [f(x) + b]$
 and it can be achieved by a composition of the operators
 of $S_y^*$ and $T_y^*$:
 \begin{equation}
-S_y^* T_y^* f(x) = S_y^* [f(x) + c] = A \, [f(x) + c].
+S_y^* T_y^* f(x) = S_y^* [f(x) + b] = A \, [f(x) + b].
 \label{eq:SyTy}
 \end{equation}
 Note that the first operation $T_y^*$ is placed on the right,
@@ -192,11 +279,11 @@ $$
 \subsection{Unification of $x$ and $y$ operations}
 
 The asymmetry between $x$ and $y$ operations
-is somewhat frustrating.
+is somewhat hard to remember.
 %
-Besides, $x$ and $y$
+For example, $x$ and $y$
 operations appear to have different signs:
-moving in the $+y$ direction was associated with $+c$,
+moving in the $+y$ direction was associated with $+b$,
 whereas moving in the $-x$ direction was associated with $+a$.
 So is there a way to unify the two?
 The answer is again yes.
@@ -211,12 +298,14 @@ $$
 F(x, y) = f(x) - y = 0.
 $$
 This is a two-variable function
-in which $x$ and $y$ are symmetric,
+in which $x$ and $y$ appear with equal footing,
 although it means pretty much the same thing as
 Eq. \eqref{eq:y_fx}.
+%
 So we may guess that in this form
 the $y$ operations are the same as the $x$ operations.
-Let us verify that.
+%
+This is indeed so, and let us verify that.
 
 First, after a shift along the $-y$ axis by $a_y$, we expect
 the function $F(x, y)$ to become $F(x, y + a_y)$
@@ -227,8 +316,8 @@ This means
 $$
   y = f(x) - a_y.
 $$
-which agrees with Eq. \eqref{eq:ys_shift} with $c = - a_y$
-(i.e., moving the curve along $+y$ by $c = -a_y$).
+which agrees with Eq. \eqref{eq:ys_shift} with $b = - a_y$
+(i.e., moving the curve along $+y$ by $b = -a_y$).
 But now this operation can be accomplished with an $x$-type
 operator applied to $F(x, y)$,
 \begin{equation}
@@ -254,7 +343,9 @@ along the $y$ axis by a factor of $s_y$,
 can be accomplished by
 \begin{equation}
   S_y \equiv
-  (s_y)^{ y \, \frac{ \partial } { \partial y } }.
+  \exp\left[ \ln s_y \left(
+    y \, \frac{ \partial } { \partial y }
+  \right) \right].
   \label{eq:y_scale}
 \end{equation}
 Then
@@ -271,37 +362,68 @@ $$
 which agrees with Eq. \eqref{eq:y_shift} with $A = 1/s_y$.
 
 
-\subsection{Generalization}
-
-Of course, we can generally develop the corresponding
+Of course, we can develop the corresponding
 operator $T_x^*$ and $S_x^*$, by writing $y = f(x)$ inversely as
 $$
 x = f^{-1}(y).
 $$
 The $x$-type (non-star) operators, such as $T_x$ and $S_y$, turns
 out to be much easier to handle for a multivariate
-function $F(x_1, \dots, x_n)$.  Because, we simply cannot invert
-this function to
+function $F(x_1, \dots, x_n)$, because, inverting the relation to
 $$
 x_n = f_n(x_1, \dots, x_{n-1}).
 $$
-On the other hand, the operation along the $k$ axis is
-simply some function of $x_k$ and $\frac{ \partial }{ \partial x_k}$
+is generally much harder.
+
+
+
+
+\subsection{Generalization}
+
+Let us see how the above geometric operators can be generalized
+in higher dimensions, for a function $F(x_1, \dots, x_n)$.
+
+Generalizing \eqref{eq:exponential_operator_1D},
+a geometric operation along the $x_k$ axis is
 $$
-O_{x_k} = O\left(x_k,  \frac{ \partial } { \partial x_k }\right).
+O_{x_k} = \exp\left(t \, \alpha(x_k)  \frac{ \partial } { \partial x_k }\right).
 $$
 For example, a shift along the $-x_k$ axis is given by
 $$
-T_{x_k} = \exp\left( a_k \frac{ \partial } { \partial x_k } \right).
+T_{x_k} = \exp\left( t \frac{ \partial } { \partial x_k } \right).
 $$
 
 
-Further, we can mix different components, for example,
-consider a rotation of $\theta$ in the $x$-$y$ plane is given by
+But there is no need to stop here.
+We can include multiple $\partial/\partial x_k$
+on the exponential; each accompanied by
+$\alpha_k(x_k)$.
+Further $\alpha_k$ may depend on other components.
+So the most general definition is
+\begin{equation}
+  O = \exp\left(t \, \sum_k \alpha_k(\mathbf x) \frac{ \partial }{ \partial x_k }  \right).
+  \label{eq:exponential_operator}
+\end{equation}
+The corresponding Lie derivative is given by
+\begin{equation}
+  L = \sum_k \alpha_k(\mathbf x) \frac{ \partial }{ \partial x_k }.
+  \label{eq:lieder}
+\end{equation}
+
+
+
+\subsection{Rotation operator}
+
+
+
+As an example,
+we will show that
+a rotation of angle $\theta$
+in the $x$-$y$ plane is given by
 $$
-R = \exp\left[i\theta \left(x \frac{\partial}{\partial y} - y \frac{\partial }{\partial x} \right) \right]
+R = \exp\left[i \, \theta \left(x \frac{\partial}{\partial y} - y \frac{\partial }{\partial x} \right) \right]
 $$
-To verify this, let us denote
+To verify this, let us denote the corresponding Lie derivative as
 $$
 L = x \frac{\partial}{\partial y} - y \frac{\partial }{\partial x}.
 $$
@@ -316,7 +438,8 @@ $$
 &\approx f(x - \Delta \theta \, y, y + \Delta \theta \, x).
 \end{aligned}
 $$
-This means the argument of function $f$ is now
+This means applying $\exp(\Delta \theta L)$
+to $f(x, y)$ transforms the arguments as
 $$
 \left(
   \begin{array}{ccc}
@@ -330,7 +453,7 @@ $$
     y
   \end{array}
 \right)
-=
+\approx
 \exp\left[\Delta \theta \left(
   \begin{array}{ccc}
     0 & -1 \\
@@ -343,8 +466,10 @@ $$
     x \\
     y
   \end{array}
-\right)
+\right).
 $$
+This approximation is good for small $\Delta \theta$.
+%
 So if we apply $\exp(\Delta \theta \, L)$ twice,
 we the argument of function would be
 $$
@@ -395,8 +520,11 @@ We can show that with a large number of applications
 and $\Delta \theta = \theta / n$,
 the vector $(x, y)^T$ is right multiplied by the following matrix
 $$
+\mathbf R_\theta
+=
+\lim_{n\rightarrow \infty}
 \exp\left[
-  \theta
+  n \frac{ \theta } { n }
 \left(
   \begin{array}{ccc}
     0 & -1 \\
@@ -404,16 +532,21 @@ $$
   \end{array}
 \right)\right]
 =
+\exp\left[
+  \theta
 \left(
   \begin{array}{ccc}
-    \cos \theta & -\sin \theta \\
-    \sin \theta & \cos \theta
+    0 & -1 \\
+    1 & 0
   \end{array}
-\right).
+\right)\right].
 $$
-To show this we denote
+
+Below we will show this matrix indeed represents
+a rotation.
+Let us denote,
 $$
-\mathbf J
+\mathbf L
 =
 \left(
   \begin{array}{ccc}
@@ -424,34 +557,38 @@ $$
 $$
 then
 $$
-\mathbf J^2 = -\mathbf I, \quad
-\mathbf J^3 = -\mathbf J, \quad
-\mathbf J^4 = \mathbf I,
+\mathbf L^2 = -\mathbf I, \quad
+\mathbf L^{2n+1} = (-1)^n \mathbf L, \quad
+\mathbf L^{2n} = (-1)^n \mathbf L,
 $$
 where $\mathbf I$ is the identity matrix.
 So
 $$
-\exp(\theta \mathbf J)
+\exp(\theta \mathbf L)
 =
-\sum_{n = 0}^\infty \frac{\theta^n}{n!} \mathbf J^n
+\sum_{n = 0}^\infty \frac{\theta^n}{n!} \mathbf L^n
 =
 \sum_{n = 0}^\infty \frac{\theta^{2n}}{(2n)!} (-)^n \mathbf I
 +
-\sum_{n = 0}^\infty \frac{\theta^{2n+1}}{(2n+1)!} (-)^n \mathbf J
+\sum_{n = 0}^\infty \frac{\theta^{2n+1}}{(2n+1)!} (-)^n \mathbf L
 =
 \cos\theta \mathbf I
 +
-\sin \theta \mathbf J.
+\sin \theta \mathbf L.
 $$
-which is the identity to be shown.
+Writing this out, we get
+$$
+\mathbf R_\theta
+=
+\left(
+  \begin{array}{ccc}
+    \cos \theta & -\sin \theta \\
+    \sin \theta & \cos \theta
+  \end{array}
+\right),
+$$
+which is indeed the rotation matrix
 
-Generally, a geometric operator (such as a shift, scaling and rotation)
-can be written as am exponential operator:
-$$
-\mathbf O = \exp(t \mathbf G),
-$$
-where $\mathbf G$ is called the \emph{generator},
-and the parameter $t$ is the magnitude.
 
 
 % application
