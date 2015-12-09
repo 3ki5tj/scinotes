@@ -1,0 +1,196 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{chngcntr}
+\usepackage{caption}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+
+\begin{document}
+
+\title{Brownian dynamics with a colored noise}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+\subsection*{Problem}
+Consider the Langevin
+$$
+\dot x = -k \, x + \sqrt{\Gamma} \, \xi,
+$$
+where $\xi$ is a colored Gaussian noise satisfying
+$\langle \xi(t) \, \xi(t') \rangle = e^{-\gamma \, |t-t'|}$.
+What is the Fokker-Planck equation for $x$?
+
+\subsection*{Solution.}
+
+\paragraph{Interpretation as Ornstein-Uhlenbeck process.}
+
+Note that the stationary distribution of $\xi$ is
+\begin{equation}
+P(\xi) = e^{-\frac{1}{2}\xi^2}/\sqrt{2\pi}.
+\label{eq:Pxi}
+\end{equation}
+%
+The idea [van Kampen (page 243)] is
+to treat $\xi$ as a Ornstein-Uhlenbeck process
+(i.e., the position of a harmonic oscillator under
+a white-noise Brownian dynamics).
+%
+So
+\begin{equation}
+  \begin{aligned}
+    \dot x &= -k \, x + \sqrt{\Gamma} \, \xi, \\
+    \dot \xi &= -\gamma \, \xi + \sqrt{2 \gamma} \, d W(t),
+  \end{aligned}
+  \label{eq:ho_colorednoise_x}
+\end{equation}
+where $W(t)$ is the Wiener process (so $dW(t)$ is a white noise).
+
+Below we will show that
+if initially $x$ and $\xi$ are independent
+and the distribution of $\xi$ is given by Eq. \eqref{eq:Pxi},
+the marginal distribution $P(x, t)$ satisfies
+\begin{equation}
+\frac{ \partial P } { \partial t } = \frac{ \partial } { \partial x } (x P)
++
+\frac{ 1 - e^{-(k+\gamma) t} } {k + \gamma} \Gamma
+\frac{ \partial^2 P } { \partial x^2 }.
+\label{eq:ho_colorednoise_Px}
+\end{equation}
+
+\paragraph{Distribution $P(x, t)$ is a Gaussian.}
+
+The distribution $P(x, \xi, t)$ for
+Eq. \eqref{eq:ho_colorednoise_x} satisfies
+$$
+\frac{ \partial P(x, \xi, t) } { \partial t }
+=
+\frac{ \partial } { \partial x }
+\left[
+  \left(k \, x - \sqrt{\Gamma} \, \xi \right) \, P(x, \xi, t)
+\right]
++
+\frac{ \partial } { \partial \xi }
+\left[
+  (\gamma \, \xi ) \, P(x, \xi, t)
+\right]
++
+\gamma
+\frac{ \partial^2 } { \partial \xi^2} P(x, \xi, t).
+$$
+Since it is a linear Fokker-Planck equation,
+the solution is a joint Gaussian distribution
+for $x$ and $\xi$.
+%
+Further, the deterministic part for $x$
+is unaffected by the colored noise $\xi$.
+%
+So the marginal distribution of $P(x, t)$
+must adopt the form of
+\begin{equation}
+\frac{ \partial P(x, t) } { \partial t }
+=
+\frac{ \partial } { \partial x }
+\left[
+  k \, x \, P(x, t)
+\right]
++
+B(t)
+\frac{ \partial^2 } { \partial x^2} P(x, t),
+\label{eq:ho_colorednoise_Px1}
+\end{equation}
+where $B(t)$
+is a function to be determined
+(which would be a constant if the noise were white).
+
+\paragraph{Determination of the variance.}
+
+By multiplying Eq. \eqref{eq:ho_colorednoise_Px1} with $x^2$ and integrating,
+we get
+$$
+\begin{aligned}
+\frac{ \partial \langle x^2 \rangle } { \partial t }
+&=
+\int x^2 \frac{ \partial [(k \, x) \, P(x, t) ] } { \partial x} \, dx
++ B(t) \int x^2 \frac{ \partial^2 P(x, t) } { \partial x^2 } \, dx
+\\
+&=
+-\int 2 \, x \, (k \, x) \, P(x, t) \, dx
+- 2 \, B(t) \int x \frac{ \partial P(x, t) } { \partial x } \, dx
+\\
+&=
+- 2 \, k \, \langle x^2 \rangle
++ 2 \, B(t).
+\end{aligned}
+$$
+Laplace transforming the above equation yields
+\begin{equation}
+\mathcal L[ B(t) ](s) = \frac{2 \, k + s}{2} \, \mathcal L[\langle x^2 \rangle](s).
+\label{eq:Laplace_B_x^2}
+\end{equation}
+
+On the other hand,
+the explicit solution of Eq. \eqref{eq:ho_colorednoise_x} is
+(assuming $x(0) = 0$),
+$$
+x = \sqrt{\Gamma} \int_0^t \xi(\tau) \, e^{-k(t-\tau)}  \, d\tau.
+$$
+So the variance
+$$
+\begin{aligned}
+\langle x^2 \rangle
+&=
+\int_0^t\int_0^t \langle \xi(\tau) \, \xi(\tau') \rangle
+e^{-k(t-\tau)-k(t'-\tau')} \, d\tau \, d\tau'
+\\
+&=
+\Gamma \int_0^t\int_0^t
+e^{-\gamma|\tau - \tau'|-k(t-\tau)-k(t'-\tau')} \, d\tau \, d\tau'
+\\
+&=
+  \frac{\Gamma }{k\,(\gamma + k) }
+  +
+  \frac{2 \, \Gamma \, e^{-(\gamma + k) \, t} }{(\gamma - k) (\gamma + k) }
+  -
+  \frac{\Gamma \, e^{-2 \, k \, t} }{(\gamma - k) \, k }.
+\end{aligned}
+$$
+So, the Laplace transform is
+$$
+\mathcal L[\langle x^2 \rangle](s)
+=
+  \frac{ \Gamma } { k \, (\gamma + k) \, s }
+  +
+  \frac{ 2 \, \Gamma } { (\gamma - k) \, (\gamma + k) \, (\gamma + k + s) }
+  -
+  \frac{ \Gamma } { (\gamma - k ) \, k \, (2 \, k + s) }.
+$$
+Using this in \eqref{eq:Laplace_B_x^2}, we get
+$$
+\mathcal L[B(t)](s) =
+  \frac{ \Gamma }{ \gamma + k }
+  \left( \frac{1}{s} - \frac{1}{ \gamma + k + s } \right),
+$$
+which means
+$$
+B(t) = \frac{ \Gamma } { \gamma + k } \left( 1 - e^{-(\gamma + k) \,t} \right).
+$$
+So the Fokker-Planck equation for $P(x, t)$ is given by
+Eq. \eqref{eq:ho_colorednoise_Px}.
+
+\paragraph{Discussion.}
+
+This example is instructive,
+it shows that if the random noise is colored.
+%
+The variance term $B(t)$ in the Fokker-Planck equation
+depends non-trivially on the deterministic force through $k$.
+%
+Thus, for a non-harmonic force, the generally solution
+can be hard to find.
+
+
+\end{document}
