@@ -322,7 +322,135 @@ that the heat-bath algorithm.
 
 We consider several cases.
 
+
+
 \subsection{Type I.}
+
+\paragraph{Case 1.}
+
+If $p_n \le p_{n-1} + p_{n-2}$, we have
+$$
+  \mathbf T_{c}
+=
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.0}
+  \begin{array}{ccccccc}
+    0  & \dfrac{p_1}{p_2}   &   0   &   \dots  & 0  & 0 \\
+    0  &   0   & \dfrac{p_2}{p_3}  &   \dots  &  0 & 0 \\
+    \vdots&\vdots &\vdots &   \ddots &   \vdots & \vdots\\
+    0 & 0 &0 &   \cdots &   1 - \dfrac{ p_n - p_{n-2} } {p_{n-1}} & 1 - \dfrac{p_{n-1}}{p_n}\\
+    0 & 0 &0 &   \cdots &  0 & \dfrac{p_{n-1}}{p_n}\\
+    1 &  1 - \dfrac{p_1}{p_2} &   1 - \dfrac{p_2}{p_3}   &   \dots  &  \dfrac{p_n - p_{n-2}}{p_{n-1}} & 0
+  \end{array}
+\right).
+$$
+It is readily verified that $(p_1, \dots, p_n)^T$
+is a right eigenvector with eigenvalue $1$.
+%
+So the stationary distribution is preserved.
+%
+But more interestingly,
+the diagonal elements of the matrix are all zeros,
+meaning that the new scheme is rejection-free.
+%
+However, it only works for $p_n \le p_{n-1} + p_{n-2}$,
+for otherwise the element $T_c(n-2,n-1)$ is negative,
+which is inadmissible.
+
+
+\paragraph{Case 2.}
+
+If $p_{n-1} + p_{n-2} < p_n \le p_{n-1} + p_{n-2} + p_{n-3}$.
+$$
+  \mathbf T_{c}
+=
+\left(
+  \arraycolsep=6.0pt\def\arraystretch{1.5}
+  \begin{array}{ccccccc}
+    0  & \frac{p_1}{p_2}   &   \dots  & 0  & 0 & 0\\
+    0  &   0   &   \dots  &  0 & 0 & 0\\
+    \vdots&\vdots &   \ddots &   \vdots & \vdots & \vdots \\
+    0 & 0 &   \cdots &
+    1 - \frac{ p_n - p_{n-3} } { p_{n-2} + p_{n-1}} &
+    1 - \frac{ p_n - p_{n-3} } { p_{n-2} + p_{n-1}} &
+    1 - \frac{p_{n-2} + p_{n-1}}{p_n}\\
+    0 & 0 &   \cdots &  0 & 0 & \frac{p_{n-2}}{p_n}\\
+    0 & 0 &   \cdots &  0 & 0 & \frac{p_{n-1}}{p_n}\\
+    1 &  1 - \frac{p_1}{p_2} &   \dots  &
+    \frac{p_n - p_{n-3}}{p_{n-2} + p_{n-1}} &
+    \frac{p_n - p_{n-3}}{p_{n-2} + p_{n-1}} & 0
+  \end{array}
+\right).
+$$
+Again, the stationary distribution is preserved,
+and the diagonal elements of the matrix are zeros,
+meaning a rejection-free scheme.
+
+
+\paragraph{Case $i$}
+
+For $1 \le i < n - 1$,
+\begin{equation}
+  T_{rc}
+=
+\begin{cases}
+  \delta_{r, n}
+  & (c = 1)
+  \\
+  \delta_{r, c-1}\frac{p_{c-1}}{p_c}
+  + \delta_{r, n}\left(1 - \frac{p_{c-1}}{p_c} \right)
+  & (1 < c < n - i)
+  \\
+  \delta_{r, n-i-1}\left(1 - \frac{p_n - p_{n-i-1} }{ p_{n-i} + \cdots + p_{n-1} } \right)
+  + \delta_{r, n} \frac{p_n - p_{n-i-1} }{ p_{n-i} + \cdots + p_{n-1} }
+  & (n - i \le c \le n - 1)
+  \\
+  \delta_{r, n-i-1}\left(1 - \frac{ p_{n-i} + \cdots + p_{n-1} }{p_n} \right)
+  + 1_{n-i \le r < n} \frac{p_r }{ p_n }
+  & (c = n)
+\end{cases}
+\end{equation}
+
+
+\paragraph{Case $n-1$.}
+
+However, if $p_n > p_1 + \dots + p_{n-1}$, we no longer
+have a rejection free matrix.  The best we can get is
+\begin{equation}
+  \mathbf T_{c}
+=
+\left(
+  \arraycolsep=10.0pt\def\arraystretch{2.0}
+  \begin{array}{cccccc}
+    0     &   0   &   \dots  &   \dfrac{p_1}{p_n}       \\
+    0     &   0   &   \dots  &   \dfrac{p_2}{p_n} \\
+    \vdots&\vdots &   \ddots &   \vdots \\
+    1 &  1 &   \dots  &   1 - \dfrac{p_1 + \cdots + p_{n-1}}{p_n} \\
+  \end{array}
+\right).
+\label{eq:T_convective_n1}
+\end{equation}
+Even in this case,
+the rejection rate is
+\begin{equation}
+R_c = p_n - (p_1 + \dots + p_{n-1}) = 2 p_n - 1,
+\label{eq:rejection_convective}
+\end{equation}
+which is always lower than the rate
+in the heat-bath case,
+Eq. \eqref{eq:rejection_heatbath}.
+\footnote{
+  Because
+  $(p_1^2 + \dots + p_n^2) -  (2 \, p_n - 1)
+  = p_1^2 + \dots + p_{n-1}^2 + (1 - p_n)^2 \ge 0$.
+}
+
+
+\subsection{Type II.}
+
+The rejection-free scheme are not unique.
+%
+Below we give an alternative form.
 
 \paragraph{Case 1.}
 
@@ -343,22 +471,13 @@ $$
   \end{array}
 \right).
 $$
-It is readily verified that $(p_1, \dots, p_n)^T$
-is a right eigenvector with eigenvalue $1$.
 %
-So the stationary distribution is preserved.
-%
-But more interestingly,
-the diagonal elements of the matrix are all zeros,
-meaning that the new scheme is rejection-free!
-%
-However, it only works for $p_1 + p_2 \ge p_n$,
+This matrix only works for $p_1 + p_2 \ge p_n$,
 for otherwise the element $T_c(2,1)$ is negative.
 
 \paragraph{Case 2.}
 
-Second, if $p_1 + p_2 \le p_n \le p_1 + p_2 + p_3$,
-we give
+For $p_1 + p_2 \le p_n \le p_1 + p_2 + p_3$,
 $$
   \mathbf T_{c}
 =
@@ -374,9 +493,6 @@ $$
   \end{array}
 \right).
 $$
-Again, the stationary distribution is preserved,
-and the diagonal elements of the matrix are zeros,
-meaning a rejection-free scheme.
 
 \paragraph{Case 3.}
 
@@ -410,95 +526,11 @@ $$
 \right).
 $$
 
-\paragraph{Case $n$.}
-
-However, if $p_n > p_1 + \dots + p_{n-1}$, we no longer
-have a rejection free matrix.  The best we can get is
-\begin{equation}
-  \mathbf T_{c}
-=
-\left(
-  \arraycolsep=10.0pt\def\arraystretch{2.0}
-  \begin{array}{cccccc}
-    0     &   0   &   \dots  &   \dfrac{p_1}{p_n}       \\
-    0     &   0   &   \dots  &   \dfrac{p_2}{p_n} \\
-    \vdots&\vdots &   \ddots &   \vdots \\
-    1 &  1 &   \dots  &   1 - \dfrac{p_1 + \cdots + p_{n-1}}{p_n} \\
-  \end{array}
-\right).
-\label{eq:T_convective_n}
-\end{equation}
-Even in this case,
-the rejection rate is
-\begin{equation}
-R_c = p_n - (p_1 + \dots + p_{n-1}) = 2 p_n - 1,
-\label{eq:rejection_convective}
-\end{equation}
-which is always lower than the rate
-in the heat-bath case,
-Eq. \eqref{eq:rejection_heatbath}.
-\footnote{
-  Because
-  $(p_1^2 + \dots + p_n^2) -  (2 \, p_n - 1)
-  = p_1^2 + \dots + p_{n-1}^2 + (1 - p_n)^2 \ge 0$.
-}
-
-\subsection{Type II.}
-
-Interestingly, the rejection-free scheme are not unique.
-
-\paragraph{Case 1.}
-
-If $p_n \le p_{n-1} + p_{n-2}$.
-$$
-  \mathbf T_{c}
-=
-\left(
-  \arraycolsep=10.0pt\def\arraystretch{2.0}
-  \begin{array}{ccccccc}
-    0  & \dfrac{p_1}{p_2}   &   0   &   \dots  & 0  & 0 \\
-    0  &   0   & \dfrac{p_2}{p_3}  &   \dots  &  0 & 0 \\
-    \vdots&\vdots &\vdots &   \ddots &   \vdots & \vdots\\
-    0 & 0 &0 &   \cdots &   1 - \dfrac{ p_n - p_{n-2} } {p_{n-1}} & 1 - \dfrac{p_{n-1}}{p_n}\\
-    0 & 0 &0 &   \cdots &  0 & \dfrac{p_{n-1}}{p_n}\\
-    1 &  1 - \dfrac{p_1}{p_2} &   1 - \dfrac{p_2}{p_3}   &   \dots  &  \dfrac{p_n - p_{n-2}}{p_{n-1}} & 0
-  \end{array}
-\right).
-$$
-
-\paragraph{Case 2.}
-
-If $p_{n-1} + p_{n-2} < p_n \le p_{n-1} + p_{n-2} + p_{n-3}$.
-$$
-  \mathbf T_{c}
-=
-\left(
-  \arraycolsep=6.0pt\def\arraystretch{1.5}
-  \begin{array}{ccccccc}
-    0  & \frac{p_1}{p_2}   &   \dots  & 0  & 0 & 0\\
-    0  &   0   &   \dots  &  0 & 0 & 0\\
-    \vdots&\vdots &   \ddots &   \vdots & \vdots & \vdots \\
-    0 & 0 &   \cdots &
-    1 - \frac{ p_n - p_{n-3} } { p_{n-2} + p_{n-1}} &
-    1 - \frac{ p_n - p_{n-3} } { p_{n-2} + p_{n-1}} &
-    1 - \frac{p_{n-2} + p_{n-1}}{p_n}\\
-    0 & 0 &   \cdots &  0 & 0 & \frac{p_{n-2}}{p_n}\\
-    0 & 0 &   \cdots &  0 & 0 & \frac{p_{n-1}}{p_n}\\
-    1 &  1 - \frac{p_1}{p_2} &   \dots  &
-    \frac{p_n - p_{n-3}}{p_{n-2} + p_{n-1}} &
-    \frac{p_n - p_{n-3}}{p_{n-2} + p_{n-1}} & 0
-  \end{array}
-\right).
-$$
-
-The trend is clear.
-
-\paragraph{Case $n$.}
+\paragraph{Case $n - 1$.}
 
 If $p_n > p_1 + \cdots + p_{n-1}$,
 the transition matrix coincides
-with the one given by Eq. \eqref{eq:T_convective_n}
-
+with the one given by Eq. \eqref{eq:T_convective_n1}.
 
 
 \end{document}

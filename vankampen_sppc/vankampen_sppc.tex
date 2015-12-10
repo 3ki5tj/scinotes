@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsfonts}
+\usepackage{mathrsfs}
 \usepackage{chngcntr}
 \usepackage{bm}
 \usepackage[usenames,dvipsnames]{xcolor}
@@ -494,7 +495,7 @@ and
 $a(t) = 2 \int^t_0 D(s) \, ds$.
 
 
-\section{3. Stationary Markov process}
+\section{Stationary Markov process}
 
 Page 83.
 Ornstein-Uhlenbeck (OU) process.
@@ -701,12 +702,105 @@ $$
 
 \section{Colored noise}
 
+Consider the Langevin-like equation:
+\begin{equation}
+  \dot y = A(y) + C(y) \, \xi(t),
+  \label{eq:Langevin_colored}
+\end{equation}
+in which the noise $\xi(t)$ is not white:
+\begin{equation}
+\langle \xi(t) \rangle = 0,
+\qquad
+\langle \xi(t) \, \xi(t') \rangle = \kappa(t - t').
+\label{eq:colored_noise}
+\end{equation}
+
+
+To handle the colored noise, the following procedure
+is usually used.
+%
+The M-equation of $\xi$ is given by
+\begin{equation}
+  \dot \Pi(\xi, t)
+  =
+  \int \left[
+    \gamma(\xi|\xi') \, \Pi(\xi', t)
+    -
+    \gamma(\xi'|\xi) \, \Pi(\xi, t)
+  \right] \, d\xi'
+  =
+  \mathbb{W} \, \Pi.
+\end{equation}
+Then,
+the bivariate process $\{ y, \xi \}$ is Markovian
+and the joint probability $\mathscr P$ satisfies
+\begin{equation}
+  \frac{ \partial \mathscr P(y, \xi, t) }{ \partial t }
+  =
+  - \frac{ \partial } { \partial y }
+  \left\{
+    A(y) + C(y) \, \xi
+  \right\} \mathscr P
+  +
+  \mathbb W \, \mathscr P.
+  \label{eq:M_joint_P_y_xi}
+\end{equation}
+The joint process is a composite Markov process.
+
+
+A convenient choice for $\xi$ is the Ornstein-Uhlenbeck process,
+and \eqref{eq:M_joint_P_y_xi} becomes
+\begin{equation}
+  \frac{ \partial \mathscr P(y, \xi, t) }{ \partial t }
+  =
+  - \frac{ \partial } { \partial y }
+  \left\{
+    A(y) + C(y) \, \xi
+  \right\} \mathscr P
+  +
+  \gamma \frac{ \partial } { \partial \xi } \xi \mathscr P
+  +\frac{ \Gamma } { 2 }
+  \frac{ \partial^2 \mathscr P } { \partial \xi^2 }.
+  \label{eq:FP_joint_y_xi}
+\end{equation}
+
+The corresponding joint Langevin equation is
+\begin{equation}
+\begin{aligned}
+  \dot y &= A(y) + C(y) \, \xi \\
+  \dot \xi &= -\gamma \, \xi + L(t).
+\end{aligned}
+\label{eq:Langevin_joint_y_xi}
+\end{equation}
+
+Another choice for $\xi$ is the two-valued Markov process
+\begin{equation}
+\begin{aligned}
+  \frac{ \partial \mathscr P_+(y, t) } { \partial t }
+  &=
+  - \frac{ \partial } { \partial y }
+  \left\{
+    A(y) + C(y) \, \xi
+  \right\} \mathscr P_+
+  -\gamma_+ \mathscr P_+ + \gamma_- \mathscr P_-,
+  \\
+  \frac{ \partial \mathscr P_-(y, t) } { \partial t }
+  &=
+  - \frac{ \partial } { \partial y }
+  \left\{
+    A(y) - C(y) \, \xi
+  \right\} \mathscr P_-
+  + \gamma_+ \mathscr P_+ - \gamma_- \mathscr P_-,
+\end{aligned}
+\label{eq:Langevin_joint_y_xi}
+\end{equation}
+
 
 \begin{exercise}
   (Slightly modified version)
   Write the M-equation for the joint variables $x$, $\xi$ obeying
   \begin{equation}
-  \dot x = -k \, x + \sqrt{\Gamma} \, \xi,
+  \dot x = -\alpha \, x + \sqrt{\Gamma} \, \xi,
   \quad
   \dot \xi = -\gamma \, \xi + \sqrt{2 \gamma} \, d W(t),
   \label{eq:ho_colorednoise}
@@ -722,13 +816,12 @@ $$
   \begin{equation}
   \frac{ \partial P } { \partial t } = \frac{ \partial } { \partial x } (x P)
   +
-  \frac{ 1 - e^{-(k+\gamma) t} } {k + \gamma} \Gamma
+  \frac{ 1 - e^{-(\alpha + \gamma) \, t} } {\alpha + \gamma} \Gamma
   \frac{ \partial^2 P } { \partial x^2 }.
   \label{eq:ho_colorednoise_Px}
   \end{equation}
 
-  \solution{1}
-  {
+  \answer{
     The distribution $P(x, \xi, t)$ for
     Eq. \eqref{eq:ho_colorednoise} satisfies
     $$
@@ -736,7 +829,7 @@ $$
     =
     \frac{ \partial } { \partial x }
     \left[
-      \left(k \, x - \sqrt{\Gamma} \, \xi \right) \, P(x, \xi, t)
+      \left( \alpha \, x - \sqrt{\Gamma} \, \xi \right) \, P(x, \xi, t)
     \right]
     +
     \frac{ \partial } { \partial \xi }
@@ -761,7 +854,7 @@ $$
     =
     \frac{ \partial } { \partial x }
     \left[
-      k \, x \, P(x, t)
+      \alpha \, x \, P(x, t)
     \right]
     +
     B(t)
@@ -777,79 +870,79 @@ $$
     \begin{aligned}
     \frac{ \partial \langle x^2 \rangle } { \partial t }
     &=
-    \int x^2 \frac{ \partial [(k \, x) \, P(x, t) ] } { \partial x} \, dx
+    \int x^2 \frac{ \partial [(\alpha \, x) \, P(x, t) ] } { \partial x} \, dx
     + B(t) \int x^2 \frac{ \partial^2 P(x, t) } { \partial x^2 } \, dx
     \\
     &=
-    -\int 2 \, x \, (k \, x) \, P(x, t) \, dx
+    -\int 2 \, x \, (\alpha \, x) \, P(x, t) \, dx
     - 2 \, B(t) \int x \frac{ \partial P(x, t) } { \partial x } \, dx
     \\
     &=
-    - 2 \, k \, \langle x^2 \rangle
+    - 2 \, \alpha \, \langle x^2 \rangle
     + 2 \, B(t).
     \end{aligned}
     $$
     Laplace transforming the above equation yields
     \begin{equation}
-    \mathcal L[ B(t) ](s) = \frac{2 \, k + s}{2} \, \mathcal L[\langle x^2 \rangle](s).
+    \mathcal L[ B(t) ](s) = \frac{2 \, \alpha + s}{2} \, \mathcal L[\langle x^2 \rangle](s).
     \label{eq:Laplace_B_x^2}
     \end{equation}
 
     On the other hand,
     the explicit solution of Eq. \eqref{eq:ho_colorednoise} is
     $$
-    x = \sqrt{\Gamma} \int_0^t \xi(\tau) \, e^{-k(t-\tau)}  \, d\tau
+    x = \sqrt{\Gamma} \int_0^t \xi(\tau) \, e^{-\alpha \, (t-\tau)}  \, d\tau
       + x_0 \, e^{-kt}.
     $$
     So the variance $\langle \delta x^2 \rangle = \langle (x - x_0 \, e^{-kt})^2 \rangle$
     satisfies
-    $$
-    \begin{aligned}
+    %
+    \begin{align}
     \langle \delta x^2 \rangle
     &=
     \int_0^t\int_0^t \langle \xi(\tau) \, \xi(\tau') \rangle
-    e^{-k(t-\tau)-k(t'-\tau')} \, d\tau \, d\tau'
+    e^{-\alpha \, (t-\tau)- \alpha \, (t'-\tau')} \, d\tau \, d\tau'
     +
     x_0^2 \, e^{-2kt}
-    \\
+    \notag \\
     &=
     \Gamma \int_0^t\int_0^t
-    e^{-\gamma|\tau - \tau'|-k(t-\tau)-k(t'-\tau')} \, d\tau \, d\tau'
+    e^{-\gamma|\tau - \tau'|-\alpha \, (t-\tau) - \alpha \, (t'-\tau')} \, d\tau \, d\tau'
     +
     x_0^2 \, e^{-2kt}
-    \\
+    \notag \\
     &=
     \Gamma
     \left(
-      \frac{1}{k\,(\gamma + k) }
+      \frac{1}{\alpha \,(\gamma + \alpha) }
       +
-      \frac{2 \, e^{-(\gamma + k) \, t} }{(\gamma - k) (\gamma + k) }
+      \frac{2 \, e^{-(\gamma + \alpha) \, t} }{(\gamma - \alpha) (\gamma + \alpha) }
       -
-      \frac{e^{-2 \, k \, t} }{(\gamma - k) \, k }
+      \frac{e^{-2 \, \alpha \, t} }{(\gamma - \alpha) \, \alpha }
     \right),
-    \end{aligned}
-    $$
+    \label{eq:ho_colorednoise_var}
+    \end{align}
     where we have dropped the $x_0$ term in the last step.
     %
     So, the Laplace transform is
     $$
     \mathcal L[\langle \delta x^2 \rangle](s)
     =
-      \frac{ \Gamma } { k \, (\gamma + k) \, s }
+      \frac{ \Gamma } { \alpha \, (\gamma + \alpha) \, s }
       +
-      \frac{ 2 \, \Gamma } { (\gamma - k) \, (\gamma + k) \, (\gamma + k + s) }
+      \frac{ 2 \, \Gamma } { (\gamma - \alpha) \, (\gamma + \alpha) \, (\gamma + \alpha + s) }
       -
-      \frac{ \Gamma } { (\gamma - k ) \, k \, (2 \, k + s) }.
+      \frac{ \Gamma } { (\gamma - \alpha ) \, \alpha \, (2 \, \alpha + s) }.
     $$
     Using this in \eqref{eq:Laplace_B_x^2}, we get
     $$
     \mathcal L[B(t)](s) =
-      \frac{ \Gamma }{ \gamma + k }
-      \left( \frac{1}{s} - \frac{1}{ \gamma + k + s } \right),
+      \frac{ \Gamma }{ \gamma + \alpha }
+      \left( \frac{1}{s} - \frac{1}{ \gamma + \alpha + s } \right),
     $$
     which means
     $$
-    B(t) = \frac{ \Gamma } { \gamma + k } \left( 1 - e^{-(\gamma + k) \,t} \right).
+    B(t) = \frac{ \Gamma } { \gamma + \alpha } \left( 1 - e^{-(\gamma + \alpha) \,t} \right).
     $$
     So the Fokker-Planck equation for the marginal distribution is
     Eq. \eqref{eq:ho_colorednoise_Px}.
@@ -862,11 +955,105 @@ $$
     \langle x(t) \, x(t') \rangle
     =
     \Gamma \left(
-      \frac{ e^{-k t' - \gamma t} + e^{-k t - \gamma t' }  }
-      { \gamma^2 - k^2 }
+      \frac{ e^{-\alpha \, t' - \gamma \, t} + e^{-\alpha \, t - \gamma \, t' }  }
+      { \gamma^2 - \alpha^2 }
       -
-      \frac{ e^{ -k (t + t') } { (\gamma - k) \, k }
+      \frac{ e^{ -\alpha \, (t + t') } } { (\gamma - \alpha) \, \alpha }
     \right).
+    $$
+  }
+
+  \note{
+    As a verification,
+    we can alternatively solve \eqref{eq:ho_colorednoise_Px1} using
+    the method of characteristics.
+    First, Fourier transform the equation,
+    $G(k,t) = \langle \exp(ikx) \rangle$,
+    and
+    $$
+    \frac{ \partial G(k, t) } { \partial t }
+    =
+    -\alpha k \frac{ \partial G(k, t) } { \partial k }
+    - k^2 \, B(t) G(k, t).
+    $$
+    Thus, the characteristic curve is
+    $$
+    \frac{ dt } { 1 }
+    =
+    \frac{ dk } { \alpha \, k }
+    =
+    \frac{ d\ln G } { -k^2 \, B(t) }
+    $$
+    For the $k$-$t$ pair, we have $dk/k = \alpha \, dt$,
+    and $k e^{-\alpha \, t} = C_1$.
+    %
+    For the $G$-$t$ pair,
+    $$
+    d\ln G = -k^2 \, B(t) \, dt = -C_1^2 e^{2\alpha\, t} B(t) \, dt,
+    $$
+    Using the actual expression and integrating, we get
+    $$
+    \ln G = -\frac{\Gamma \, k^2 }{ \gamma + \alpha }
+    \left( \frac{1}{2 \, \alpha} + \frac{e^{-(\gamma + \alpha) \,t }}{\gamma - \alpha} \right)
+    + C_2.
+    $$
+    We now impose a functional relationship $C_2 = F(C_1)$, or
+    $$
+    \ln G + \frac{\Gamma \, k^2 }{ \gamma + \alpha }
+    \left( \frac{1}{2 \, \alpha} + \frac{e^{-(\gamma + \alpha) \,t }}{\gamma - \alpha} \right)
+    = F(ke^{-\alpha \, t}).
+    $$
+    The function $F$ is then determined by the initial condition $t = 0$,
+    $\ln G = i \, k \, x_0$,
+    $$
+    F(k) = i \, k \, x_0 + \frac{\Gamma \, k^2 }{ \gamma + \alpha }
+    \left( \frac{1}{2 \, \alpha} + \frac{1}{\gamma - \alpha} \right).
+    $$
+    So the full solution is
+    $$
+    \ln G = i \, k \, x_0 \, e^{-\alpha t} + \frac{\Gamma \, k^2 }{ \gamma + \alpha }
+    \left( \frac{e^{-2 \, \alpha \, t} - 1}{2 \, \alpha}
+    + \frac{e^{-2 \, \alpha \, t} - e^{-(\gamma + \alpha) \, t} }{\gamma - \alpha} \right).
+    $$
+    This means the distribution is centered at $x_0 \, e^{-\alpha \, t}$
+    with the variance
+    $$
+    \frac{\Gamma }{ \gamma + \alpha }
+    \left( \frac{1}{\alpha}
+    + \frac{ 2 \, e^{-(\gamma + \alpha) \, t} }{\gamma - \alpha}
+    - \frac{ (\gamma + \alpha) \, e^{-2\, \alpha \, t} }{\alpha \, (\gamma - \alpha)} \right).
+    $$
+    This agrees with \eqref{eq:ho_colorednoise_var}.
+  }
+
+\end{exercise}
+
+\begin{exercise}
+  Consider equations (7.6) with
+  $$
+  A(y) = -\alpha \, \tanh y
+  \quad \mathrm{and} \quad
+  C(y) = \beta [ \cosh y ]^{-1}.
+  $$
+  Transform this problem into \eqref{eq:ho_colorednoise} and solve it.
+
+  \answer{
+    By $x = \sinh y$, we have
+    $$
+    \dot x = -\alpha \, x + \beta \xi.
+    $$
+    Thus, we only need to replace $\beta$ by $\sqrt\Gamma$.
+    Thus, $P(x)$ is the Gaussian distribution
+    $
+    P(x) = N(x_0 \, e^{-\alpha \, t}, \sigma^2),
+    $
+    with $\sigma^2$ given by \eqref{eq:ho_colorednoise_var}.
+    It follows
+    $$
+    P(y) = P(x) \, \frac{ dx }{ dy }
+    = \frac{1}{\sqrt{2\pi} \sigma} \, \exp\left(
+      -\frac{ (\sinh y - e^{-\alpha t} \, \sinh y_0)^2 } { 2 \, \sigma^2 }
+    \right) \, \cosh y.
     $$
   }
 \end{exercise}

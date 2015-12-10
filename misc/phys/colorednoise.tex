@@ -18,7 +18,7 @@
 \subsection*{Problem}
 Consider the Langevin
 $$
-\dot x = -k \, x + \sqrt{\Gamma} \, \xi,
+\dot x = -\alpha \, x + \sqrt{\Gamma} \, \xi,
 $$
 where $\xi$ is a colored Gaussian noise satisfying
 $\langle \xi(t) \, \xi(t') \rangle = e^{-\gamma \, |t-t'|}$.
@@ -42,7 +42,7 @@ a white-noise Brownian dynamics).
 So
 \begin{equation}
   \begin{aligned}
-    \dot x &= -k \, x + \sqrt{\Gamma} \, \xi, \\
+    \dot x &= -\alpha \, x + \sqrt{\Gamma} \, \xi, \\
     \dot \xi &= -\gamma \, \xi + \sqrt{2 \gamma} \, d W(t),
   \end{aligned}
   \label{eq:ho_colorednoise_x}
@@ -56,7 +56,7 @@ the marginal distribution $P(x, t)$ satisfies
 \begin{equation}
 \frac{ \partial P } { \partial t } = \frac{ \partial } { \partial x } (x P)
 +
-\frac{ 1 - e^{-(k+\gamma) t} } {k + \gamma} \Gamma
+\frac{ 1 - e^{-(\alpha+\gamma) t} } {\alpha + \gamma} \Gamma
 \frac{ \partial^2 P } { \partial x^2 }.
 \label{eq:ho_colorednoise_Px}
 \end{equation}
@@ -70,7 +70,7 @@ $$
 =
 \frac{ \partial } { \partial x }
 \left[
-  \left(k \, x - \sqrt{\Gamma} \, \xi \right) \, P(x, \xi, t)
+  \left(\alpha \, x - \sqrt{\Gamma} \, \xi \right) \, P(x, \xi, t)
 \right]
 +
 \frac{ \partial } { \partial \xi }
@@ -95,7 +95,7 @@ must adopt the form of
 =
 \frac{ \partial } { \partial x }
 \left[
-  k \, x \, P(x, t)
+  \alpha \, x \, P(x, t)
 \right]
 +
 B(t)
@@ -114,21 +114,21 @@ $$
 \begin{aligned}
 \frac{ \partial \langle x^2 \rangle } { \partial t }
 &=
-\int x^2 \frac{ \partial [(k \, x) \, P(x, t) ] } { \partial x} \, dx
+\int x^2 \frac{ \partial [(\alpha \, x) \, P(x, t) ] } { \partial x} \, dx
 + B(t) \int x^2 \frac{ \partial^2 P(x, t) } { \partial x^2 } \, dx
 \\
 &=
--\int 2 \, x \, (k \, x) \, P(x, t) \, dx
+-\int 2 \, x \, (\alpha \, x) \, P(x, t) \, dx
 - 2 \, B(t) \int x \frac{ \partial P(x, t) } { \partial x } \, dx
 \\
 &=
-- 2 \, k \, \langle x^2 \rangle
+- 2 \, \alpha \, \langle x^2 \rangle
 + 2 \, B(t).
 \end{aligned}
 $$
 Laplace transforming the above equation yields
 \begin{equation}
-\mathcal L[ B(t) ](s) = \frac{2 \, k + s}{2} \, \mathcal L[\langle x^2 \rangle](s).
+\mathcal L[ B(t) ](s) = \frac{2 \, \alpha + s}{2} \, \mathcal L[\langle x^2 \rangle](s).
 \label{eq:Laplace_B_x^2}
 \end{equation}
 
@@ -136,7 +136,7 @@ On the other hand,
 the explicit solution of Eq. \eqref{eq:ho_colorednoise_x} is
 (assuming $x(0) = 0$),
 $$
-x = \sqrt{\Gamma} \int_0^t \xi(\tau) \, e^{-k(t-\tau)}  \, d\tau.
+x = \sqrt{\Gamma} \int_0^t \xi(\tau) \, e^{-\alpha(t-\tau)}  \, d\tau.
 $$
 So the variance
 $$
@@ -144,39 +144,39 @@ $$
 \langle x^2 \rangle
 &=
 \int_0^t\int_0^t \langle \xi(\tau) \, \xi(\tau') \rangle
-e^{-k(t-\tau)-k(t'-\tau')} \, d\tau \, d\tau'
+e^{-\alpha(t-\tau)-\alpha(t'-\tau')} \, d\tau \, d\tau'
 \\
 &=
 \Gamma \int_0^t\int_0^t
-e^{-\gamma|\tau - \tau'|-k(t-\tau)-k(t'-\tau')} \, d\tau \, d\tau'
+e^{-\gamma|\tau - \tau'|-\alpha(t-\tau)-\alpha(t'-\tau')} \, d\tau \, d\tau'
 \\
 &=
-  \frac{\Gamma }{k\,(\gamma + k) }
+  \frac{\Gamma }{\alpha\,(\gamma + \alpha) }
   +
-  \frac{2 \, \Gamma \, e^{-(\gamma + k) \, t} }{(\gamma - k) (\gamma + k) }
+  \frac{2 \, \Gamma \, e^{-(\gamma + \alpha) \, t} }{(\gamma - \alpha) (\gamma + \alpha) }
   -
-  \frac{\Gamma \, e^{-2 \, k \, t} }{(\gamma - k) \, k }.
+  \frac{\Gamma \, e^{-2 \, \alpha \, t} }{(\gamma - \alpha) \, \alpha }.
 \end{aligned}
 $$
 So, the Laplace transform is
 $$
 \mathcal L[\langle x^2 \rangle](s)
 =
-  \frac{ \Gamma } { k \, (\gamma + k) \, s }
+  \frac{ \Gamma } { \alpha \, (\gamma + \alpha) \, s }
   +
-  \frac{ 2 \, \Gamma } { (\gamma - k) \, (\gamma + k) \, (\gamma + k + s) }
+  \frac{ 2 \, \Gamma } { (\gamma - \alpha) \, (\gamma + \alpha) \, (\gamma + \alpha + s) }
   -
-  \frac{ \Gamma } { (\gamma - k ) \, k \, (2 \, k + s) }.
+  \frac{ \Gamma } { (\gamma - \alpha ) \, \alpha \, (2 \, \alpha + s) }.
 $$
 Using this in \eqref{eq:Laplace_B_x^2}, we get
 $$
 \mathcal L[B(t)](s) =
-  \frac{ \Gamma }{ \gamma + k }
-  \left( \frac{1}{s} - \frac{1}{ \gamma + k + s } \right),
+  \frac{ \Gamma }{ \gamma + \alpha }
+  \left( \frac{1}{s} - \frac{1}{ \gamma + \alpha + s } \right),
 $$
 which means
 $$
-B(t) = \frac{ \Gamma } { \gamma + k } \left( 1 - e^{-(\gamma + k) \,t} \right).
+B(t) = \frac{ \Gamma } { \gamma + \alpha } \left( 1 - e^{-(\gamma + \alpha) \,t} \right).
 $$
 So the Fokker-Planck equation for $P(x, t)$ is given by
 Eq. \eqref{eq:ho_colorednoise_Px}.
@@ -187,7 +187,7 @@ This example is instructive,
 it shows that if the random noise is colored.
 %
 The variance term $B(t)$ in the Fokker-Planck equation
-depends non-trivially on the deterministic force through $k$.
+depends non-trivially on the deterministic force through $\alpha$.
 %
 Thus, for a non-harmonic force, the generally solution
 can be hard to find.
