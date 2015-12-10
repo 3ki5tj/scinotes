@@ -1,10 +1,11 @@
-\documentclass{book}
+\documentclass[leqno]{book}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{chngcntr}
 \usepackage{caption}
 \usepackage{bm}
+\usepackage{upgreek}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{tikz}
 \usepackage{hyperref}
@@ -15,6 +16,36 @@
     citecolor={blue!50!black},
     urlcolor={blue!80!black}
 }
+
+% replace Greek letter to upright ones
+\renewcommand{\pmb}[1]{{
+  \renewcommand{\alpha}{\upalpha}
+  \renewcommand{\beta}{\upbeta}
+  \renewcommand{\gamma}{\upgamma}
+  \renewcommand{\delta}{\updelta}
+  \renewcommand{\epsilon}{\upepsilon}
+  \renewcommand{\varepsilon}{\upvarepsilon}
+  \renewcommand{\zeta}{\upzeta}
+  \renewcommand{\eta}{\upeta}
+  \renewcommand{\theta}{\uptheta}
+  \renewcommand{\iota}{\upiota}
+  \renewcommand{\kappa}{\upkappa}
+  \renewcommand{\lambda}{\uplambda}
+  \renewcommand{\mu}{\upmu}
+  \renewcommand{\nu}{\upnu}
+  \renewcommand{\xi}{\upxi}
+  \renewcommand{\pi}{\uppi}
+  \renewcommand{\rho}{\uprho}
+  \renewcommand{\sigma}{\upsigma}
+  \renewcommand{\tau}{\uptau}
+  \renewcommand{\upsilon}{\upupsilon}
+  \renewcommand{\varphi}{\upvarphi}
+  \renewcommand{\phi}{\upphi}
+  \renewcommand{\chi}{\upchi}
+  \renewcommand{\psi}{\uppsi}
+  \renewcommand{\omega}{\upomega}
+  \boldsymbol{#1}
+}}
 
 \counterwithout{section}{chapter}
 \renewcommand{\thesubsection}{\Alph{subsection}}
@@ -149,7 +180,61 @@
 
 \chapter{Variational principles}
 
+In this chapter we show that the motions
+of a newtonian potential system are extremals
+of a variational principle,
+``Hamilton's principle of least action.''
+
+This fast has many important consequences,
+including a quick method for writing equations
+of motion in curvilinear coordinate systems,
+and a series of qualitative deductions--for example,
+a theorem on returning to a neighborhood of initial point.
+
+In this chapter we will use an $n$-dimensional coordinate space.
+%
+A vector in such a space is a set of numbers
+$\mathbf x = (x_1, \dots, x_n)$.
+Similar,
+$\partial f/\partial \mathbf x$
+means
+$(\partial f/\partial x_1, \dots, \partial f/\partial x_n)$,
+and
+$(\mathbf a, \mathbf b) = a_1 b_1 + \cdots a_n b_n$.
+
+
 \section{Calculus of variations}
+
+For what follows, we will need some facts from the calculus of variations.
+%
+A more detailed exposition can be found in
+``A Course in the Calculus of Variations''
+by M. A. Lavrentiev and L. A. Lusternik, M. L., 1938,
+or
+G. E. Shilov, ``Elementary Functional Analysis,''
+MIT Press, 1974.
+
+
+The calculus of variations is concerned with the extremals of
+functions whose domain is an infinite-dimensional space:
+the space of curves.
+%
+Such functions are called \emph{functionals}.
+
+An example of a functional is the length of a curve in the euclidean plane:
+if $\gamma = \{(t, x): x(t) = x,  t_0 \le t \le t_1 \}$,
+then $\Phi(\gamma) = \int_{t_0}^{t_1} \sqrt{1 + {\dot x}^2 } dt$.
+
+In general, a functional is any mapping from the space of curves
+to the real numbers.
+
+We consider an ``approximation'' $\gamma'$ to $\gamma$,
+$\gamma' = \{(t, x): x = x(t) + h(t)\}$.
+%
+We will call it $\gamma' = \gamma + h$.
+Consider the increment of $\Phi$,
+$\Phi(\gamma + h) - \Phi(\gamma)$
+(Figure 41).
 
 \section{Lagrange's equations}
 
@@ -165,7 +250,430 @@
 
 \section{Differentiable manifolds}
 
+The definition of tangent vectors can also be given
+in intrinsic terms,
+independent of the embedding of $M$ into $E^n$.
+
+We will call two curves
+$\mathbf x = \pmb\varphi(t)$
+and
+$\mathbf x = \pmb\psi(t)$
+\emph{equivalent}
+if $\pmb\varphi(0) = \pmb\psi(0) = \mathbf x$
+and
+$\lim_{t\rightarrow 0} (\pmb\varphi(t) - \pmb\psi(t))/t = 0$
+in some chart.
+%
+Then this tangent relationship is true in any chart (prove this!)
+
+\begin{defn*}
+  A \emph{tangent vector} to a manifold $M$ at the point $x$
+  is an equivalence class of curves $\pmb\varphi(t)$,
+  with $\pmb\varphi(0) = \mathbf x$.
+
+  It is easy to define the operations of multiplication
+  of a tangent vector by a number and addition of tangent vectors.
+  %
+  The set of tangent vectors to $M$ at $\mathbf x$ forms a
+  \emph{vector space} $TM_\mathbf{x}$.
+  %
+  This space is also called the \emph{tangent space}
+  to $M$ at $\mathbf x$.
+\end{defn*}
+
+For embedded manifolds the definition above agrees with the previous
+definition.  Its advantage lies in the fact that it also holds
+for abstract manifolds, not embedded anywhere.
+
+\begin{defn*}
+  Let $U$ be a chart of an atlas for $M$
+  with coordinates $q_1,\dots,q_n$.
+  Then the \emph{components} of the tangent vector to the curve
+  $\mathbf q = \pmb\varphi(t)$
+  are the numbers $\xi_1, \dots, \xi_n$,
+  where $\xi_i = (d\varphi_i/dt)|_{t = 0}$.
+\end{defn*}
+
+
+\setcounter{subsection}{3}
+% subsection D
+\subsection{The tangent bundle}
+
+The union of the tangent spaces to $M$
+at the various points, $\bigcup_{\mathbf x\in M} TM_\mathbf{x}$,
+has a natural differentiable manifold structure,
+the dimension of which is twice
+the dimension of $M$.
+\note{Each point $\mathbf x$ contains an $n$-dimensional
+  tangent space. The point $\mathbf x$ itself
+  lies on the $n$-dimensional manifold $M$.
+  So the union of the tangent spaces is $2n$-dimensional.}
+
+This manifold is called the \emph{tangent bundle}
+of $M$ and is denoted by $TM$.
+%
+A point of $TM$ is a vector $\pmb\xi$,
+tangent to $M$ at some point $\mathbf x$.
+%
+Local coordinates on $TM$ are constructed as follows.
+%
+Let $q_1, \dots, q_n$ be local coordinates on $M$,
+and $\xi_1, \dots, \xi_n$ components of a tangent vector
+in this coordinate system.
+%
+Then the $2n$ numbers
+$(q_1, \dots, q_n, \xi_1, \dots, \xi_n)$
+give a local coordinate system on $TM$.
+%
+One sometimes writes $dq_i$ for $\xi_i$.
+
+The mapping $p:TM \rightarrow M$
+which takes a tangent vector $\pmb\xi$
+to the point $\mathbf x\in M$
+at which the vector is tangent to $M$
+($\pmb\xi \in TM_\mathbf{x}$),
+is called the \emph{natural projection}.
+%
+The inverse image of a point $\mathbf x \in M$
+under the natural projection,
+$p^{-1}(\mathbf x)$, is the tangent space $TM_\mathbf{x}$.
+%
+This space is called the
+\emph{fiber of the tangent bundle over the point $\mathbf x$}.
+
+
+% subsection E
+\subsection{Riemannian manifolds}
+
+If $M$ is a manifold embedded in euclidean space,
+then the metric on euclidean space allows us
+measure the lengths of curves, angles between vectors,
+volumes, etc.
+%
+All of these quantities are expressed by means of
+the lengths of tangent vectors, that is,
+by the positive-definite quadratic form given on
+every tangent space $TM_\mathbf{x}$ (Figure 63):
+$$
+TM_\mathbf{x} \rightarrow \mathbb R
+\qquad
+\pmb\xi \rightarrow \langle\pmb\xi, \pmb\xi \rangle.
+$$
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    [
+      wnode/.style={circle, fill=white, draw=black, minimum size=1mm, inner sep=0},
+      enode/.style={minimum size=0, inner sep=0}
+    ]
+
+    \draw[->] (0, 0) -- (5,0);
+    \draw[->] (0, 0) -- (0,3);
+    \draw[->] (0, 0) -- (-1,-1.5);
+
+    % the frame
+    \node[enode] (a1) at (1, 0.2) {};
+    \node[enode] (a2) at (4, 0.2) {};
+    \node[enode] (a3) at (3, 2.9) {};
+    \node[enode] (a4) at (0.3, 1.5) {};
+    \draw (a1)[bend left=15]
+       to (a2)[bend right=10]
+       to (a3)[bend right=20]
+       to (a4)[bend left=20] to (a1);
+
+    % M
+    \node[enode] at (1.2, 0.5) {$M$};
+
+    % parallelogram
+    \draw[thick] (2.0, 0.6) -- (3.6, 0.8) -- (3.2, 1.9) -- (1.6, 1.7) -- cycle;
+
+    % ellipse
+    \draw[rotate around={5:(2.65,1.2)}] (2.65,1.2) ellipse (0.65 and 0.4);
+
+    % x and its arrow
+    \node[wnode, label={180:$\mathbf x$}] at (2.6, 1.2) {}
+      edge[very thick,->] (3.1, 1.25);
+
+    % TMx
+    \node[enode] (TMx) at (4.1,1.8) {$TM_\mathbf{x}$};
+
+    % xi
+    \node[enode] (xi) at (2.6,0.2) {$\pmb\xi$}
+      edge[] (2.9, 1.2);
+
+    % x0 - x1
+    \node[wnode, label={0:$\mathbf x_0$}] (x0) at (0.6, 1.4) {};
+    \node[wnode, label={0:$\mathbf x_1$}] (x1) at (2.5, 2.5) {};
+    \draw[very thick] (x0)[bend left=20] to (x1);
+    \draw[] (1.0, 1.6) -- (0.8, 1.8)
+            (1.25, 1.85) -- (1.05, 2.05)
+            (1.5, 2.0) -- (1.35, 2.25)
+            (1.85, 2.15) -- (1.7, 2.45)
+            (2.3, 2.3) -- (2.2, 2.6)
+    ;
+    % dx
+    \node[enode, label={90:$d\mathbf x$}] (dx) at (1.3, 2.7) {}
+      edge[] (1.6, 2.25);
+  \end{tikzpicture}
+  \caption{Riemannian metric}
+\end{figure}
+
+
+For example, the length of a curve on a manifold
+is expressed using this form as
+$I(\gamma) = \int_{\mathbf x_0}^{\mathbf x_1}
+\sqrt{\langle d\mathbf, d\mathbf x\rangle}$,
+or, if the curve is given parametrically,
+$\gamma:[t_0, t_1] \rightarrow M, t \rightarrow \mathbf x(t) \in M$,
+then
+$$
+I(\gamma) = \int_{\mathbf x_0}^{\mathbf x_1}
+\sqrt{ \langle \dot{\mathbf x}, \dot{\mathbf x} \rangle } \, dt
+$$
+
+\begin{defn*}
+  A differentiable manifold with a fixed positive-definite
+  quadratic form $\langle \pmb\xi, \pmb\xi \rangle$
+  on every tangent space $TM_\mathbf{x}$
+  is called a \emph{Riemannian manifold}.
+  %
+  The quadratic form is called the \emph{Riemannian metric}.
+\end{defn*}
+
+\begin{rem*}
+  Let $U$ be a chart of an atlas for $M$ with coordinates
+  $q_1, \dots, q_n$.
+  Then a Riemannian metric is given by the formula
+  $$
+  ds^2 = \sum_{i,j=1}^n a_{ij}(q) \, dq_i \, dq_j
+  \qquad
+  a_{ij} = a_{ji},
+  $$
+  where $dq_i$ are the coordinates of a tangent vector.
+
+  The functions $a_{ij}(q)$ are assumed to be
+  differentiable as many times as necessary.
+\end{rem*}
+
+
+% subsection F
+\subsection{The derivative map}
+
+Let $f: M \rightarrow N$ be a mapping of a manifold $M$ to a manifold $N$.
+%
+$f$ is called \emph{differentiable} if in local coordinates on $M$ and $N$
+it is given by differentiable functions.
+
+
+\begin{defn*}
+  The \emph{derivative} of a differentiable mapping $f: M \rightarrow N$
+  at a point $\mathbf x \in M$ is the linear map of the tangent spaces
+  $$
+  f_{*\mathbf x}: TM_\mathbf{x} \rightarrow TN_{f(\mathbf x)},
+  $$
+  which is given in the following way (Figure 64).
+
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+    [
+      wnode/.style={circle, fill=white, draw=black, minimum size=1mm, inner sep=0},
+      enode/.style={minimum size=0, inner sep=0}
+    ]
+      % curve
+      \draw plot [thick, smooth, tension=1.0]
+      coordinates{(-0.8, -0.5) (-0.5, -0.1) (0.2, 0.4) (1.1, 0.4)};
+
+      % manifold M
+      \draw[] (0, 0) circle (1.5);
+      \node[enode] at (0, 1.7) {$M$};
+
+      % TMx
+      \node[enode] at (0.3, 0) {$TM_\mathbf{x}$};
+      % x
+      \node[wnode, label={90:$\mathbf x$}] at (-0.5, -0.1) {}
+        edge[very thick,->] (0.2, 0.7);
+
+      % box
+      \draw (0, -1.0) -- (1.1, 0.3) -- (0, 1.2) -- (-1.1, -0.1) -- cycle;
+
+
+
+      % curve
+      \draw plot [thick, smooth, tension=1.0]
+      coordinates{(3.6, 0.2) (4.0, 0.43) (4.3, 0.5) };
+      \draw plot [thick, smooth, tension=0.6]
+      coordinates{(4.3, 0.5) (5.0, 0.3) (5.8, -0.6)};
+
+      % manifold N
+      \draw[] (5, 0) circle (1.5);
+      \node[enode] at (4, 1.7) {$N$};
+
+      % TNy
+      \node[enode] at (4.5, 0.1) {$TN_\mathbf{y}$};
+      % y
+      \node[wnode, label={30:$\mathbf y$}] at (4.3, 0.5) {}
+        edge[very thick,->] (5.7, 0.5);
+
+      % box
+      \draw (4, -0.2) -- (6, -0.2) -- (6, 1.0) -- (4, 1.0) -- cycle;
+
+
+      % mapping f
+      \node[enode] (f1) at (1.05, 1.05) {};
+      \node[enode] (f2) at (3.95, 1.05) {};
+      \node[enode, label={-90:$f$}] (f) at (2.5, 1.5) {};
+      \draw (f1)[bend left=15, very thick] to
+            (f)[bend left=15, very thick,->] to (f2);
+
+      % mapping f*x
+      \node[enode] (fx1) at (0.5, -0.35) {};
+      \node[enode] (fx2) at (4.8, -0.2) {};
+      \node[enode, label={90:$f_{*\mathbf x}$}] (fx) at (2.5, -1.1) {};
+      \draw (fx1)[bend right=20, very thick] to
+            (fx)[bend right=20, very thick,->] to (fx2);
+
+    \end{tikzpicture}
+    \caption{Derivative of a mapping}
+  \end{figure}
+
+  Let $\mathbf v\in TM_\mathbf{x}$.
+  Consider a curve $\pmb\varphi: \mathbb R \rightarrow M$
+  with $\pmb\varphi(0) = \mathbf x$,
+  and velocity vector $(d\pmb\varphi/dt)|_{t = 0} = \mathbf v$.
+  %
+  Then $f_{*\mathbf x}\mathbf v$
+  is the velocity vector of the curve
+  $f \circ \pmb\varphi: \mathbb R \rightarrow N$.
+  $$
+  f_{*\mathbf x}\mathbf v
+  =
+  \left.
+  \frac{d}{dt}
+  \right|_{t = 0}
+  f(\pmb\varphi(t)).
+  $$
+\end{defn*}
+
+\begin{prob*}
+  Show that the vector $f_{*\mathbf x}\mathbf v$
+  does not dependent on the curve $\pmb\varphi$,
+  but only on the vector $\mathbf v$.
+
+  \answer{
+    $f_{*\mathbf x}\mathbf v = f'(\mathbf x) \, \mathbf v$.
+  }
+\end{prob*}
+
+\begin{prob*}
+  Show that the map
+  $f_{*\mathbf x}: TM_\mathbf{x} \rightarrow TN_{f(\mathbf x)}$
+  is linear.
+
+  \answer{
+    $f_{*\mathbf x}(\lambda_1 \mathbf v_1 + \lambda_2 \mathbf v_2)
+    = f'(\mathbf x) \, (\lambda_1 \mathbf v_1 + \lambda_2 \mathbf v_2)$.
+  }
+\end{prob*}
+
+\begin{prob*}
+  Let $\mathbf x = (x_1, \dots, x_m)$
+  be coordinates in a neighborhood of $\mathbf x \in M$,
+  and $\mathbf y = (y_1, \dots, y_n)$
+  be coordinates in a neighborhood of $\mathbf y \in N$.
+  Let $\pmb\xi$ be the set of components of the vector $\mathbf v$,
+  and $\pmb\eta$ the set of components of the vectors
+  $f_{*\mathbf x}\mathbf v$.
+  Show that
+  $$
+  \pmb\eta = \frac{ \partial \mathbf y } { \partial \mathbf x } \pmb\xi,
+  \quad \mathrm{i.e.} \quad
+  \eta_i = \sum_j \frac{ \partial y_i } { \partial x_j } \xi_j.
+  $$
+
+  Taking the union of the mappings $f_{*\mathbf x}$
+  for all $\mathbf x$,
+  we get a mapping of the whole tangent bundle
+  $$
+  f_{*\mathbf x}: TM \rightarrow TN
+  \qquad
+  f_{*} \mathbf v
+  \quad
+  \mathrm{for} \;
+  \mathbf x \in TM_\mathbf{x}.
+  $$
+\end{prob*}
+
+\begin{prob*}
+  Show that $f_\mathbf{*}$ is a differentiable map.
+
+  \answer{
+    From
+    $f_*(\mathbf x, \pmb\xi)
+    =
+    \left(\mathbf y, \frac{\partial \mathbf y}{\partial \mathbf x}\pmb\xi\right)$,
+    we have
+    $$
+    \frac{ \partial f_*(\mathbf x, \pmb\xi) }{ \partial x_i}
+    =
+    \left(
+      \frac{\partial \mathbf y}{\partial x_i},
+      %
+      \frac{\partial }{\partial x_i}
+        \left(
+          \frac{\partial \mathbf y}{\partial \mathbf x}
+        \right) \pmb\xi
+    \right),
+    %
+    \qquad
+    %
+    \frac{ \partial f_*(\mathbf x, \pmb\xi) }{ \partial \xi_i}
+    =
+    \left(\mathbf 0,
+        \left(
+          \frac{\partial \mathbf y}{\partial \mathbf x}
+        \right)
+        \frac{\partial \pmb\xi}{\partial \xi_i}
+    \right).
+    $$
+  }
+\end{prob*}
+
+\begin{prob*}
+  Let $f: M \rightarrow N$,
+  $g: N \rightarrow K$,
+  and
+  $h = f \circ g: M\rightarrow K$.
+  Show that $h_* = g_* \circ f_*$.
+
+  \answer{
+    Denote $\pmb\psi(t) = f(\pmb\varphi(t))$, then
+  $$
+  h_{*\mathbf x}\mathbf v
+  =
+  \left.
+  \frac{d}{dt}
+  \right|_{t = 0}
+  g(f(\pmb\varphi(t)))
+  =
+  g'(\pmb\psi(t)) \, f'(\pmb\varphi(t)) \, \mathbf v
+  =
+  \left[ g_{*f(\mathbf x)} \, \circ f_{*\mathbf x} \right]
+  \, \mathbf v.
+  $$
+  }
+\end{prob*}
+
+
 \section{Lagrangian dynamical systems}
+
+In this paragraph we define lagrangian dynamical systems on manifolds.
+Systems with holonomic constraints are a particular case.
+
+% subsection A
+\subsection{Definition of a lagrangian system}
+
 
 \section{E. Noether's theorem}
 
@@ -181,19 +689,105 @@
 
 \section{Parametric resonance}
 
-\chapter{Rigid bodies}
+\setcounter{subsection}{4}
+% subsection E
+\subsection{Stability of an inverted pendulum with vertically
+  oscillating point of suspension}
 
-\section{Motion in a moving coordinate system}
+\begin{prob*}
+  Can the topmost, usually unstable, equilibrium position of
+  a pendulum become stable if the point of suspension oscillates
+  in the vertical direction (Figure 102)?
 
-\section{Inertial forces and the Coriolis force}
+  \setcounter{figure}{101}
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=0.6]
+      % upper panel
+      \draw[thick, <->] (-0.3, 3) -- (-0.3, 5);
+      \node[] at (-0.6, 4) {$2a$};
 
-\section{Rigid bodies}
+      \draw[ultra thick] (0,3) -- (0,5);
+      \draw[] (0, 4) -- (2, 7);
 
-\section{Euler's equations. Poinsot's description of the motion}
+      \draw[very thick] (1.5, 6.25) arc (60:90:4);
+      \draw[very thick, ->] (1.5, 6.25) -- (0, 6.25);
 
-\section{Lagrange's top}
+      \draw[thick,->] (2, 7) -- (2, 5);
+      \node[] at (2.4, 6) {$mg$};
+      \draw[fill=black] (2, 7) circle (0.2);
 
-\section{Sleeping tops and fast tops}
+      % lower panel
+
+      % t axis
+      \draw[->] (0,0) -- (5,0);
+      \node[] at (5.5, 0) {$t$};
+
+      % a axis
+      \draw[->] (0,-2) -- (0,2);
+      \node[] at (0.2, 1.8) {$a$};
+
+      % sine wave
+      \draw[ultra thick] (0,0) sin (1,1);
+      \draw[ultra thick] (1,1) cos (2,0);
+      \draw[ultra thick] (2,0) sin (3,-1);
+      \draw[ultra thick] (3,-1) cos (4,0);
+
+      \draw[] (0,1) -- (4.1, 1);
+      \draw[] (0,-1) -- (4.1, -1);
+
+      \node[] at (2.1, 0.2) {$\tau$};
+      \node[] at (4.0, 0.2) {$2\tau$};
+
+      \node[] at (2, 1.7) {Parabola};
+      \draw (2, 1.4) -- (1.5, 0.7);
+    \end{tikzpicture}
+    \caption{
+    Inverted pendulum with oscillating point of suspension
+    }
+  \end{figure}
+
+  Let the length of the pendulum be $l$,
+  the amplitude of the oscillation of the point of suspension
+  be $a \ll l$,
+  the period of oscillation of the point of suspension $2 \,\tau$,
+  and, moreover,
+  in the source of every half-period let the acceleration
+  of the point of suspension be \emph{constant} and equal to $\pm c$
+  (then $c = 8a/\tau^2$)
+  \note{
+    $a = \frac{1}{2} c \, (\tau/2)^2$.
+  }
+  It turns out that for fast enough oscillations of the point
+  of suspension ($\tau \ll 1$)
+  the topmost equilibrium becomes stable.
+
+  \solution{
+    The equation of motion can be written in the form
+    $\ddot x = (\omega^2 \pm d^2) \, x$
+    (the sign changes after time $t$),
+    where $\omega^2 = g/l$
+    and $d^2 = c/l$.
+    If the oscillation of the suspension is fast enough,
+    then $d^2 > \omega^2$.
+
+    ...
+  }
+\end{prob*}
+
+%\chapter{Rigid bodies}
+%
+%\section{Motion in a moving coordinate system}
+%
+%\section{Inertial forces and the Coriolis force}
+%
+%\section{Rigid bodies}
+%
+%\section{Euler's equations. Poinsot's description of the motion}
+%
+%\section{Lagrange's top}
+%
+%\section{Sleeping tops and fast tops}
 
 \part{HAMILTONIAN MECHANICS}
 
@@ -3871,6 +4465,217 @@ is called a \emph{locally hamiltonian flow}.
 
 \section{Parametric resonance in systems with many degrees of freedom}
 
+\setcounter{subsection}{2}
+% subsection C
+\subsection{Stability}
+
+\begin{defn*}
+  A transformation $S$ is called \emph{stable} if
+  $$
+  \forall \epsilon > 0,
+  \exists \delta > 0:
+  |\mathbf x| < \delta
+  \Longrightarrow
+  |S^N \mathbf x| < \epsilon|.
+  \qquad
+  \forall N > 0.
+  $$
+\end{defn*}
+
+\begin{prob*}
+  Show that if at least one of the eigenvalues of
+  a symplectic transformation $S$ doe not lie on the unit circle,
+  then $S$ is unstable.
+
+  \hint{
+    In view of the demonstrated symmetry, if one of the eigenvalues
+    does not lie on the unit circle, there there exists an eigenvalue
+    outside the unit circle $|\lambda| > 1$;
+    in the corresponding invariant subspace,
+    $S$ is an ``expansion with a rotation.''
+  }
+\end{prob*}
+
+\begin{prob*}
+  Show that if all the eigenvalues of a linear transformation
+  are distinct and lie on the unit circle, then the transformation is stable.
+
+  \hint{
+    Change to a basis of eigenvectors.
+  }
+
+  \answer{
+    Any vector can be expanded in eigenvectors as
+    $\mathbf x = \sum_i c_i \, \mathbf v_i$,
+    Then
+    $S^N \mathbf x = \sum_i c_i \, \lambda_i^N \, \mathbf v_i$.
+    %
+    Since the eigenvectors are orthogonal,
+    and the eigenvalues lie on the unit circle,
+    we have
+    $|S^N \mathbf x|^2 = \sum_{i} |c_i|^2 \, |\lambda_i^N|^2 = \sum_i |c_i|^2 = |\mathbf x|^2$.
+    Thus, we only need to choose $\delta = \epsilon$,
+    to satisfy the stability criterion.
+  }
+\end{prob*}
+
+\begin{defn*}
+  A symplectic transformation $S$ is called \emph{strongly stable}
+  if every symplectic transformation sufficiently close\footnote{
+    $S_1$ is sufficiently close to $S$ if the elements of
+    the matrix of $S_1$ in a fixed basis differ from the
+    elements of the matrix of $S$ in the same basis by less than a
+    sufficiently small number $\epsilon$.
+  }
+  to $S$ is stable.
+\end{defn*}
+
+In Section 25 we establish that $S: \mathbb R^2 \rightarrow \mathbb R^2$
+is strongly stable if $\lambda_{1,2} = e^{\pm i\alpha}$
+and $\lambda_1 \ne \lambda_2$.
+
+\begin{thm*}
+  If all $2n$ eigenvalues of a symplectic transformation $S$ are distinct
+  and lie on the unit circle, then $S$ is strongly stable.
+\end{thm*}
+
+\begin{proof}
+  We enclose the $2n$ eigenvalues $\lambda$ in $2n$ non-intersecting neighborhoods,
+  symmetric with respect to the unit circle and the real axis (Figure 177).
+  The $2n$ roots of the characteristic polynomial depends continuously on
+  the elements of the matrix of $S$.
+  %
+  Therefore, if the matrix $S_1$ is sufficiently close to $S$,
+  exactly one eigenvalue $\lambda_1$ on the matrix of $S_1$
+  will lie in each of the $2n$ neighborhoods of the $2n$
+  points of $\lambda$.
+  %
+  But if one of the points $\lambda_1$ did not lie on the unit circle,
+  for example, if it lay outside unit circle, then by the theorem in
+  subsection B, there would be another $\lambda_2$, $|\lambda_2| < 1$
+  in the same neighborhood,
+  and the total number roots would be greater than $2n$,
+  which is not possible.
+
+  \setcounter{figure}{176}
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      % large circle
+      \draw[very thick] (0, 0) circle (2);
+      % origin
+      \node[circle, fill=black, label={below:$0$}] at (0, 0) {};
+      % x-axis
+      \draw[] (-2.7, 0) -- (2.7, 0);
+      \node[label={-30:$1$}] at (2.0, 0) {};
+
+      \draw[]           (1.732, 1) circle (0.40);
+      \draw[fill=white] (1.732, 1) circle (0.10);
+
+      \draw[]           (1, 1.732) circle (0.40);
+      \draw[fill=white] (1, 1.732) circle (0.10);
+
+      \draw[]           (-1, 1.732) circle (0.40);
+      \draw[fill=white] (-1, 1.732) circle (0.10);
+
+      \draw[]           (1.732, -1) circle (0.40);
+      \draw[fill=white] (1.732, -1) circle (0.10);
+
+      \draw[]           (1, -1.732) circle (0.40);
+      \draw[fill=white] (1, -1.732) circle (0.10);
+
+      \draw[]           (-1, -1.732) circle (0.40);
+      \draw[fill=white] (-1, -1.732) circle (0.10);
+    \end{tikzpicture}
+    \caption{
+      Behavior of simple eigenvalues under a small change
+      of the symplectic transformation
+    }
+  \end{figure}
+
+  Thus all the roots of $S_1$ lie on the unit circle and are distinct,
+  so $S_1$ is stable.
+\end{proof}
+
+We might say that an eigenvalue $\lambda$ of
+a symplectic transformation can leave the unit circle
+only by colliding with another eigenvalue (Figure 178);
+at the same time, the complex-conjugate eigenvalues
+will collide, and from the two pairs of roots on the unit circle,
+we obtain one 4-tuple (or pair real $\lambda$).
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    [
+      wnode/.style={circle, fill=white, draw=black, minimum size=2mm, inner sep=0},
+      enode/.style={minimum size=0, inner sep=0}
+    ]
+    % origin
+    \node[circle, fill=black, label={above:$0$}] at (0, 0) {};
+    % x-axis
+    \draw[] (-2.5, 0) -- (2.5, 0);
+    \node[label={30:$1$}] at (2.0, 0) {};
+
+    % large circle
+    \draw[thick] ( 1.732, -1.0) arc (-30:30:2);
+    \draw[thick] ( 1.0,  1.732) arc (60:300:2);
+
+    \node[wnode] (u1) at (1.732, 1.0) {};
+    \node[wnode] (v1) at (1.8, 1.8) {};
+    \node[enode] (uv1) at (1.48, 1.414) {};
+    \draw[ultra thick, ->] (u1)[out=120,in=-90] to (uv1)[out=90,in=-135] to (v1);
+
+    \node[wnode] (u2) at (1.0, 1.732) {};
+    \node[wnode] (v2) at (1.0, 1.0) {};
+    \node[enode] (uv2) at (1.34, 1.414) {};
+    \draw[ultra thick, ->] (u2)[out=-30,in=90] to (uv2)[out=-90,in=45] to (v2);
+
+    \node[wnode] (u3) at (1.732, -1.0) {};
+    \node[wnode] (v3) at (1.8, -1.8) {};
+    \node[enode] (uv3) at (1.48, -1.414) {};
+    \draw[ultra thick, ->] (u3)[out=-120,in=90] to (uv3)[out=-90,in=135] to (v3);
+
+    \node[wnode] (u4) at (1.0, -1.732) {};
+    \node[wnode] (v4) at (1.0, -1.0) {};
+    \node[enode] (uv4) at (1.34, -1.414) {};
+    \draw[ultra thick, ->] (u4)[out=30,in=-90] to (uv4)[out=90,in=-45] to (v4);
+  \end{tikzpicture}
+  \caption{
+    Behavior of multiple eigenvalues under a small
+    change of the symplectic transformation
+  }
+\end{figure}
+
+It follows from the results of Section 25 that the condition
+for parametric resonance to arise in a linear canonical system
+with a periodically changing hamilton function is precisely that
+the corresponding symplectic transformation of phase space
+should cease to be stable.
+%
+It is clear from the theorem above that this can happen only after
+a collision of eigenvalues on the unit circle.
+%
+In fact as M. G. Krein noticed, not every such collision is dangerous.
+
+It turns out that the eigenvalues $\lambda$ with $|\lambda| = 1$
+are divided into two classes:
+\emph{positive} and \emph{negative}.
+%
+When two roots with the same sign collide,
+the roots ``go through one another,''
+and cannot leave the unit circle.
+%
+On the other hand,
+when two roots with different signs collide,
+they generally leave the unit circle.
+
+M.G. Krein's theory goes beyond the limits of this book;
+we will formulate the basic results here in the form of problems.
+
+
+
+
 \section{A symplectic atlas}
 
 \chapter{Canonical formalism}
@@ -3889,50 +4694,337 @@ is called a \emph{locally hamiltonian flow}.
 
 \section{Integrable systems}
 
+% section 50
 \section{Action-angle variables}
+
+We show here that, under the hypotheses of Liouville's theorem,
+we can find symplectic coordinates $(\mathbf I, \pmb\varphi)$
+such that the first integrals $\mathbf F$
+depend only on $\mathbf I$, and $\pmb\varphi$
+are angular coordinates on the torus $M_\mathbf{f}$.
+
+% subsection A
+\subsection{Description of action-angle variables}
+
+In section 49 we studied one particular compact connected
+level manifold of the integrals:
+$M_\mathbf{f} = \{x: \mathbf F(x) = \mathbf f\}$;
+it turned out that $M_\mathbf{f}$
+was an $n$-dimensional torus,
+invariant with respect to the phase flow.
+\note{
+Think about the $n$ phases $\varphi_i$ of $n$-independent oscillators,
+each phase can vary from $0$ to $2\pi$ and then wrap back.
+In this case, $F_i$ is the amplitude (or energy) of the $i$th oscillator.
+}
+%
+We chose angular coordinates $\varphi_i$ on $M$
+so that the phase flow with hamiltonian function $H = F_1$
+takes an especially simple form:
+$$
+\frac{ d\pmb\varphi } { dt }
+=
+\pmb\omega(\mathbf f)
+\qquad
+\pmb\varphi(t)
+=
+\pmb\varphi(0)
++\pmb\omega t.
+$$
+We will now look at a neighborhood of the $n$-dimensional manifold $M_\mathbf{f}$
+in $2n$-dimensional phase space.
+
+\begin{prob*}
+  Show that the manifold $M_\mathbf{f}$ has a neighborhood
+  diffeomorphic to the direct product of the $n$-dimensional torus $T^n$
+  and the disc $D^n$ in $n$-dimensional euclidean space.
+
+  \hint{
+    Take the functions $F_i$ and the angles $\varphi_i$ constructed above
+    as coordinates.
+    %
+    In view of the linear independence of the $dF_i$,
+    the functions $F_i$ and $\varphi_i$
+    ($i = 1, \dots, n$)
+    give a diffeomorphism of a neighborhood of $M_\mathbf{f}$
+    onto the direct product $T^n \times D^n$.
+  }
+\end{prob*}
+
+In the coordinates $(\mathbf F, \pmb\varphi)$
+the phase flow with hamiltonian function $H = F_1$
+can be written in the form of the simple system
+of $2n$ ordinary differential equations
+\begin{equation}
+  \frac{ d \mathbf F } { dt } = 0
+  \qquad
+  \frac{ d \pmb\varphi } { dt } = \pmb\omega( \mathbf F ),
+  \label{eq:eom_Fphi}
+\end{equation}
+which is easily integrated:
+$\mathbf F(t) = \mathbf F(0)$,
+$\pmb\varphi(t) = \pmb\varphi(0) + \pmb\omega(\mathbf F(0))\,t$.
+
+Thus,
+in order to integrate explicitly the original canonical system of
+differential equations,
+it is sufficient to find the variables $\pmb\varphi$
+in explicit form.
+%
+It turns out that this can be done using only quadratures.
+%
+A construction of the variable $\pmb\varphi$ is given below.
+
+We note that the variables $(\mathbf F, \pmb\varphi)$
+are not, in general, symplectic coordinates.
+%
+It turns out that there are functions of $\mathbf F$,
+which we will denote by
+$\mathbf I = \mathbf I(\mathbf F), \mathbf I = (I_1, \dots, I_n)$,
+such that the variables $(\mathbf I, \pmb\varphi)$
+are symplectic coordinates:
+the original symplectic structure $\omega^2$
+is expressed in them  by the usual formula
+$$
+\omega^2 = \sum dI_i \wedge d\varphi_i.
+$$
+The variables $\mathbf I$
+are called action variables;\footnote{
+  It is not hard to see that $\mathbf I$ has the dimensions of action.
+}
+together with the angle variables $\pmb\varphi$
+they form the \emph{action-angle system of canonical coodinates}
+in a neighborhood of $M_\mathbf{f}$.
+\note{
+  The 2-form $\omega^2$ should not be confused with
+  the function $\pmb\omega$ in \eqref{eq:eom_Fphi}.
+}
+
+
+The quantities $I_i$ are first integrals of the system with hamiltonian
+function $H = F_1$, since they are functions of the first integrals $F_j$.
+%
+In turn, the variables $F_i$ can be expressed in terms of $\mathbf I$ and,
+in particular, $H = F_1 = H(\mathbf I)$.
+%
+In action-angle variables the differential equations of our flow
+\eqref{eq:eom_Fphi} have the form
+\begin{equation}
+  \frac{ d\mathbf I } { dt } = 0
+  \qquad
+  \frac{ d\pmb\varphi } { dt } = \pmb\omega(\mathbf I).
+  \label{eq:eom_Iphi}
+\end{equation}
+
+\begin{prob*}
+  Can the functions $\pmb\omega(\mathbf I)$ in \eqref{eq:eom_Iphi}
+  be arbitrary?
+
+  \solution{
+    In the variables $(\mathbf I, \pmb\varphi)$,
+    the equations of the flow \eqref{eq:eom_Iphi}
+    have the canonical form with hamiltonian function $H(\mathbf I)$.
+    Therefore,
+    $\pmb\omega(\pmb I) = \partial H/\partial \mathbf I$;
+    thus if the number of degrees of freedom is $n \ge 2$,
+    the functions $\pmb\omega(\mathbf I)$ are not arbitrary,
+    but satisfy the symmetry condition
+    $\partial \omega_i /\partial I_j = \partial \omega_j/\partial I_i$.
+  }
+\end{prob*}
+
+Action-angle variables are especially important for perturbation theory;
+in Section 52 we will demonstrate their application to the theory
+of adiabatic invariants.
+
+
+% subsection B
+\subsection{Construction of action-angle variables in the
+  case of one degree of freedom}
+
+A system with one degree of freedom in the phase plane $(p,q)$
+is given by the hamiltonian function $H(p, q)$.
+
+% Example 1
+\begin{ex}
+  The harmonic oscillator $H = \frac{1}{2} p^2 + \frac{1}{2} q^2$;
+  or more generally $H = \frac{1}{2} a^2 \, p^2 + \frac{1}{2} b^2 \, q^2$.
+
+  \note{
+    $I = H, \varphi = \frac{1}{ab} \tan^{-1} \frac{bq}{ap}$.
+  }
+\end{ex}
+
+% Example 2
+\begin{ex}
+  The mathematical pendulum $H = \frac{1}{2} p^2 - \cos q$.
+  In both cases we have a compact closed curve
+  $M_h(H = h)$, and the conditions of the theorem of Section 49
+  for $n = 1$ are satisfied.
+\end{ex}
+
+In order to construct the action-angle variables,
+we will look for a canonical transformation
+$(p, q) \rightarrow (I, \varphi)$
+satisfying the two conditions:
+\begin{equation}
+  \begin{aligned}
+    1. \; & I = I(h), \\
+    2. \; & \oint_{M_h} d\varphi = 2 \, \pi.
+  \end{aligned}
+  \label{eq:CT_Iphi_condition}
+\end{equation}
+
+\begin{prob*}
+  Find the action-angle variables in the case of the simple harmonic oscillator
+  $H = \frac{1}{2} p^2 + \frac{1}{2} q^2$.
+
+  \solution{
+    If $r, \phi$ are polar coordinates,
+    then $dp \wedge dq = r dr \wedge d\varphi = d(r^2/2) \wedge d\varphi$.
+    Therefore, $I = H = (p^2 + q^2)/2$.
+  }
+\end{prob*}
+
+In order to construct the canonical transformation $p, q \rightarrow I, \varphi$
+in the general case, we will look for its generating function $S(I, q)$:
+\note{
+  Here $S = -F_4$, for
+  $d(-F_1) = p \, dq - I \, d\varphi$,
+  we have
+  $dS = d(I \varphi - F_1) = p \, dq + \varphi \, d I$.
+}
+\begin{equation}
+  p = \frac{ \partial S(I, q) } { \partial q }
+  \quad
+  \phi = \frac{ \partial S(I, q) } { \partial I }
+  \quad
+  H\left(
+    \frac{ \partial S(I, q) } { \partial q },
+    q
+  \right)
+  = h(I).
+  \label{eq:S_Iq}
+\end{equation}
+We first assume that the function $h(I)$ is known
+and invertible, so that every curve $M_h$ is determined
+by the value of $I$ ($M_h = M_{h(I)}$).
+%
+Then for a fixed value of $I$
+we have from \eqref{eq:S_Iq}
+$$
+dS\big|_{I = \mathrm{const}} = p \, dq.
+$$
+This relation determines a well-defined differential 1-form $dS$
+on the curve $M_{h(I)}$.
+
+Integrating this 1-form on the curve $M_{h(I)}$
+we obtain (in a neighborhood of a point $q_0$)
+a function
+$$
+S(I, q) = \int_{q_0}^q p \, dq.
+$$
+This function will be the generating function
+of the transformation \eqref{eq:S_Iq}
+in a neighborhood of the point $(I, q_0)$.
+%
+The first of the conditions \eqref{eq:CT_Iphi_condition}
+is satisfied automatically: $I = I(h)$.
+%
+To verify the second condition,
+we consider the behavior of $S(I, q)$ ``in the large.''
+%
+After a circuit of the closed curve $M_{h(I)}$
+the integral of $p\, dq$ increases by
+$$
+\Delta S(I) = \oint_{M_{h(I)}} p \, dq.
+$$
+equal to the area $\Pi$ enclosed by the curve $M_{h(I)}$.
+%
+Therefore, the function $S$ is a ``multiple-valued function''
+on $M_{h(I)}$:
+it is determined up to addition of integral multiples of $\Pi$.
+%
+This term has no effect of the derivative
+$\partial S(I, q)/\partial I$;
+but it leads to the multi-valuedness of $\varphi = \partial S/\partial I$.
+%
+This derivative turns out to be defined only up to multiples of
+$d \Delta S(I) / dI$.
+%
+More precisely,
+the formulas \eqref{eq:S_Iq}
+define a 1-form $d\varphi$ on the curve $M_{h(I)}$,
+and the integral of this form on $M_{h(I)}$
+is equal to $d\Delta S(I)/dI$.
+
+In order to fulfill the second condition,
+$\oint_{M_{h}} d\varphi = 2 \pi$,
+we need that
+$$
+\frac{d}{dI} \Delta S(I) = 2 \, \pi
+\qquad
+I = \frac{ \Delta S  }{ 2 \pi }
+= \frac{ \Pi } { 2 \pi },
+$$
+where
+$\Pi = \int_{M_h} p \, dq$
+is the area bounded by the phase curve $H = h$.
+
+\begin{defn*}
+  The \emph{action variable} in the one-dimensional problem
+  with hamiltonian function $H(p, q)$
+  is the quantity $I(h) = (1/2\pi) \Pi(h)$.
+\end{defn*}
+
+Finally, we arrive at the following conclusion.
+%
+Let $d\Pi \, dh \ne 0$.
+%
+Then the inverse $I(h)$ of the function $h(I)$ is defined.
 
 \section{Averaging}
 
 \section{Averaging of perturbations}
 
-\appendix
-\renewcommand{\thechapter}{\arabic{chapter}}
-
-\chapter{Riemannian curvature}
-
-\chapter{Geodesics of left-invariant metrics on Lie groups and
-the hydrodynamics of ideal fluids}
-
-\chapter{Symplectic structures on algebraic manifolds}
-
-\chapter{Contact structures}
-
-\chapter{Dynamical systems with symmetries}
-
-\chapter{Normal forms of quadratic hamiltonians}
-
-\chapter{Normal forms of hamiltonian systems near stationary points
-and closed trajectories}
-
-\chapter{Theory of perturbations of conditionally periodic motion,
-and Kolmogorov's theorem}
-
-\chapter{Poincar\'e's geometric theorem, its generalizations and
-applications}
-
-\chapter{Multiplicities of characteristic frequencies, and ellipoids
-depending on parameters}
-
-\chapter{Short wave asymptotics}
-
-\chapter{Lagrangian singularities}
-
-\chapter{The Korteweg-de Vries equation}
-
-\chapter{Poisson structures}
-
-\chapter{On elliptic coordinates}
-
-\chapter{Singularities of ray systems}
+%\appendix
+%\renewcommand{\thechapter}{\arabic{chapter}}
+%
+%\chapter{Riemannian curvature}
+%
+%\chapter{Geodesics of left-invariant metrics on Lie groups and
+%the hydrodynamics of ideal fluids}
+%
+%\chapter{Symplectic structures on algebraic manifolds}
+%
+%\chapter{Contact structures}
+%
+%\chapter{Dynamical systems with symmetries}
+%
+%\chapter{Normal forms of quadratic hamiltonians}
+%
+%\chapter{Normal forms of hamiltonian systems near stationary points
+%and closed trajectories}
+%
+%\chapter{Theory of perturbations of conditionally periodic motion,
+%and Kolmogorov's theorem}
+%
+%\chapter{Poincar\'e's geometric theorem, its generalizations and
+%applications}
+%
+%\chapter{Multiplicities of characteristic frequencies, and ellipoids
+%depending on parameters}
+%
+%\chapter{Short wave asymptotics}
+%
+%\chapter{Lagrangian singularities}
+%
+%\chapter{The Korteweg-de Vries equation}
+%
+%\chapter{Poisson structures}
+%
+%\chapter{On elliptic coordinates}
+%
+%\chapter{Singularities of ray systems}
 
 \end{document}

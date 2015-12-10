@@ -6,7 +6,6 @@ htmldir = $(patsubst %.tex, %_html, $(tex))
 all: $(pdf)
 
 $(pdf) : %.pdf: %.tex
-	latex $<
 	pdflatex $<
 
 # compile to latex .dvi first to figure out references
