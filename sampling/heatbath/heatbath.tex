@@ -526,6 +526,26 @@ $$
 \right).
 $$
 
+\paragraph{Case $i$.}
+For $1 \le i < n - 1$,
+$$
+T_{rc}
+=
+\begin{cases}
+  \delta_{r,i+1}\left(1 - \frac{ p_n - p_{i+1} } { p_1 + \cdots + p_i } \right)
+  + 1_{r > i + 1} \frac{ p_r - p_{r - 1} } { p_1 + \cdots + p_i }
+  & c \le i \\
+  \delta_{r, c+1}
+  & i < c < n \\
+  1_{r \le i} \frac{ p_i } { p_n }
+  +
+  \delta_{r, i+1} \left( 1 - \frac{p_1 + \cdots + p_i } { p_n } \right)
+  & c = n
+\end{cases}
+$$
+
+
+
 \paragraph{Case $n - 1$.}
 
 If $p_n > p_1 + \cdots + p_{n-1}$,
