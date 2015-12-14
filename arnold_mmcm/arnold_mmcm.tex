@@ -238,7 +238,514 @@ $\Phi(\gamma + h) - \Phi(\gamma)$
 
 \section{Lagrange's equations}
 
+
+
+
+% section 14
 \section{Legendre transformations}
+
+The Legendre transformation is a very useful mathematical tool:
+it transforms functions on a vector space
+to functions on the dual space.
+%
+Legendre transformations are related to
+projective duality and tangential coordinates in algebraic geometry
+and the construction of dual Banach space in analysis.
+%
+\note{
+  A Banach space is a complete vector space with a norm.
+}
+%
+They are often encountered in physics
+(for example, in the definition of thermodynamic quantities).
+
+% subsection A
+\subsection{Definition}
+
+Let $y = f(x)$ be a convex function, $f''(x)$.
+%
+The \emph{Legendre transformation}
+of the function $f$ is a new function $g$ of a new variable $p$,
+which is constructed in the following way
+(Figure \ref{fig:Legendre_transformation}).
+
+
+\setcounter{figure}{42}
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (0, 0) -- (4.5, 0);
+    \draw[->] (0, 0) -- (0, 3);
+    \node[] at (4.7, 0) {$x$};
+    \node[] at (0.2, 2.8) {$y$};
+
+    % y = p x
+    \draw[] (0,0) -- (3.6, 2.4);
+
+    % tangent line
+    \draw[] (0.75, 0) -- (2.55, 1.2);
+
+    % g(p)
+    \node[] at (1.0, 1.4) {$g(p)$};
+    \draw[] (1.5, 0.5) -- (1.5, 1.0);
+    \draw[dotted] (1.5, 0.0) -- (1.5, 0.5);
+    \draw[] (1.5, 0.75) -- (1.0, 1.2);
+
+    % f(x)
+    \draw[scale=1,domain=0:3.4,smooth,variable=\x, very thick]
+    plot ({\x}, {\x*\x*0.5/2.25});
+    %\draw[thick] plot [smooth, tension=1]
+    %    coordinates{(0, 0) (1.5, 0.5) (2.8, 1.9) (3.2, 2.5)};
+    \node[] at (3.3, 2.8) {$f(x)$};
+
+    \node[] at (1.5, -0.2) {$x(p)$};
+
+    % p
+    \node[] at (3.5, 2.15) {$p$};
+    \draw[] (3.3, 2.2) -- (3.3, 2.1) -- (3.15, 2.1);
+  \end{tikzpicture}
+  \caption{
+    \label{fig:Legendre_transformation}
+    Legendre transformation
+  }
+\end{figure}
+
+We draw the graph of $f$ in the $x,y$ plane.
+%
+Let $p$ be a given number.
+%
+Consider the straight line $y = p \, x$.
+%
+We take the point $x = x(p)$
+at which the curve is farthest from the straight line
+in the vertical direction for each $p$ the function
+$p \, x - f(x) = F(p, x)$ has a maximum with respect to $x$
+at the point $x(p)$.
+%
+Now define $g(p) = F(p, x(p))$.
+
+The point $x(p)$ is defined by the extremal condition
+$\partial F/\partial x = 0$, i.e.,
+$f'(x) = p$.
+%
+Since $f$ is convex the point $x(p)$ is unique.\footnote{
+If it exits.}
+
+\begin{prob*}
+  Show that the domain of $g$ can be a point,
+  a closed interval, or a ray if $f$ is defined
+  on the whole $x$ axis.
+  %
+  Prove that if $f$ is defined on a closed interval,
+  then $g$ is defined on the whole $p$ axis.
+
+  \answer{
+    Since the function $f(x)$ is convex,
+    $f'(x)$ is increasing.
+    %
+    If $f'(-\infty) = f'(+\infty)$,
+    the domain of $g$ is a point.
+    Otherwise, if both $f'(-\infty)$ and $f'(\infty)$
+    are finite, the domain is a closed interval;
+    or if one of them is infinity,
+    the domain is a ray.
+  }
+\end{prob*}
+
+% subsection B
+\subsection{Examples}
+
+\begin{ex}
+  Let $f(x) = x^2$.
+  Then $F(p, x) = p \, x - x^2$,
+  $x(p) = \frac 1 2 p$,
+  $g(p) = \frac 1 4 p^2$.
+\end{ex}
+
+\begin{ex}
+  Let $f(x) = m x^2 / 2$,
+  then $g(p) = p^2/ 2  m$.
+\end{ex}
+
+\begin{ex}
+  Let $f(x) = x^\alpha/\alpha$
+  then $g(p) = p^\beta/\beta$,
+  where $1/\alpha + 1/\beta = 1$
+  ($\alpha > 1, \beta > 1$).
+\end{ex}
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    [
+      enode/.style={minimum size=0, inner sep=0},
+      wnode/.style={circle, draw, fill=white, minimum size=1.5mm, inner sep=0}
+    ]
+    \draw[->] (0, 0) -- (2.5, 0);
+    \draw[->] (0, 0) -- (0, 2.5);
+    \node[] at (2.4, -0.2) {$x$};
+    \node[] at (0.1, 2.7) {$f$};
+
+    % y = p0 x
+    \draw[] (0, 0) -- (2.4, 0.8);
+
+    % p0
+    \node[] at (1.8, 0.2) {$p_0$};
+    \draw[] (1.5, 0.5) -- (2.1, 0.5) -- (2.1, 0.7);
+
+    % y = p1 x
+    \draw[] (0, 0) -- (0.8, 2.4);
+
+    % p1
+    \node[] at (0.3, 1.8) {$p_1$};
+    \draw[] (0.5, 1.5) -- (0.7, 1.5) -- (0.7, 2.1);
+
+    % 2
+    \node[wnode, label={-45:$2$}] (f2) at (1.0, 1.0) {};
+    % 3
+    \node[enode, label={90:$3$}] (f3) at (1.5, 2.5) {}
+      edge[very thick] (f2);
+    % 1
+    \node[enode, label={-90:$1$}] (f1) at (-0.5, 0.5) {}
+      edge[very thick] (f2);
+
+
+
+    % right panel
+
+    \draw[->] (4, 0) -- (6.5, 0);
+    \draw[->] (4, 0) -- (4, 2.5);
+
+    \node[] at (6.7, 0) {$p$};
+    \node[] at (4.1, 2.7) {$g$};
+
+    % 1
+    \node[wnode, label={-90:$1$}] (g1) at (4.4, -0.6) {};
+    % p0
+    \node[] (p0) at (4.4, -0.2) {$p_0$};
+    \draw (4.4, 0.0) -- (4.4, 0.1);
+
+    % 2
+    \node[] at (5.2, -0.2) {$2$};
+
+    % 3
+    \node[wnode, label={60:$3$}] (g3) at (6.0, 0.8) {}
+      edge[very thick] (g1);
+    % p1
+    \node[] (p1) at (6.0, -0.2) {$p_1$};
+    \draw (6.0, 0.0) -- (6.0, 0.1);
+  \end{tikzpicture}
+  \caption{
+    \label{fig:Legendre_transformation_angle}
+    Legendre transformation
+    taking an angle to a line segment
+  }
+\end{figure}
+
+\begin{ex}
+  Let $f(x)$ be a convex polygon.
+  %
+  Then $g(p)$ is also a convex polygon in which
+  the vertices of $f(x)$ correspond to the edges
+  of $g(p)$, and the edges of $f(x)$
+  to the vertices of $g(p)$.
+  %
+  For example,
+  the corner depicted in Figure \ref{fig:Legendre_transformation_angle}
+  is transformed to a segment under
+  the Legendre transformations.
+\end{ex}
+
+
+% subsection C
+\subsection{Involutivity}
+
+Let us consider a function $f$ which is differentiable
+as many as necessary, with $f''(x) > 0$.
+%
+It is easy to verify that
+a Legendre transformation
+takes convex functions to convex functions.
+\note{
+  Since $g(p) = x \, p - f(x)\big|_{x = x(p)}$,
+  we have
+  $g'(p) = x + \left.[p - f'(x)]\frac{dx}{dp}\right|_{x=x(p)} = x,$
+  and
+  $g''(p) = \frac{ d x(p) }{ d p } = \left.\frac{ 1 } { f''(x) }\right|_{x = x(p)} > 0.$
+}
+Therefore, we can apply it twice.
+
+\begin{thm*}
+  The Legendre transformation is involutive,
+  i.e., its square is the identity:
+  if under the Legendre transformation $f$
+  is taken to $g$, then the Legendre transform
+  of $g$ will again be $f$.
+\end{thm*}
+
+\begin{proof}
+  In order to apply the Legendre transform to $g$,
+  with variable $p$, we must by definition look at
+  a new independent variable (which we will call $x$),
+  construct the function
+  $$
+  G(x, p) = x \, p - g(p),
+  $$
+  and find the point $p(x)$ at which $G$ attains its maximum:
+  $\partial G/\partial p = 0$,
+  i.e., $g'(p) = x$.
+  %
+  Then the Legendre transform of $g(p)$ will be the function
+  of $x$ equal to $G(x, p(x))$.
+
+  We will show that $G(x, p(x)) = f(x)$.
+  To this end, we notice that $G(x, p) = x \, p - g(p)$
+  has a simple geometric interpretation:
+  it is the ordinate\note{$y$-coordinate}
+  of the point abscissa $x$ on the line
+  tangent to the graph of $f(x)$
+  with slope $p$ (Figure \ref{fig:involutivity_Legendre_transformation}).
+%
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0, 0) -- (4, 0);
+      \draw[->] (0, 0) -- (0, 5);
+      \node[] at (4.3, 0) {$x$};
+      \node[] at (0.3, 4.5) {$y$};
+
+      % f(x)
+      \draw[scale=1.0, domain=0:3.2,smooth,variable=\x, very thick]
+        plot ({\x},{\x*\x*0.3+1});
+      \node[] at (2.8, 4.2) {$f(x)$};
+
+      % x0
+      \draw[thick] (1.5, 0) -- (1.5, 1.675);
+      \node[] at (1.5, -0.3) {$x_0$};
+      \node[circle, draw=black, fill=white, minimum size=1.5mm, inner sep=0]
+        at (1.5, 1.675) {};
+
+      % x(p)
+      \draw[blue!50!gray] (2.5, 0) -- (2.5, 2.875);
+      \node[] at (2.5, -0.3) {$x(p)$};
+
+      % tangent line at (2.5, 2.875)
+      % slope is 1.5
+      \draw[blue!50!gray] (0.5, -0.125) -- (3.5, 4.375);
+
+      % tangent line at (0.5, 1.075)
+      % slope is 0.3
+      \draw[red!50!gray] (0.0, 0.925) -- (3.5, 1.975);
+
+      % tangent line at (3.2, 4.072)
+      % slope is 1.92  y = 1.92*x - 2.072
+      \draw[green!50!gray] (1.3, 0.164) -- (3.5, 4.648);
+
+    \end{tikzpicture}
+    \caption{
+      \label{fig:involutivity_Legendre_transformation}
+      Involutivity of the Legendre transformation.
+    }
+  \end{figure}
+%
+  \note{Suppose at $x_1$, the tangent line to $y = f(x)$
+    has slope $p = f'(x_1)$,
+    then $g(p) = p x_1 - f(x_1)$.
+    Here $x_1 = x(p)$ in Figure \ref{fig:involutivity_Legendre_transformation}.
+    %
+    Now the equation of this tangent line is
+    $y - f(x_1) = p (x - x_1)$,
+    which is
+    $y = p x - g(p) = G(x, p)$.
+    %
+    This means $G(x, p)$ gives the $y$ coordinate
+    of the tangent line obtained at $x_1 = x(p)$
+    at another $x$;
+    this point always lies below $f(x)$.
+  }
+  For fixed $p$, the function $G(x, p)$
+  is a linear function of $x$,
+  with $\partial G/\partial x = p$,
+  and for $x = x(p)$
+  we have $G(x, p) = x \, p - g(p) = f(x)$
+  by definition of $G(p)$.
+
+  Let us now fix $x = x_0$ and vary $p$.
+  %
+  Then the values of $G(x, p)$ will be the ordinates
+  of the points of intersection of the line $x = x_0$
+  with the line tangent to the graph of $f(x)$
+  with various slopes $p$.
+  %
+  By the convexity of the graph,
+  it follows that all these tangents
+  lie below the curve,
+  and therefore the maximum of $G(x, p)$
+  for a fixed $x(p_0)$ is equal to $f(x)$
+  (and is achieved for $p = p(x_0) = f'(x_0)$).
+\end{proof}
+
+\begin{cor*}\footnote{
+    One can easily see that
+    this is the theory of ``Clairaut's equation.''
+  }
+  Consider a given family of straight lines
+  $y = p \, x - g(p)$.
+  %
+  Then its envelope has the equation
+  $y = f(x)$,
+  where $f$ is the Legendre transform of $g$.
+\end{cor*}
+
+% subsection D
+\subsection{Young's inequality}
+
+\begin{defn*}
+  Two functions, $f$ and $g$,
+  which are the Legendre transform
+  of one another are called dual
+  \emph{in the sense of Young}.
+\end{defn*}
+
+By definition of the Legendre transform,
+$F(x, p) = p \, x - f(x)$ is less than
+or equal to $g(p)$ for any $x$ and $p$.
+\note{Fixing $p$ and varying $x$,
+  we have $F(x, p) \le g(p)$ by definition $g(p)$.
+  Fixing $x$ and varying $p$,
+  we have $xp - g(p) \le f(x)$ because
+  $f(x)$ is Legendre transform of $g(p)$.
+}
+From this we have \emph{Young's inequality}:
+$$
+p \, x \le f(x) + g(p).
+$$
+
+\setcounter{ex}{0}
+% example 1
+\begin{ex}
+If $f(x) = \frac{1}{2} x^2$,
+then $g(p) = \frac{1}{2} p^2$
+and we obtain the well-known inequality
+$px \le \frac 1 2 x^2 + \frac 1 2 p^2$
+for all $x$ and $p$.
+\end{ex}
+
+% example 2
+\begin{ex}
+  If $f(x) = x^\alpha/\alpha$,
+  then $g(p) = p^\beta/\beta$,
+  where $(1/\alpha) + (1/\beta) = 1$,
+  and we obtain \emph{Young's inequality}
+  $px \le \frac{x^\alpha}{\alpha} + \frac{p^\beta}{\beta}$
+  for all $x > 0, p > 0, \alpha > 1, \beta > 1$,
+  and $1/\alpha + 1/\beta = 1$.
+\end{ex}
+
+
+% subsection E
+\subsection{The case of many variables}
+
+
+Now let $f(\mathbf x)$ be a convex function
+of the vector variable
+$\mathbf x = (x_1, \dots, x_n)$
+(i.e., the quadratic form
+$\left( (\partial^2 f/\partial \mathbf x^2) d \mathbf x, d\mathbf x \right)$
+is positive definite).
+%
+Then
+the Legendre transform is the function $g(\mathbf p)$
+of the vector variable
+$\mathbf p = (p_1, \dots, p_n)$,
+defined as above by the equalities
+$g(\mathbf p) = F(\mathbf p, \mathbf x) = \max_\mathbf{x} F(\mathbf p, \mathbf x)$,
+where
+$F(\mathbf p, \mathbf x) = (\mathbf p, \mathbf x) - f(\mathbf x)$
+and
+$\mathbf p = \partial f/\partial \mathbf x$.
+
+All of the above arguments, including Young's inequality,
+can be carried over without change to this case.
+
+\begin{prob*}
+  Let $f: \mathbb R^n \to \mathbb R$
+  be a convex function.
+  Let $\mathbb R^{n*}$ denote the dual vector space.
+  %
+  Show that the formulas above completely
+  define the mapping $g: \mathbb R^{n*} \to \mathbb R$
+  (under the condition that the linear form
+  $df|_\mathbf{x}$ ranges over all of $\mathbb R^{n*}$
+  when $\mathbf x$ ranges over $\mathbb R^n$).
+\end{prob*}
+
+\begin{prob*}
+  Let $f$ be the quadratic form
+  $f(\mathbf x) = \sum_{ij} f_{ij} \, x_i \, x_j$.
+  %
+  Show that its Legendre transform is again
+  a quadratic form $g(\mathbf p) = \sum_{ij} g_{ij} \, p_i \, p_j$,
+  and that the values of both forms
+  at the corresponding points coincide
+  (Figure \ref{fig:Legendre_transformation_quadratic}):
+  $$
+  f(\mathbf x(\mathbf p)) = g(\mathbf p)
+  \quad
+  \mathrm{and}
+  \quad
+  g(\mathbf p(\mathbf x)) = f(\mathbf x).
+  $$
+
+  \answer{
+    $p_i = 2 \sum_j f_{ij} x_j  \to x_i = \frac 1 2 \sum_j f^{-1}_{ij} p_j$.
+    $$
+    F(\mathbf p, \mathbf x)
+    =
+    \sum_i p_i x_i - \sum_{ij} f_{ij} \, x_i \, x_j
+    =
+    \sum_{ij} f_{ij} \, x_i \, x_j
+    =
+    \sum_{ij} \sum_{kl} f^{-1}_{kl} p_k \, p_l.
+    $$
+  }
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0, 0) -- (4.2, 0);
+      \draw[->] (0, 0) -- (0, 4.0);
+      \node[] at (4.5, 0) {$x$};
+      \node[] at (0.2, 3.8) {$y$};
+
+      % y = p x
+      \draw[] (0,0) -- (4.1, 4.1);
+
+      % tangent line at (2, 1), slop is 1.0
+      % y = 1 + (x - 2) = x - 1
+      \draw[] (1.0, 0) -- (3.0, 2.0);
+
+      % g(p)
+      \node[] at (1.5, 2.2) {$g(p)$};
+      \draw[] (2.0, 1.0) -- (2.0, 2.0);
+      \draw[] (2.0, 1.5) -- (1.5, 1.9);
+
+      % f(x)
+      \node[] at (2.4, 0.5) {$f(x)$};
+      \draw[] (2.0, 0.0) -- (2.0, 1.0);
+
+      % f(x)
+      \draw[scale=1,domain=0:4.1,smooth,variable=\x, very thick]
+       plot ({\x}, {\x*\x/4});
+
+    \end{tikzpicture}
+    \caption{
+      \label{fig:Legendre_transformation_quadratic}
+      Legendre transformation
+      of a quadratic form
+    }
+  \end{figure}
+
+\end{prob*}
 
 \section{Hamilton's equations}
 
@@ -4937,7 +5444,7 @@ satisfying the two conditions:
 In order to construct the canonical transformation $p, q \to I, \varphi$
 in the general case, we will look for its generating function $S(I, q)$:
 \note{
-  Here $S = -F_4$, for
+  Here $S = -F_2$, for
   $d(-F_1) = p \, dq - I \, d\varphi$,
   we have
   $dS = d(I \varphi - F_1) = p \, dq + \varphi \, d I$.
