@@ -2,6 +2,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{amsmath}
+%\usepackage[a4paper, total={7.0in, 10.5in}]{geometry}
 
 
 
@@ -308,7 +309,7 @@ Convective Metropolis algorithm}
 
 
 
-So the question is that if there is a way to generalize
+So is there a way to generalize
 the Metropolis way without loss of the advantage in the two-state case.
 %
 The answer is yes.
@@ -494,37 +495,37 @@ $$
 \right).
 $$
 
-\paragraph{Case 3.}
-
-We give one more example, just to make the pattern clear.
+%\paragraph{Case 3.}
 %
-For $n \ge 5$, and
-if $p_1 + p_2 + p_3 \le p_n \le p_1 + p_2 + p_3 + p_4$,
-then
-$$
-  \mathbf T_{c}
-=
-\left(
-  \arraycolsep=7.0pt\def\arraystretch{1.5}
-  \begin{array}{cccccccc}
-    0     &   0   &   0   &   0 & \dots  &   \frac{p_1}{p_n}       \\
-    0     &   0   &   0   &   0 & \dots  &   \frac{p_2}{p_n} \\
-    0     &   0   &   0   &   0 & \dots  &   \frac{p_3}{p_n} \\
-    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  &
-    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  &
-    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  & 0   &   \dots  &   1 - \frac{p_1+p_2 + p_3}{p_n} \\
-    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
-    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
-    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
-    1   &   \dots  &   0 \\
-    \vdots&\vdots &\vdots & \vdots  &   \vdots \\
-    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
-    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
-    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
-    0   &   \dots  &   0 \\
-  \end{array}
-\right).
-$$
+%We give one more example, just to make the pattern clear.
+%%
+%For $n \ge 5$, and
+%if $p_1 + p_2 + p_3 \le p_n \le p_1 + p_2 + p_3 + p_4$,
+%then
+%$$
+%  \mathbf T_{c}
+%=
+%\left(
+%  \arraycolsep=7.0pt\def\arraystretch{1.5}
+%  \begin{array}{cccccccc}
+%    0     &   0   &   0   &   0 & \dots  &   \frac{p_1}{p_n}       \\
+%    0     &   0   &   0   &   0 & \dots  &   \frac{p_2}{p_n} \\
+%    0     &   0   &   0   &   0 & \dots  &   \frac{p_3}{p_n} \\
+%    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  &
+%    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  &
+%    1 - \frac{p_n - p_4}{p_1 + p_2 + p_3}  & 0   &   \dots  &   1 - \frac{p_1+p_2 + p_3}{p_n} \\
+%    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
+%    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
+%    \frac{p_5 - p_4}{p_1 + p_2 + p_3}   &
+%    1   &   \dots  &   0 \\
+%    \vdots&\vdots &\vdots & \vdots  &   \vdots \\
+%    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
+%    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
+%    \frac{p_n - p_{n-1}}{p_1 + p_2 + p_3} &
+%    0   &   \dots  &   0 \\
+%  \end{array}
+%\right).
+%$$
 
 \paragraph{Case $i$.}
 For $1 \le i < n - 1$,

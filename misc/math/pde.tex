@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+\begin{document}
+
+\title{PDE lectures}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+\maketitle
+
+\tableofcontents
+
+\section{Solve PDE via change of variables}
+
+How to solve PDE via change of variables, \url{https://www.youtube.com/watch?v=VIqKKq_jZu0}.
+
+Example of how to solve PDE via change of variables, \url{https://www.youtube.com/watch?v=HouEinUtASE}
+
+\subsection{Method}
+
+General case
+$$
+a \, u_x + b \, u_y = f,
+$$
+We want to simplify the PDE via change of variables.
+$$
+\xi = \xi(x, y), \eta = \eta(x, y).
+$$
+
+Using the chain rule, we get
+$$
+(a \xi_x + b \xi_y) u_\xi + (a \eta_x + b \eta_y) u_\eta = f.
+$$
+Now if $a \xi_x + b \xi_y$ is zero,
+the equation is simplified with only one partial derivative $u_\eta$.
+Further, if $\eta(x, y) = x$, then it is simply $a u_\eta = f$.
+So we want to solve
+$$
+\begin{aligned}
+a \xi_x + b \xi_y = 0, \\
+a u_\eta = f.
+\end{aligned}
+$$
+
+Now the first equation can be solved along the curve
+$$
+\frac{ dx } { a } = \frac { dy } { b }.
+$$
+which will yield a curve $\phi(x, y) = C$.
+%
+We will then choose $\xi = \phi(x, y)$.
+
+
+\subsection{Example}
+
+Solve (for $x > 0$)
+$$
+x \, u_x - y \, u_y + u  = 2.
+$$
+
+The goal is to simplify the PDE using new variables $(\xi, \eta)$.
+
+$$
+dy/dx = b/a = - y/x.
+$$
+Integrating this we get $xy = C$.
+So we choose $\xi(x, y) = C = xy$.
+
+The other choice is $\eta(x, y) = x$.
+
+Consider $u(\xi, \eta)$,
+$$
+u_x = u_\xi \xi_x + u_\eta \eta_x = u_\xi \, y + u_\eta,
+\quad
+u_y = u_\xi \xi_y + u_\eta \eta_y = u_\xi \, x.
+$$
+So
+$$
+x \, y \, (u_\xi \, y + u_\eta)
+- y \, u_\xi \, x + u = 2,
+$$
+We get
+$$
+\eta \, u_\eta + u = 2.
+$$
+This is equivalent to $\partial ( \eta \, u_\eta ) /\partial \eta = 2$.
+So the solution is
+$\eta \, u = 2 \, \eta + K(\xi)$.
+In terms of $x$ and $y$, we get
+$$
+u = 2 + K(xy)/x.
+$$
+
+
+
+\end{document}

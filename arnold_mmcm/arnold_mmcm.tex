@@ -1,4 +1,4 @@
-\documentclass[leqno]{book}
+\documentclass[leqno]{report}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsfonts}
@@ -261,7 +261,7 @@ $\mathbf x = \pmb\psi(t)$
 \emph{equivalent}
 if $\pmb\varphi(0) = \pmb\psi(0) = \mathbf x$
 and
-$\lim_{t\rightarrow 0} (\pmb\varphi(t) - \pmb\psi(t))/t = 0$
+$\lim_{t\to 0} (\pmb\varphi(t) - \pmb\psi(t))/t = 0$
 in some chart.
 %
 Then this tangent relationship is true in any chart (prove this!)
@@ -327,7 +327,7 @@ give a local coordinate system on $TM$.
 %
 One sometimes writes $dq_i$ for $\xi_i$.
 
-The mapping $p:TM \rightarrow M$
+The mapping $p:TM \to M$
 which takes a tangent vector $\pmb\xi$
 to the point $\mathbf x\in M$
 at which the vector is tangent to $M$
@@ -355,9 +355,9 @@ the lengths of tangent vectors, that is,
 by the positive-definite quadratic form given on
 every tangent space $TM_\mathbf{x}$ (Figure 63):
 $$
-TM_\mathbf{x} \rightarrow \mathbb R
+TM_\mathbf{x} \to \mathbb R
 \qquad
-\pmb\xi \rightarrow \langle\pmb\xi, \pmb\xi \rangle.
+\pmb\xi \to \langle\pmb\xi, \pmb\xi \rangle.
 $$
 
 \begin{figure}[h]
@@ -425,7 +425,7 @@ is expressed using this form as
 $I(\gamma) = \int_{\mathbf x_0}^{\mathbf x_1}
 \sqrt{\langle d\mathbf, d\mathbf x\rangle}$,
 or, if the curve is given parametrically,
-$\gamma:[t_0, t_1] \rightarrow M, t \rightarrow \mathbf x(t) \in M$,
+$\gamma:[t_0, t_1] \to M, t \to \mathbf x(t) \in M$,
 then
 $$
 I(\gamma) = \int_{\mathbf x_0}^{\mathbf x_1}
@@ -460,17 +460,17 @@ $$
 % subsection F
 \subsection{The derivative map}
 
-Let $f: M \rightarrow N$ be a mapping of a manifold $M$ to a manifold $N$.
+Let $f: M \to N$ be a mapping of a manifold $M$ to a manifold $N$.
 %
 $f$ is called \emph{differentiable} if in local coordinates on $M$ and $N$
 it is given by differentiable functions.
 
 
 \begin{defn*}
-  The \emph{derivative} of a differentiable mapping $f: M \rightarrow N$
+  The \emph{derivative} of a differentiable mapping $f: M \to N$
   at a point $\mathbf x \in M$ is the linear map of the tangent spaces
   $$
-  f_{*\mathbf x}: TM_\mathbf{x} \rightarrow TN_{f(\mathbf x)},
+  f_{*\mathbf x}: TM_\mathbf{x} \to TN_{f(\mathbf x)},
   $$
   which is given in the following way (Figure 64).
 
@@ -539,13 +539,13 @@ it is given by differentiable functions.
   \end{figure}
 
   Let $\mathbf v\in TM_\mathbf{x}$.
-  Consider a curve $\pmb\varphi: \mathbb R \rightarrow M$
+  Consider a curve $\pmb\varphi: \mathbb R \to M$
   with $\pmb\varphi(0) = \mathbf x$,
   and velocity vector $(d\pmb\varphi/dt)|_{t = 0} = \mathbf v$.
   %
   Then $f_{*\mathbf x}\mathbf v$
   is the velocity vector of the curve
-  $f \circ \pmb\varphi: \mathbb R \rightarrow N$.
+  $f \circ \pmb\varphi: \mathbb R \to N$.
   $$
   f_{*\mathbf x}\mathbf v
   =
@@ -568,7 +568,7 @@ it is given by differentiable functions.
 
 \begin{prob*}
   Show that the map
-  $f_{*\mathbf x}: TM_\mathbf{x} \rightarrow TN_{f(\mathbf x)}$
+  $f_{*\mathbf x}: TM_\mathbf{x} \to TN_{f(\mathbf x)}$
   is linear.
 
   \answer{
@@ -596,7 +596,7 @@ it is given by differentiable functions.
   for all $\mathbf x$,
   we get a mapping of the whole tangent bundle
   $$
-  f_{*\mathbf x}: TM \rightarrow TN
+  f_{*\mathbf x}: TM \to TN
   \qquad
   f_{*} \mathbf v
   \quad
@@ -641,10 +641,10 @@ it is given by differentiable functions.
 \end{prob*}
 
 \begin{prob*}
-  Let $f: M \rightarrow N$,
-  $g: N \rightarrow K$,
+  Let $f: M \to N$,
+  $g: N \to K$,
   and
-  $h = f \circ g: M\rightarrow K$.
+  $h = f \circ g: M\to K$.
   Show that $h_* = g_* \circ f_*$.
 
   \answer{
@@ -791,6 +791,43 @@ Systems with holonomic constraints are a particular case.
 
 \part{HAMILTONIAN MECHANICS}
 
+Hamiltonian mechanics is geometry in phase space.
+%
+Phase space has the structure of a symplectic manifold.
+%
+The group of symplectic diffeomorphisms acts on phase space.
+%
+The basic concepts and theorems of hamiltonian mechanics
+(even when formulated in terms of local symplectic coordinates)
+are invariant under this group
+(and under the larger group of transformations which also transform time).
+
+A hamiltonian mechanical system is given by an even-dimensional
+manifold (the ``phase space''),
+a symplectic structure on it (the ``Poincar\'e integral invariant'')
+and a function on it (the ``hamiltonian function'').
+%
+Every one-parameter group of symplectic diffeomorphisms of the phase space
+preserving the hamiltonian function is associated to a first integral of
+the equations of motion.
+
+Lagrangian mechanics is contained in hamiltonian mechanics as a special
+case (the phase space in this case is the cotangent bundle
+of the configuration space, and the hamiltonian function is
+the Legendre transformation of the lagrangian function).
+
+The hamiltonian point of view allows us to solve completely a series of
+mechanical problems which do not yield solutions by other means
+(for example, the problem of attraction by two stationary centers
+and the problem of geodesics on triaxial ellipsoid).
+%
+The hamiltonian point of view has even greater value for the approximate
+methods of perturbation theory (celestial mechanics),
+for understanding the general character of motion
+in complicated mechanical systems (ergodic theory, statistical mechanics)
+and in connection with other areas of mathematical physics
+(optics, quantum mechanics, etc.).
+
 \chapter{Differential forms}
 
 \section{Exterior forms}
@@ -804,7 +841,7 @@ Systems with holonomic constraints are a particular case.
 \subsection{\label{sec:exterior_mapping}Behavior under mappings}
 
 
-Let $f: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a linear map,
+Let $f: \mathbb{R}^m \to \mathbb{R}^n$ be a linear map,
 and $\omega^k$ an exterior $k$-form on $\mathbb{R}^n$.
 Then there is a $k$-form $f^*\omega^k$ on $\mathbb{R}^m$,
 whose value on the $k$ vectors $\pmb\xi_1, \dots, \pmb\xi_k \in \mathbb{R}^m$
@@ -879,8 +916,8 @@ to the space of $k$-forms on $\mathbb R^m$
 \end{prob}
 
 \begin{prob}
-  Let $f: \mathbb R^m \rightarrow \mathbb R^n$ and
-  $g: \mathbb R^n \rightarrow \mathbb R^p$.
+  Let $f: \mathbb R^m \to \mathbb R^n$ and
+  $g: \mathbb R^n \to \mathbb R^p$.
   Verify that $(g\circ f)^* = f^* \circ g^*$.
 
 \answer{
@@ -1073,7 +1110,7 @@ for points in $T^*V$.
 
 
 There is a natural projection
-$f: T^*V \rightarrow V$.
+$f: T^*V \to V$.
 \note{$f$ sends every 1-form on $TV_{\mathbf x}$
 to the point $\mathbf x$}
 %
@@ -1101,8 +1138,8 @@ Let $\pmb \xi \in T(T^*V)_p$ be a vector
 \note{This means $p$ is a 1-form with coordinates $\mathbf p$,
 and we can express $\pmb \xi$ in local coordinates as $(d\mathbf p, d\mathbf q)$.}
 %
-The derivative $f_*: T(T^*V) \rightarrow TV$
-of the natural projection $f: T^*V \rightarrow V$,
+The derivative $f_*: T(T^*V) \to TV$
+of the natural projection $f: T^*V \to V$,
 which takes $\pmb \xi$ to a vector $f_* \pmb \xi$ ($d\mathbf q$)
 tangent to $V$ at $\mathbf x$.
 %
@@ -1193,8 +1230,8 @@ has a natural symplectic manifold structure.
 
 \begin{prob*}
   Show that the Legendre transform does not depend on the coordinate system:
-  it takes a fucntion $:TV \rightarrow \mathbb R$ on the tangent bundle
-  to a function $H: T^*V \rightarrow \mathbb R$ on the cotangent bundle.
+  it takes a fucntion $:TV \to \mathbb R$ on the tangent bundle
+  to a function $H: T^*V \to \mathbb R$ on the cotangent bundle.
 
 
 \answer{
@@ -1241,7 +1278,7 @@ $$
 \end{defn*}
 
 \begin{prob*}
-Show that the correspondence $\pmb \xi \rightarrow \omega^1_{\mathbf \xi}$
+Show that the correspondence $\pmb \xi \to \omega^1_{\mathbf \xi}$
 is an isomorphism between the $2n$-dimensional vector spaces of vectors
 and of 1-forms.
 \end{prob*}
@@ -1250,9 +1287,9 @@ and of 1-forms.
   In $\mathbb{R}^{2n}=\{(\mathbf p, \mathbf q)\}$
   we will identify vectors and 1-forms by using the euclidean structure
   $(\mathbf x, \mathbf x) = \mathbf p^2 + \mathbf q^2$.
-  Then the correspondences $\pmb\xi \rightarrow \omega^1_{\pmb\xi}$
+  Then the correspondences $\pmb\xi \to \omega^1_{\pmb\xi}$
   determines a transformation
-  $\mathbb{R}^{2n} \rightarrow \mathbb{R}^{2n}$.
+  $\mathbb{R}^{2n} \to \mathbb{R}^{2n}$.
 \end{ex*}
 
 \begin{prob*}
@@ -1336,9 +1373,9 @@ and a 1-form $\omega_1$ is represented by the vector $I\, \omega_1$.
 
 
 We will denote by $I$ the isomorphism
-$I: T^*M_{\mathbf x} \rightarrow TM_{\mathbf x}$
+$I: T^*M_{\mathbf x} \to TM_{\mathbf x}$
 (from 1-forms to tangent vectors,
-$\omega^1_{\pmb \xi} \rightarrow \pmb \xi$).
+$\omega^1_{\pmb \xi} \to \pmb \xi$).
 %
 Now let $H$ be a function on a symplectic manifold $M^{2n}$.
 %
@@ -1361,7 +1398,7 @@ $H$ is called the \emph{hamiltonian function}.
   of Hamilton's canonical equation:
   $$
   \dot{\mathbf x} = I\,dH(\mathbf x)
-  \Longleftrightarrow
+  \iff
   \dot{\mathbf p} = - \frac{\partial H }{ \partial \mathbf q}
   \mathrm{\quad and \quad}
   \dot{\mathbf q} = \frac{\partial H}{\partial \mathbf p}.
@@ -1483,10 +1520,10 @@ which are preserved by the hamiltonian flow.
 \subsection{Hamiltonian phase flows preserve the symplectic structure}
 
 Let $(M^{2n}, \omega^2)$ be a symplectic manifold and
-$H: M^{2n} \rightarrow \mathbb{R}$ a function.
+$H: M^{2n} \to \mathbb{R}$ a function.
 Assume that the vector field $IdH$
 corresponds to $H$ gives a 1-parameter group
-of diffeomorphism: $g^t: M^{2n} \rightarrow M^{2n}$:
+of diffeomorphism: $g^t: M^{2n} \to M^{2n}$:
 $$
 \left.\frac{d}{dt}\right|_{t = 0} g^t\mathbf x
 = I dH(\mathbf x).
@@ -1500,7 +1537,7 @@ It is a smooth invertible function that maps one differentiable manifold
 to another.
 
 Not all differentiable maps are diffeomorphism, because of the one-to-one requirement.
-For example, $(x, y) \rightarrow (y^2 \sin x, y^2 \cos x)$ is not invertible.
+For example, $(x, y) \to (y^2 \sin x, y^2 \cos x)$ is not invertible.
 }
 
 \begin{thm}
@@ -1538,7 +1575,7 @@ For the proof of this theorem, it is useful to introduce
 the following notation.
 
 Let $M$ be an arbitrary manifold,
-$c$ a $k$-chain on $M$ and $g^t: M \rightarrow M$
+$c$ a $k$-chain on $M$ and $g^t: M \to M$
 a one-parameter family of differentiable mappings.
 We will construct a $(k+1)$-chain $Jc$ on $M$,
 which we will call the
@@ -1549,15 +1586,15 @@ $g^t$, $0 \le t \le \tau$}.
 
 Let $(D, f, \mathrm{Or})$ be one of the cells in the chain $c$.
 \note{$D$ is the domain, a convex polygon in $\mathbb{R}^k$,
-  $f$ is a mapping from the euclidean space to the manifold $\mathbb{R}^k \rightarrow M$,
+  $f$ is a mapping from the euclidean space to the manifold $\mathbb{R}^k \to M$,
   $\mathrm{Or}$ is the orientation.
   See page 184, \S 35.D.}
 %
 To this cell will be associated a cell $(D', f', \mathrm{Or}')$
   in the chain $Jc$ where $D' = I\times D$ is the direct product
   of the interval of $0 \le t \le \tau$ and $D$;
-  the mapping $f': D' \rightarrow M$ is obtained from
-  $f: D \rightarrow M$ by the formula
+  the mapping $f': D' \to M$ is obtained from
+  $f: D \to M$ by the formula
   $f'(t, x) = g^t f(x)$;
   and the orientation $\mathrm{Or}'$ of the space $\mathbb{R}^{k+1}$
   containing $D'$ is given by the frame
@@ -1738,7 +1775,7 @@ It is easy to verify that under the choice of orientation made above
 
 \begin{proof}
   It is sufficient to consider a chain $\gamma$ with one cell
-  $f: [0,1] \rightarrow M$.
+  $f: [0,1] \to M$.
   \note{$\gamma$ is a curve, which will be $\partial c$.}
   We introduce the notation
   $$
@@ -1815,7 +1852,7 @@ It is easy to verify that under the choice of orientation made above
     $\int_0^1 \omega^2(\pmb\xi, \pmb\eta) \, ds
     = \int_0^1 dH(\pmb\xi) \, ds = \int_0^1 dH(\pmb\xi \, ds).$
     But $\pmb\xi = \frac{ \partial f' } { \partial s }
-    = g^t \frac{ d f }{ d s } \rightarrow
+    = g^t \frac{ d f }{ d s } \to
     \pmb\xi\, ds = g^t \, df = d(g^t f)$,
     So
     $\int_0^1 dH(\pmb\xi ds) = \int dH(d g^t f) = \int_{g^t\gamma} dH.$
@@ -1877,7 +1914,7 @@ It is easy to verify that under the choice of orientation made above
 % subsection B
 \subsection{Integral invariants}
 
-Let $g:M\rightarrow M$ be a differentiable map.
+Let $g:M\to M$ be a differentiable map.
 
 \begin{defn*}
   A differential $k$-form $\omega$ is called an \emph{integral invariant}
@@ -1892,7 +1929,7 @@ Let $g:M\rightarrow M$ be a differentiable map.
 \note{The precise meaning of \eqref{eq:integral_invariant} is the following.
   Let $f$ be a mapping from $\mathbb R$ to $M$,
   For a $k$-chain $c$ with one cell:
-  $f:[0, 1]^k \rightarrow M$,
+  $f:[0, 1]^k \to M$,
   we have $f(\mathbf s) \in M$ for $\mathbf s \in [0,1]^k$.
   %
   The $k$ tangent vectors are defined as
@@ -1942,7 +1979,7 @@ Let $g:M\rightarrow M$ be a differentiable map.
 
   \answer{
     It is sufficient to consider a chain $c$ with one cell
-    $f: [0, 1]^k \rightarrow M$.
+    $f: [0, 1]^k \to M$.
     Then using the above notation,
     for $\mathbf x = f\mathbf s \in M$, and
     $\xi_i = \partial f/\partial s_i$,
@@ -2064,7 +2101,7 @@ and we obtain Liouville's theorem from the corollary above.
 \end{ex*}
 
 The map
-$g: \mathbb R^{2n} \rightarrow \mathbb R^{2n}$
+$g: \mathbb R^{2n} \to \mathbb R^{2n}$
 is called \emph{canonical} if it has $\omega^2$ as an integral invariant.
 A canonical map is generally called a \emph{canonical transformation}.
 Each of the forms $\omega^4, \omega^6, \dots, \omega^{2n}$
@@ -2086,7 +2123,7 @@ The integral invariants considered above are also called
 \begin{defn*}
   A differential $k$-form is called a
   \emph{relative integral invariant} of the map
-  $g: M \rightarrow M$ if
+  $g: M \to M$ if
   $\int_{gc} \omega = \int_c \omega$
   for every \emph{closed} $k$-chain $c$.
 \end{defn*}
@@ -2115,7 +2152,7 @@ The integral invariants considered above are also called
 
 
 \begin{ex*}
-  A canonical map $g:\mathbb R^{2n} \rightarrow \mathbb R^{2n}$
+  A canonical map $g:\mathbb R^{2n} \to \mathbb R^{2n}$
   has the 1-form
   $$
   \omega^1 = \mathbf p \, d\mathbf q = \sum_{i = 1}^n p_i \, dq_i
@@ -2152,7 +2189,7 @@ The integral invariants considered above are also called
 
 \begin{prob*}
   Let $d\omega^k$ be an absolute integral invariant of the map
-  $g: M \rightarrow M$. Does it follow that $\omega^k$ is a
+  $g: M \to M$. Does it follow that $\omega^k$ is a
   relative integral invariant?
 \end{prob*}
 
@@ -2306,7 +2343,7 @@ the idea of vector cross product in higher spaces.
 \begin{defn*}
   A \emph{Lie algebra} is a vector space $L$,
   together with a bilinear skew-symmetric operation
-  $L\times L \rightarrow L$ which satisfies the Jacobi identity.
+  $L\times L \to L$ which satisfies the Jacobi identity.
 
   The operation is usually denoted by square brackets
   and called the commutator.
@@ -2340,7 +2377,7 @@ With every such vector field we associate the following two objects:
 \begin{enumerate}
   \item
     \emph{The one-parameter group of diffeomorphisms} or \emph{flow}
-    of $A^t: M \rightarrow M$ for which $\mathbf A$ is the velocity vector field
+    of $A^t: M \to M$ for which $\mathbf A$ is the velocity vector field
     (Figure 168):\footnote{
     By theorems of existence, uniqueness and differentiability
     in the theory of ordinary differential equations,
@@ -2404,7 +2441,7 @@ With every such vector field we associate the following two objects:
     The first-order differential operator $L_\mathbf{A}$.
     We refer here to the differentiation of functions
     in the direction of the field $\mathbf A$:
-    for any function $\varphi: M \rightarrow \mathbb F$,
+    for any function $\varphi: M \to \mathbb F$,
     the \emph{derivative in the direction of $\mathbb A$}
     is a new function $L_{\mathbf A} \varphi$,
     whose value at a point $\mathbf x$ is
@@ -2543,7 +2580,7 @@ With every such vector field we associate the following two objects:
     $$
     A^t(\mathbf x)
     =
-    \lim_{n\rightarrow \infty}
+    \lim_{n\to \infty}
     \left(1 + \frac{t}{n} \mathbf{A}\right)^{n} \mathbf x.
     =
     \exp(t\mathbf{A}) \, \mathbf x.
@@ -2798,7 +2835,7 @@ At first glance this is a \emph{second}-order differential operator.
   applied to the function $e^{s L_\mathbf{B}}$.
   %
   For a chain of opertions,
-  $\mathbf x \rightarrow B^s \mathbf x \rightarrow A^t B^s \mathbf x$,
+  $\mathbf x \to B^s \mathbf x \to A^t B^s \mathbf x$,
   a flow operator, such as $A^t$ or $B^s$,
   applies on the current argument, or the current coordinates,
   so the first geometric operation
@@ -2971,9 +3008,9 @@ on a manifold $M$.
   \varphi(B^sA^t\mathbf x)
   = o(s^2 + t^2)
   \qquad
-  s \rightarrow 0
+  s \to 0
   \; \mathrm{and} \;
-  t \rightarrow 0
+  t \to 0
   $$
   for any function $\varphi$ at any point $\mathbf x$.
   \note{This is the ``little $o$'' notation instead of the ``big $O$'' notation.
@@ -3198,8 +3235,8 @@ on a manifold $M$.
 
 A \emph{Lie group} is a group $G$ which is a differentiable manifold,
 and for which the operations (product and inverse)
-are differentiable maps $G\times G \rightarrow G$
-and $G \rightarrow G$.
+are differentiable maps $G\times G \to G$
+and $G \to G$.
 %
 \note{
 The differentiable manifold defining the Lie group
@@ -3233,7 +3270,7 @@ $$
 \rho(A^tB^sA^{-t}B^{-s}, C^{st}) = o(s^2 + t^2)
 \quad
 \mathrm{as \;}
-s \mathrm{\; and \;} t \rightarrow 0.
+s \mathrm{\; and \;} t \to 0.
 $$
 The corresponding vector $\mathbf C =(d/dr)|_{r = 0} C^r$
 is called the \emph{Lie bracket}
@@ -3359,7 +3396,7 @@ on a Lie group $G$.
 Let $g \in G$.
 %
 Right translation $R_g$ is the map
-$R_g: G \rightarrow G, R_g h = h g$.
+$R_g: G \to G, R_g h = h g$.
 %
 The differential of $R_g$ at the point $e$
 maps $TG_e$ into $TG_g$.
@@ -3367,7 +3404,7 @@ maps $TG_e$ into $TG_g$.
 \note{
   Using $A^t$ for $h$,
   $R_g \, A^t = A^t \, g$.
-  As $t \rightarrow 0$,
+  As $t \to 0$,
   we map an infinitesimal transformation $A^t = 1 + t \mathbf A$
   to a transformation that is infinitely close to $g$.
   %
@@ -3489,14 +3526,14 @@ a subalgebra of the Lie algebra of hamiltonian functions.
 \subsection{The Poisson bracket of two functions}
 
 Let $(M^{2n}, \omega^2)$ be a symplectic manifold.
-To a given function $H: M^{2n} \rightarrow \mathbb R$
+To a given function $H: M^{2n} \to \mathbb R$
 on the symplectic manifold
 there corresponds to a one-parameter
-$g_H^t: M^{2n} \rightarrow M^{2n}$
+$g_H^t: M^{2n} \to M^{2n}$
 of canonical transformations of $M^{2n}$--the
 phase flow of the hamiltonian function equal to $H$.
 %
-Let $F: M^{2n} \rightarrow \mathbb R$
+Let $F: M^{2n} \to \mathbb R$
 be another function on $M^{2n}$.
 
 \begin{defn*}
@@ -3653,8 +3690,8 @@ of a theorem of E. Noether.
 
 % Problem 3
 \begin{prob}
-  Show that the map $A: \mathbb R^{2n} \rightarrow R^{2n}$
-  sending $(\mathbf p, \mathbf q) \rightarrow
+  Show that the map $A: \mathbb R^{2n} \to R^{2n}$
+  sending $(\mathbf p, \mathbf q) \to
   (\mathbf P(\mathbf p, \mathbf q), \mathbf Q(\mathbf p, \mathbf q))$
   is canonical if and only if the Poisson brackets of any two
   functions in the variables $(\mathbf p, \mathbf q)$
@@ -3674,7 +3711,7 @@ of a theorem of E. Noether.
   $$
 
   \solution{
-    \note{The ``only if'' part: canonical $\rightarrow$ Poisson brackets coincide.}
+    \note{The ``only if'' part: canonical $\to$ Poisson brackets coincide.}
     Let $A$ be canonical.
     %
     Then the symplectic structure $d\mathbf p \wedge d\mathbf q$
@@ -3686,12 +3723,23 @@ of a theorem of E. Noether.
     $$
     (F, H)_\mathbf{p, q} = (F, H) = (F, H)_\mathbf{P, Q}.
     $$
-    \note{The ``if'' part: Poisson brackets coincide $\rightarrow$ canonical.}
+    \note{The ``if'' part: Poisson brackets coincide $\to$ canonical.}
     Conversely, suppose that the Poisson brackets
     $(P_i, Q_j)_\mathbf{p, q}$ have the standard form
     of Problem 2.
     Then, clearly $d\mathbf P \wedge d\mathbf Q = d\mathbf p \wedge d\mathbf q$,
     i.e., the map is canonical.
+    \note{
+      For the ``if'' part, note that $(F, H)_\mathbf{p, q} = \omega^2(IdH, IdF)$
+      for the two vectors, $IdH$ and $IdF$.
+      %
+      The 2-form $\omega^2$ giving the symplectic structure
+      on the $2n$-dimensional manifold has a finite dimension,
+      $2 \, n \, (2 \, n-1)/2$.
+      The idea for the proof is that if two 2-forms yield
+      the same value for all pairings for $2n$ independent vectors,
+      we can then ensure the two 2-forms are the same.
+    }
 
     \note{
       Alternative argument for the ``if'' part:
@@ -4166,7 +4214,7 @@ one can construct a first integral \note{$(H_1, H_2)$}.
 \subsection{Locally hamiltonian vector fields}
 
 Let $(M^{2n}, \omega^2)$ be a symplectic manifold and
-$g^t: M^{2n} \rightarrow M^{2n}$
+$g^t: M^{2n} \to M^{2n}$
 a one-parameter group of diffeomorphisms preserving
 the symplectic structure.
 %
@@ -4191,7 +4239,7 @@ Will $g^t$ be a hamiltonian flow?
   But $q$ is only a \emph{local} coordinate on $T^2$;
   \note{over a period $1$, $q$ has to increase by $1$,
   so is $H$. So the value of $H$ is not uniquely defined.}
-  there is no map $H: T^2 \rightarrow \mathbb R$
+  there is no map $H: T^2 \to \mathbb R$
   for which $\partial H/\partial p = 0$ and
   $\partial H/\partial q = 1$.
   Thus $g^t$ is not a hamiltonian phase flow.
@@ -4475,7 +4523,7 @@ is called a \emph{locally hamiltonian flow}.
   \forall \epsilon > 0,
   \exists \delta > 0:
   |\mathbf x| < \delta
-  \Longrightarrow
+  \iff
   |S^N \mathbf x| < \epsilon|.
   \qquad
   \forall N > 0.
@@ -4530,7 +4578,7 @@ is called a \emph{locally hamiltonian flow}.
   to $S$ is stable.
 \end{defn*}
 
-In Section 25 we establish that $S: \mathbb R^2 \rightarrow \mathbb R^2$
+In Section 25 we establish that $S: \mathbb R^2 \to \mathbb R^2$
 is strongly stable if $\lambda_{1,2} = e^{\pm i\alpha}$
 and $\lambda_1 \ne \lambda_2$.
 
@@ -4865,7 +4913,7 @@ is given by the hamiltonian function $H(p, q)$.
 
 In order to construct the action-angle variables,
 we will look for a canonical transformation
-$(p, q) \rightarrow (I, \varphi)$
+$(p, q) \to (I, \varphi)$
 satisfying the two conditions:
 \begin{equation}
   \begin{aligned}
@@ -4886,7 +4934,7 @@ satisfying the two conditions:
   }
 \end{prob*}
 
-In order to construct the canonical transformation $p, q \rightarrow I, \varphi$
+In order to construct the canonical transformation $p, q \to I, \varphi$
 in the general case, we will look for its generating function $S(I, q)$:
 \note{
   Here $S = -F_4$, for

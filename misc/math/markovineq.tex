@@ -27,33 +27,33 @@
 
 The cumulative distribution function (CDF) is defined as
 $$
-F_X(x) \equiv \operatorname{Pr}(X \le x).
+F_X(x) \equiv \Pr(X \le x).
 $$
 The complementary CDF is defined as
 $$
-F^c_X(x) \equiv \operatorname{Pr}(X \ge x) = 1 - F_X(x).
+F^c_X(x) \equiv \Pr(X \ge x) = 1 - F_X(x).
 $$
 
 There is an interesting theorem of computing the average
 from the complementary CDF:
 \begin{align}
-\mathbb{E}[X] &= \int_0^\infty \operatorname{Pr}(X \ge x) \, dx.
+\mathbb{E}[X] &= \int_0^\infty \Pr(X \ge x) \, dx.
 \label{eq:avccdf}
 \end{align}
 
 \begin{proof}
 Since the probability density is
 $$
-p_X(x) = - \frac{ d \operatorname{Pr}(X\ge x) }{ d x }.
+p_X(x) = - \frac{ d \Pr(X\ge x) }{ d x }.
 $$
 So the expected value
 $$
 \begin{aligned}
 \mathbb{E}[X] &= \int_0^\infty x \, p_X(x) \, dx
- = -\int_0^\infty x \, d \operatorname{Pr}(X \ge x) \\
- &= -x \, \operatorname{Pr}(X\ge x) \Bigr|_0^\infty
-  + \int_0^\infty \operatorname{Pr}(X \ge x) \, dx \\
- &= \int_0^\infty \operatorname{Pr}(X \ge x) \, dx.
+ = -\int_0^\infty x \, d \Pr(X \ge x) \\
+ &= -x \, \Pr(X\ge x) \Bigr|_0^\infty
+  + \int_0^\infty \Pr(X \ge x) \, dx \\
+ &= \int_0^\infty \Pr(X \ge x) \, dx.
 \end{aligned}
 $$
 \begin{figure}[h]
@@ -70,13 +70,13 @@ $$
 
     \draw [very thick, ->] (0,0) -- (7, 0);
     \draw [very thick, ->] (0,0) -- (0, 4.0);
-    \node [rotate=90] at (-0.5, 2.0) {$F_X^c(x) = \operatorname{Pr}(X \ge x)$};
+    \node [rotate=90] at (-0.5, 2.0) {$F_X^c(x) = \Pr(X \ge x)$};
     \node [] at (6.7, 0.2) {$x$};
     \node [] at (2.0, 1.5) {$x \, p_X(x)$};
   \end{tikzpicture}
 \end{figure}
 Geometrically, it means that the expectation can be computed from
-the area under the curve of $F^c_X(x) = \operatorname{Pr}(X \ge x)$.
+the area under the curve of $F^c_X(x) = \Pr(X \ge x)$.
 \end{proof}
 
 \section{Probability inequalities}
@@ -85,7 +85,7 @@ the area under the curve of $F^c_X(x) = \operatorname{Pr}(X \ge x)$.
 
 For a nonnegative random variable $Y$, we have Markov's inequality
 \begin{equation}
-\operatorname{Pr}(Y\ge y) \le \frac{ \mathbb{E}(Y) } { y }.
+\Pr(Y\ge y) \le \frac{ \mathbb{E}(Y) } { y }.
 \label{eq:markov_eq}
 \end{equation}
 
@@ -93,14 +93,14 @@ For a nonnegative random variable $Y$, we have Markov's inequality
 From Eq. \eqref{eq:avccdf}, we get
 $$
 \begin{aligned}
-\mathbb{E}[Y] = \int_0^\infty \operatorname{Pr}(Y \ge y) \, dy.
+\mathbb{E}[Y] = \int_0^\infty \Pr(Y \ge y) \, dy.
 \end{aligned}
 $$
-This means that $\mathbb{E}[Y]$ is the area under the curve $\operatorname{Pr}(Y\ge y)$,
+This means that $\mathbb{E}[Y]$ is the area under the curve $\Pr(Y\ge y)$,
 which is a function decreasing from $1$ at $y = 0$ to $0$ at $y = \infty$.
 %
-Now $\operatorname{Pr}(Y\ge y)$ is the area of the rectangle from $(0, 0)$
-to $(y, \operatorname{Pr}(Y\ge y))$.
+Now $\Pr(Y\ge y)$ is the area of the rectangle from $(0, 0)$
+to $(y, \Pr(Y\ge y))$.
 %
 \begin{figure}[h]
   \centering
@@ -116,10 +116,10 @@ to $(y, \operatorname{Pr}(Y\ge y))$.
 
     \draw [very thick, ->] (0,0) -- (7, 0);
     \draw [very thick, ->] (0,0) -- (0, 3.5);
-    \node [rotate=90] at (-0.5, 2.0) {$\operatorname{Pr}(Y \ge y)$};
+    \node [rotate=90] at (-0.5, 2.0) {$\Pr(Y \ge y)$};
     \node [] at (6.7, 0.2) {$y$};
-    \node [] at (2.0, 1.0) {$y \, \operatorname{Pr}(Y \ge y)$};
-    \node [] at (4.2, 2.3) {$(y, \operatorname{Pr}(Y \ge y))$};
+    \node [] at (2.0, 1.0) {$y \, \Pr(Y \ge y)$};
+    \node [] at (4.2, 2.3) {$(y, \Pr(Y \ge y))$};
     \node [circle, minimum size=0.2cm, inner sep=0cm, fill=black] at (4.0, 2.0){};
   \end{tikzpicture}
 \end{figure}
@@ -128,7 +128,7 @@ This area is obviously no greater than the area represented by $\mathbb{E}[Y]$.
 So
 %
 $$
-y \, \operatorname{Pr}(Y \ge y) \le \mathbb{E}[Y],
+y \, \Pr(Y \ge y) \le \mathbb{E}[Y],
 $$
 as is to be shown.
 \end{proof}
@@ -144,18 +144,18 @@ If $Z$ has a mean $\mathbb{E}[Z] = \overline Z$
 and a variance, $\sigma_Z^2$, then for any $\epsilon > 0$,
 we have Chebyshev's inequality.
 \begin{equation}
-\operatorname{Pr}\Bigl\{\bigl|Z - \overline Z \bigr|\ge \epsilon\Bigr\} \le \frac{\sigma_Z^2}{\epsilon^2}.
+\Pr\Bigl\{\bigl|Z - \overline Z \bigr|\ge \epsilon\Bigr\} \le \frac{\sigma_Z^2}{\epsilon^2}.
 \label{eq:chebyshev_ineq}
 \end{equation}
 
 This can be shown by using Markov's inequality with $Y = (Z - \overline Z)^2$
 $$
-\operatorname{Pr}(Y \ge \epsilon^2)
+\Pr(Y \ge \epsilon^2)
 \le
 \frac{ \mathbb{E}[Y] } { \epsilon^2 }.
 $$
 Now
-$\operatorname{Pr}(Y \ge \epsilon^2) = \operatorname{Pr}(|Z - \overline Z| \ge \epsilon)$,
+$\Pr(Y \ge \epsilon^2) = \Pr(|Z - \overline Z| \ge \epsilon)$,
 and
 $\mathbb{E}[Y] = \sigma_Z^2$,
 so we get Eq. \eqref{eq:chebyshev_ineq}.
@@ -169,18 +169,18 @@ Similarly for a positive random variable $Z$, and $r > 0$, the average of
 the generating function $g_Z(r) = \mathbb{E}[e^{rZ}]$, if exists, satisfies
 the Chernoff bound
 \begin{equation}
-\operatorname{Pr}(Z \ge z)
+\Pr(Z \ge z)
 \le g_Z(r) \, \exp(-rz).
 \label{eq:chernoff_ineq}
 \end{equation}
 
 Using Markov's inequality for $Y e^{rZ}$ we get
 $$
-\operatorname{Pr}(Y \ge e^{rz})
+\Pr(Y \ge e^{rz})
 \le
 \frac{ \mathbb{E}[Y] } { e^{rz} }.
 $$
-But $\operatorname{Pr}(Y \ge e^{rz}) = \operatorname{Pr}(Z \ge z)$,
+But $\Pr(Y \ge e^{rz}) = \Pr(Z \ge z)$,
 and $\mathbb{E}[Y] = g_Z(r)$, so Eq. \eqref{eq:chernoff_ineq} is proven.
 
 This shows that the distribution tail decays exponentially as $\exp(-rz)$.
@@ -191,7 +191,7 @@ This is what makes this bound useful.
 
 In a similar manner, we can ``prove'' that, for any $r, e \ge 0$,
 $$
-\operatorname{Pr}(Z \ge z)
+\Pr(Z \ge z)
 \le
 \mathbb{E}[rZ^e] \, \exp(-rz^e).
 $$
