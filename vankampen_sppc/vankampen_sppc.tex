@@ -586,6 +586,401 @@ $$
 
 \chapter{The Master Equation}
 
+\section{Derivation}
+
+For a Markov process,
+the master equation is the differential equation
+of the transition probabilities $T_{\tau'}$
+for vanishing time difference $\tau'$.
+%
+In other words,
+it is the zero time limit of
+the Chapman-Kolmogorov equation.
+
+
+In the limit of small $\tau'$,
+the transition probabilities $T_{\tau'}$ can be expanded as
+%
+\begin{equation}
+  T_{\tau'}(y_2 | y_1)
+  =
+  \left[1 - a_0(y_1) \, \tau'\right] \, \delta(y_2 - y_1)
+  +
+  \tau' \, W(y_2 | y_1) + o(\tau'),
+  \label{eq:transproba_smallt}
+\end{equation}
+%
+where $W(y_2 | y_1)$ is the \emph{transition probability per unit time}
+from $y_1$ to $y_2$,
+and hence
+%
+\begin{equation}
+  W(y_2 | y_1) \ge 0.
+  \label{eq:W_positive}
+\end{equation}
+%
+The coefficient $1-a_0\, \tau'$ is the probability that no transition takes place
+during $\tau'$.  So
+%
+\begin{equation}
+  a_0(y)
+  =
+  \int W(y_2 | y_1) \, dy_2.
+  \label{eq:total_W}
+\end{equation}
+%
+This also follows from $T_{\tau'}(y_2 | y_1) \, dy_2 = 1$.
+
+
+
+Now the Chapman-Kolmogorov equation is
+\begin{equation}
+  T_{\tau' + \tau}(y_3 | y_1)
+  =
+  \int T_{\tau'}(y_3 | y_2) \, T_\tau(y_2 | y_1) \, dy_2,
+  \tag{IV.3.2}
+  \label{eq:ChapmanKolmogorov}
+\end{equation}
+which means in this case (expanding $T_{\tau'}$ but not $T_\tau$)
+{\footnotesize
+$$
+\begin{aligned}
+  T_{\tau' + \tau}(y_3 | y_1)
+  &=
+  \int \left[1 - a_0(y) \, \tau'\right] \, \delta(y_3 - y_2) \, T_\tau(y_2 | y_1) \, dy_2
+  +
+  \tau' \int W(y_3|y_2) \, T_\tau(y_2 | y_1) \, dy_2
+  \\
+  &=
+  \left[1 - a_0(y_3) \, \tau'\right] \, T_\tau(y_3 | y_1)
+  +
+  \tau' \int W(y_3 | y_2) \, T_\tau(y_2 | y_1) \, dy_2.
+\end{aligned}
+$$
+}
+Differentiate this equation with respect to $\tau'$,
+set $\tau' \to 0$ and use \eqref{eq:total_W},
+\begin{align}
+\frac{ \partial } { \partial \tau } T_\tau(y_3 | y_1 )
+&=
+-a_0(y_3) \, T_\tau(y_3 | y_1)
++
+\int W(y_3 | y_2) \, T_\tau(y_2 | y_1) \, dy_2
+\notag \\
+&=
+\int
+\left[
+  W(y_3 | y_2) \, T_\tau(y_2 | y_1)
+  -
+  W(y_2 | y_3) \, T_\tau(y_3 | y_1)
+\right] \, dy_2.
+\label{eq:master_equation_T}
+\end{align}
+%
+The differential form of the Chapman-Kolmogorov equation
+is called the \emph{master equation},
+or \emph{M-equation}.
+
+The simplified, more intuitive form is
+%
+\begin{align}
+  \frac{ \partial } { \partial t } P(y, t)
+&=
+\int
+\left[
+  W(y | y') \, P(y', t)
+  -
+  W(y' | y) \, P(y, t)
+\right] \, dy'.
+\label{eq:master_equation_continuous}
+\end{align}
+%
+The equation describes the evolution of
+the transition probability
+from the initial condition $P(y, t_1) = \delta(y - y_1)$.
+%
+The master equation is \emph{not} meant as an equation
+for the single-time distribution $P_1(y, t)$.
+
+\paragraph{Discrete case.}
+
+The discrete case is given by
+%
+\begin{equation}
+\frac{ d p_n(t) } { dt }
+=
+\sum_{n'}
+\left\{
+  W_{n n'} p_{n'}(t)
+  -
+  W_{n' n} p_n(t)
+\right\}.
+\label{eq:master_equation_discrete}
+\end{equation}
+%
+The master equation is a gain-loose equation
+for the probability of discrete state $n$.
+%
+The first term on the right-hand side is the gain;
+the second the loss;
+the $n = n'$ terms do not contribute.
+
+
+The elements $W_{n n'}$ of the transition matrix
+can be, for example, obtained from Fermi's Golden rule:
+$$
+W_{n n'} = \frac{ 2 \, \pi } { \hbar } \, \left| H'_{n n'} \right| \, \rho(E_n).
+$$
+This formula is derived from the perturbation theory
+in quantum mechanics, with
+$\rho(E_n) = \left| \langle \psi | \psi \rangle \right|$.
+
+\paragraph{Example of the decay process.}
+
+The transition probability is
+$$
+T_{\Delta t}(n | n')
+=
+\begin{cases}
+  n' \, \gamma \, \Delta t    & \mathrm{for} \; $n = n' - 1$ \\
+  0   & \mathrm{otherwise.}
+\end{cases}
+$$
+So $W_{n n'} = \gamma \, \delta_{n, n' - 1} n'$, and
+\begin{equation}
+\frac{ d p_n } { dt }
+=
+\gamma \, (n + 1) \, p_{n+1}(t)
+-\gamma \, n \, p_n(t).
+\label{eq:decay_master_equation}
+\end{equation}
+%
+Consider $\langle N(t) \rangle$,
+\begin{align}
+  \sum_n n \dot p_n
+  &=
+  \sum_n \gamma \, (n + 1) \, n \, p_{n+1}(t)
+  -
+  \sum_n \gamma \, n^2 \, p_n(t)
+  \notag \\
+  &=
+  \gamma \,
+  \sum_n
+  \left\{
+    n(n-1) p_n - n^2 p_n
+  \right\}
+  \notag \\
+  &=
+  -\gamma \sum_n n \, p_n,
+  \label{eq:decay_nave_diffeq1}
+\end{align}
+which means
+\begin{equation}
+  \frac{ d } { dt } \langle N(t) \rangle
+  =
+  -\gamma \, \langle N(t) \rangle,
+  \label{eq:decay_nave_diffeq}
+\end{equation}
+%
+and
+\begin{equation}
+  \langle N(t) \rangle
+  =
+  n_0 \, e^{-\gamma \, t}
+  \label{eq:decay_nave_sol}
+\end{equation}
+
+
+
+\begin{exercise}
+  Derive the M-equation for the dichotomic (2-state) Markov process.
+
+  \answer{
+  \begin{align}
+  T_\tau
+  &= \frac{1}{2}(1 + e^{-2\gamma \tau}) \, \delta_{y, y'}
+  +\frac{1}{2}(1 - e^{-2\gamma \tau}) \, \delta_{y, -y'}
+  \tag{IV.2.3}
+  \label{eq:dichotomic_T}
+  \\
+  &\stackrel{\tau \to 0}{=\joinrel=}
+  (1 - \gamma \tau) \, \delta_{y, y'} + \gamma \, \tau \, \delta_{y, -y'},
+  \notag
+  \end{align}
+  which means $W_{y, -y} = \gamma$.
+  The master equation is
+  $$
+  \frac{ d p_y(t) } { dt }
+  = \gamma \, p_{-y}(t) - \gamma \, p_y(t).
+  $$
+  }
+\end{exercise}
+
+
+\begin{exercise}
+  Solve the above equation.
+
+  \answer{
+  $$
+  \frac{ d ( p_y - p_{-y} ) } { dt }
+  = -2 \, \gamma \, (p_y - p_{-y} ).
+  $$
+  which yields
+  $$
+  p_y - p_{-y} = e^{-2 \, \gamma \, t} (p_y - p_{-y})\big|_{t = 0}
+  = e^{-2\, \gamma \, t} (\delta_{y, y_0} - \delta_{y, -y_0}).
+  $$
+  On the other hand, we have
+  $$
+  p_y + p_{-y} = 1 = \delta_{y, y_0} + \delta_{y, -y_0}.
+  $$
+  Averaging the above two equations, we get
+  $$
+  p_y
+  = \frac{1}{2}(1 + e^{-2\gamma \, t}) \, \delta_{y, y'}
+  +\frac{1}{2}(1 - e^{-2\gamma \, t}) \, \delta_{y, -y'}.
+  $$
+  agreeing with \eqref{eq:dichotomic_T}.
+  }
+\end{exercise}
+
+\begin{exercise}
+  Show that the solution of \eqref{eq:decay_master_equation}
+  with $p_n(0) = \delta_{n, n0}$
+  must vanish for $n > n_0$ for $t \ge 0$,
+  so we can truncate the sum at $n = n_0$.
+
+  \answer{
+  For $n > n_0$, the right-hand side of \eqref{eq:decay_master_equation}
+  vanishes at initially, hence $dp_n/dt = 0$.
+  %
+  Integrating the master equation for $\Delta t$ yields $p_n(\Delta t) = 0$.
+  %
+  The process can be continued for $2 \Delta t, 3 \Delta t, \dots$,
+  so $p_n(t) = 0$ for $t > 0$.
+  }
+\end{exercise}
+
+\begin{exercise}
+  Similar to \eqref{eq:decay_nave_diffeq1}, derive
+  $\langle N(t)^2 \rangle$ and
+  $\langle\langle N(t)^2 \rangle\rangle$.
+
+  \answer{
+    Multiplying \eqref{eq:decay_master_equation} by $n^2$
+    and summing over $n$, we get
+    $$
+    \frac{ d } { d t } \langle N(t)^2 \rangle
+    =
+    \gamma \sum_{n} \left( n \, (n-1)^2 \, p_n - n^3 \, p_n \right)
+    =
+    - 2 \, \gamma \langle N(t)^2 \rangle
+    + \gamma \langle N(t) \rangle.
+    $$
+    The solution is
+    $$
+    \langle N(t)^2 \rangle
+    =
+    n_0^2 \, e^{-2\,\gamma \, t}
+    + \gamma \int_0^t \langle N(\tau)\rangle e^{-2\, \gamma \, (t - \tau)} d\tau
+    =
+    n_0^2 \, e^{-2\,\gamma \, t}
+    +
+    n_0 \, \left(e^{-\gamma \, t} - e^{\gamma \, t} \right).
+    $$
+  }
+\end{exercise}
+
+\begin{exercise}
+  Solve the master equation for the Kangaroo process,
+  in which $W(y|y') = u(y) \, v(y')$.
+
+  \answer{
+  The master equation becomes
+  $$
+  \frac{ \partial P } { \partial t }
+  =
+  u(y) \, \int v(y') \, P(y', t) \, dy'
+  -
+  \left[\int u(y') \, dy' \right]
+  v(y) \, P(y, t)
+  =
+  u(y) \, \sigma(t) - \phi(y) \, P(y, t),
+  $$
+  where $\sigma(t) \equiv \int v(y) \, P(y, t) \, dy$
+  and
+  $\phi(y) = v(y) \int u(y') \, dy'$.
+  %
+  The equation can be readily solve for a fixed $y$:
+  \begin{equation}
+  P(y, t)
+  =
+  P(y, 0) \, e^{-\phi(y) \, t}
+  +
+  u(y) \int_0^t \sigma(\tau) \, e^{-\phi(y) \, (t - \tau)} \, d\tau.
+  \label{eq:kangaroo_P}
+  \end{equation}
+  Multiply $v(y)$ and integrate
+  $$
+  \sigma(t) = \int v(y) \, P(y, 0) \, e^{-\phi(y) \, t} dy
+  +
+  \int u(y) \, v(y) \, dy
+  \int_0^t \sigma(\tau) \, e^{-\phi(y) \, (t - \tau) } d\tau.
+  $$
+  Laplace transform this equation for time $t$,
+  $$
+  \mathcal L\sigma
+  =
+  \int \frac{ v(y) \, P(y, 0) \, dy } { s + \phi(y) }
+  +
+  \int u(y) \, v(y) \, dy \frac{ \mathcal L\sigma }{ s + \phi(y) }.
+  $$
+  and the solution is
+  $$
+  \mathcal L\sigma
+  =
+  \left. \int \frac{ v(y) \, P(y, 0) \, dy } { s + \phi(y) }
+  \middle/
+  \left[
+    1 - \int \frac{ u(y) \, v(y) \, dy }{ s + \phi(y) }
+  \right]
+  \right..
+  $$
+  Using this in \eqref{eq:kangaroo_P} yields $P(y, t)$.
+  }
+\end{exercise}
+
+\begin{exercise}
+  Solve the case of $v = v_0$ being a constant.
+
+  \answer{
+  In this case, $\sigma(t) = v_0$,
+  $\phi = v_0 \int u(y') \, dy' = \phi_0$
+  is a constant,
+  and
+  $
+  \int u(y) \sigma(\tau) e^{-\phi(y) (t - \tau)} d\tau
+  = u(y) \, v_0 \, (1 - e^{-\phi_0 \, t}) / \phi_0.
+  $
+  So, \eqref{eq:kangaroo_P} becomes
+  $$
+  P(y, t)
+  =
+  P(y, 0) \, e^{-\phi_0 \, t}
+  +
+  \frac{ u(y) } { \int u(y') \, dy' }
+  \left(
+    1 - e^{-\phi_0 \, t}
+  \right).
+  $$
+  The first term on the right-hand side represents
+  the decay of the initial distribution;
+  the second term represents the growth of the stationary distribution
+  $u(y) / \int u(y') \, dy'$.
+  }
+\end{exercise}
+
+
 
 \chapter{One-step Processes}
 
