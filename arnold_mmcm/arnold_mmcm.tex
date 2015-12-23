@@ -3745,8 +3745,7 @@ and for which the operations (product and inverse)
 are differentiable maps $G\times G \to G$
 and $G \to G$.
 %
-\note{
-The differentiable manifold defining the Lie group
+\note{The differentiable manifold defining the Lie group
 is a manifold of diffeomorphisms
 (i.e., generalized geometric transformations,
 like rotations and translations).
@@ -3759,9 +3758,9 @@ different from the $2n$-dimensional symplectic manifold.
 The tangent space $TG_e$ to a Lie group $G$
 at the identity has a natural Lie algebra structure;
 it is defined as follows:
-\note{
-  The identity element is the identity transformation.
-  So the tangent space consists of
+\note{We may think the identity element as
+  the identity transformation,
+  and the tangent space consists of
   infinitesimal transformations.
 }
 
@@ -3800,8 +3799,7 @@ This algebra is called the \emph{Lie algebra of the Lie group $G$}.
 
   \answer{
     Consider the rotation $A^t$ around the axis $\mathbf a$
-    (a unit vector)
-    by angle theta $t$.
+    (a unit vector) by angle $t$.
     %
     Any vector $\mathbf x$ can be decomposed to
     parallel $\mathbf x_\parallel = \mathbf a \, (\mathbf a \cdot \mathbf x)$
@@ -3834,7 +3832,7 @@ This algebra is called the \emph{Lie algebra of the Lie group $G$}.
     which means
     $A_{ij} = \sum_k \epsilon_{ikj} a_k$.
 
-    We now compute the product
+    For the product
     $P_{s,t}\,\mathbf x = A^tB^sA^{-t}B^{-s}\mathbf x$
     $$
     \begin{aligned}
@@ -3878,8 +3876,8 @@ This algebra is called the \emph{Lie algebra of the Lie group $G$}.
     = \sum_{p, q} (\delta_{jp} \delta_{iq} - \delta_{ip} \delta_{jq}) \, a_p \, b_q
     = \sum_{k, p, q} \epsilon_{ikj} \epsilon_{kpq} a_p \, b_q.
     $$
-    But this quantity is expected to be $\mathbf C_{ij} = \sum_k \epsilon_{ikj} c_k$,
-    so
+    If this quantity is $\mathbf C_{ij} = \sum_k \epsilon_{ikj} c_k$,
+    then
     $c_k = \epsilon_{kpq} a_p \, b_q$,
     or in vector form $\mathbf c = \mathbf a \times \mathbf b$.
   }
@@ -3908,8 +3906,7 @@ $R_g: G \to G, R_g h = h g$.
 The differential of $R_g$ at the point $e$
 maps $TG_e$ into $TG_g$.
 %
-\note{
-  Using $A^t$ for $h$,
+\note{Using $A^t$ for $h$,
   $R_g \, A^t = A^t \, g$.
   As $t \to 0$,
   we map an infinitesimal transformation $A^t = 1 + t \mathbf A$
@@ -3935,6 +3932,25 @@ at the identity.
   and its value at the identity of the group is equal to
   the Lie bracket of the values of the original vector fields
   at the identity.
+
+  \answer{(Not sure.)
+    The Poisson bracket of two right vector fields may be defined as
+    $$
+    [\pmb\xi, \pmb\eta]_g = \pmb\xi \, g^{-1} \pmb\eta - \pmb\eta \, g^{-1} \pmb\xi.
+    $$
+    Then, for $\pmb\xi = (R_g)_*\mathbf A = \mathbf A g$,
+    and $\pmb\eta = (R_g)_*\mathbf B = \mathbf B g$, we have
+    $$
+    [(R_g)_*\mathbf A, (R_g)_*\mathbf B]
+    = \mathbf A \, g \, g^{-1} \mathbf B \, g
+    - \mathbf B \, g \, g^{-1} \mathbf A \, g
+    = (\mathbf A \mathbf B - \mathbf B \, \mathbf A) \, g
+    = (R_g)_* [\mathbf A, \mathbf B]_e,
+    $$
+    which is a right-invariant vector field of $[\mathbf A, \mathbf B]_e$.
+    %
+    The value at $g = e$ is simply $[\mathbf A, \mathbf B]_e$.
+  }
 \end{prob*}
 
 \summary{

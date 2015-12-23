@@ -7,6 +7,7 @@
 \usepackage{bm}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{tikz}
+\usetikzlibrary{patterns}
 \usepackage{hyperref}
 
 \hypersetup{
@@ -37,8 +38,26 @@
 \theoremstyle{remark}
 \newtheorem{rem}{Remark}
 
+\makeatletter
+\newtheoremstyle{BoldStyle}
+  {6pt}% space before
+  {6pt}% space after
+  {%\addtolength{\@totalleftmargin}{3.5em}
+   %\addtolength{\linewidth}{-3.5em}
+   %\parshape 1 3.5em \linewidth
+  }% body font
+  {}% indent
+  {\bf }% header font
+  {.}% punctuation
+  {.3em}% after theorem header
+  {}% header specification (empty for default)
+\makeatother
+
+\theoremstyle{BoldStyle}
+
 \newtheorem{exercise}{Exercise}
 \newtheorem*{exercise*}{Exercise}
+\numberwithin{exercise}{section}
 
 \definecolor{DarkBlue}{RGB}{0,0,64}
 \definecolor{DarkBrown}{RGB}{64,20,10}
@@ -127,13 +146,12 @@ References\cite{kolmogorov}.
   This is called the \emph{probability measure}.
 \end{enumerate}
 
-\subsection*{Exercises}
-
-\paragraph{Rencontre problem (Matching problem).}
-
+\begin{exercise*}
+{\bf Rencontre problem (Matching problem).}
+%
 What's the probability that an arbitrary permutation
 of $n$ objects leaves no object in its place?
-
+%
 Using the hint, we have
 $$
 n \, p(n) - (n-1) \, p(n-1) = p(n-2).
@@ -152,7 +170,7 @@ $$
 p(n) = \sum_{i = 0}^n \frac{ (-)^{k} } { k! } \rightarrow e^{-1}.
 $$
 
-
+\end{exercise*}
 
 
 \section{Averages}
@@ -187,9 +205,9 @@ P(x) = \frac{1}{\pi} \frac{\gamma}{ (x-a)^2 + \gamma^2 },
 \qquad (-\infty < x < \infty).
 \end{equation}
 
-\subsection*{Exercises}
 
-1. For the \emph{square distribution},
+\begin{exercise}
+For the \emph{square distribution},
 \begin{equation}
 P(x) =
 \begin{cases}
@@ -205,9 +223,10 @@ $$
 =
 \frac{ a^{2n} }{ 2n + 1 }.
 $$
+\end{exercise}
 
-
-2. For the \emph{Gauss distribution},
+\begin{exercise}
+For the \emph{Gauss distribution},
 \begin{equation}
   P(x) = (2 \pi)^{-\frac 1 2} e^{-\frac{1}{2} x^2}.
 \end{equation}
@@ -218,8 +237,10 @@ $$
   \mu_{2n}  &= (2n-1)!!.
 \end{aligned}
 $$
+\end{exercise}
 
-3. Find a distribution whose moments $\mu_n$ exists up to but not beyond a prescribed $n$.
+\begin{exercise}
+Find a distribution whose moments $\mu_n$ exists up to but not beyond a prescribed $n$.
 
 The answer is
 $$
@@ -243,8 +264,10 @@ $$
   \frac{n!!}{(n-1)!! }\frac{1}{2}, & n \mathrm{\; is \; odd}
 \end{cases}
 $$
+\end{exercise}
 
-4. From
+\begin{exercise}
+From
 $$
 f = \langle
 |\lambda_0 + \lambda_1 \, X + \cdots + \lambda_n \, X^n|^2 \rangle \ge 0,
@@ -277,16 +300,20 @@ $$
   \end{array}
 \right| \ge 0
 $$
+\end{exercise}
 
 
-5. Eq. \eqref{eq:Px_nonneg} can be replaced with the condition
+\begin{exercise}
+Eq. \eqref{eq:Px_nonneg} can be replaced with the condition
 $$
 \int f(x) P(x) \, dx \ge 0,
 $$
 for any continuous $f(x)$.
+\end{exercise}
 
 
-6. Show that for $n = 1, 2, 3, \dots$,
+\begin{exercise}
+Show that for $n = 1, 2, 3, \dots$,
 $$
 P(x) = n \frac{e^{-x}}{x} I_n(x),
 $$
@@ -301,6 +328,8 @@ And
 $$
 I_n(x) = \sum_{r = 0}^\infty \frac{1}{r! (r + n)!} \left(\frac x 2\right)^{n+2r}.
 $$
+\end{exercise}
+
 
 
 \subsection*{Characteristic function}
@@ -981,6 +1010,342 @@ and
 \end{exercise}
 
 
+% section 2
+\section{Class of $\mathbb W$-matrices}
+
+Define a matrix
+\begin{equation}
+  \mathbb W_{nn'} = W_{nn'} - \delta_{nn'} \left( \sum_{n''} W_{n'' n} \right).
+  \label{eq:Wmatrix_discrete}
+\end{equation}
+%
+where the second term gives the total probability loss
+on the diagonals.
+%
+Then \eqref{eq:master_equation_discrete}
+can be rewritten as
+%
+\begin{equation}
+  \dot p_n(t) = \sum_{n'} \mathbb W_{nn'} p_n'(t).
+  \label{eq:master_equation_discrete_Wmatrix}
+\end{equation}
+%
+Or, in matrix form
+%
+\begin{equation}
+  \dot p(t) = \mathbb W \, p(t).
+  \label{eq:master_equation_discrete_Wmatrix_mat}
+\end{equation}
+
+
+Formally the solution is
+%
+\begin{equation}
+  \dot p(t) = e^{t \, \mathbb W} p(0).
+  \label{eq:pvec_solution}
+\end{equation}
+%
+If detailed balance is satisfied, then $\mathbb W$ is symmetric with respect to
+the stationary distribution $p^*$:
+$$
+\mathbb W_{n n'} p^*_{n'} = \mathbb W_{n' n} p^*_{n}.
+$$
+Then, a complete set of eigenvectors exists,
+and \eqref{eq:master_equation_discrete_Wmatrix_mat}
+can be solved by a superposition of eigensolutions.
+%
+For a general $\mathbb W$, this may not work.
+
+
+The $\mathbb W$ matrix has two properties
+\begin{equation}
+  \begin{aligned}
+    \mathbb W_{n n'} &\ge 0,   & \mathrm{for \;} n \ne n'; \\
+    \sum_{n} \mathbb W_{n n'} &= 0 & \mathrm{for \; each \;} n
+  \end{aligned}
+  \label{eq:Wmatrix_properties}
+\end{equation}
+%
+The first property follows from the non-negativity of transition probabilities;
+%
+the second from the balance of probabilities.
+%
+We say that a matrix satisfying these properties is a $\mathbb W$ matrix.
+
+The second property of \eqref{eq:Wmatrix_properties}
+means that $\mathbb W$ has a left eigenvector $\psi = (1, 1, \dots)$
+with eigenvalue $0$.
+%
+Thus, there is at least one right eigenvector $\phi$ with the same eigenvalue.
+$$
+\mathbb W \, \phi = 0.
+$$
+If the components of $\phi$ are non-negative,
+then $\phi$ represents the stationary distribution.
+
+\note{
+  If a matrix $\mathbf A$ has a left eigenvector $\psi$
+  with eigenvalue $\lambda$,
+  then the matrix has a right eigenvector $\phi$
+  with the same eigenvalue.
+
+  For a matrix $\mathbf A$, a right eigenvector $\phi$ satisfies
+  \begin{equation}
+  \left\{
+    \begin{array}{ccc}
+    \sum_i A_{1i} \, \phi_i = \lambda \, \phi_1 \\
+    \vdots  \\
+    \sum_i A_{ni} \, \phi_i = \lambda \, \phi_n
+  \end{array}
+  \right.
+  \tag{a}
+  \label{eq:right_eigenvector}
+  \end{equation}
+  This is a set of homogeneous equations.
+  So the number of independent variables is $n - 1$,
+  e.g., $\left(\phi_1/\phi_n, \dots, \phi_{n-1}/\phi_n\right)$.
+  However, there are $n$ equations,
+  and a solution is not guaranteed.
+
+  If the matrix has a left vector $\psi$, such that
+  $\psi \, \mathbb A = \lambda \, \psi$,
+  we have
+  $\psi \, \mathbb A \, \phi = \lambda \, \psi \, \phi$,
+  and
+  \begin{equation}
+    \psi_1 \, \sum_i A_{1i} \, \phi_i
+    + \dots +
+    \psi_n \sum_i A_{ni} \, \phi_i
+    = \lambda \, \psi_1 \, \phi_1
+    + \lambda \, \psi_n \, \phi_n.
+  \tag{b}
+  \label{eq:left_right_eigenvectors}
+  \end{equation}
+  This means if the first $n-1$ equations of \eqref{eq:right_eigenvector}
+  are satisfied, then the last equation is automatically satisfied
+  by equation \eqref{eq:left_right_eigenvectors}.
+}
+
+
+$\mathbb W$ is \emph{completely reducible} or \emph{decomposable}
+if by a suitable simultaneous permutation of rows and columns,
+it can be cast into th form
+%
+\begin{equation}
+  \mathbb W
+  =
+  \left(
+  \begin{array}{ccc}
+    \mathbb A   &     0     \\
+    0           & \mathbb B
+  \end{array}
+  \right)
+  \label{eq:W_decomposable}
+\end{equation}
+%
+here $\mathbb A$ and $\mathbb B$ are also $\mathbb W$ matrices,
+and they represent two macro states with no transitions in between.
+%
+If the eigenvectors with zero eigenvalues are $\phi^A$ and $\phi^B$,
+we have two linearly independent eigenvectors
+%
+\begin{equation*}
+  \left(
+    \begin{array}{ccc}
+      \mathbb A   &     0 \\
+      0           & \mathbb B
+    \end{array}
+  \right)
+  \left(
+    \begin{array}{ccc}
+      \phi^A \\
+      0
+    \end{array}
+  \right)
+  = 0,
+  \qquad
+  \left(
+    \begin{array}{ccc}
+      \mathbb A   &     0 \\
+      0           & \mathbb B
+    \end{array}
+  \right)
+  \left(
+    \begin{array}{ccc}
+      0 \\
+      \phi^B
+    \end{array}
+  \right)
+  = 0.
+\end{equation*}
+%
+This means two non-interacting systems.
+%
+
+
+\paragraph*{Example.}
+
+A nontrivial example is a system in which transitions conserve energy.
+Each energy shell $E$ has its own M-equation,
+with stationary distribution $\phi^E$.
+The stationary distribution is an arbitrary linear combination.
+$$
+\phi = \sum_E \pi_E \, \phi^E,
+$$
+as long as $\pi_E \ge 0$ and $\sum_E \pi_E = 1$.
+The Boltzmann distribution $\pi_E \propto \exp(-\beta \, E)$
+is an example, but the only one.
+
+
+A matrix is (\emph{incompletely}) \emph{reducible}
+if it can be cast in the form
+\begin{equation}
+  \mathbb W
+  =
+  \left(
+  \begin{array}{ccc}
+    \mathbb A   & \mathbb D     \\
+    0           & \mathbb B
+  \end{array}
+  \right)
+  \label{eq:W_reducible}
+\end{equation}
+%
+where $\mathbb A$ and $\mathbb B$ are square,
+but $\mathbb D$ doesn't have to be.
+%
+The matrix still has an eigenvector
+$\left(\begin{array}{ccc} \phi^A \\ 0 \end{array}\right)$
+and
+\begin{equation}
+  \begin{aligned}
+    \dot p_a &= \sum_{a'} \mathbb A_{a a'} p_{a'}
+              + \sum_{b'} \mathbb D_{a b'} p_{b'} \\
+    \dot p_b &= \sum_{b'} \mathbb B_{b b'} p_{b'}
+  \end{aligned}
+\end{equation}
+%
+Summing over $b$
+$$
+\frac{d}{dt} \sum_b p_b = \sum_{b'} \left( \sum_{b} \mathbb B_{b b'} \right) p_{b'}
+=
+-\sum_{b'} \left( \sum_{a} \mathbb D_{ab'} \right) p_{b'},
+$$
+which shows the states $b$ lose probability to states $a$.
+%
+The stationary distribution is reached only after states $b$
+are depleted.
+%
+States $b$ are called \emph{transient}.
+%
+States $a$ are called \emph{absorbing}.
+
+
+A $\mathbb W$ is \emph{splitting} if it can be cast into the form
+%
+\begin{equation}
+  \mathbb W
+  =
+  \left(
+  \begin{array}{ccc}
+    \mathbb A   & 0         & \mathbb D     \\
+    0           & \mathbb B & \mathbb E     \\
+    0           & 0         & \mathbb C
+  \end{array}
+  \right),
+  \label{eq:W_splitting}
+\end{equation}
+%
+where $\mathbb A$, $\mathbb B$, and $\mathbb C$
+are square $\mathbb W$ matrices,
+and $\mathbb D$ and $\mathbb E$ are not completely zero.
+%
+The states $c$ are transient and deplete into $a$ and $b$.
+%
+There are at least two independent eigenvectors with eigenvalue zero
+$$
+  \left(
+  \begin{array}{lll}
+    \phi^A  \\
+    0       \\
+    0
+  \end{array}
+  \right)
+  \quad
+  \mathrm{and}
+  \quad
+  \left(
+  \begin{array}{lll}
+    0       \\
+    \phi^B  \\
+    0
+  \end{array}
+  \right)
+$$
+
+
+\begin{exercise}
+  Evaluate \eqref{eq:pvec_solution}
+  directly for $2 \times 2$ matrices.
+
+  $$
+    \left\{
+      \begin{array}{llll}
+        \mathbb W \phi_1 = 0 \\
+        \mathbb W \phi_2 = \lambda_2 \phi_2
+      \end{array}
+    \right.
+    \qquad
+    \to
+    \qquad
+    \left\{
+      \begin{array}{llll}
+        e^{t \, \mathbb W} \phi_1 = \phi_1 \\
+        e^{\mathbb W} \phi_2 = e^{t \, \lambda_2} \phi_2
+      \end{array}
+    \right.
+  $$
+  If $p(0) = c_1 \, \phi_1 + c_2 \, \phi_2$, then $c_1$ has to be one,
+  and $p(t) = \phi_1 + e^{t \, \lambda_2} c_2 \, \phi_2$.
+
+  Particularly, for the dichotomic process,
+  $\mathbb W = \gamma \left(
+    \begin{array}{llll}
+        -1 & 1 \\
+        1 & -1
+    \end{array}\right)$,
+  $\lambda_2 = -2 \, \gamma$,
+  $\phi_2 = \left(
+    \begin{array}{llll}
+        \frac 1 2 \\
+        -\frac 1 2
+    \end{array}\right)$,
+    and
+    $p(t) =
+    \left(\begin{array}{llll}
+        \frac 1 2 \\
+        -\frac 1 2
+    \end{array}\right)
+    \pm e^{-2\gamma t}
+    \left(\begin{array}{llll}
+        \frac 1 2 \\
+        -\frac 1 2
+    \end{array}\right)
+    $.
+\end{exercise}
+
+\begin{exercise}
+  Show that no stationary distribution for the infinite random walk
+  $\dot p_n = p_{n+1} + p_{n-1} - 2 \, p_n$.
+
+  For the stationary distribution $\dot p_n = 0$,
+  and $p_{n+1} - p_{n} = p_n - p_{n-1} = a$.
+  So $p_n = p_0 + n \, a$,
+  and $a$ must be $0$ to ensure $p_n \ge 0 $
+  for both $n \ge 0$ and $n \le 0$, then $p_0 = 1/\infty = 0$.
+\end{exercise}
+
+
 
 \chapter{One-step Processes}
 
@@ -988,17 +1353,467 @@ and
 \chapter{Chemical reactions}
 
 
+% chapter VIII
 \chapter{The Fokker-Planck Equation}
 
+% section 1
 \section{Introduction}
 
+The Fokker-Planck equation is a master equation with
+the $\mathbb W$ matrix being a 2nd-order differential operator:
+%
 \begin{equation}
   \frac{ \partial P(y, t) }  { \partial t }
 =
 -\frac{\partial } {\partial y} A(y) P
 +\frac{1}{2} \frac{ \partial^2 } { \partial y^2 } B(y) P.
-\tag{1.1}
+\label{eq:FokkerPlanck}
 \end{equation}
+Here the only condition is $B(y) > 0$.
+Compare this to the master equation
+\begin{equation}
+\frac{ \partial P(y, t) } { \partial t }
+=
+\int \mathbb W(y, y') \, P(y', t) \, dt.
+\tag{\ref{eq:FokkerPlanck}a}
+\label{eq:master_W}
+\end{equation}
+
+
+
+We can break down Eq. \eqref{eq:FokkerPlanck}
+to a pair of equations.
+%
+The first is a continuity equation
+%
+\begin{equation}
+\frac{ \partial P(y, t) } { \partial t }
+=
+-\frac{ \partial J(y, t) } { \partial y },
+\label{eq:FP_continuity}
+\end{equation}
+%
+where $J(y, t)$ is the probability flux (see Figure \ref{fig:FP_continuity}),
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \draw [thick]
+          (0, 0) -- (5, 0)
+          (0, 1) -- (5, 1);
+    \draw [fill, pattern=north west lines,pattern color=black!84]
+        (1, 0) -- (3, 0) -- (3, 1) -- (1, 1) -- cycle;
+
+    \draw[very thick, ->] (1, 0.5) -- (1.5, 0.5);
+    \draw[very thick, ->] (3, 0.5) -- (3.7, 0.5);
+
+    \node[] at (1, -0.3) {$y$};
+    \node[] at (3, -0.3) {$y + \Delta y$};
+    \node[fill=white, inner sep=0.2mm] at (2.2, 0.5) {$J(y, t)$};
+    \node[fill=white, inner sep=0.2mm] at (4.8, 0.5) {$J(y + \Delta y, t)$};
+  \end{tikzpicture}
+  \label{fig:FP_continuity}
+  \caption{
+    Continuity equation, \eqref{eq:FP_continuity}.
+    $\frac{ \partial } { \partial t } \left( P \, \Delta y \right) = -J(y+ \Delta y, t) + J(y, t).$
+  }
+\end{figure}
+%
+The second is a ``constitutive equation''
+%
+\begin{equation}
+J(y, t)
+=
+A(y) \, P(y, t)
+-
+\frac{1}{2}
+\frac{ \partial }{ \partial y }
+\left[
+  B(y) \, P(y, t)
+\right].
+\label{eq:FP_constitutive}
+\end{equation}
+%
+
+\note{Equation \eqref{eq:FokkerPlanck},
+like the master equation,
+is an equation for the transition probability
+$P(y, t|y_1, t_1)$ for $t > t_1$.
+%
+This implies a constraint that at $t = t_1$,
+$P(y, t|y_1, t_1) = \delta(y - y_1)$.
+%
+However, the equation is linear,
+and therefore, we can use linear combination
+to interpret $P(y, t)$
+as the one-time probability
+$P_1(y, t) \equiv \int P(y, t|y_1, t_1) \, P_1(y_1, t_1) \, dy_1$.
+}
+
+The stationary distribution is
+%
+\begin{equation}
+  P^e(y)
+  =
+  \frac{ \mathrm{const.} } { B(y) }
+  \exp\left[
+    2 \int_0^y
+      \frac{ A(y') } { B(y') } \, dy'
+  \right]
+  \label{eq:FP_stationary}
+\end{equation}
+%
+provided that this distribution can be normalized.
+
+
+If $A(y)$ is linear and $B(y)$ is constant,
+then we can the Fokker-Planck equation is \emph{linear}:
+%
+\begin{equation}
+  \frac{ \partial P } { \partial t }
+  =
+  \frac{ \partial } { \partial y }
+  \left[
+    (A_0 + A_1 y) \, P
+  \right]
+  +
+  \frac{1}{2} B_0
+  \frac{ \partial^2 P } { \partial y^2 }.
+  \label{eq:FP_linear}
+\end{equation}
+%
+If $A_1 < 0$,
+a stationary solution exists,
+and it is a Gaussian.
+%
+In fact,
+we can turn it to the standard Ornstein-Uhlenbeck process,
+%
+\begin{equation}
+  \frac{ \partial T }{ \partial \tau }
+  =
+  \frac{ \partial } { \partial y_2 }
+  ( y_2 \, T )
+  +
+  \frac{ \partial^2 } { \partial y_2^2 } T,
+  \tag{IV.3.20}
+\end{equation}
+%
+by the following scaling
+$\tau = -A_1 \, t$,
+$y_2 = \sqrt{-2 \, A_1/B_0} \left(y + A_0/A_1\right)$,
+and
+$T = P \, (dy/dy_2) = P / \sqrt{-2 \, A_1/B_0}$.
+%
+So,
+\emph{
+  the stationary Markov process determined by
+  the linear Fokker-Planck equation
+  is the Ornstein-Uhlenbeck process.
+}
+
+\begin{exercise}
+  Let $P(y, t|y_0, t_0)$ be solution of \eqref{eq:FokkerPlanck}.
+  Take $t = t_0 + \Delta t$ and compute for small $\Delta t$
+  the moments of $y - y_0 \equiv \Delta y$.
+  %
+  Show that for $\Delta t \to 0$
+  \begin{equation}
+    \frac{ \Delta y } { \Delta t }
+    =
+    A( y_0 ),
+    \qquad
+    \frac{ (\Delta y)^2 } { \Delta t }
+    =
+    B( y_0 ),
+    \qquad
+    \frac{ (\Delta y)^\nu } { \Delta t }
+    =
+    0 \quad (\nu \ge 3).
+    \label{eq:FP_increments}
+  \end{equation}
+
+  \note{For a given model,
+    \eqref{eq:FP_increments}
+    serve as the standard recipe of determining
+    the parameters $A(y)$ and $B(y)$
+    in the Fokker-Planck equation.
+  }
+
+  \answer{
+    Multiply \eqref{eq:FokkerPlanck}
+    by $\Delta y^\nu$ and integrate over $y$,
+    $$
+    \frac{ \partial } { \partial t } \langle \Delta y^\nu \rangle
+    =
+    \nu \, \left\langle A(y) \Delta y^{\nu - 1} \right\rangle
+    +
+    \frac{1}{2} \nu \, (\nu - 1)
+    \left\langle B(y) \, \Delta y^{\nu - 2} \right\rangle.
+    $$
+    %
+    With $\nu = 1$, we get
+    $$
+    \frac{ \partial } { \partial t } \langle \Delta y \rangle
+    =
+    \langle A(y) \rangle
+    \approx
+    \langle A(y_0) \rangle,
+    $$
+    which is the first equation of \eqref{eq:FP_increments}.
+    %
+    Similarly, with $\nu = 2$ and $\nu \ge 3$,
+    we get the second and third.
+  }
+\end{exercise}
+
+
+
+\begin{exercise}
+  Find the singular kernel $\mathbb W(y|y')$
+  corresponding to the differential operator in \eqref{eq:FokkerPlanck}.
+  %
+  Calculate the jump moments (V.8.2)
+  and compare the result with \eqref{eq:FP_increments}.
+  [Compare (V.10.5)]
+
+
+  \answer{
+    The kernel is
+    \begin{align}
+        \mathbb W(y|y')
+        &=
+          -A(y') \, \delta'(y - y')
+          +
+          \frac 1 2
+          B(y')
+          \delta''(y - y')
+        \tag{V.10.5} \\
+        &=
+        \left(
+          -A(y') \frac{\partial }{\partial y }
+          +
+          \frac 1 2
+          B(y')
+          \frac{ \partial^2 } { \partial y^2 }
+        \right)
+        \delta(y - y')
+        \tag{\ref{eq:FokkerPlanck}b}
+        \label{eq:FP_Wkernel}
+    \end{align}
+    To verify this,
+    we use this expression in \eqref{eq:master_W},
+    yielding
+    $$
+    \frac{ \partial P } { \partial t }
+    =
+    -\frac{\partial }{\partial y }
+    \int
+      A(y')
+    \delta(y - y') P(y') \, dy'
+    +
+    \frac 1 2
+    \frac{\partial^2 }{\partial y^2 }
+    \int
+      B(y')
+    \delta(y - y') P(y') \, dy',
+    $$
+    which yields \eqref{eq:FokkerPlanck}.
+
+    For the jump moments, we have
+    $$
+    \begin{aligned}
+    a_\nu(y')
+    =
+    \int (y - y')^\nu \, \mathbb W(y|y') \, dy
+    =
+    \int (y - y')^\nu \,
+    \left(
+      A(y') \frac{\partial }{\partial y' }
+      +
+      \frac 1 2
+      B(y')
+      \frac{ \partial^2 } { \partial y'^2 }
+    \right)
+    \delta(y - y')
+    \, dy\\
+    =
+    -
+    \int
+      \frac{\partial }{\partial y' }
+      \left[ (y - y')^\nu \, A(y') \right]
+      \delta(y - y') \, dy
+    +
+      \frac 1 2
+    \int
+      \frac{ \partial^2 } { \partial y'^2 }
+      \left[ (y - y')^\nu \, B(y') \right]
+      \delta(y - y') \, dy
+    .
+    \end{aligned}
+    $$
+    Thus,
+    $$
+    a_1(y') = A(y') - B'(y'),
+    \qquad
+    a_2(y') = B(y').
+    $$
+
+    Now the expression of $a_1(y')$ contains
+    an extra term $-B'(y')$,
+    which is missing in the expression of \eqref{eq:FP_increments}.
+    %
+    Even if we average $a_1(y')$ over the distribution
+    $P(y') = \delta(y' - y_0)$,
+    this term would still survive.
+    %
+    So what went wrong?
+    %
+    It turns out that the expression $a_1(y')$ should really be an \emph{operator}
+    instead of a number, because of the singularity of kernel $\mathbb W$.
+    %
+    More precisely, the $\delta''(y - y')$ in $\mathbb W$
+    is defined in terms of the action on another function upon integration.
+    %
+    To show this, consider $I_1 = \int a_1(y') \, P(y') \, dy'$, and
+    %
+    $$
+    \begin{aligned}
+    I_1
+    &=
+    \int_{y'} d y' \int_y dy \, (y - y') \, \mathbb W(y|y')
+    \\
+    &=
+    -
+    \int_{y'} dy'
+    \int_y
+      \frac{\partial }{\partial y' }
+      \left[ P(y') \, (y - y') \, A(y') \right]
+      \delta(y - y') \, dy
+    \\
+    &\hphantom{=}
+    +
+      \frac 1 2
+    \int_{y'} dy'
+    \int_y
+      \frac{ \partial^2 } { \partial y'^2 }
+      \left[ P(y') \, (y - y') \, B(y') \right]
+      \delta(y - y') \, dy
+    \\
+    &=
+    \int_{y'} dy'
+      P(y') \, A(y')
+    -
+    \int_{y'} dy'
+      \frac{ \partial } { \partial y' }
+      \left[ B(y') \, P(y') \right].
+    \end{aligned}
+    $$
+    This means that $a_1(y')$ takes the operator form
+    $$
+    a_1(y') \equiv A(y') - \frac{d}{d y'} \left\{ B(y'), \bullet \right\},
+    $$
+    for which the second term always vanishes
+    after integrating over another function.
+  }
+\end{exercise}
+
+\begin{exercise}
+  Solve \eqref{eq:FokkerPlanck} for $B(y) = 2, A(y) = -y + 1/y, y > 0$.
+  Also for $B = \mathrm{constant} \ne 2$.
+
+  \answer{We change variable to $z = y^2/2$,
+    then $Q(z) = P(y) dy/dz = P(y)/y$, and \eqref{eq:FokkerPlanck}
+    becomes
+    $\frac{ \partial Q } { \partial t}
+    = \frac{ \partial } { \partial z }
+    \left[ 2 z \left(1 + \frac{ \partial } { \partial z } \right) Q \right].$
+    Now consider the characteristic function
+    $g = \langle e^{-sz} \rangle = \int_0^\infty Q \, e^{-sz} \, dz$,
+    it satisfies
+    $$
+    \frac{ \partial g }{ \partial t } = -2sg -2s(1+s) \frac{ \partial g }{ \partial s}.
+    $$
+    This equation can be solved by the method of characteristics.
+    $$
+    \frac{dt}{1} = \frac{ds}{2s(1+s)}  = \frac{-d\log g} { 2s }.
+    $$
+    We get two constants
+    $$
+    e^{2t} \frac{s + 1}{s} = C_1,
+    \qquad
+    (1+s) \, g = C_2 = G(C_1),
+    $$
+    where $G(\dots)$ is some function to be determined by the initial condition.
+    Particularly, if at $t = t_0$, $Q = \delta(z - z_0)$, or $g = e^{-s z_0}$,
+    then $(1+s)\, e^{-sz_0} = G\left(\frac{1+s}{s}\right)$, and
+    $G(\sigma) = \frac{\sigma}{\sigma-1} \exp\left(\frac{-z_0}{\sigma - 1}\right)$.
+    So
+    $$
+    g(s, t) = \frac{\exp\left( - \frac{ s \, z_0 } { e^t(s+1) - 1} \right) }
+    {s + 1 - s e^{-2t}}.
+    $$
+    In the case of $z_0 = 0$, we get $g(s, t) = \frac{1}{s(1-e^{-2t}) + 1}$,
+    and
+    $$Q(z) = \exp\left(-\frac{z^2}{1-e^{-2t}}\right)\frac{1}{1 - e^{-2t}}.$$
+
+    The case of $B(y) \ne 2$ is similar,
+    $$
+    \frac{ \partial Q } { \partial t}
+    = \frac{ \partial } { \partial z }
+    \left[ \left(2 z - 1 + \frac B 2 \right) Q
+    + B z \frac{ \partial Q } { \partial z } \right].
+    $$
+    and for the generating function
+    $$
+      \frac{ \partial g }{ \partial t } = -s\left(1+ \frac B 2 \right) \, g
+      -s \, (2+Bs) \frac{ \partial g }{ \partial s}.
+    $$
+    Then the method of characteristics yields
+    $$
+    e^{2t} \frac{Bs + 2}{Bs} = C_1,
+    \qquad
+    \left(1+\frac{sB}{2}\right)^{\frac{1}{2} + \frac{1}{B}} \, g = C_2 = G(C_1),
+    $$
+    So
+    $G(\sigma) = \left( \frac{\sigma}{\sigma-1} \right)^{\frac{1}{B} + \frac{1}{2}}
+    \exp\left(-\frac{2}{B}\frac{z_0}{\sigma - 1}\right)$, and
+    $$
+    g(s, t) = \exp\left( - \frac{ 2 \, s \, z_0 } { e^t(Bs+2) - Bs} \right)
+    \left[1 + \frac{Bs}{2}\left(1 - e^{-2t}\right) \right]^{-\frac{1}{2} -\frac{1}{B}}.
+    $$
+    In the case of $z_0 = 0$, we get $g(s, t) = (b \, s + 1)^{-\frac{1}{2} -\frac{1}{B}}$,
+    with $b = \frac{B}{2}(1 - e^{-2t})$,
+    and we get a gamma distribution:
+    $$
+    Q(z) =
+    \frac{1}{b \, \Gamma\left(\frac{1}{B}+\frac{1}{2}\right)}
+    \left(\frac z b\right)^{\frac 1 B- \frac 1 2}
+    \exp\left( - \frac z b \right).
+    $$
+  }
+\end{exercise}
+
+\begin{exercise}
+  Give the explicit solution of \eqref{eq:FP_linear}.
+
+  \answer{If we assume that the solution is Gaussian,
+    we only need to determine the mean and variance.
+    $\frac{ \partial \langle y \rangle } { \partial t}
+    = A_0 + A_1 \langle y \rangle$,
+    $\frac{ \partial \langle y^2 \rangle } { \partial t}
+    = 2 \, A_0 \langle y \rangle + 2 \, A_1 \langle y^2 \rangle + B_0$,
+    and
+    $\frac{ \partial \langle \Delta y^2 \rangle } { \partial t}
+    = 2 \, A_1 \langle \Delta y^2 \rangle + B_0$.
+    This means
+    $$
+    \langle y \rangle = \left(y_0 + \frac{A_0}{A_1} \right) \, e^{A_1 t} - \frac{A_0}{A_1},
+    \quad
+    \langle \Delta y^2 \rangle = -\frac{B_0}{2 A_1} (1 - e^{2A_1 t}).
+    $$
+  }
+\end{exercise}
+
 
 
 \begin{equation}
@@ -1055,10 +1870,9 @@ The linear multivariate Fokker-Planck equation is
 
 \section{Kramers' equation}
 
-[
-  This equation converts the position $X$ Fokkar-Planck equation
-  to the position-velocity $X$-$V$ Fokkar-Planck equation.
-]
+\note{This equation converts the position $X$ Fokker-Planck equation
+  to the position-velocity $X$-$V$ Fokker-Planck equation.
+}
 
 \chapter{The Langevin Approach}
 
