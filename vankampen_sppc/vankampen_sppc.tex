@@ -1718,6 +1718,38 @@ So,
 \end{exercise}
 
 \begin{exercise}
+  Show that the differential operator in \eqref{eq:FokkerPlanck}
+  has the properties of a $\mathbb W$-matrix:
+  it conserves probability and positivity.
+  %
+  Also, when $B(y) > 0$ it is irreducible and all solutions
+  tend to the stationary solution \eqref{eq:FP_stationary}
+  (provided that it is normalizable).
+
+  \answer{
+    The differential operator conserves the probability:
+    $$
+    \int \mathbb W(y|y') \, dy
+    =
+    \int \left(
+      -A(y') \frac{\partial }{\partial y }
+      +
+      \frac 1 2
+      B(y')
+      \frac{ \partial^2 } { \partial y^2 }
+    \right)
+    \delta(y - y') \, dy = 0.
+    $$
+    How to show the positivity?
+  }
+\end{exercise}
+
+\begin{exercise}
+  Show that any linear second order differential operator
+  with these properties must have the form \eqref{eq:FokkerPlanck}.
+\end{exercise}
+
+\begin{exercise}
   Solve \eqref{eq:FokkerPlanck} for $B(y) = 2, A(y) = -y + 1/y, y > 0$.
   Also for $B = \mathrm{constant} \ne 2$.
 
@@ -1815,17 +1847,288 @@ So,
 \end{exercise}
 
 
-
+Phenomenological way of determining $A(y)$
 \begin{equation}
 \partial_t \langle y \rangle
-= \langle A(y) \rangle.
-\tag{1.7}
+= \langle A(y) \rangle,
 \end{equation}
-
+or if we neglect fluctuation
 $$
 \partial_t \langle y \rangle
 = A(\langle y \rangle).
 $$
+
+
+\begin{exercise}
+  Compute the quantities \eqref{eq:FP_increments}
+  for the random walk $\dot p_n = p_{n+1} + p_{n-1} - 2 p_n$
+  and construct the Fokker-Planck equation.
+  Show that it is satisfied by the asymptotic distribution,
+  $p_n = \frac{1}{\sqrt{4\pi t}} \, \exp(-n^2/4t)$.
+
+  \answer{Since
+    $A = \partial_t \langle \Delta n \rangle = 0$,
+    $B = \partial_t \langle n^2 \rangle = \langle (n-1)^2 + (n+1)^2 - 2n^2 \rangle = 2$.
+    So it is a Gaussian with variance $\langle n^2 \rangle = 2t$.
+  }
+\end{exercise}
+
+\begin{exercise}
+  Same question for the asymmetric random walk,
+  $\dot p_n = \alpha p_{n+1} + \beta p_{n-1} - (\alpha + \beta) p_n$.
+
+  \answer{Since
+    $A = \partial_t \langle n \rangle = \alpha (-1) + \beta (+1) = \beta - \alpha$,
+    $B = \partial_t \langle n^2 \rangle
+    = \langle \alpha (n-1)^2 + \beta (n+1)^2 - (\alpha + \beta) n^2 \rangle =
+    = 2 \, (\beta - \alpha) \, \langle n \rangle + \alpha + \beta$.
+    Now
+    $\partial_t \langle n \rangle^2 = 2 \, (\beta - \alpha) \langle n \rangle$,
+    so
+    $\partial_t \langle \Delta n^2 \rangle
+    = \alpha + \beta$.
+    So the distribution is centered at
+    $\langle n \rangle = (\beta - \alpha) \, t$
+    with variance $\langle \Delta n^2 \rangle = (\alpha + \beta) \, t$.
+  }
+\end{exercise}
+
+
+\begin{exercise}
+  In an $RC$ circuit with non-Ohmic resistance $R(V)$
+  the Fokker-Planck equation for the voltage $V$ would be,
+  according to the above phenomenological argument,
+  \begin{subequations}
+    \begin{align}
+    \frac{ \partial P(V, t) } { \partial t }
+    &=
+    \frac{ \partial }{ \partial V}
+    \frac{ V } { C R(V) }
+    P
+    +
+    \frac 1 2
+    \frac{ \partial^2 } { \partial V^2 } B(V) P,
+    \label{eq:RC_P}
+    \\
+    B(V) &=
+    e^{CV^2/2kT}
+    \left[
+      \mathrm{const.}
+      -
+      2
+      \int_0^V
+      \frac{ V' } { CR(V')}
+      e^{-CV'^2/2kT} dV'
+    \right].
+    \label{eq:RC_B}
+    \end{align}
+  \end{subequations}
+  See, however, the discussion in X.2.
+
+  \answer{
+    Since
+    $$\partial_t \langle V \rangle
+    = \frac{ \left\langle \dot Q \right\rangle }{ C }
+    = \frac{ \langle I \rangle }{ C  }= \frac{V}{C \, R(V)},
+    $$
+    we get \eqref{eq:RC_P}.
+
+    For \eqref{eq:RC_B},
+    it amounts to show that
+    $$
+    \frac{ \partial B(V) } { \partial V }
+    = \frac{ CV}{kT} B - \frac{ 2 \, V }{ C R(V) },
+    $$
+    Below are some attempts.
+    First, we always have
+    $\langle V^2 \rangle = \langle \Delta V^2 \rangle + \langle V\rangle^2$.
+    Differentiate it with respect to time $t$, we get,
+    with $B(V) = \partial_t \langle \Delta V^2 \rangle$,
+    $$
+    \partial_t \langle V^2 \rangle
+    = B(V) + 2 \, \langle V \rangle \, \partial_t \langle V \rangle.
+    $$
+
+    Maybe we need to show that
+    $$
+    \partial_t \langle V^2 \rangle
+    \approx
+    \frac{ C \langle \Delta V^2 \rangle } { 2 \, kT } V^2.
+    $$
+  }
+\end{exercise}
+
+\begin{exercise}
+  Apply to \eqref{eq:FokkerPlanck}
+  the nonlinear transformation $\bar y = \phi(y)$
+  and show that the transformed density $\bar P(\bar y, t)$
+  obeys a Fokker-Planck equation with coefficients
+  \begin{equation}
+    \bar B(\bar y) = \{ \phi'(y) \}^2 B(y),
+    \qquad
+    \bar A(\bar y) = \phi'(y) A(y) + \frac{1}{2} \phi''(y) B(y).
+    \label{eq:FP_nonlineartransform}
+  \end{equation}
+
+  \answer{We have
+    $P = \bar P \, (d\bar y/dy) = \bar P \phi'(y)$,
+    and
+    $\partial/\partial y = \phi' \partial/\partial \bar y$.
+    %
+    Now the continuity equation \eqref{eq:FP_continuity}
+    can be written as
+    $\frac{ \partial \bar P \phi' } { \partial t }
+    = \phi' \frac{ \partial \bar P } { \partial t}
+    = -\phi' \frac{ \partial J } { \partial \bar y}.$
+    This means that
+    $$\bar J = J = A \phi' \bar P - \frac{1}{2} \phi'
+    \frac{\partial}{\partial \bar y} (B \phi' \bar P)
+    =
+    (A \phi' + \frac{1}{2} B\phi'') \bar P
+    - \frac{1}{2} \frac{\partial}{\partial \bar y} (B \phi'^2 \bar P).$$
+    Here we have used the fact
+    $\phi' \, \left( \partial \phi'/\partial \bar y \right)
+    = (\partial y/\partial \bar y) (\partial \phi' /\partial \bar y)
+    = \partial \phi'/\partial y = \phi''$.
+  }
+\end{exercise}
+
+\begin{exercise}
+  The criterion (V.6.1) for detailed balance
+  cannot readily be applied to \eqref{eq:FokkerPlanck},
+  but the equivalent formula (V.7.5)
+  $(\Psi, \mathbb W \Phi) = (\Phi, \mathbb W \Psi)$
+  is suitable
+  for differential master operators.
+  Show that (1.1) obeys detailed balance if and only if
+  %
+  \begin{equation}
+    A(y) = \frac{ 1 } { 2 P^e(y) } \frac{d }{ dy} P^e(y) B(y).
+    \label{eq:FP_A_DB}
+  \end{equation}
+
+  In that case the equation may be written
+  \begin{equation}
+    \frac{ \partial P(y, t) } { \partial t }
+    =
+    \frac 1 2 \frac { \partial } { \partial y }
+    P^e(y) B(y) \frac{ \partial } { \partial y }
+    \frac{ P(y, t) } { P^e(y) }.
+    \label{eq:FP_P_DB}
+  \end{equation}
+
+  \answer{Recall that
+    $$
+    \begin{aligned}
+    (\Psi, \mathbb W\Phi)
+    &= \int \frac{\Psi}{P^e}
+    \frac{ \partial } { \partial y }
+    \left[
+      -A \, \Phi + \frac{1}{2}\frac{ \partial } { \partial y } (B \, \Phi)
+    \right], \\
+    (\Phi, \mathbb W \Psi)
+    &=
+    (\Psi, \mathbb W^\dag \Phi)
+    =
+    \int
+    \Psi
+    \left(
+      A
+      + \frac{1}{2} B \frac{ \partial } { \partial y }
+    \right)
+    \frac{ \partial } { \partial y }
+    \left( \frac{ \Phi } { P^e} \right),
+    \end{aligned}
+    $$
+    To make the two equal for any $\Psi$, we must have
+    $$
+    \frac{ 1 } {P^e}
+    \frac{ \partial } { \partial y }
+    \left[
+      -A \, \Phi + \frac{1}{2}\frac{ \partial } { \partial y } (B \, \Phi)
+    \right]
+    =
+    \left(
+      A
+      + \frac{1}{2} B \frac{ \partial } { \partial y }
+    \right)
+    \frac{ \partial } { \partial y }
+    \left( \frac{ \Phi } { P^e} \right),
+    $$
+    Expanding,
+    $$
+    \frac{ \partial } { \partial y }
+    \left( \frac{ A } { P^e } \right)
+    \Phi
+    +
+    \frac{ 2 A } { P^e }
+    \frac{ \partial \Phi } { \partial y }
+    =
+    \frac{1}{2}
+    \frac{ \partial } { \partial y}
+    \left[
+      \frac{1 }{ P^e}
+      \frac{ \partial B } { \partial y }
+      -
+      B
+      \frac{ \partial } { \partial y }
+      \left(
+        \frac{ 1 } { P^e }
+      \right)
+    \right] \Phi
+    +
+    \left[
+      \frac{1}{P^e}
+      \frac{ \partial B } { \partial y }
+      -
+      B
+      \frac{ \partial } { \partial y }
+      \left(
+        \frac{1} { P^e }
+      \right)
+    \right]
+    \frac{ \partial \Phi } { \partial y }.
+    $$
+    To balance the coefficients before
+    $\Phi$ and $\partial \Phi/\partial y$,
+    we must have
+    $$
+    \frac{2A}{P^e}
+    =
+    \frac{1}{P^e}
+    \frac{\partial B}{\partial y}
+    -
+    B \frac{\partial}{\partial y}
+    \left(
+      \frac{1}{P^e}
+    \right)
+    =
+    \frac{1}{(P^e)^2}
+    \frac{ \partial ( P^e \, B) }{ \partial y }.
+    $$
+    This proves \eqref{eq:FP_A_DB}.
+
+    Now from \eqref{eq:FP_constitutive}
+    $$
+    J = A P
+    - \frac{1}{2} \frac{ \partial (P \, B ) } { \partial y }
+    =
+    \frac{P}{2P^e} \frac{\partial (P^e B) }{\partial y}
+    - \frac{1}{2} \frac{ \partial (P \, B ) } { \partial y }
+    =
+    -\frac{1}{2}
+    \left(
+     -\frac{P \, B}{P^e} \frac{\partial P^e }{\partial y}
+    + \frac{ \partial P } { \partial y } B
+    \right)
+    =
+    -\frac{P^e B}{2}
+    \frac{\partial }{ \partial y }
+    \left( \frac{ P } { P^e } \right).
+    $$
+    This proves \eqref{eq:FP_P_DB}.
+  }
+\end{exercise}
 
 \section{Derivation of the Fokker-Planck equation}
 
