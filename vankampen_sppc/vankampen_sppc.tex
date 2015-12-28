@@ -2378,81 +2378,55 @@ Another choice for $\xi$ is the two-valued Markov process
 
     By multiplying Eq. \eqref{eq:ho_colorednoise_Px1} with $x^2$ and integrating,
     we get
-    $$
-    \begin{aligned}
+    \begin{align}
     \frac{ \partial \langle x^2 \rangle } { \partial t }
     &=
     \int x^2 \frac{ \partial [(\alpha \, x) \, P(x, t) ] } { \partial x} \, dx
     + B(t) \int x^2 \frac{ \partial^2 P(x, t) } { \partial x^2 } \, dx
+    \notag
     \\
     &=
     -\int 2 \, x \, (\alpha \, x) \, P(x, t) \, dx
     - 2 \, B(t) \int x \frac{ \partial P(x, t) } { \partial x } \, dx
+    \notag
     \\
     &=
     - 2 \, \alpha \, \langle x^2 \rangle
     + 2 \, B(t).
-    \end{aligned}
-    $$
-    Laplace transforming the above equation yields
-    \begin{equation}
-    \mathcal L[ B(t) ](s) = \frac{2 \, \alpha + s}{2} \, \mathcal L[\langle x^2 \rangle](s).
-    \label{eq:Laplace_B_x^2}
-    \end{equation}
+    \label{eq:dxxdt_colorednoise}
+    \end{align}
 
     On the other hand,
-    the explicit solution of Eq. \eqref{eq:ho_colorednoise} is
+    we can multiply Eq. \eqref{eq:ho_colorednoise} by $2 \, x$
+    and averaging, we get
+    $$
+    \begin{aligned}
+    \frac{ d\langle x^2 \rangle }{ dt }
+    &=
+    - 2 \, \alpha \langle x^2 \rangle
+    + 2 \, \sqrt\Gamma \langle x(t) \xi(t) \rangle
+    \\
+    &=
+    - 2 \, \alpha \langle x^2 \rangle
+    + 2 \, \Gamma \int_0^t \langle \xi(\tau) \xi(t) \rangle e^{-\alpha \, (t - \tau)} \, d\tau
+    \\
+    &=
+    - 2 \, \alpha \langle x^2 \rangle
+    + 2 \, \Gamma \int_0^t e^{-\gamma \, (t - \tau)} e^{-\alpha \, (t - \tau)} \, d\tau
+    \\
+    &=
+    - 2 \, \alpha \langle x^2 \rangle
+    + 2 \, \frac{ \Gamma }{ \gamma + \alpha}
+    \left( 1 - e^{-(\gamma + \alpha) \, t} \right).
+    \end{aligned}
+    $$
+    where we have used the explicit solution of Eq. \eqref{eq:ho_colorednoise}
     $$
     x = \sqrt{\Gamma} \int_0^t \xi(\tau) \, e^{-\alpha \, (t-\tau)}  \, d\tau
-      + x_0 \, e^{-kt}.
+      + x_0 \, e^{-kt},
     $$
-    So the variance $\langle \delta x^2 \rangle = \langle (x - x_0 \, e^{-kt})^2 \rangle$
-    satisfies
-    %
-    \begin{align}
-    \langle \delta x^2 \rangle
-    &=
-    \int_0^t\int_0^t \langle \xi(\tau) \, \xi(\tau') \rangle
-    e^{-\alpha \, (t-\tau)- \alpha \, (t'-\tau')} \, d\tau \, d\tau'
-    +
-    x_0^2 \, e^{-2kt}
-    \notag \\
-    &=
-    \Gamma \int_0^t\int_0^t
-    e^{-\gamma|\tau - \tau'|-\alpha \, (t-\tau) - \alpha \, (t'-\tau')} \, d\tau \, d\tau'
-    +
-    x_0^2 \, e^{-2kt}
-    \notag \\
-    &=
-    \Gamma
-    \left(
-      \frac{1}{\alpha \,(\gamma + \alpha) }
-      +
-      \frac{2 \, e^{-(\gamma + \alpha) \, t} }{(\gamma - \alpha) (\gamma + \alpha) }
-      -
-      \frac{e^{-2 \, \alpha \, t} }{(\gamma - \alpha) \, \alpha }
-    \right),
-    \label{eq:ho_colorednoise_var}
-    \end{align}
-    where we have dropped the $x_0$ term in the last step.
-    %
-    So, the Laplace transform is
-    $$
-    \mathcal L[\langle \delta x^2 \rangle](s)
-    =
-      \frac{ \Gamma } { \alpha \, (\gamma + \alpha) \, s }
-      +
-      \frac{ 2 \, \Gamma } { (\gamma - \alpha) \, (\gamma + \alpha) \, (\gamma + \alpha + s) }
-      -
-      \frac{ \Gamma } { (\gamma - \alpha ) \, \alpha \, (2 \, \alpha + s) }.
-    $$
-    Using this in \eqref{eq:Laplace_B_x^2}, we get
-    $$
-    \mathcal L[B(t)](s) =
-      \frac{ \Gamma }{ \gamma + \alpha }
-      \left( \frac{1}{s} - \frac{1}{ \gamma + \alpha + s } \right),
-    $$
-    which means
+    on the second line.
+    Comparing this to \eqref{eq:dxxdt_colorednoise}, we get
     $$
     B(t) = \frac{ \Gamma } { \gamma + \alpha } \left( 1 - e^{-(\gamma + \alpha) \,t} \right).
     $$
@@ -2535,7 +2509,31 @@ Another choice for $\xi$ is the two-valued Markov process
     + \frac{ 2 \, e^{-(\gamma + \alpha) \, t} }{\gamma - \alpha}
     - \frac{ (\gamma + \alpha) \, e^{-2\, \alpha \, t} }{\alpha \, (\gamma - \alpha)} \right).
     $$
-    This agrees with \eqref{eq:ho_colorednoise_var}.
+    This agrees with the value computed from the explicit solution:
+    \begin{align}
+    \langle \delta x^2 \rangle
+     &=
+    \int_0^t\int_0^t \langle \xi(\tau) \, \xi(\tau') \rangle
+    e^{-\alpha \, (t-\tau)- \alpha \, (t'-\tau')} \, d\tau \, d\tau'
+    \notag \\
+     &=
+    \Gamma \int_0^t\int_0^t
+    e^{-\gamma|\tau - \tau'|-\alpha \, (t-\tau) - \alpha \, (t'-\tau')} \, d\tau \, d\tau'
+    \notag
+    \\
+     &=
+    \Gamma
+    \left(
+      \frac{1}{\alpha \,(\gamma + \alpha) }
+      +
+      \frac{2 \, e^{-(\gamma + \alpha) \, t} }{(\gamma - \alpha) (\gamma + \alpha) }
+      -
+      \frac{e^{-2 \, \alpha \, t} }{(\gamma - \alpha) \, \alpha }
+    \right),
+    \notag
+    \end{align}
+    where
+    $\delta x = x - x_0 \, e^{-\alpha \, t}$.
   }
 
 \end{exercise}

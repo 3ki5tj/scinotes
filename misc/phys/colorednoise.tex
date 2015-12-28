@@ -16,10 +16,12 @@
 \maketitle
 
 \subsection*{Problem}
+
 Consider the Langevin
-$$
+\begin{equation}
 \dot x = -\alpha \, x + \sqrt{\Gamma} \, \xi,
-$$
+\label{eq:Langevin_colorednoise}
+\end{equation}
 where $\xi$ is a colored Gaussian noise satisfying
 $\langle \xi(t) \, \xi(t') \rangle = e^{-\gamma \, |t-t'|}$.
 What is the Fokker-Planck equation for $x$?
@@ -110,35 +112,94 @@ is a function to be determined
 
 By multiplying Eq. \eqref{eq:ho_colorednoise_Px1} with $x^2$ and integrating,
 we get
-$$
-\begin{aligned}
+%
+\begin{align}
 \frac{ \partial \langle x^2 \rangle } { \partial t }
 &=
 \int x^2 \frac{ \partial [(\alpha \, x) \, P(x, t) ] } { \partial x} \, dx
 + B(t) \int x^2 \frac{ \partial^2 P(x, t) } { \partial x^2 } \, dx
+\notag
 \\
 &=
 -\int 2 \, x \, (\alpha \, x) \, P(x, t) \, dx
 - 2 \, B(t) \int x \frac{ \partial P(x, t) } { \partial x } \, dx
+\notag
 \\
 &=
 - 2 \, \alpha \, \langle x^2 \rangle
 + 2 \, B(t).
-\end{aligned}
-$$
-Laplace transforming the above equation yields
+\label{eq:dxxdt_Langevin}
+\end{align}
+
+We will find $B(t)$ below.
+
+\paragraph{Method 1}
+
+The explicit solution of Eq. \eqref{eq:Langevin_colorednoise} is
+(assuming $x(0) = 0$),
+%
+\begin{equation}
+  x(t) = \sqrt{\Gamma} \int_0^t \xi(\tau) \, e^{-\alpha(t-\tau)}  \, d\tau.
+\label{eq:xt_solution}
+\end{equation}
+%
+Multiplying \eqref{eq:Langevin_colorednoise} by $2 \, x$ and averaging, we get
+%
+\begin{align}
+  \frac{ d \langle x^2 \rangle } { d t }
+  &=
+  -2\alpha \langle x^2 \rangle
+  + 2 \, \sqrt\Gamma
+  \langle x(t) \, \xi(t) \rangle
+  \notag
+  \\
+  &=
+  -2\alpha \langle x^2 \rangle
+  + 2 \, \Gamma
+  \int_0^t \langle \xi(\tau) \, \xi(t) \rangle e^{-\alpha(t- \tau} \, d\tau
+  \notag
+  \\
+  &=
+  -2\alpha \langle x^2 \rangle
+  + 2 \, \Gamma
+  \int_0^t e^{-\gamma(t - \tau)} e^{-\alpha(t - \tau} \, d\tau
+  \notag
+  \\
+  &=
+  -2\alpha \langle x^2 \rangle
+  + 2 \frac{ \Gamma } { \gamma + \alpha }
+  \left(
+    1 - e^{-(\gamma + \alpha) \, t}
+  \right).
+\end{align}
+%
+Compare this to \eqref{eq:dxxdt_Langevin},
+we conclude
+\begin{equation}
+B(t) =
+  \frac{ \Gamma } { \gamma + \alpha }
+  \left(
+    1 - e^{-(\gamma + \alpha) \, t}
+  \right).
+  \label{eq:Bt_colorednoise}
+\end{equation}
+So the Fokker-Planck equation for $P(x, t)$ is given by
+Eq. \eqref{eq:ho_colorednoise_Px}.
+
+
+
+\paragraph{Method 2}
+
+The following method use Laplace transform.
+%
+Laplace transforming \eqref{eq:dxxdt_Langevin} yields
 \begin{equation}
 \mathcal L[ B(t) ](s) = \frac{2 \, \alpha + s}{2} \, \mathcal L[\langle x^2 \rangle](s).
-\label{eq:Laplace_B_x^2}
+\label{eq:Laplace_B_xx}
 \end{equation}
 
 On the other hand,
-the explicit solution of Eq. \eqref{eq:ho_colorednoise_x} is
-(assuming $x(0) = 0$),
-$$
-x = \sqrt{\Gamma} \int_0^t \xi(\tau) \, e^{-\alpha(t-\tau)}  \, d\tau.
-$$
-So the variance
+by \eqref{eq:xt_solution}, the variance is given by
 $$
 \begin{aligned}
 \langle x^2 \rangle
@@ -168,18 +229,13 @@ $$
   -
   \frac{ \Gamma } { (\gamma - \alpha ) \, \alpha \, (2 \, \alpha + s) }.
 $$
-Using this in \eqref{eq:Laplace_B_x^2}, we get
+Using this in \eqref{eq:Laplace_B_xx}, we get
 $$
 \mathcal L[B(t)](s) =
   \frac{ \Gamma }{ \gamma + \alpha }
   \left( \frac{1}{s} - \frac{1}{ \gamma + \alpha + s } \right),
 $$
-which means
-$$
-B(t) = \frac{ \Gamma } { \gamma + \alpha } \left( 1 - e^{-(\gamma + \alpha) \,t} \right).
-$$
-So the Fokker-Planck equation for $P(x, t)$ is given by
-Eq. \eqref{eq:ho_colorednoise_Px}.
+which means \eqref{eq:Bt_colorednoise}.
 
 \paragraph{Discussion.}
 
