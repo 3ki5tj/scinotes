@@ -115,6 +115,15 @@
   abstract = {Understanding Molecular Simulation: From Algorithms to Applications explains the physics behind the ``recipes'' of molecular simulation for materials science. Computer simulators are continuously confronted with questions concerning the choice of a particular technique for a given application. A wide variety of tools exist, so the choice of technique requires a good understanding of the basic principles. More importantly, such understanding may greatly improve the efficiency of a simulation program. The implementation of simulation methods is illustrated in pseudocodes and their practical use in the case studies used in the text.<br><br>Since the first edition only five years ago, the simulation world has changed significantly -- current techniques have matured and new ones have appeared. This new edition deals with these new developments; in particular, there are sections on:<br><br>· Transition path sampling and diffusive barrier crossing to simulaterare events<br>· Dissipative particle dynamic as a course-grained simulation technique<br>· Novel schemes to compute the long-ranged forces<br>· Hamiltonian and non-Hamiltonian dynamics in the context constant-temperature and constant-pressure molecular dynamics simulations<br>· Multiple-time step algorithms as an alternative for constraints<br>· Defects in solids<br>· The pruned-enriched Rosenbluth sampling, recoil-growth, and concerted rotations for complex molecules<br>· Parallel tempering for glassy Hamiltonians<br><br>Examples are included that highlight current applications and the codes of case studies are available on the World Wide Web. Several new examples have been added since the first edition to illustrate recent applications. Questions are included in this new edition. No prior knowledge of computer simulation is assumed.}
 }
 
+@book{landau_binder,
+  author = {Landau, David P. and Binder Kurt},
+  title = {A Guide to Monte Carlo Simulations in Statistical Physics},
+  edition = {4},
+  year = {2015},
+  publisher = {Cambridge University Press},
+  address = {Cambridge},
+  isbn = {978-1107074026}
+}
 @book{vankampen,
   author = {Van Kampen, N. G.},
   title = {Stochastic Processes in Physics and Chemistry},
@@ -425,9 +434,19 @@
   url = {http://link.aps.org/doi/10.1103/PhysRevE.64.056101}
 }
 
+@article{huber1994,
+  title = {Local elevation: a method for improving the searching properties of molecular dynamics simulation},
+  author = {Huber, Thomas and Torda, Andrew E. and van Gunsteren, Wilfred F.},
+  journal = {Journal of computer-aided molecular design},
+  volume = {8},
+  number = {6},
+  pages = {695-708},
+  year = {1994}
+}
+
 @article{laio2002,
-  author = {Laio, Alessandro and Parrinello, Michele},
   title = {Escaping free-energy minima},
+  author = {Laio, Alessandro and Parrinello, Michele},
   journal = {Proceedings of the National Academy of Sciences},
   volume = {99},
   number = {20},
@@ -436,6 +455,18 @@
   doi = {10.1073/pnas.202427399},
   abstract ={We introduce a powerful method for exploring the properties of the multidimensional free energy surfaces (FESs) of complex many-body systems by means of coarse-grained non-Markovian dynamics in the space defined by a few collective coordinates. A characteristic feature of these dynamics is the presence of a history-dependent potential term that, in time, fills the minima in the FES, allowing the efficient exploration and accurate determination of the FES as a function of the collective coordinates. We demonstrate the usefulness of this approach in the case of the dissociation of a NaCl molecule in water and in the study of the conformational changes of a dialanine in solution.},
   URL = {http://www.pnas.org/content/99/20/12562.abstract}
+}
+
+@article{laio2008,
+  author={Alessandro Laio and Francesco L Gervasio},
+  title={Metadynamics: a method to simulate rare events and reconstruct the free energy in biophysics, chemistry and material science},
+  journal={Reports on Progress in Physics},
+  volume={71},
+  number={12},
+  pages={126601},
+  url={http://stacks.iop.org/0034-4885/71/i=12/a=126601},
+  year={2008},
+  abstract={Metadynamics is a powerful algorithm that can be used both for reconstructing the free energy and for accelerating rare events in systems described by complex Hamiltonians, at the classical or at the quantum level. In the algorithm the normal evolution of the system is biased by a history-dependent potential constructed as a sum of Gaussians centered along the trajectory followed by a suitably chosen set of collective variables. The sum of Gaussians is exploited for reconstructing iteratively an estimator of the free energy and forcing the system to escape from local minima. This review is intended to provide a comprehensive description of the algorithm, with a focus on the practical aspects that need to be addressed when one attempts to apply metadynamics to a new system: (i) the choice of the appropriate set of collective variables; (ii) the optimal choice of the metadynamics parameters and (iii) how to control the error and ensure convergence of the algorithm.}
 }
 
 @article{wang2002,
@@ -500,6 +531,21 @@
 }
 
 @article{belardinelli2007,
+  title = {Fast algorithm to calculate density of states},
+  author = {Belardinelli, R. E. and Pereyra, V. D.},
+  journal = {Phys. Rev. E},
+  volume = {75},
+  issue = {4},
+  pages = {046701},
+  numpages = {5},
+  year = {2007},
+  month = {Apr},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.75.046701},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.75.046701}
+}
+
+@article{belardinelli2007jcp,
   author = "Belardinelli, R. E. and Pereyra, V. D.",
   title = "Wang-Landau algorithm: A theoretical analysis of the saturation of the error",
   journal = "The Journal of Chemical Physics",
@@ -527,6 +573,30 @@
   url = {http://link.aps.org/doi/10.1103/PhysRevE.78.067701}
 }
 
+@article{liang2005,
+  author = {Faming Liang},
+  title = {A Generalized Wang–Landau Algorithm for Monte Carlo Computation},
+  journal = {Journal of the American Statistical Association},
+  volume = {100},
+  number = {472},
+  pages = {1311-1327},
+  year = {2005},
+  doi = {10.1198/016214505000000259},
+  URL = { http://dx.doi.org/10.1198/016214505000000259 }
+}
+
+@article{liang2007,
+  author = {Faming Liang and Chuanhai Liu and Raymond J Carroll},
+  title = {Stochastic Approximation in Monte Carlo Computation},
+  journal = {Journal of the American Statistical Association},
+  volume = {102},
+  number = {477},
+  pages = {305-320},
+  year = {2007},
+  doi = {10.1198/016214506000001202},
+  URL = { http://dx.doi.org/10.1198/016214506000001202 }
+}
+
 @article{zhang2013,
   author = "Zhang, Cheng and Deem, Michael W.",
   title = "Multicanonical molecular dynamics by variable-temperature thermostats and variable-pressure barostats",
@@ -538,6 +608,36 @@
   pages = "-",
   url = "http://scitation.aip.org/content/aip/journal/jcp/138/3/10.1063/1.4773435",
   doi = "http://dx.doi.org/10.1063/1.4773435"
+}
+
+@article{dayal2004,
+  title = {Performance Limitations of Flat-Histogram Methods},
+  author = {Dayal, P. and Trebst, S. and Wessel, S. and W\"urtz, D. and Troyer, M. and Sabhapandit, S. and Coppersmith, S. N.},
+  journal = {Phys. Rev. Lett.},
+  volume = {92},
+  issue = {9},
+  pages = {097201},
+  numpages = {4},
+  year = {2004},
+  month = {Mar},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.92.097201},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.92.097201}
+}
+
+@article{trebst2004,
+  author = {Trebst, Simon and Huse, David A. and Troyer, Matthias},
+  title = {Optimizing the ensemble for equilibration in broad-histogram Monte Carlo simulations},
+  journal = {Phys. Rev. E},
+  volume = {70},
+  issue = {4},
+  pages = {046701},
+  numpages = {5},
+  year = {2004},
+  month = {Oct},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.70.046701},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.70.046701}
 }
 
 @article{torrie1974,
@@ -1926,3 +2026,536 @@
   booktitle = {Learning in Graphical Models},
 }
 
+@article{zhou2005,
+  title = {Understanding and improving the Wang-Landau algorithm},
+  author = {Zhou, Chenggang and Bhatt, R. N.},
+  journal = {Phys. Rev. E},
+  volume = {72},
+  issue = {2},
+  pages = {025701},
+  numpages = {4},
+  year = {2005},
+  month = {Aug},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.72.025701},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.72.025701}
+}
+
+@article{zhou2008,
+  author = {Zhou, Chenggang and Su, Jia},
+  title = {Optimal modification factor and convergence of the Wang-Landau algorithm},
+  journal = {Phys. Rev. E},
+  volume = {78},
+  issue = {4},
+  pages = {046705},
+  numpages = {8},
+  year = {2008},
+  month = {Oct},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.78.046705},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.78.046705}
+}
+
+@article{morozov2007,
+  author = {Morozov, Alexander N. and Lin, Sheng Hsien},
+  title = {Accuracy and convergence of the Wang-Landau sampling algorithm},
+  journal = {Phys. Rev. E},
+  volume = {76},
+  issue = {2},
+  pages = {026701},
+  numpages = {7},
+  year = {2007},
+  month = {Aug},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.76.026701},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.76.026701}
+}
+
+@article{morozov2009,
+  author = "Morozov, A. N. and Lin, S. H.",
+  title = "Thermodynamics of a conformational change using a random walk in energy-reaction coordinate space: Application to methane dimer hydrophobic interactions",
+  journal = "The Journal of Chemical Physics",
+  year = "2009",
+  volume = "130",
+  number = "7",
+  eid = 074903,
+  url = "http://scitation.aip.org/content/aip/journal/jcp/130/7/10.1063/1.3077658",
+  doi = "http://dx.doi.org/10.1063/1.3077658"
+}
+
+@article{caparica2012,
+  author = {Caparica, A. A. and Cunha-Netto, A. G.},
+  title = {Wang-Landau sampling: Improving accuracy},
+  journal = {Phys. Rev. E},
+  volume = {85},
+  issue = {4},
+  pages = {046702},
+  numpages = {8},
+  year = {2012},
+  month = {Apr},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.85.046702},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.85.046702}
+}
+
+@article{caparica2014,
+  author = {Caparica, A. A.},
+  title = {Wang-Landau sampling: A criterion for halting the simulations},
+  journal = {Phys. Rev. E},
+  volume = {89},
+  issue = {4},
+  pages = {043301},
+  numpages = {7},
+  year = {2014},
+  month = {Apr},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.89.043301},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.89.043301}
+}
+
+@article{komura2012,
+  title = {Difference of energy density of states in the Wang-Landau algorithm},
+  author = {Komura, Yukihiro and Okabe, Yutaka},
+  journal = {Phys. Rev. E},
+  volume = {85},
+  issue = {1},
+  pages = {010102},
+  numpages = {4},
+  year = {2012},
+  month = {Jan},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.85.010102},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.85.010102}
+}
+
+@article{poulain2006,
+  title = {Performances of Wang-Landau algorithms for continuous systems},
+  author = {Poulain, P. and Calvo, F. and Antoine, R. and Broyer, M. and Dugourd, Ph.},
+  journal = {Phys. Rev. E},
+  volume = {73},
+  issue = {5},
+  pages = {056704},
+  numpages = {11},
+  year = {2006},
+  month = {May},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.73.056704},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.73.056704}
+}
+
+@article{micheletti2004,
+  title = {Reconstructing the Density of States by History-Dependent Metadynamics},
+  author = {Micheletti, Cristian and Laio, Alessandro and Parrinello, Michele},
+  journal = {Phys. Rev. Lett.},
+  volume = {92},
+  issue = {17},
+  pages = {170601},
+  numpages = {4},
+  year = {2004},
+  month = {Apr},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.92.170601},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.92.170601}
+}
+
+@article{laio2005,
+  author = {Alessandro Laio and Antonio Rodriguez-Fortea and Francesco Luigi Gervasio and Matteo Ceccarelli and and Michele Parrinello},
+  title = {Assessing the Accuracy of Metadynamics},
+  journal = {The Journal of Physical Chemistry B},
+  volume = {109},
+  number = {14},
+  pages = {6714-6721},
+  year = {2005},
+  doi = {10.1021/jp045424k},
+  URL = { http://dx.doi.org/10.1021/jp045424k }
+}
+
+@article{marsili2006,
+  title = {Self-healing Umbrella Sampling: A Non-equilibrium Approach for Quantitative Free Energy Calculations},
+  author = {Simone Marsili and Alessandro Barducci and Riccardo Chelli and Piero Procacci and and Vincenzo Schettino},
+  journal = {The Journal of Physical Chemistry B},
+  volume = {110},
+  number = {29},
+  pages = {14011-14013},
+  year = {2006},
+  doi = {10.1021/jp062755j},
+  note ={PMID: 16854090},
+  URL = { http://dx.doi.org/10.1021/jp062755j }
+}
+
+@article{barducci2008,
+  title = {Well-Tempered Metadynamics: A Smoothly Converging and Tunable Free-Energy Method},
+  author = {Barducci, Alessandro and Bussi, Giovanni and Parrinello, Michele},
+  journal = {Phys. Rev. Lett.},
+  volume = {100},
+  issue = {2},
+  pages = {020603},
+  numpages = {4},
+  year = {2008},
+  month = {Jan},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.100.020603},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.100.020603}
+}
+
+@article {barducci2011,
+  author = {Barducci, Alessandro and Bonomi, Massimiliano and Parrinello, Michele},
+  title = {Metadynamics},
+  journal = {Wiley Interdisciplinary Reviews: Computational Molecular Science},
+  volume = {1},
+  number = {5},
+  publisher = {John Wiley \& Sons, Inc.},
+  pages = {826--843},
+  year = {2011},
+  issn = {1759-0884},
+  doi = {10.1002/wcms.31},
+  url = {http://dx.doi.org/10.1002/wcms.31}
+}
+
+@article {sutto2012,
+  author = {Sutto, Ludovico and Marsili, Simone and Gervasio, Francesco Luigi},
+  title = {New advances in metadynamics},
+  journal = {Wiley Interdisciplinary Reviews: Computational Molecular Science},
+  volume = {2},
+  number = {5},
+  pages = {771--779},
+  year = {2012},
+  publisher = {John Wiley \& Sons, Inc.},
+  issn = {1759-0884},
+  doi = {10.1002/wcms.1103},
+  url = {http://dx.doi.org/10.1002/wcms.1103}
+}
+
+@article{bussi2006,
+  title = {Equilibrium Free Energies from Nonequilibrium Metadynamics},
+  author = {Bussi, Giovanni and Laio, Alessandro and Parrinello, Michele},
+  journal = {Phys. Rev. Lett.},
+  volume = {96},
+  issue = {9},
+  pages = {090601},
+  numpages = {4},
+  year = {2006},
+  month = {Mar},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.96.090601},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.96.090601}
+}
+
+@article{dama2014,
+  title = {Well-Tempered Metadynamics Converges Asymptotically},
+  author = {Dama, James F. and Parrinello, Michele and Voth, Gregory A.},
+  journal = {Phys. Rev. Lett.},
+  volume = {112},
+  issue = {24},
+  pages = {240602},
+  numpages = {6},
+  year = {2014},
+  month = {Jun},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.112.240602},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.112.240602}
+}
+
+@article{dickson2010,
+  author = {Bradley M. Dickson and Fr\'ed\'eric Legoll and Tony Leli\`evre and Gabriel Stoltz and Paul Fleurat-Lessard},
+  title = {Free Energy Calculations: An Efficient Adaptive Biasing Potential Method},
+  journal = {The Journal of Physical Chemistry B},
+  volume = {114},
+  number = {17},
+  pages = {5823-5830},
+  year = {2010},
+  doi = {10.1021/jp100926h},
+  note ={PMID: 20380408},
+  URL = { http://dx.doi.org/10.1021/jp100926h },
+  eprint = { http://dx.doi.org/10.1021/jp100926h }
+}
+
+@article{dickson2011,
+  title = {Approaching a parameter-free metadynamics},
+  author = {Dickson, Bradley M.},
+  journal = {Phys. Rev. E},
+  volume = {84},
+  issue = {3},
+  pages = {037701},
+  numpages = {4},
+  year = {2011},
+  month = {Sep},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.84.037701},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.84.037701}
+}
+
+@article{dickson2015,
+  author = "Dickson, Bradley M.",
+  title = "$\mu$-tempered metadynamics: Artifact independent convergence times for wide hills",
+  journal = "The Journal of Chemical Physics",
+  year = "2015",
+  volume = "143",
+  number = "23",
+  eid = 234109,
+  pages = "",
+  url = "http://scitation.aip.org/content/aip/journal/jcp/143/23/10.1063/1.4937939",
+  doi = "http://dx.doi.org/10.1063/1.4937939"
+}
+
+@article{tiwary2015,
+  author = "Tiwary, Pratyush and Dama, James F. and Parrinello, Michele",
+  title = "A perturbative solution to metadynamics ordinary differential equation",
+  journal = "The Journal of Chemical Physics",
+  year = "2015",
+  volume = "143",
+  number = "23",
+  eid = 234112,
+  pages = "",
+  url = "http://scitation.aip.org/content/aip/journal/jcp/143/23/10.1063/1.4937945",
+  doi = "http://dx.doi.org/10.1063/1.4937945"
+}
+
+@article{dama2014b,
+  author = {James F. Dama and Grant Rotskoff and Michele Parrinello and Gregory A. Voth},
+  title = {Transition-Tempered Metadynamics: Robust, Convergent Metadynamics via On-the-Fly Transition Barrier Estimation},
+  journal = {Journal of Chemical Theory and Computation},
+  volume = {10},
+  number = {9},
+  pages = {3626-3633},
+  year = {2014},
+  doi = {10.1021/ct500441q},
+  note ={PMID: 26588507},
+  URL = { http://dx.doi.org/10.1021/ct500441q }
+}
+
+@article{valsson2014,
+  title = {Variational Approach to Enhanced Sampling and Free Energy Calculations},
+  author = {Valsson, Omar and Parrinello, Michele},
+  journal = {Phys. Rev. Lett.},
+  volume = {113},
+  issue = {9},
+  pages = {090601},
+  numpages = {5},
+  year = {2014},
+  month = {Aug},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.113.090601},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.113.090601}
+}
+
+@article{singh2011,
+  title={Flux tempered metadynamics},
+  author={Singh, Sadanand and Chiu, Chi-cheng and de Pablo, Juan J},
+  journal={Journal of Statistical Physics},
+  volume={145},
+  number={4},
+  pages={932--945},
+  year={2011},
+  publisher={Springer}
+}
+
+@article{joakim2013,
+  author = {Joakim P. M. J\"ambeck and Alexander P. Lyubartsev},
+  title = {Exploring the Free Energy Landscape of Solutes Embedded in Lipid Bilayers},
+  journal = {The Journal of Physical Chemistry Letters},
+  volume = {4},
+  number = {11},
+  pages = {1781-1787},
+  year = {2013},
+  doi = {10.1021/jz4007993},
+  note ={PMID: 26283109},
+  URL = { http://dx.doi.org/10.1021/jz4007993 }
+}
+
+@article{aberg2004,
+  author = "\AAberg, K. Magnus and Lyubartsev, Alexander P. and Jacobsson, Sven P. and Laaksonen, Aatto",
+  title = "Determination of solvation free energies by adaptive expanded ensemble molecular dynamics",
+  journal = "The Journal of Chemical Physics",
+  year = "2004",
+  volume = "120",
+  number = "8",
+  pages = "3770-3776",
+  url = "http://scitation.aip.org/content/aip/journal/jcp/120/8/10.1063/1.1642601",
+  doi = "http://dx.doi.org/10.1063/1.1642601"
+}
+
+@article{crespo2010,
+  title = {Metadynamics convergence law in a multidimensional system},
+  author = {Crespo, Yanier and Marinelli, Fabrizio and Pietrucci, Fabio and Laio, Alessandro},
+  journal = {Phys. Rev. E},
+  volume = {81},
+  issue = {5},
+  pages = {055701},
+  numpages = {4},
+  year = {2010},
+  month = {May},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.81.055701},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.81.055701}
+}
+
+@article{fort2015,
+  title = {Convergence of the Wang-Lanadu algorithm},
+  author = {Gersende Fort and Benjamin Jourdain and Estelle Kuhn and Tony Leli\`evre and Gabriel Stoltz},
+  journal = {Mathematics of Computation},
+  volume = {84},
+  pages = {2297 - 2327},
+  year = {2015},
+  month = {March},
+  publisher = {American Mathematical Society}
+}
+
+@article{atchade2011,
+  title = {The Wang-Landau algorithm in general state spaces: applications and convergence analysis},
+  author = {Yves F. Atchad\'e and Jun S. Liu},
+  journal = {Statistica Sinica},
+  volume = {20},
+  year = {2010},
+  issue = {1},
+  pages = {209 - 233},
+}
+
+@article{lelievre2008,
+  author={Tony Leli\`evre and Mathias Rousset and Gabriel Stoltz},
+  title={Long-time convergence of an adaptive biasing force method},
+  journal={Nonlinearity},
+  volume={21},
+  number={6},
+  pages={1155},
+  year={2008},
+  url={http://stacks.iop.org/0951-7715/21/i=6/a=001},
+  abstract={We propose a proof of convergence of an adaptive method used in molecular dynamics to compute free energy profiles (see Darve and Porohille 2001 J. Chem. Phys. 115 9169–83, Hénin and Chipot 2004 J. Chem. Phys. 121 2904–14, Lelièvre et al J. Chem. Phys. 126 134111). Mathematically, it amounts to studying the long-time behaviour of a stochastic process which satisfies a nonlinear stochastic differential equation, where the drift depends on conditional expectations of some functionals of the process. We use entropy techniques to prove exponential convergence to the stationary state.}
+}
+
+@article{bilionis2012,
+  title = "Free energy computations by minimization of Kullback–Leibler divergence: An efficient adaptive biasing potential method for sparse representations ",
+  author = "I. Bilionis and P.S. Koutsourelakis",
+  journal = "Journal of Computational Physics ",
+  volume = "231",
+  number = "9",
+  pages = "3849 - 3870",
+  year = "2012",
+  issn = "0021-9991",
+  doi = "http://dx.doi.org/10.1016/j.jcp.2012.01.033",
+  url = "http://www.sciencedirect.com/science/article/pii/S0021999112000630",
+  keywords = "Free energy computations",
+  keywords = "Adaptive biasing potential",
+  keywords = "Sequential Monte Carlo",
+  keywords = "Atomistic simulations",
+  keywords = "Statistical learning ",
+  abstract = "The present paper proposes an adaptive biasing potential technique for the computation of free energy landscapes. It is motivated by statistical learning arguments and unifies the tasks of biasing the molecular dynamics to escape free energy wells and estimating the free energy function, under the same objective of minimizing the Kullback–Leibler divergence between appropriately selected densities. It offers rigorous convergence diagnostics even though history dependent, non-Markovian dynamics are employed. It makes use of a greedy optimization scheme in order to obtain sparse representations of the free energy function which can be particularly useful in multidimensional cases. It employs embarrassingly parallelizable sampling schemes that are based on adaptive Sequential Monte Carlo and can be readily coupled with legacy molecular dynamics simulators. The sequential nature of the learning and sampling scheme enables the efficient calculation of free energy functions parametrized by the temperature. The characteristics and capabilities of the proposed method are demonstrated in three numerical examples. "
+}
+
+@article{branduardi2012,
+  title = {Metadynamics with Adaptive Gaussians},
+  author = {Davide Branduardi and Giovanni Bussi and Michele Parrinello},
+  journal = {Journal of Chemical Theory and Computation},
+  volume = {8},
+  number = {7},
+  pages = {2247-2254},
+  year = {2012},
+  doi = {10.1021/ct3002464},
+  URL = { http://dx.doi.org/10.1021/ct3002464 },
+  eprint = { http://dx.doi.org/10.1021/ct3002464 }
+}
+
+@article{mccarty2015,
+  title = {Variationally Optimized Free-Energy Flooding for Rate Calculation},
+  author = {McCarty, James and Valsson, Omar and Tiwary, Pratyush and Parrinello, Michele},
+  journal = {Phys. Rev. Lett.},
+  volume = {115},
+  issue = {7},
+  pages = {070601},
+  numpages = {5},
+  year = {2015},
+  month = {Aug},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.115.070601},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.115.070601}
+}
+
+@article{gervasio2005,
+  author = {Gervasio, Francesco Luigi and Laio, Alessandro and Parrinello, Michele},
+  title = {Flexible Docking in Solution Using Metadynamics},
+  journal = {Journal of the American Chemical Society},
+  volume = {127},
+  number = {8},
+  pages = {2600-2607},
+  year = {2005},
+  doi = {10.1021/ja0445950},
+  note ={PMID: 15725015},
+  URL = { http://dx.doi.org/10.1021/ja0445950 },
+  eprint = { http://dx.doi.org/10.1021/ja0445950 }
+}
+
+@article{mcgovern2013,
+   author = "McGovern, Michael and de Pablo, Juan",
+   title = "A boundary correction algorithm for metadynamics in multiple dimensions",
+   journal = "The Journal of Chemical Physics",
+   year = "2013",
+   volume = "139",
+   number = "8",
+   eid = 084102,
+   url = "http://scitation.aip.org/content/aip/journal/jcp/139/8/10.1063/1.4818153",
+   doi = "http://dx.doi.org/10.1063/1.4818153"
+}
+
+% misc
+
+@article{martonak2003,
+  title = {Predicting Crystal Structures: The Parrinello-Rahman Method Revisited},
+  author = {Marto\v{n}\'ak, R. and Laio, A. and Parrinello, M.},
+  journal = {Phys. Rev. Lett.},
+  volume = {90},
+  issue = {7},
+  pages = {075503},
+  numpages = {4},
+  year = {2003},
+  month = {Feb},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.90.075503},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.90.075503}
+}
+
+@article{escobedo2008,
+  author = "Escobedo, Fernando A. and Martinez-Veracoechea, Francisco J.",
+  title = "Optimization of expanded ensemble methods",
+  journal = "The Journal of Chemical Physics",
+  year = "2008",
+  volume = "129",
+  number = "15",
+  eid = 154107,
+  pages = "",
+  url = "http://scitation.aip.org/content/aip/journal/jcp/129/15/10.1063/1.2994717",
+  doi = "http://dx.doi.org/10.1063/1.2994717"
+}
+
+@article{fiorin2013,
+  author = {Giacomo Fiorin and Michael L. Klein and Jérôme Hénin},
+  title = {Using collective variables to drive molecular dynamics simulations},
+  journal = {Molecular Physics},
+  volume = {111},
+  number = {22-23},
+  pages = {3345-3362},
+  year = {2013},
+  doi = {10.1080/00268976.2013.813594},
+  URL = { http://dx.doi.org/10.1080/00268976.2013.813594 }
+}
+
+@article{karplus2002,
+  author = {Karplus, Martin and McCammon, J. Andrew},
+  title = {Molecular dynamics simulations of biomolecules},
+  journal = {Nature Structural \& Molecular Biology},
+  volume = {9},
+  number = {9},
+  pages = {646-652},
+  year = {2002}
+}
+
+@article{hummer2003,
+  author = "Hummer, Gerhard and Kevrekidis, Ioannis G.",
+  title = "Coarse molecular dynamics of a peptide fragment: Free energy, kinetics, and long-time dynamics computations",
+  journal = "The Journal of Chemical Physics",
+  year = "2003",
+  volume = "118",
+  number = "23",
+  pages = "10762-10773",
+  url = "http://scitation.aip.org/content/aip/journal/jcp/118/23/10.1063/1.1574777",
+  doi = "http://dx.doi.org/10.1063/1.1574777"
+}

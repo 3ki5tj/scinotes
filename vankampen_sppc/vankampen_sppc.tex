@@ -1347,6 +1347,269 @@ $$
 
 
 
+
+
+\section{The long-time limit}
+
+
+
+At long times, $t \to \infty$,
+all solutions of the master equation
+$$
+\dot \phi_n = \sum_{n'} \mathbb W_{n n'} \, \phi_{n'}
+$$
+tends to a unique stationary distribution
+no matter the initial distribution,
+if the $\mathbb W$ is not decomposable
+or splitting.
+%
+In this section, the author gives
+an elegant proof for this statement.
+%
+
+
+
+Consider an arbitrary solution $\phi_n$,
+which may not be a distribution,
+of the master equation.
+%
+The proof is based on the following
+decomposition of $\phi_n$.
+%
+We cast the components into three classes,
+distinguished by the indices $u$, $v$, $w$:
+$\phi_u$ for all $\phi_u > 0$,
+$\phi_v$ for all $\phi_v < 0$,
+and
+$\phi_w$ for all $\phi_w = 0$.
+The proof is based on the two lemmas.
+
+
+\subsection{Lemma 1}
+
+
+We now define the sum
+%
+\begin{equation}
+  U(t) = \sum_u \phi_u(t)
+  = \sum_m \phi_m(t) \, \mathbf 1_{\phi_m(t) > 0},
+  \label{eq:phi_usum}
+\end{equation}
+%
+where $\mathbf 1_c$ is the Iverson bracket,
+which is $1$ if condition $c$ is true,
+or $0$ otherwise.
+%
+The first lemma states that
+\emph{
+  the sum $U(t)$ is monotonically decreasing,
+}
+%
+\begin{align}
+  \dot U(t)
+  &=
+  \sum_u
+  \left(
+    \sum_{u'}
+      W_{u u'} \, \phi_{u'}
+      + W_{u v'} \, \phi_{v'}
+  \right)
+  \notag \\
+  &=
+  \sum_{u'}
+  \left(
+  -
+  \sum_{v}
+    W_{v u'}
+  -
+  \sum_{w}
+    W_{w u'}
+  \right)
+  \, \phi_{u'}
+  +
+  \sum_{u, u'}
+    W_{u v'} \, \phi_{v'}.
+  \label{eq:usum_dot}
+\end{align}
+%
+On the first line, we omit $W_{uw'} \phi_{w'}$
+for $\phi_{w'}$ is $0$ by definition.
+%
+On the second line we have used $\sum_n W_{n u'} = 0$
+for any $u'$, which means
+$\sum_u W_{u u'} = -\sum_v W_{v u'} + \sum_w W_{w u'}$.
+
+
+Now from Eq. \eqref{eq:usum_dot}
+it is clear each of the summand on the right-hand side
+is non-positive, and hence $U(t)$ is decreasing.
+%
+Note, however, that Eq. \eqref{eq:usum_dot}
+holds when no term enters or leaves the sum.
+%
+If this happens, $\dot U(t)$ is no longer continuous,
+but $U(t)$ itself still is.
+%
+Any term $\phi_n$ entering the sum must assume
+the value of $0$ at that moment,
+so is the term leaving the sum.
+
+
+Thus, we have proved the first lemma
+%
+\begin{equation}
+  \dot U(t) \le 0.
+  \label{eq:dotusum_le_0}.
+\end{equation}
+%
+Similarly, we can the show that the sum
+%
+\begin{equation}
+  V(t) = \sum_v \phi_v(t)
+  \label{eq:phi_vsum}
+\end{equation}
+%
+is increasing.
+
+
+\paragraph{Corollary.}
+
+
+Now $U(t)$ is decreasing but remains nonnegative at all times.
+%
+Thus it must tend to a nonnegative value asymptotically.
+%
+Similarly, $V(t)$ tends to a nonpositive value.
+%
+A corollary of this is that
+\emph{
+  if initially $\phi_n(0) \ge 0$,
+  then $\phi_n(t) \ge 0$ at all times $t$.
+}
+
+
+
+We can also tie down the rate of change of $U(t)$ and $V(t)$
+as $\dot U(t) = -\dot V(t)$.
+%
+This is because,
+$$
+\frac{d}{dt} \left[ U(t) + V(t) \right]
+=
+\sum_n \dot \phi_n(t)
+=
+\sum_m \left( \sum_n W_{nm} \right) \, \phi_m(t)
+= 0.
+$$
+Thus,
+$U(t) + V(t) + W(t) = U(t) + V(t) = C$,
+remains a constant of time.
+%
+The second lemma is about the sign of the constant $C$.
+
+
+
+\section{Lemma 2}
+
+
+
+Without loss of generality,
+we may assume $C \ge 0$ (otherwise negative all $phi_n$'s).
+%
+The second lemma states that
+$V(t)$ tends to $0$ asymptotically
+if $\mathbb W$ is neither decompable or splitting.
+
+The proof is based on the fact that
+$\dot U(\infty) = 0$,
+then the three summands in Eq. \eqref{eq:usum_dot}
+must all be zero,
+which means
+$$
+W_{v u'} = W_{w u'} = W_{u v'} = 0.
+$$
+Further
+$$
+\dot V = \sum_{vv'} W_{v v'} \phi_{v'}
+= - \sum_{wv'} W_{w v'} \phi_{v'}.
+$$
+which means asymptotically as $V(\infty = 0$.
+$$
+W_{w v'} = 0.
+$$
+This means the matrix $\mathbb W$ can be written as
+$$
+\left(
+  \begin{array}{cccccc}
+    \mathbb W_{u u'} &  0                 & \mathbf W_{u w'} \\
+    0                &  \mathbb W_{v v'}  & \mathbf W_{v w'} \\
+    0                &  0                 & \mathbf W_{w w'}
+  \end{array}
+\right),
+$$
+which is splitting,
+or if the set of $w$ is empty,
+$$
+\left(
+  \begin{array}{cccccc}
+    \mathbb W_{u u'} &  0                \\
+    0                &  \mathbb W_{v v'} \\
+  \end{array}
+\right),
+$$
+which is decomposable.
+%
+Both cases have been excluded by the assumption.
+
+For the other possibilities,
+either the $u$ states vanish,
+or the $v$ states vanish,
+and we have $C = 0$ and $C \ge 0$,
+respectively.
+
+
+
+\paragraph{Corollary.}
+
+
+Particularly, if $C = 0$ initially,
+$U = V = 0$
+all components of $\phi_n$
+tend to $0$ as $t \to \infty$.
+
+
+
+\subsection{Uniqueness of the stationary distribution}
+
+
+
+First, from the corollary after after lemma 1,
+we know that for a distribution,
+where $C = U = \sum_n p_n(t) = 1$ at all times.
+%
+In other words, no component $p_n(t)$ can turn to negative
+at any time, in other words $p_n(t) \ge 0$.
+
+
+Second, we show prove that any two distribution
+will tend to the same stationary distribution.
+%
+Consider the difference
+$
+\phi_n(t) = p^{(1)}_n(t) - p^{(2)}_n(t).
+$
+In this case, $C = 1 - 1 = 0$.
+%
+Thus according to the corollary of the second lemma,
+all components tend to zero: $\phi_n(\infty) = 0$,
+or
+$p^{(1)}_n(\infty) = p^{(2)}_n(\infty)$.
+%
+This shows the stationary distribution is unique
+for a $\mathbb W$ matrix that is neither decomposable or splitting.
+
+
+
 \chapter{One-step Processes}
 
 
