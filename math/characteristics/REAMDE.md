@@ -1,3 +1,5 @@
+Method of characteristics
+
 How to solve PDE via directional derivatives
 https://www.youtube.com/watch?v=B5bdslJh5nE
 

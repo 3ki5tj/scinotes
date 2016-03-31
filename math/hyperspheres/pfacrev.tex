@@ -1,0 +1,97 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+In this paper, the authors proposed a simple and clever method of predicting
+the random close packing density using the Percus-Yevick (PY) integral equation
+theory.
+The idea is that under a sufficiently high density, the PY theory breaks down
+and produces negative values of radial distribution function, $g(r)$, even
+though the equation of state has yet manifested any singularity
+at such a density.
+This is an astute and interesting observation by itself.
+Then the authors argue that the above critical density can be identified as
+the density of random close packing.
+While the paper certainly presents a very thought-provoking idea in a clear
+and elegant style, there are several points that may need further clarification.
+
+First, the key observation of the paper is the fact that the PY theory can
+produce negative values for $g(r)$.  But this is because the PY theory adopts
+a linearized closure
+\begin{equation}
+g(r) = e^{-\beta u(r)} [ 1 + t(r) ],
+\label{eq:grPY}
+\end{equation}
+out of, arguably, mathematical simplicity.
+Here $\beta = 1/(kT)$ is the inverse temperature,
+$u(r)$ and $t(r)$ are the pair potential and the indirect correlation
+function, respectively.
+Although the PY theory works remarkably well for the three-dimensional
+hard-sphere fluid, one may argue that generally, Eq. \eqref{eq:grPY},
+is only an expedient approximation to circumvent the problem of missing
+the exact bridge function, $B(r)$.
+In other words, negative values of $g(r)$ may show up because of an artifact
+of the PY theory instead of physical reasons.
+While the authors have given on the second page a nontraditional derivation
+of the PY theory and some possible extensions, there appears to be no direct
+explanation for the physical nature of negative values of $g(r)$.
+Thus, it is somewhat difficult to estimate the applicability of the proposed
+method to other fluids.
+
+
+Second, the extrapolation method employed by the authors in computing $g(r)$
+for even dimensions might be a bit dangerous.
+This is especially so for higher dimensions because the radius of convergence
+of the density series can be much smaller than the random close-packing
+density reported in Table I of the paper.
+The two densities can differ by several orders of magnitude with the ratio
+shrinking exponentially with the dimensionality, $d$.
+A safer alternative is to use an advanced iterative integral equation
+solver, such as the MDIIS method\cite{pulay1980, pulay1982, kovalenko1999},
+to directly compute $g(r)$.
+This would avoid the extrapolation error.
+Using this implementation, one can verify the figures reported in Table I for
+odd dimensions.
+For even dimensions, the Fourier transform can be implemented with the
+discrete Hankel transform\cite{lado1967, johnson1987}.
+The reported values for the packing fractions of $d = 6$ and $8$ appear to
+be too small.
+The new corrected figures (computed using the MDIIS method), attached in the
+following table, appear to interpolate better with the values for odd
+dimensions.
+
+Third, the PY theory is known to be less reliable for higher dimensions.
+The reason is that the missing bridge diagrams from Eq. \eqref{eq:grPY}
+grow rapidly with the dimensionality, $d$.
+In fact, the predicted $\eta_c$ appear to exceed the close packing fraction
+for $d \ge 7$.
+[If $\eta_c(d = 6)$ is corrected, it also exceeds the close packing fraction
+in that dimension.]
+While this fact does not affect the validity in three dimensions,
+higher-dimensional cases may deserve some further remedies.
+
+\begin{table*}[h]
+\centering
+\renewcommand{\arraystretch}{2.5}
+\begin{tabular}{llll}
+Dimension $d$     &   $\eta_\mathrm{CP}(d)$  & $\eta_c(d)$ \\
+\hline
+$2$     &   $\dfrac{ \pi } { 2 \, \sqrt 3 } \approx 0.907$      & ($0.785$) \\
+$3$     &   $\dfrac{ \pi } { 3 \, \sqrt 2 } \approx 0.740$      & $0.613$ \\
+$4$     &   $\dfrac{ \pi^2 } { 8 \, \sqrt{5} } \approx 0.552$   & $0.467$ ($0.462$) \\
+$5$     &   $\dfrac{ \pi^2 } { 15 \, \sqrt 3 } \approx 0.380$   & $0.367$ \\
+$6$     &   $\dfrac{ \pi^3 } { 48 \sqrt{7} } \approx 0.244$     & $0.230$ ($0.262$) \\
+$7$     &   $\dfrac{ \pi^3 } { 210 } \approx 0.148$             & $0.207$ \\
+$8$     &   $\dfrac{ \pi^4 } { 1152 } \approx 0.085$            & $0.087$ ($0.132$) \\
+$9$     &   $\dfrac{ \pi^4 } { 945 \, \sqrt 5 } \approx 0.046$  & $0.112$
+\end{tabular}
+\caption{Close packing fractions, $\eta_\mathrm{CP}(d)$,
+and the random close packing fractions, $\eta_c(d)$
+for the hard-sphere fluid.
+The latter were copied from Table I of the paper.
+The corrected values, if any, are shown in parentheses. }
+\end{table*}
+
+\bibliographystyle{unsrt}
+\bibliography{liquid}
+\end{document}
