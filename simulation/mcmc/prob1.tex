@@ -1,0 +1,264 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{url}
+\begin{document}
+
+
+\section{Problem Set 1: Transition matrices}
+
+\subsection{Getting familiar with transition matrices}
+
+%This exercise helps develop some familiarity with transition matrices.
+
+Consider the following a matrix,
+\begin{equation}
+  \mathbf T
+  =
+  \left(
+    \begin{array}{ccc}
+    \times  &   0.4   &   0       \\
+    1       &   0     &   \times  \\
+    0       & \times  &   0
+    \end{array}
+  \right)
+  .
+\end{equation}
+It has a few missing elements marked by ``$\times$.''
+
+\begin{enumerate}
+  \item
+  Fill the missing elements using the properities of a transition matrix:
+  $$
+    T_{ij} \ge 0 \qquad \mathrm{and} \qquad \sum_{i = 1}^N T_{ij} = 1.
+  $$
+
+  \item
+  Draw the transition diagram of nodes and arrows.
+
+  \item
+  Find the eigenvalues and right eigenvectors.
+  \small{
+    For the eigenvalues,
+    it can be done with a pencil and a piece of paper
+    by computing the roots of the cubic equation
+    $$
+    \det (\mathbf T - \lambda \, \mathbf I) = 0.
+    $$
+    But if this is too much,
+    we have Wolfram Alpha, \url{www.wolframalpha.com}.
+    Go there and type something like
+    \texttt{
+      Eigensystem[\{\{0.4,0.5\},\{0.6,0.5\}\}]}.
+  }
+
+  \item
+  Identify the eigenvector that corresponds to the eigenvalue $\lambda = 1$.
+  Verify that its elements share the same sign.
+  Try to normalize it to the stationary distribution, $\mathbf p^s$,
+  such that all elements sum to $1.0$.
+
+  \item
+  \label{prob1:eigneg1}
+  Verify that all eigenvalues satisfy $|\lambda| \le 1$.
+  If there is an eigenvalue with $\lambda = -1$,
+  can we say something about it?
+
+  \item
+  Verify that the transition matrix satisfies detailed balance:
+  $$
+    T_{ij} \, p^s_j = T_{ji} \, p^s_i,
+  $$
+  for any $i$ and $j$.
+
+  \item
+  For each right eigenvector, $\mathbf v$,
+  compute the corresponding vector, $\mathbf u$,
+  as
+  $$
+    u_i = \frac { v_i } { p^s_i },
+  $$
+  verify that every $\mathbf u$
+  constructed this way is a left eigenvalue of $\mathbf T$
+  with the same eigenvalue.
+
+  \item
+  Verify that $\mathbf u_i \cdot \mathbf v_j = 0$
+  for any $i \ne j$.
+
+  \item
+  \label{prob1:coarsegraining}
+  Construct a coarse-grained transition matrix, $\mathbf S$,
+  of two states by merging the first and the third states
+  in $\mathbf T$. If we called the merged state $M$, then
+  %
+  \begin{equation}
+  S_{M2} = T_{12} + T_{32},
+  \qquad \mathrm{and} \qquad
+  S_{2M} =
+  \frac{ T_{21} \, p^s_1 + T_{23} \, p^s_3 }
+       { p^s_1 + p^s_3 }
+  .
+  \label{eq:coarse-graining}
+  \end{equation}
+  %
+  Figure out $S_{22}$ and $S_{MM}$.
+
+  \item
+  Compute the eigenvalues of $\mathbf S$
+  and compare them with those of $\mathbf T$.
+
+  \item
+  Draw the transition diagram of $\mathbf S$.
+  What can we say about this?
+  Is the process strictly random?
+  Is the Perron-Frobenius theorem still applicable?
+  Reconsider part \ref{prob1:eigneg1}.
+
+  \item
+  Consider the attenuated transition matrix
+  $$
+  \mathbf T'
+  =
+  \frac 1 2
+  \left(
+    \mathbf I
+    +
+    \mathbf T
+  \right)
+  =
+  \left(
+    \begin{array}{ccc}
+      0.5   &   0.2   &   0     \\
+      0.5   &   0.5   &   0.5   \\
+      0     &   0.3   &   0.5
+    \end{array}
+  \right)
+  .
+  $$
+  Show that the eigenvectors of $\mathbf T$
+  are also the eigenvectors of $\mathbf T'$.
+  What are the eigenvalues of $\mathbf T'$?
+
+
+\end{enumerate}
+
+
+
+\subsection{Coarse-graining}
+
+
+
+This is a generalization of the coarse graining process
+in part \ref{prob1:coarsegraining} of the previous problem.
+%
+Each coarse-graining
+can be down by successively
+merging two states into one,
+one step at a time.
+%
+But in some step, we may have more than
+three states in total.
+%
+What are the generalized version of Eq. \eqref{eq:coarse-graining}?
+%
+\begin{enumerate}
+  \item
+  Show that the coarse-grained matrix satisfies
+  the three basic rules of a transition matrix:
+  (i) $S_{ij} \ge 0$,
+  (ii) $\sum_i S_{ij} = 1$,
+  (iii) $\sum_j S_{ij} \, P^s_j = P^s_i$.
+  Here, $\mathbf P^s$ is the distribution
+  of the coarse-grained not the original states.
+
+  \item
+  If the original matrix satisfies detailed balance,
+  show that the coarse-grained matrix also satisfies
+  detailed balance.
+\end{enumerate}
+
+
+\section{Problem Set 2: Monte Carlo simulations}
+
+\subsection{Binomial random number}
+
+
+
+This is a programming task.
+%
+Using Markov-chain Monte Carlo,
+generate a random number $i$ that satisfies the binomial distribution:
+$$
+p_i = c \, {N \choose i}
+\qquad
+0 \le i \le N
+,
+$$
+where $c$ is a normalization factor.
+
+Actually, $N$ does not have to be an integer.
+Modify your code such that it may work for a non-integral $N$,
+say $N = 10.5$.
+
+Hint. We do not have to worry about $c$.
+Only the ratios matter in a Monte Carlo simulation, and
+$$
+\frac{ p_{i+1} } { p_i } = \frac{ N - i } { i + 1 },
+\qquad
+\frac{ p_{i-1} } { p_i } = \frac{ i } { N - i + 1}.
+$$
+
+A sample C code is here: \url{http://ideone.com/CgL1FI}.
+
+
+
+\subsection{Autocorrelations}
+
+[Data from a Monte Carlo or molecular dynamcis trajectory are correlated.
+  The redundancy $g$ because of the correlation
+  is related to the integral autocorrelation time $\tau$
+  by the following formula
+  \begin{equation}
+    g = 1 + 2 \, \tau.
+  \label{eq:1p2T}
+  \end{equation}
+  This exercise is a demonstration of this formula.
+]
+
+Alice flips a coin every day.
+%
+If the result is a head, she writes $+1$ on her notebook;
+otherwise, she writes $-1$.
+%
+At the end of the year, she adds the numbers up.
+
+Bob does pretty much the same thing, except that he is lazier.
+%
+So every day there is two thirds chance that he does not flip the coin
+and simply copies yesterday's result.
+%
+At the end of the year, Bob also adds the numbers up.
+
+\begin{enumerate}
+  \item
+  Show that on average Bob's end-of-year number
+  is roughly $\sqrt 5$ as large as Alice's
+  in magnitude (no matter the sign).
+  %
+  In other words, Bob's numbers has
+  a statistical redundancy of $g = 5$.
+
+  \item
+  Show that the autocorrelation time of Bob's numbers
+  is $\tau = 2$.
+
+  \item
+  Verify Eq. \eqref{eq:1p2T}.
+\end{enumerate}
+
+Here is a demonstration:
+\url{http://ideone.com/hH7U6Y}.
+
+
+\end{document}
