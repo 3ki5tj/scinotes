@@ -10,10 +10,22 @@
 
 \newcommand{\hint}[1]{{\color{dark-brown}\small #1}}
 
+\newcounter{problem}[section]
+\newenvironment{problem}[1]
+{
+  \refstepcounter{problem}\par\bigskip
+  \textbf{\large Problem~\theproblem. #1}
+  \par\medskip
+}
+{ \medskip }
+
+
+
+
 \section{Problem Set 1: Transition matrices}
 
 
-\subsection{Getting familiar with transition matrices}
+\begin{problem}{Getting familiar with transition matrices}
 
 %This exercise helps develop some familiarity with transition matrices.
 
@@ -132,9 +144,10 @@ It has a few missing elements marked by ``$?$''.
     For example, for the last eigenvector,
     we compute the matrix product.
     $$
+    \begin{aligned}
     \mathbf T \,
     \mathbf v_3
-    =
+    &=
     \left(
       \begin{array}{ccc}
         0     & 0.4 &   0 \\
@@ -149,6 +162,8 @@ It has a few missing elements marked by ``$?$''.
         -3
       \end{array}
     \right)
+    \\
+    &
     =
     \left(
       \begin{array}{rrrrrr}
@@ -166,6 +181,7 @@ It has a few missing elements marked by ``$?$''.
       \end{array}
     \right)
     .
+    \end{aligned}
     $$
     Hopefully,
     once you have figured out the last two elements,
@@ -446,10 +462,12 @@ It has a few missing elements marked by ``$?$''.
 
 \end{enumerate}
 
+\end{problem}
 
 
-\subsection{Coarse-graining}
 
+
+\begin{problem}{Coarse-graining}
 
 
 This is a generalization of the coarse-graining process
@@ -568,6 +586,171 @@ Besides, detailed balance is also an invariant.
   show that the transition matrix after the two-state-merging
   also satisfies detailed balance.
 \end{enumerate}
+
+\end{problem}
+
+
+
+
+
+\section{Answer keys}
+
+
+\begin{problem}{Getting familiar with transition matrices}
+\begin{enumerate}
+  \item
+  $$
+    \mathbf T
+    =
+    \left(
+      \begin{array}{ccc}
+      0       &   0.4   &   0  \\
+      1       &   0     &   1  \\
+      0       &   0.6   &   0
+      \end{array}
+    \right)
+    .
+  $$
+
+  \item
+  See the diagram below.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \node[draw, circle, very thick, scale=1.5] (1) at (0, 0)    {$1$};
+      \node[draw, circle, very thick, scale=1.5] (2) at (2, 3.46) {$2$};
+      \node[draw, circle, very thick, scale=1.5] (3) at (4, 0)    {$3$};
+      \draw[->, very thick]
+          (2) edge[bend right=20] node [left]   {$0.4$} (1)
+          (1) edge[bend right=20] node [below]  {$0$}   (3)
+          (3) edge[bend right=20] node [right]  {$1$}   (2)
+          (2) edge[bend right=20] node [right]  {$0.6$} (3)
+          (1) edge[bend right=20] node [left]   {$1$}   (2)
+          (3) edge[bend right=20] node [below]  {$0$}   (1)
+          ;
+      % self arrows
+      % ++(180:5mm) shift the start point to node 2 + (-5mm, 0)
+      \draw [->, very thick] (1) ++(180:5mm)
+          node [anchor=70, inner sep=10mm] {$0$}
+          arc (-270:0:5mm);
+      % ++(50:5mm) shift the start point to node 1 + 5mm * (cos(50), sin(50))
+      \draw [->, very thick] (2) ++(50:5mm)
+          node [anchor=-80, inner sep=10mm] {$0$}
+          arc (-50:230:5mm);
+      \draw [->, very thick] (3) ++(-90:5mm)
+          node [anchor=160, inner sep=10mm] {$0$}
+          arc (-180:90:5mm);
+    \end{tikzpicture}
+  \end{figure}
+
+  \item
+    $
+      \lambda_1
+      =
+      1,
+      \mathbf v_1
+      =
+      \left(
+        \begin{array}{r}
+          2 \\
+          5 \\
+          3
+        \end{array}
+      \right)
+      ,
+      \lambda_2
+      =
+      0,
+      \mathbf v_2
+      =
+      \left(
+        \begin{array}{r}
+          1 \\
+          0 \\
+          -1
+        \end{array}
+      \right)
+      ,
+      \lambda_3
+      =
+      -1,
+      \mathbf v_3
+      =
+      \left(
+        \begin{array}{r}
+          -2 \\
+          5 \\
+          -3
+        \end{array}
+      \right)
+      .
+    $
+
+    To figure out the eigenvalues directly:
+    $$
+    \begin{aligned}
+    0
+    &=
+    \left|
+      \begin{array}{ccc}
+      -\lambda  &   0.4   &   0  \\
+      1         & -\lambda  &   1  \\
+      0         &   0.6   &   -\lambda
+      \end{array}
+    \right|
+    =
+    -\lambda \, (\lambda^2 - 0.6) + 0.4 \, \lambda
+    =
+    \lambda - \lambda^3
+    .
+    \end{aligned}
+    $$
+    So $\lambda = 0$ or $\pm 1$.
+
+  \item
+    The eigenvector is $\mathbf v_1$,
+    $
+      \mathbf p^s
+      =
+      \frac{1}{10} \mathbf v_1
+      =
+      \left(
+        \begin{array}{r}
+          0.2 \\
+          0.5 \\
+          0.3
+        \end{array}
+      \right)
+      .
+    $
+
+  \item
+    $|1| \le 1$, $|0| \le 1$, and $|-1| \le 1$.
+
+  \item
+    For $1$ and $2$, $1 \times 0.2 = 0.4 \times 0.5$;
+    for $2$ and $3$, $0.6 \times 0.5 = 1 \times 0.3$;
+    for $1$ and $3$, $0 \times 0.2 = 0 \times 0.3$.
+
+  \item
+    $$
+    \begin{aligned}
+      \mathbf u_1 &= (1, 1, 1),
+      &
+      \mathbf u_1 \, \mathbf T &= (1, 1, 1)
+      , \\
+      \mathbf u_2 &= (3, 0, -2),
+      &
+      \mathbf u_2 \, \mathbf T &= (0, 0, 0)
+      , \\
+      \mathbf u_3 &= (-1, 1, -1),
+      &
+      \mathbf u_3 \, \mathbf T &= (1, -1, 1)
+      .
+    \end{aligned}
+    $$
+\end{enumerate}
+\end{problem}
 
 
 \end{document}
