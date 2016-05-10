@@ -1,0 +1,152 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{url}
+\begin{document}
+
+
+\section{Problem Set 2: Monte Carlo simulations}
+
+
+\subsection{Distracted programmers}
+
+
+Harry is a programmer.
+%
+Lately, he finds himself often distracted by
+incoming E-mails during coding.
+%
+In the mornings,
+while coding,
+he checks his E-mails at a frequency of about $20$ minutes,
+and it takes him about $5$ minutes to switch back to
+the coding mode.
+%
+In the afternoons, Harry is more distracted.
+%
+He will check his E-mails every $10$ minutes while coding,
+and it takes on average $10$ minutes
+to finish reading his E-mails and to code again.
+
+\begin{enumerate}
+  \item
+    Suppose Harry works four hours in the morning,
+    and another four hours in the afternoon.
+    How much time does he spend on coding
+    in the mornings and in the afternoons?
+
+  \item
+    After talking with his Boss, Mr. Snape,
+    Harry wants to improve the work efficiency
+    in the afternoons.
+    By exerting his will power,
+    he can now resist half of the attempts of checking E-mails
+    in the afternoons.
+    Then how much time does he spend on coding
+    in the afternoons?
+
+  \item
+    Harry's good friend Ron
+    suffers from the same problem.
+    %
+    However,
+    to improve the work efficiency in the afternoon,
+    Ron decides to take a nap for $30$ minutes
+    after the lunch break.
+    %
+    This allows him to recover the work efficiency
+    back to the morning level
+    for the rest of the afternoon
+    (three and a half hours).
+    %
+    How much time does Ron spend on coding
+    in the afternoons?
+
+  \item
+    Who is more efficient in the afternoons, Harry or Ron?
+\end{enumerate}
+
+
+
+
+\subsection{Binomial random number}
+
+
+
+This is a programming task.
+%
+Using Markov-chain Monte Carlo,
+generate a random number $i$ that satisfies the binomial distribution:
+$$
+p_i = c \, {N \choose i}
+\qquad
+0 \le i \le N
+,
+$$
+where $c$ is a normalization factor.
+
+Actually, $N$ does not have to be an integer.
+Modify your code such that it may work for a non-integral $N$,
+say $N = 10.5$.
+
+Hint. We do not have to worry about $c$.
+Only the ratios matter in a Monte Carlo simulation, and
+$$
+\frac{ p_{i+1} } { p_i } = \frac{ N - i } { i + 1 },
+\qquad
+\frac{ p_{i-1} } { p_i } = \frac{ i } { N - i + 1}.
+$$
+
+A sample C code is here: \url{http://ideone.com/CgL1FI}.
+
+
+
+\subsection{Autocorrelations}
+
+[Data from a Monte Carlo or molecular dynamcis trajectory are correlated.
+  The redundancy $g$ because of the correlation
+  is related to the integral autocorrelation time $\tau$
+  by the following formula
+  \begin{equation}
+    g = 1 + 2 \, \tau.
+  \label{eq:1p2T}
+  \end{equation}
+  This exercise is a demonstration of this formula.
+]
+
+Alice flips a coin every day.
+%
+If the result is a head, she writes $+1$ on her notebook;
+otherwise, she writes $-1$.
+%
+At the end of the year, she adds the numbers up.
+
+Bob does pretty much the same thing, except that he is lazier.
+%
+So every day there is two thirds chance that he does not flip the coin
+and simply copies yesterday's result.
+%
+At the end of the year, Bob also adds the numbers up.
+
+\begin{enumerate}
+  \item
+  Show that on average Bob's end-of-year number
+  is roughly $\sqrt 5$ as large as Alice's
+  in magnitude (no matter the sign).
+  %
+  In other words, Bob's numbers has
+  a statistical redundancy of $g = 5$.
+
+  \item
+  Show that the autocorrelation time of Bob's numbers
+  is $\tau = 2$.
+
+  \item
+  Verify Eq. \eqref{eq:1p2T}.
+\end{enumerate}
+
+Here is a demonstration:
+\url{http://ideone.com/hH7U6Y}.
+
+
+\end{document}

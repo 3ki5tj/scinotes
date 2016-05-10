@@ -163,7 +163,7 @@ Usually we assume that the dependence is linear, so that
 $$
   \mathbf p(t+1)
   =
-  \mathbf T(t) \, \mathbf p(t). 
+  \mathbf T(t) \, \mathbf p(t).
 $$
 where $\mathbf T(t)$ is a $N$ by $N$ square matrix.
 %
@@ -221,7 +221,7 @@ graphically as follows:
     % ++(180:5mm) shift the start point to node 2 + (-5mm, 0)
     \draw [->, very thick] (2) ++(180:5mm)
         node [anchor=90, inner sep=4mm] {$T_{22}$}
-        arc (-270:0:5mm); 
+        arc (-270:0:5mm);
     \draw [->, very thick] (3) ++(-90:5mm)
         node [anchor=170, inner sep=3mm] {$T_{33}$}
         arc (-180:90:5mm);
@@ -234,6 +234,187 @@ graphically as follows:
 
 
 The transition matrix
+
+\section*{Summary}
+
+\begin{itemize}
+
+  \item
+  A \emph{probability distribution}
+  is $n$-nonnegative numbers that sum to $1$:
+  $\mathbf p = (p_1, \dots, p_N)^T$,
+  with $p_k \ge 0$ and $\sum_{k = 1}^N p_k = 1$.
+
+  \item
+  Each number $p_k$ can represent a frequency (time-interpretation)
+  or a fraction of population (population-interpretation).
+
+  \item
+  In a \emph{stochastic process},
+  the distribution changes with time.
+  So the population interpretation is more useful.
+
+  \item
+  In a \emph{Markov process},
+  the distribution today $\mathbf p(t)$
+  determines completely the distribution tomorrow $\mathbf p(t+1)$.
+  Particularly, if the dependence is linear
+  and does not change with time,
+  we have a \emph{Markov chain}.
+
+  \item
+  The evolution of the distribution in a Markov chain is
+  $$
+  p_i(t+1) = \sum_{j = 1}^N T_{ij} \, p_j(t).
+  $$
+  We can think $p_i$ as the population fraction
+  of people living in city $i$,
+  and
+  $T_{ij}$ gives the fraction of people of city $j$
+  traveling to city $i$ every day.
+  In matrix form, we have
+  $$
+  \mathbf p(t+1)
+  =
+  \mathbf T \cdot \mathbf p(t)
+  .
+  $$
+
+
+  \item
+  The \emph{transition matrix}, $\mathbf T$,
+  is made of the numbers $T_{ij}$
+  $$
+  \def\arraystretch{2.4}
+  \mathbf T
+  =
+  \left(
+    \begin{array}{cccc}
+      T_{11}    &   T_{12}    & \dots   & T_{1N} \\
+      \vdots    &   \vdots    & \ddots  & \vdots \\
+      T_{N1}    &   T_{N2}    & \dots   & T_{NN}
+    \end{array}
+  \right).
+  $$
+  The first index is for the destination,
+  the second for the source.
+
+  \item
+  Properties of the transition matrix.
+  \begin{enumerate}
+    \item
+    Since each $T_{ij}$ is a fraction,
+    it cannot be negative,
+    $$
+    T_{ij} \ge 0.
+    $$
+
+    \item
+    Since the fractions of all destinations sum to $1$,
+    $$
+    \sum_{i = 1}^N T_{ij} = 1,
+    $$
+    for any $j$,
+    i.e., each column of the transition matrix
+    is a distribution.
+
+    \item
+    Later, we will deduce that
+    there is a stationary distribution
+    $\mathbf p^s = (p^s_1, \dots, p^s_N)$,
+    that
+    $$
+    \mathbf T \cdot \mathbf p^s
+    =
+    \mathbf p^s.
+    $$
+  \end{enumerate}
+
+  \item
+  The time evolution of a Markov chain is simple
+  $$
+  \mathbf p(t) = \mathbf T^t \cdot \mathbf p(0)
+  .
+  $$
+  So the distribution at day $0$
+  determines all future distributions,
+  and the relation is \emph{linear}.
+
+  \item
+  We can exploit the linearity by
+  decomposing the initial distribution
+  into a linear combination of right eigenvectors
+  of $\mathbf T$.
+  If
+  $$
+  \mathbf p(0)
+  =
+  c_1 \, \mathbf v_1 + \cdots + c_N \, \mathbf v_N
+  ,
+  $$
+  then
+  $$
+  \mathbf p(t)
+  =
+  c_1 \, \lambda_1^t \, \mathbf v_1
+  + \cdots +
+  c_N \, \lambda_N^t \, \mathbf v_N.
+  $$
+  This decomposition spares us the trouble
+  of matrix multiplication.
+
+  \item
+  Eigenvectors and eigenvalues.
+  \begin{enumerate}
+    \item
+    If multiplying $\mathbf T$ on $\mathbf v$
+    is equivalent to scaling $\mathbf v$,
+    $$
+    \mathbf T \cdot \mathbf v
+    =
+    \lambda \mathbf v,
+    $$
+    then $\mathbf v$ is a right eigenvector of $\mathbf T$,
+    and $\lambda$ is the eigenvalue.
+
+    \item
+    If we are lucky, a $N$ by $N$ transition matrix
+    has $N$ eigenvectors.
+
+    \item
+    If $\mathbf v$ is an eigenvector of $\mathbf T$,
+    so is any nonzero multiple of $\mathbf v$.
+
+    \item
+    If $\mathbf v$ is an eigenvector of $\mathbf T$
+    with eigenvalue $\lambda$,
+    $\mathbf v$ is also an eigenvector of $\mathbf T^2$
+    with eigenvalue $\lambda^2$, etc.
+
+    \item
+    Similarly, $\mathbf u$ is a left eigenvector of $\mathbf T$
+    if $\mathbf u \cdot \mathbf T = \lambda \mathbf u$.
+  \end{enumerate}
+
+  \item
+  Properties of the transition matrix.
+  \begin{enumerate}
+    \item
+    All eigenvalues $|\lambda_k| \le 1$.
+
+    \item
+    If $\mathbf T$ is not broken, only one eigenvalue is $1.0$.
+    The corresponding eigenvector is labeled as $\mathbf v_1$,
+    which corresponds to the stationary distribution $\mathbf p^s$.
+
+    \item
+    $c_1 = 1$.
+
+    \item
+    All components of $\mathbf v_k$ ($k \ge 2$)
+    sum to $0$.
+  \end{enumerate}
+\end{itemize}
 
 \bibliographystyle{plain}
 \bibliography{simul}
