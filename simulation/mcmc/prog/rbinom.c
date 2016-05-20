@@ -41,11 +41,11 @@ int main(void)
         r = i / (N - i + 1.0);
       }
     }
-    
+
     if ( r > 1 || rand01() < r ) {
       i = j;
     }
-    
+
     hist[i] += 1;
   }
 
