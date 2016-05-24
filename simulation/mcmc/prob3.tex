@@ -1,0 +1,92 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{url}
+\begin{document}
+
+
+\newcounter{problem}[section]
+\newenvironment{problem}[1]
+{
+  \refstepcounter{problem}\par\bigskip
+  \textbf{\large Problem~\theproblem. #1}
+  \par\medskip
+}
+{ \medskip }
+
+
+
+
+\section{Problem Set 3: Simulated tempering}
+
+
+\begin{problem}{An Analogy}
+
+
+Which of the following resembles simulated tempering
+and the framework of expanded ensemble most?
+%
+Can you identify temperature and configuration there?
+
+\begin{enumerate}
+  \item
+    A person browsing an electronic dictionary,
+    which lists several meanings of a word,
+    with synonyms to some particular meanings given as hyper-links.
+
+  \item
+    An online price comparison tool that lists and compares
+    the prices from different websites and sorts them
+    in ascending order.
+
+  \item
+    A runner on the treadmill doing interval training,
+    in which the speed varies periodically from slow to fast
+    in each interval.
+
+  \item
+    A science-fiction movie, in which a person can travel
+    to a parallel universe, only if his/her counterpart in
+    that universe is transported to this one.
+\end{enumerate}
+
+
+\end{problem}
+
+
+\pagebreak
+
+\section{Answer keys}
+
+
+\begin{problem}{An Analogy}
+
+\begin{enumerate}
+  \item
+    This is my favorite answer.
+    Each word ``samples'' a few meanings.
+    So the word corresponds to a distinct distribution,
+    labeled by the ``temperature,''
+    and the meaning space is the configuration space.
+    %
+    When two words share a similar meaning,
+    one can perform a ``temperature'' transition.
+
+  \item
+    It resembles the temperature transition mechanics,
+    if the heat-bath rule is used.
+    %
+    But it may not be a good analogy for the expanded ensemble framework.
+
+  \item
+    In simulated tempering,
+    the temperature changes stochastically not periodically.
+
+  \item
+    This is more like a swap in replica exchange or parallel tempering.
+\end{enumerate}
+
+\end{problem}
+
+
+\end{document}

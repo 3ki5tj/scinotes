@@ -5,11 +5,14 @@ pdffigs=$(patsubst %,fig/%.pdf, $(figs))
 epsfigs=$(patsubst %,fig/%.eps, $(figs))
 figgps=$(patsubst %,fig/%.gp,  $(figs))
 
-all: $(prj).pdf
+texs = $(wildcard *.tex)
+pdfs = $(patsubst %.tex,%.pdf, $(texs))
 
-$(prj).pdf: $(prj).tex Makefile $(pdffigs)
-	pdflatex $<
-	bibtex $(prj)
+all: $(pdfs)
+
+$(pdfs): %.pdf: %.tex Makefile $(pdffigs)
+	#pdflatex $<
+	#bibtex $*
 	pdflatex $<
 	pdflatex $<
 

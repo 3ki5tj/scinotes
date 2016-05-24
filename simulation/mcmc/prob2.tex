@@ -5,28 +5,41 @@
 \begin{document}
 
 
+\newcounter{problem}[section]
+\newenvironment{problem}[1]
+{
+  \refstepcounter{problem}\par\bigskip
+  \textbf{\large Problem~\theproblem. #1}
+  \par\medskip
+}
+{ \medskip }
+
+
+
+
+
 \section{Problem Set 2: Monte Carlo simulations}
 
 
-\subsection{Distracted programmers}
+\begin{problem}{Distracted programmers}
 
 
 Harry is a programmer.
 %
 Lately, he finds himself often distracted by
-incoming E-mails during coding.
+incoming emails during coding.
 %
 In the mornings,
 while coding,
-he checks his E-mails at a frequency of about $20$ minutes,
+he checks his emails at a frequency of about $20$ minutes,
 and it takes him about $5$ minutes to switch back to
 the coding mode.
 %
 In the afternoons, Harry is more distracted.
 %
-He will check his E-mails every $10$ minutes while coding,
+He will check his emails every $10$ minutes while coding,
 and it takes on average $10$ minutes
-to finish reading his E-mails and to code again.
+to finish reading his emails and to code again.
 
 \begin{enumerate}
   \item
@@ -40,7 +53,7 @@ to finish reading his E-mails and to code again.
     Harry wants to improve the work efficiency
     in the afternoons.
     By exerting his will power,
-    he can now resist half of the attempts of checking E-mails
+    he can now resist half of the attempts of checking emails
     in the afternoons.
     Then how much time does he spend on coding
     in the afternoons?
@@ -66,10 +79,10 @@ to finish reading his E-mails and to code again.
     Who is more efficient in the afternoons, Harry or Ron?
 \end{enumerate}
 
+\end{problem}
 
 
-
-\subsection{Binomial random number}
+\begin{problem}{Binomial random number}
 
 
 
@@ -99,9 +112,11 @@ $$
 
 A sample C code is here: \url{http://ideone.com/CgL1FI}.
 
+\end{problem}
 
 
-\subsection{Autocorrelations}
+
+\begin{problem}{Autocorrelations}
 
 [Data from a Monte Carlo or molecular dynamcis trajectory are correlated.
   The redundancy $g$ because of the correlation
@@ -148,5 +163,43 @@ At the end of the year, Bob also adds the numbers up.
 Here is a demonstration:
 \url{http://ideone.com/hH7U6Y}.
 
+\end{problem}
+
+
+\pagebreak
+
+\section{Problem Set 2: Monte Carlo simulations}
+
+
+\begin{problem}{Distracted programmers}
+\begin{enumerate}
+  \item
+    Four hours is $240$ minutes.
+    In the mornings, the coding to emailing ratio is $4:1$.
+    So Harry spends $4/5$ of the time, or $192$ minutes, on coding.
+    In the afternoons, the ratio becomes $1:1$,
+    so he spends on average $120$ minutes on coding.
+
+  \item
+    By resisting the half of the transitions to the emailing mode,
+    we have $T_{EC} = 0.5 T_{CE}$ (C: coding, E: emailing).
+    So by detailed balance
+    $$
+    T_{EC} \, p_C = T_{CE} \, p_E,
+    $$
+    we have $p_C / p_E = T_{CE} / T_{EC} = 2$.
+    This means that Harry now spends on average two thirds of the time
+    on coding in the afternoons, or $160$ minutes.
+
+  \item
+    After deducting $30$ minutes of nap time,
+    Ron has $210$ minutes in the afternoons.
+    %
+    He will spend $4/5$ of them, or $168$ minutes, or coding.
+
+  \item
+    Ron.
+\end{enumerate}
+\end{problem}
 
 \end{document}

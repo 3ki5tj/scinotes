@@ -110,7 +110,7 @@ It has a few missing elements marked by ``$?$''.
     \end{array}
   \right),
   \quad
-  \mathbf v_2
+  \mathbf v_3
   =
   \left(
     \begin{array}{r}
@@ -749,8 +749,160 @@ Besides, detailed balance is also an invariant.
       .
     \end{aligned}
     $$
+
+  \item
+    $$
+    \begin{aligned}
+      \mathbf u_1 \cdot \mathbf v_2 &= 1    \times 1    + 1 \times 0 +    1 \times (-1) = 0, \\
+      \mathbf u_1 \cdot \mathbf v_3 &= 1    \times (-2) + 1 \times 5 +    1 \times (-3) = 0, \\
+      \mathbf u_2 \cdot \mathbf v_1 &= 3    \times 2    + 0 \times 5 + (-2) \times 3    = 0, \\
+      \mathbf u_2 \cdot \mathbf v_3 &= 3    \times (-2) + 0 \times 5 + (-2) \times (-3) = 0, \\
+      \mathbf u_3 \cdot \mathbf v_1 &= (-1) \times 2    + 1 \times 5 + (-1) \times 3    = 0, \\
+      \mathbf u_3 \cdot \mathbf v_2 &= (-1) \times 1    + 1 \times 0 + (-1) \times (-1) = 0.
+    \end{aligned}
+    $$
+
+  \item
+    $$
+    \begin{aligned}
+      S_{M2} &= T_{12} + T_{32} = 0.4 + 0.6 = 1, \\
+      S_{2M} &= \frac{ T_{21} \, p^s_1 + T_{23} \, p^s_3 } { p^s_1 + p^s_3 }
+              = \frac{ 1 \times 0.2 + 1 \times 0.3 } { 0.2 + 0.3 } = 1, \\
+      S_{22} &= 1 - S_{M2} = 0, \\
+      S_{MM} &= 1 - S_{2M} = 0.
+    \end{aligned}
+    $$
+    So the transition matrix is
+    $$
+    \mathbf S
+    = \left(
+      \begin{array}{ccc}
+      0 & 1 \\
+      1 & 0
+      \end{array}
+    \right)
+    .
+    $$
 \end{enumerate}
 \end{problem}
+
+\begin{problem}{Coarse-graining}
+\begin{enumerate}
+  \item
+    For example, for any states in the first final aggregated state, we can merge them two at a time.
+
+  \item
+    For $i \ge 3$, we have
+    \begin{align}
+      S_{Mi} &= T_{1i} + T_{2i},
+      \label{eq:csrule_Mi} \\
+      S_{iM} &= \frac{ T_{i1} \, p^s_1 + T_{i2} \, p^s_2 } { p^s_1 + p^s_2 },
+      \label{eq:csrule_iM} \\
+      S_{MM} &= 1 - \sum_{i = 3}^N S_{iM}.
+      \label{eq:csrule_MM}
+    \end{align}
+
+  \item
+    For the basic rule (i),
+    $S_{Mi} \ge 0$ and $S_{iM} \ge 0$ are obvious.
+    We only need to verify $S_{MM} \ge 0$.
+    From Eq. \eqref{eq:csrule_MM}, we have
+    $$
+    \begin{aligned}
+    (p^s_1 + p^s_2) \, S_{MM}
+    &=
+    p^s_1 + p^s_2 - \sum_{i = 3}^N \left( T_{i1} \, p^s_1 + T_{i2} \, p^s_2 \right)
+    \\
+    &=
+    p^s_1 \left( 1 - \sum_{i = 3}^N T_{i1} \right)
+    +
+    p^s_2 \left( 1 - \sum_{i = 3}^N T_{i2} \right)
+    \\
+    &=
+    p^s_1 \, \left( T_{11} + T_{21} \right)
+    +
+    p^s_2 \, \left( T_{12} + T_{22} \right)
+    \ge 0.
+    \end{aligned}
+    $$
+    %
+    %
+    %
+    (ii) For $j = M$, $\sum_i S_{iM} = 1$ follows from Eq. \eqref{eq:csrule_MM}.
+    For $j \ge 3$, we have from Eq. \eqref{eq:csrule_Mi} that,
+    $$
+    \sum_i S_{ij} = S_{Mj} + \sum_{i = 3}^N S_{ij}
+    = T_{1j} + T_{2j} + \sum_{i = 3}^N T_{ij} = 1.
+    $$
+    %
+    %
+    %
+    For the rule (iii),
+    note that $P^s_M = p^s_1 + p^s_2$, and $P^s_i = p^s_i$ for $i \ge 3$.
+    So, for $i \ge 3$, from Eq. \eqref{eq:csrule_iM},
+    $$
+    S_{ij} \, P^s_j
+    = S_{iM} \, P^s_M + \sum_{j = 3}^N S_{ij} P^s_j
+    = T_{i1} \, p^s_1 + T_{i2} \, p^s_2 + \sum_{j = 3}^N T_{ij} p^s_j
+    = p^s_i = P^s_i,
+    $$
+    and, from Eqs. \eqref{eq:csrule_Mi} and \eqref{eq:csrule_MM},
+    $$
+    \begin{aligned}
+    S_{Mj} \, P^s_j
+    &= S_{MM} \, P^s_M + \sum_{j = 3}^N S_{Mj} P^s_j
+    \\
+    &= P^s_M - \sum_{i = 3}^N S_{iM} \, P^s_M
+    + \sum_{j = 3}^N S_{Mj} \, P^s_j
+    \\
+    &= P^s_M - \sum_{i = 3}^N (T_{i1} \, p^s_1 + T_{i2} \, p^s_2)
+    + \sum_{j = 3}^N (T_{1j} + T_{2j}) \, p^s_j
+    .
+    \end{aligned}
+    $$
+    Now if we extend the two sums from $i,j = 3, \dots, N$
+    to $i, j = 1, \dots, N$, by adding and subtracting
+    $$
+    T_{11} \, p^s_1 + T_{12} \, p^s_2 + T_{21} \, p^s_1 + T_{22} \, p^s_2
+    .
+    $$
+    So
+    $$
+    \begin{aligned}
+    S_{Mj} \, P^s_j
+    &= P^s_M - \sum_{i = 1}^N (T_{i1} \, p^s_1 + T_{i2} \, p^s_2)
+    + \sum_{j = 1}^N (T_{1j} + T_{2j}) \, p^s_j
+    \\
+    &= P^s_M
+    - \left( \sum_{i = 1}^N T_{i1} \right) \, p^s_1
+    - \left( \sum_{i = 1}^N T_{i2} \right) \, p^s_2
+    + p^s_1 + p^s_2
+    \\
+    &= P^s_M
+    .
+    \end{aligned}
+    $$
+
+  \item
+    For $i$ and $j$ with $i, j \ge 3$,
+    detailed balance follows from that of the original matrix.
+    %
+    Suppose $j = M$, then
+    $$
+    \begin{aligned}
+      S_{iM} \, P^s_M &= T_{i1} \, p^s_1 + T_{i2} \, p^s_2, \\
+      S_{Mi} \, P^s_i &= T_{1i} \, p^s_i + T_{2i} \, p^s_i.
+    \end{aligned}
+    $$
+    %
+    But $T_{i1} \, p^s_1 = T_{1i} \, p^s_i$ and
+    $T_{i2} \, p^s_2 = T_{2i} \, p^s_i$,
+    so detailed balance holds for the transition matrix $\mathbf S$ too.
+
+
+\end{enumerate}
+\end{problem}
+
 
 
 \end{document}
