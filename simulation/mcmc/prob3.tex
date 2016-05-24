@@ -1,9 +1,21 @@
 \documentclass[12pt]{article}
 \usepackage{amsmath}
+\usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{tikz}
 \usepackage{url}
-\begin{document}
+\usepackage{hyperref}
 
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+\definecolor{dark-brown}{rgb}{0.2,0.1,0}
+
+\newcommand{\hint}[1]{{\color{dark-brown}\small #1}}
 
 \newcounter{problem}[section]
 \newenvironment{problem}[1]
@@ -14,6 +26,7 @@
 }
 { \medskip }
 
+\begin{document}
 
 
 

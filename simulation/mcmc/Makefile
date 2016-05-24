@@ -32,5 +32,9 @@ $(prj)doc.zip: $(prj).tex $(prj).pdf \
 zip: $(prj)doc.zip
 
 Bossman:
-	rsync -avL $(prj).tex $(prj).pdf \
-	  cz1@129.109.88.204:/Bossman/cz1/notes/$(prj)
+	rsync -avL $(pdfs) $(texs) \
+	  /Bossman/cz1/notes/$(prj)
+	rsync -avL prog/*.c prog/*.html \
+	  /Bossman/cz1/notes/$(prj)/prog/
+
+#cz1@129.109.88.204:/Bossman/cz1/notes/$(prj)

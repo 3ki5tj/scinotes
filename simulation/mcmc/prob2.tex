@@ -1,9 +1,21 @@
 \documentclass[12pt]{article}
 \usepackage{amsmath}
+\usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{tikz}
 \usepackage{url}
-\begin{document}
+\usepackage{hyperref}
 
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+\definecolor{dark-brown}{rgb}{0.2,0.1,0}
+
+\newcommand{\hint}[1]{{\color{dark-brown}\small #1}}
 
 \newcounter{problem}[section]
 \newenvironment{problem}[1]
@@ -14,6 +26,7 @@
 }
 { \medskip }
 
+\begin{document}
 
 
 
@@ -102,7 +115,8 @@ Actually, $N$ does not have to be an integer.
 Modify your code such that it may work for a non-integral $N$,
 say $N = 10.5$.
 
-Hint. We do not have to worry about $c$.
+\hint{
+We do not have to worry about $c$.
 Only the ratios matter in a Monte Carlo simulation, and
 $$
 \frac{ p_{i+1} } { p_i } = \frac{ N - i } { i + 1 },
@@ -111,19 +125,20 @@ $$
 $$
 
 A sample C code is here: \url{http://ideone.com/CgL1FI}.
+}
 
 \end{problem}
 
 
 
-\begin{problem}{Autocorrelations}
+\begin{problem}{Autocorrelation}
 
 [Data from a Monte Carlo or molecular dynamcis trajectory are correlated.
-  The redundancy $g$ because of the correlation
+  The redundancy $R$ because of the correlation
   is related to the integral autocorrelation time $\tau$
   by the following formula
   \begin{equation}
-    g = 1 + 2 \, \tau.
+    R = 1 + 2 \, \tau.
   \label{eq:1p2T}
   \end{equation}
   This exercise is a demonstration of this formula.
@@ -150,7 +165,7 @@ At the end of the year, Bob also adds the numbers up.
   in magnitude (no matter the sign).
   %
   In other words, Bob's numbers has
-  a statistical redundancy of $g = 5$.
+  a statistical redundancy of $R = 5$.
 
   \item
   Show that the autocorrelation time of Bob's numbers
@@ -181,8 +196,8 @@ Here is a demonstration:
     so he spends on average $120$ minutes on coding.
 
   \item
-    By resisting the half of the transitions to the emailing mode,
-    we have $T_{EC} = 0.5 T_{CE}$ (C: coding, E: emailing).
+    By resisting half of the transitions to the emailing mode,
+    we have $T_{EC} = 0.5 \, T_{CE}$ (C: coding, E: emailing).
     So by detailed balance
     $$
     T_{EC} \, p_C = T_{CE} \, p_E,
@@ -199,6 +214,117 @@ Here is a demonstration:
 
   \item
     Ron.
+\end{enumerate}
+\end{problem}
+
+\begin{problem}{Binomial random number}
+
+Here is an reference algorithm.
+\begin{enumerate}
+  \item
+    Arbitrary set the initial $i$ between $0$ and $N$, say $i = 0$.
+
+  \item\label{step:mcstarts}
+    In each MC step, choose by half chance whether to move
+    to $i - 1$ or $i + 1$.
+
+  \item
+    If the above trial move is about to
+    reach a number outside $0, \dots, N$,
+    reject it right away.
+
+  \item
+    Otherwise, accept the above move by probability
+    $$
+    p(i \to i \pm 1)
+    =
+    \min\left\{
+      1, \frac { p_{i \pm 1} } { p_i }
+    \right\}.
+    $$
+    where
+    $$
+    \frac{ p_{i+1} } { p_i } = \frac{ N - i } { i + 1 },
+    \qquad
+    \frac{ p_{i-1} } { p_i } = \frac{ i } { N - i + 1}.
+    $$
+
+  \item
+    Repeat Step \ref{step:mcstarts} until simulation ends.
+\end{enumerate}
+\end{problem}
+
+\begin{problem}{Autocorrelation}
+\begin{enumerate}
+  \item
+    Define $N = 365$, the year-end number is given by
+    $$
+    S = x_1 + \cdots + x_N
+    ,
+    $$
+    and the variance is given by
+    $$
+    \begin{aligned}
+    \langle S^2 \rangle
+    &=
+    \sum_{i = 1}^N \sum_{j = 1}^N
+    \langle x_i \, x_j \rangle
+    \approx
+    N \sum_{j = 1}^N
+    c_{|i - j|}
+    \\
+    &\approx
+    N \, ( \cdots + c_2 + c_1 + c_0 + c_1 + c_2 + \cdots )
+    =
+    N \, \left( 1 + 2 \sum_{k=1}^\infty c_k \right)
+    .
+    \end{aligned}
+    $$
+    In Alice's case, $c_1 = c_2 = \cdots = 0$,
+    so $\langle S^2 \rangle = N$.
+    In Bob's case,
+    $c_1 = 2/3, c_2 = (2/3)^2, \dots$.
+    So
+    $c_1 + c_2 + \cdots = (2/3) / (1 - 2/3) = 2$,
+    and
+    $\langle S^2 \rangle = N \times 5$.
+
+  \item
+    The autocorrelation function is given by $c_k$,
+    which is, in Bob's case,
+    $c_0 = 1, c_1 = 2/3, c_2 = (2/3)^2, \dots$.
+    The decrement of the autocorrelation function
+    at successive times represents
+    the rate of ``death'' of the number at time $0$.
+    In other words, the probability for a number
+    to persist for precisely $k$ steps is given by
+    $p_k = c_k - c_{k+1} = (1/3) \cdot (2/3)^k $.
+    So the average life span of Bob's numbers is given by
+    \begin{equation}
+    \tau \equiv \langle k \rangle
+    = \sum_{k = 1}^\infty k \, p_k
+    = \sum_{k = 1}^\infty \frac{ k } { 3 } \left( \frac{2}{3} \right)^k
+    .
+    \label{eq:tau1}
+    \end{equation}
+    But
+    \begin{equation}
+    \frac{2}{3} \, \tau
+    = \sum_{k = 1}^\infty \frac{ k } { 3 } \left( \frac{2}{3} \right)^{k+1}
+    = \sum_{k = 1}^\infty \frac{ k - 1} { 3 } \left( \frac{2}{3} \right)^{k}
+    \label{eq:tau2}
+    \end{equation}
+    Subtracting Eq. \eqref{eq:tau1} by \eqref{eq:tau2}, we get
+    $$
+    \frac{1}{3} \, \tau
+    = \sum_{k = 1}^\infty \frac{ 1} { 3 } \left( \frac{2}{3} \right)^{k}
+    = \frac{ \frac{2}{9} } { 1 - \frac{2}{3} } = \frac{2}{3}
+    ,
+    $$
+    or $\tau = 2$.
+
+  \item
+    Since $R = 5$, $\tau = 2$, we do have Eq. \eqref{eq:1p2T}.
 \end{enumerate}
 \end{problem}
 
