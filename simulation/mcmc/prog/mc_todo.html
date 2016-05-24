@@ -4,6 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <title>Monte Carlo simulation of the Lennard-Jones fluid</title>
 <script type="text/javascript">
+"use strict";
+
 // parameters
 var dim = 2; // dimensionality, don't change it
 var n = 50; // number of particles
@@ -19,11 +21,16 @@ var ep = 0; // potential energy without tail correction
 var xy = null; // array of coordinates
 var xyi_tmp = [0, 0]; // temporary coordinates of atom i
 var mctot = 0, mcacc = 0; // accumulator for the acceptance ratio
-var step = 0, usum = 0; // accumulator for potential energy
+var step = 0, epsum = 0; // accumulator for potential energy
 var dep = 0; // change of the energy
 var moveatom = -1; // which atom is attempted
 var moveacc = false;
 var timer = null;
+
+// this function decides if a move is to be accepted
+var accept_move = function(de, tp) {
+  return de < 0;
+}
 
 // distance between two balls with periodic boundary condition
 function dist(x, y) {
@@ -48,6 +55,7 @@ function energy()
       }
     }
   }
+  // eptail is the tail correct due to the potential cutoff
   return ene + eptail;
 }
 
@@ -64,10 +72,6 @@ function energy1(i, xyi)
     }
   }
   return ene;
-}
-
-// initial positions by FCC
-function initpos() {
 }
 
 // initialize the system
@@ -95,7 +99,7 @@ function initsys() {
   }
 
   // potential energy
-  utail = Math.PI * rho * n * (0.4 / Math.pow(rc, 6) - 1) / Math.pow(rc, 4);
+  eptail = Math.PI * rho * n * (0.4 / Math.pow(rc, 6) - 1) / Math.pow(rc, 4);
   ep = energy();
 
   mctot = mcacc = 0;
@@ -136,19 +140,7 @@ function mcstep() {
   dep = epi_new - epi_old;
 
   // decide whether to accept the move
-  if ( dep <= 0 ) {
-    moveacc = true;
-  } else {
-    var r = Math.random(); // a random number between 0 and 1
-    var rref = Math.exp( -dep / tp ); // Metropolis acceptance probability
-
-    // modify the following line
-    // to compute the acceptance probability
-    // according to the Metropolis rule
-    // you can use the variable r and rref defined above
-    // Your modification should not take more than 5 lines
-    moveacc = 0;
-  }
+  moveacc = accept_move(dep, tp);
 
   mctot += 1;
   if ( moveacc ) {
@@ -224,7 +216,7 @@ function draw() {
     "Number of steps: " + step + ".<br>" +
     "Potential energy per particle: <b>" + epave.toPrecision(4) + "</b>.<br>" +
     "Acceptance ratio: <b>" + accratio.toPrecision(4) + "%</b>.<br>" +
-    "Energy change of the last trial move: <b>" + dep.toPrecision(4) + "</b>,<br>" +
+    "Energy change of the last trial: <b>" + dep.toPrecision(4) + "</b>,<br>" +
     "which is <b>" + (moveacc ? "accepted" : "rejected") + "</b>.<br>"
     ;
 }
@@ -273,74 +265,171 @@ function togglesimul()
     stopsimul();
   }
 }
+
+// compile the user-defined function accept_move()
+function compile_userfunc()
+{
+  var s = document.getElementById("usercode").value;
+  var p0 = s.indexOf("function(");
+  var p1 = s.indexOf("(", p0);
+  var p2 = s.indexOf(",", p1);
+  var p3 = s.indexOf(")", p2);
+  var varde = s.substring(p1 + 1, p2).trim();
+  var vartp = s.substring(p2 + 1, p3).trim();
+  var id0 = s.indexOf("{");
+  var id1 = s.lastIndexOf("}");
+  var funcbody = s.substring(id0, id1 + 1);
+  accept_move = new Function(varde, vartp, funcbody);
+}
+
+// give a hint
+function takehint()
+{
+  document.getElementById("hintinfo").style.visibility = "visible";
+  document.getElementById("hintinfo").innerHTML = "<b>Hint:</b>"
+    + "The Metropolis acceptance probability of accepting the move is "
+    + "already computed in the variable <tt>rref</tt>. To accept the move with "
+    + "this much probability, we only need to generate a uniform random number "
+    + "between 0 and 1, which is the variable <tt>r</tt> here, "
+    + "and compare <tt>r</tt> with <tt>rref</tt>. "
+    + "In other words, we should accept the move, if <tt>r < rref</tt>.<br>"
+    + "Note that if the energy change <tt>de</tt> is negative, "
+    + "<tt>rref</tt> is greater than 1; and the move is always accepted."
+  document.getElementById("surrender").disabled = false;
+}
+
+function showanswer()
+{
+  if ( confirm("Do you really want to give up?") ) {
+    document.getElementById("usercode").value =
+        "// This function returns true if a move that changes the\n"
+      + "// energy by `de` is to be accepted, or false otherwise.\n"
+      + "// The argument `tp` is the temperature.\n"
+      + "// The Boltzmann constant is 1.0 here.\n"
+      + "function accept_move(de, tp) {\n"
+      + "  // Generate a random number between 0 and 1\n"
+      + "  var r = Math.random();\n"
+      + "  // Metropolis acceptance probability\n"
+      + "  var rref = Math.exp(-de/tp);\n"
+      + "  // Currently, we only accept a move that decreases the\n"
+      + "  // energy. You job is to change the following line such\n"
+      + "  // that the probability of accepting the move is equal\n"
+      + "  // to the Metropolis acceptance probability.\n"
+      + "  return (r < rref);\n"
+      + "}\n";
+    compile_userfunc();
+    document.getElementById("hintinfo").innerHTML
+      = "Click the run button, it should be fine now.";
+  }
+}
+
 </script>
 </head>
 <body>
 
 
-<div style="width:840px; margin:auto; font-family:Verdana; line-height:140%">
+<div style="width:970px; margin:auto; font-family:Verdana; line-height:140%">
   <h2>Monte Carlo (MC) simulation on the 2D Lennard-Jones fluid</h2>
-  <div style="width:520px; display:inline-block; vertical-align:text-top;">
-    <h3>Instructions:</h3>
-    <ol style="line-height:115%">
+  <div style="width:540px; display:inline-block; vertical-align:text-top;">
+    <h4>Instructions:</h4>
+    <ol style="line-height:135%">
       <li>Save this web page, <tt>mc_todo.html</tt>, in a local directory.
       <li>Open this web page in a modern web browser, like Firefox or Chrome.
           Enable JavaScript if necessary.
-      <li>Click the &ldquo;<tt>Execute a single Monte Carlo step</tt>&rdquo; button
+      <li>Click the &ldquo;<tt>Execute a single MC step</tt>&rdquo; button
           a few times. Pay attention to the information section.
           Currently, the code is broken, so no move that increases the energy
           is accepted.
-      <li>Open the web page, <tt>mc_todo.html</tt>, in a text editor, like
-         <tt>Vim</tt>, <tt>Emacs</tt>, <tt>gedit</tt> or <tt>notepad</tt>.
-      <li>Go to line 150, make necessary changes to correct the acceptance probability.
-          If your text editor cannot display line numbers,
-          search the phrase "Your modification", and it will take you there.
-          Your changes should not take more than a few lines.
-      <li>Save your changes, reload or refresh the web page in your browser.
+      <li>Modify the following function, which is used to decide if a move
+          is to be accepted or rejected.
+          Click the &ldquo;<tt>Done coding</tt>&rdquo; button when you
+          have finish editing the code.
+
+  <textarea id="usercode" rows="16" cols="60" style="background-color:#ffffe0;">
+// This function returns true if a move that changes the
+// energy by `de` is to be accepted, or false otherwise.
+// The argument `tp` is the temperature.
+// The Boltzmann constant is 1.0 here.
+function accept_move(de, tp) {
+  // Generate a random number between 0 and 1
+  var r = Math.random();
+  // Metropolis acceptance probability
+  var rref = Math.exp(-de/tp);
+  // Currently, we only accept a move that decreases the
+  // energy. You job is to change the following line such
+  // that the probability of accepting the move is equal
+  // to the Metropolis acceptance probability.
+  return (de < 0);
+}
+  </textarea>
+    <input type="button" value="Done coding"
+      id="done_userfunc" onclick="compile_userfunc();">
+    <input type="button" value="Done and Run"
+      id="done_and_run" onclick="compile_userfunc();startsimul();">
+    <input type="button" value="Stop"
+      id="stop2" onclick="stopsimul();">
+    <input type="button" value="Hint"
+      id="hint" onclick="takehint();">
+    <input type="button" value="Surrender" disabled
+      id="surrender" onclick="showanswer();">
+      <br>
+      <div id="hintinfo" style="visibility:hidden; font-size:90%; padding:2px 5px; margin: 2px 45px 2px 5px; background-color:#e0e0ff;">
+      </div>
       <li>Test a few steps by clicking the
-          &ldquo;<tt>Execute a single Monte Carlo step</tt>&rdquo; button.
+          &ldquo;<tt>Execute a single MC step</tt>&rdquo; button.
           Then click the
-          &ldquo;<tt>Run automatically</tt>&rdquo; button.
-          You should get the potential energy per particle around -1.1,
+          &ldquo;<tt>Run</tt>&rdquo; button.
+          You should get the potential energy per particle around &minus;1.1,
           and an acceptance ratio around 43%.
       <li>If have problems, right click the page and click "Inspect Elements" or "Inspect"
           in the pop up menu.  Go to the Console or Debugger tab to fix the problem.
       <li>Congratulations! Change a few parameters and have fun!
     </ol>
   </div>
-  <div style="width:300px; display:inline-block; vertical-align:text-top; padding:5px;">
-    <h4>Parameters</h4>
-    Number of atoms:
-    <input type="text" size="4" value="50" id="n" onchange="initsys()">.<br>
-    Number density:
-    <input type="text" size="4" value="0.5" id="rho" onchange="initsys()">.<br>
-    Temperature:
-    <input type="text" size="4" value="2.0" id="tp" onchange="initsys()">.<br>
-    Potential cutoff:
-    <input type="text" size="4" value="2.5" id="rc" onchange="initsys()">.<br>
-    MC move size:
-    <input type="text" size="4" value="0.5" id="mcamp" onchange="initsys()">.<br>
 
-    <input type="button" value="Execute a single Monte Carlo step"
+  <!-- right column -->
+  <div style="width:410px; display:inline-block; vertical-align:text-top; padding:5px;">
+    <h4>Parameters (hover for explanation)</h4>
+    Number of atoms:
+    <input type="text" size="4" value="50" id="n" onchange="initsys()">.&nbsp;
+    <span title="The number of particles per area. Thus, the area of the simulation box is the number of atoms divided by the density.">
+      Density:
+    </span>
+    <input type="text" size="4" value="0.5" id="rho" onchange="initsys()">.<br>
+    <span title="This is the reduced temperature, with the Boltzmann constant being 1.0">
+      Temperature:
+    </span>
+    <input type="text" size="4" value="2.0" id="tp" onchange="initsys()">.&nbsp;
+    <span title="Distance beyond which the potential is treated as zero. It should not exceed half of the box size.">
+      Potential cutoff:
+    </span>
+    <input type="text" size="4" value="2.5" id="rc" onchange="initsys()">.<br>
+    <span title="How much an atom is displaced in an MC move.">
+      MC move size:
+    </span>
+    <input type="text" size="4" value="0.5" id="mcamp" onchange="initsys()">.&nbsp;
+
+    <input type="button" value="Execute a single MC step"
       id="step" onclick="singlestep()">
     <hr>
 
     MC steps per second:
-    <input type="text" size="8" value="10000" id="nstepspersec" onclick="initsys()">
-    <br>
-    <input type="button" value="Run automatically" id="start" onclick="startsimul()">
-    <input type="button" value="Stop simulation" id="stop" onclick="stopsimul()">
+    <input type="text" size="7" value="10000" id="nstepspersec" onclick="initsys()">
+    <input type="button" value="Run" id="start" onclick="startsimul()">
+    <input type="button" value="Stop" id="stop" onclick="stopsimul()">
 
+    <!-- animation box -->
+    <canvas id="simulbox" width="400" height="400"
+      style="margin:auto; display:block" onclick="togglesimul()">
+    </canvas>
+
+    <!--information -->
     <div style="background-color:#ffffcc; padding:1px 10px 5px 10px; margin:5px 0px">
       <b>Information</b><br>
       <span id="info"></span>
     </div>
   </div>
 
-  <!-- animation box -->
-  <canvas id="simulbox" width="400" height="400"
-    style="margin:auto; display:block" onclick="togglesimul()">
-  </canvas>
 </div>
 
 </body>

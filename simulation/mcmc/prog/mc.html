@@ -106,12 +106,20 @@ function initsys() {
   clearInterval(timer);
 }
 
+// dep is the energy change
+// tp is the temperature
+// return true if the move is accepted, or false if rejected
+function accept_or_reject(dep, tp) {
+  var r = Math.random();
+  var rref = Math.exp( -dep / tp );
+  return ( r < rref );
+}
+
 // a step of Monte Carlo simulation
+// the array, xy, holds the current coordiates
 function mcstep() {
-  // initialize the system
-  if ( !xy ) {
-    initsys();
-  }
+  // initialize the system if necessary
+  if ( !xy ) initsys();
 
   // select a random atom
   var i = Math.floor(Math.random() * n);
@@ -136,13 +144,9 @@ function mcstep() {
   dep = epi_new - epi_old;
 
   // decide whether to accept the move
-  if ( dep <= 0 ) {
-    moveacc = true;
-  } else {
-    var r = Math.random();
-    var rref = Math.exp( -dep / tp );
-    moveacc = ( r < rref );
-  }
+  var r = Math.random();
+  var rref = Math.exp( -dep / tp );
+  moveacc = accept_or_reject(dep, tp);
 
   mctot += 1;
   if ( moveacc ) {
