@@ -316,9 +316,25 @@ function showanswer()
   }
 }
 
+// save the user's code
+function usercode_save()
+{
+  var usercode = document.getElementById("usercode").value;
+  localStorage.setItem("usercode", usercode);
+}
+
+// load the user's code
+function usercode_load()
+{
+  var usercode = localStorage.usercode;
+  if ( usercode ) {
+    document.getElementById("usercode").value = usercode;
+  }
+}
+
 </script>
 </head>
-<body>
+<body onload="usercode_load()">
 
 
 <div style="width:970px; margin:auto; font-family:Verdana; line-height:140%">
@@ -338,8 +354,9 @@ function showanswer()
           Click the &ldquo;<tt>Done coding</tt>&rdquo; button when you
           have finish editing the code.
 
-  <textarea id="usercode" rows="16" cols="60"
-    class="form-control" style="background-color:#ffffe0;">
+  <textarea id="usercode" rows="16" cols="50"
+    class="form-control" style="background-color:#ffffe0; font-family: monospace;"
+    onChange="usercode_save()">
 // This function returns true if a move that changes the
 // energy by `de` is to be accepted, or false otherwise.
 // The argument `tp` is the temperature.
