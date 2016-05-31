@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Monte Carlo simulation of the Lennard-Jones fluid</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Monte Carlo simulation of the Lennard-Jones fluid</title>
 <script type="text/javascript">
 "use strict";
 
@@ -287,8 +283,18 @@ function compile_userfunc()
 }
 
 // give a hint
-function showhint()
+function takehint()
 {
+  document.getElementById("hintinfo").style.visibility = "visible";
+  document.getElementById("hintinfo").innerHTML = "<b>Hint:</b>"
+    + "The Metropolis acceptance probability of accepting the move is "
+    + "already computed in the variable <tt>rref</tt>. To accept the move with "
+    + "this much probability, we only need to generate a uniform random number "
+    + "between 0 and 1, which is the variable <tt>r</tt> here, "
+    + "and compare <tt>r</tt> with <tt>rref</tt>. "
+    + "In other words, we should accept the move, if <tt>r < rref</tt>.<br>"
+    + "Note that if the energy change <tt>de</tt> is negative, "
+    + "<tt>rref</tt> is greater than 1; and the move is always accepted."
   document.getElementById("surrender").disabled = false;
 }
 
@@ -312,7 +318,8 @@ function showanswer()
       + "  return (r < rref);\n"
       + "}\n";
     compile_userfunc();
-    document.getElementById("surrender").disabled = true;
+    document.getElementById("hintinfo").innerHTML
+      = "Click the run button, it should be fine now.";
   }
 }
 
@@ -338,8 +345,7 @@ function showanswer()
           Click the &ldquo;<tt>Done coding</tt>&rdquo; button when you
           have finish editing the code.
 
-  <textarea id="usercode" rows="16" cols="60"
-    class="form-control" style="background-color:#ffffe0;">
+  <textarea id="usercode" rows="16" cols="60" style="background-color:#ffffe0;">
 // This function returns true if a move that changes the
 // energy by `de` is to be accepted, or false otherwise.
 // The argument `tp` is the temperature.
@@ -356,33 +362,18 @@ function accept_move(de, tp) {
   return (de < 0);
 }
   </textarea>
-    <input type="button" value="Done coding" class="btn btn-primary"
+    <input type="button" value="Done coding"
       id="done_userfunc" onclick="compile_userfunc();">
-    <input type="button" value="Done and Run" class="btn btn-success"
+    <input type="button" value="Done and Run"
       id="done_and_run" onclick="compile_userfunc();startsimul();">
-    <input type="button" value="Stop" class="btn btn-danger"
+    <input type="button" value="Stop"
       id="stop2" onclick="stopsimul();">
-    <input type="button" value="Hint" class="btn btn-info"
-      id="hint" data-toggle="collapse" data-target="#hintinfo"
-      onclick="showhint()">
-    <input type="button" value="Surrender" class="btn btn-warning"
-      id="surrender" data-toggle="collapse" data-target="#hintinfo2"
-      onclick="showanswer()">
+    <input type="button" value="Hint"
+      id="hint" onclick="takehint();">
+    <input type="button" value="Surrender" disabled
+      id="surrender" onclick="showanswer();">
       <br>
-      <div id="hintinfo" class="collapse"
-        style="font-size:90%; padding:2px 5px; margin: 2px 45px 2px 5px;">
-        <strong>Hint:</strong>
-        The Metropolis acceptance probability of accepting the move is
-        already computed in the variable <tt>rref</tt>. To accept the move with
-        this much probability, we only need to generate a uniform random number
-        between 0 and 1, which is the variable <tt>r</tt> here,
-        and compare <tt>r</tt> with <tt>rref</tt>.
-        In other words, we should accept the move, if <tt>r < rref</tt>.<br>
-        Note that if the energy change <tt>de</tt> is negative,
-        <tt>rref</tt> is greater than 1; and the move is always accepted.
-      </div>
-      <div id="hintinfo2" class="collapse">
-        Click the run button, it should be fine now.
+      <div id="hintinfo" style="visibility:hidden; font-size:90%; padding:2px 5px; margin: 2px 45px 2px 5px; background-color:#e0e0ff;">
       </div>
       <li>Test a few steps by clicking the
           &ldquo;<tt>Execute a single MC step</tt>&rdquo; button.
@@ -397,64 +388,35 @@ function accept_move(de, tp) {
   </div>
 
   <!-- right column -->
-  <div class="form-group"
-    style="width:410px; display:inline-block; vertical-align:text-top; padding:5px;">
+  <div style="width:410px; display:inline-block; vertical-align:text-top; padding:5px;">
     <h4>Parameters (hover for explanation)</h4>
+    Number of atoms:
+    <input type="text" size="4" value="50" id="n" onchange="initsys()">.&nbsp;
+    <span title="The number of particles per area. Thus, the area of the simulation box is the number of atoms divided by the density.">
+      Density:
+    </span>
+    <input type="text" size="4" value="0.5" id="rho" onchange="initsys()">.<br>
+    <span title="This is the reduced temperature, with the Boltzmann constant being 1.0">
+      Temperature:
+    </span>
+    <input type="text" size="4" value="2.0" id="tp" onchange="initsys()">.&nbsp;
+    <span title="Distance beyond which the potential is treated as zero. It should not exceed half of the box size.">
+      Potential cutoff:
+    </span>
+    <input type="text" size="4" value="2.5" id="rc" onchange="initsys()">.<br>
+    <span title="How much an atom is displaced in an MC move.">
+      MC move size:
+    </span>
+    <input type="text" size="4" value="0.5" id="mcamp" onchange="initsys()">.&nbsp;
 
-    <div class="col-xs-6">
-      <label for="n">Number of atoms:</label>
-      <input type="text" class="form-control" size="4" value="50" id="n" onchange="initsys()">
-    </div>
-
-    <div class="col-xs-6">
-      <label for="rho"
-        title="The number of particles per area. Thus, the area of the simulation box is the number of atoms divided by the density.">
-        Density:
-      </label>
-      <input type="text" class="form-control" size="4" value="0.5" id="rho" onchange="initsys()">
-    </div>
-
-    <div class="col-xs-6">
-      <label for="tp" title="This is the reduced temperature, with the Boltzmann constant being 1.0">
-        Temperature:
-      </label>
-      <input type="text" class="form-control" size="4" value="2.0" id="tp" onchange="initsys()">
-    </div>
-
-    <div class="col-xs-6">
-      <label for="rc"
-        title="Distance beyond which the potential is treated as zero. It should not exceed half of the box size.">
-        Potential cutoff:
-      </label>
-      <input type="text" class="form-control" size="4" value="2.5" id="rc" onchange="initsys()">
-    </div>
-
-    <div class="col-xs-6">
-      <label for="mcamp"
-        title="How much an atom is displaced in an MC move.">
-        MC move size:
-      </label>
-      <input type="text" class="form-control" size="4" value="0.5" id="mcamp" onchange="initsys()">
-    </div>
-
-    <div class="col-xs-6">
-    <input type="button" value="Execute a single MC step" class="btn btn-primary"
+    <input type="button" value="Execute a single MC step"
       id="step" onclick="singlestep()">
-    </div>
+    <hr>
 
-    <div class="col-xs-12">
-      <label for="nstepspersc">
-        MC steps per second:
-      </label>
-      <input type="text" class="form-control" size="7" value="10000" id="nstepspersec" onclick="initsys()">
-    </div>
-
-    <div class="col-xs-4">
-      <input type="button" value="Run" id="start" onclick="startsimul()" class="btn btn-success">
-    </div>
-    <div class="col-xs-4">
-      <input type="button" value="Stop" id="stop" onclick="stopsimul()" class="btn btn-danger">
-    </div>
+    MC steps per second:
+    <input type="text" size="7" value="10000" id="nstepspersec" onclick="initsys()">
+    <input type="button" value="Run" id="start" onclick="startsimul()">
+    <input type="button" value="Stop" id="stop" onclick="stopsimul()">
 
     <!-- animation box -->
     <canvas id="simulbox" width="400" height="400"
@@ -462,7 +424,7 @@ function accept_move(de, tp) {
     </canvas>
 
     <!--information -->
-    <div class="alert alert-info" style="padding:1px 10px 5px 10px; margin:5px 0px">
+    <div style="background-color:#ffffcc; padding:1px 10px 5px 10px; margin:5px 0px">
       <b>Information</b><br>
       <span id="info"></span>
     </div>
