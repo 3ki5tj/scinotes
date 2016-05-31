@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monte Carlo thermostat for a molecular dynamics simulation of the Lennard-Jones fluid</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+"use strict";
+
+// parameters
+var dim = 2; // dimensionality, don't change it
+var n = 50; // number of particles
+var rho = 0.5; // number density
+var tp = 2.0; // temperature
+var rc = 2.5; // potential cutoff
+var mddt = 0.002; // molecular dynamics time step
+
+var vol = 100; // volume (area)
+var l = 10; // length of box
+var dof = 10; // number of degrees of freedom
+var eptail = 0; // tail correction for the potential energy
+var epot = 0; // potential energy without tail correction
+var ekin = 0, etot = 0; // kinetic energy and the total energy
+var xy = null; // array of coordinates
+var v = null; // array of velocities
+var f = null; // array of forces
+var step = 0, epsum = 0, eksum = 0; // accumulator for potential and kinetic energies
+var timer = null;
+
+// this function decides if a move is to be accepted
+var thermostat = function(dof, tp) {
+  ekin = 0;
+  for ( var i = 0; i < n; i++ )
+    ekin += 0.5 * (v[i][0] * v[i][0] + v[i][1] * v[i][1]);
+  return ekin;
+};
+
+// square distance between two balls with periodic boundary condition
+function dist2(dx, x1, x2) {
+  dx[0] = x1[0] - x2[0];
+  dx[0] = dx[0] - l * (Math.floor(dx[0]/l + 20.5) - 20.0);
+  dx[1] = x1[1] - x2[1];
+  dx[1] = dx[1] - l * (Math.floor(dx[1]/l + 20.5) - 20.0);
+  return dx[0] * dx[0] + dx[1] * dx[1];
+}
+
+// compute the force, return the potential energy
+function force(f)
+{
+  var i, j, ene = 0, dx = [0, 0], rc2 = rc * rc;
+  for ( i = 0; i < n; i++ ) {
+    f[i][0] = 0;
+    f[i][1] = 0;
+  }
+  for ( i = 0; i < n - 1; i++ ) {
+    for ( j = i + 1; j < n; j++ ) {
+      var dr2 = dist2(dx, xy[i], xy[j]);
+      if ( dr2 > rc2 ) continue;
+      var ir2 = 1.0 / dr2;
+      var ir6 = ir2 * ir2 * ir2;
+      ene += 4 * ir6 * (ir6 - 1);
+      var fs = ir6 * (48 * ir6 - 24) * ir2;
+      f[i][0] += dx[0] * fs;
+      f[i][1] += dx[1] * fs;
+      f[j][0] -= dx[0] * fs;
+      f[j][1] -= dx[1] * fs;
+      //console.log(i, j, dx[0], dx[1], dr2, ir2, fs, ir6);
+    }
+  }
+  // eptail is the tail correct due to the potential cutoff
+  return ene + eptail;
+}
+
+// initialize the system
+function initsys() {
+  n     = parseInt( document.getElementById("n").value, 10 );
+  rho   = parseFloat( document.getElementById("rho").value );
+  tp    = parseFloat( document.getElementById("tp").value );
+  rc    = parseFloat( document.getElementById("rc").value );
+  mddt  = parseFloat( document.getElementById("mddt").value );
+
+  vol = n / rho;
+  l = Math.sqrt(vol);
+  if ( rc > 0.5 * l ) {
+    rc = 0.5 * l;
+    document.getElementById("rc").value = rc.toPrecision(6);
+  }
+  dof = n * 2 - 3;
+
+  // initialize the position
+  var i, j, id = 0;
+  var n1 = Math.floor( Math.sqrt(2*n) + 0.999 ); // number of particles per side
+  xy = new Array(n);
+  for ( i = 0; i < n1 && id < n; i++ ) {
+    for ( j = 0; j < n1 && id < n; j++ ) {
+      if ( ( i + j ) % 2 == 0 ) {
+        xy[id] = [(i + 0.5) * l / n1, (j + 0.5) * l / n1];
+        // add some randomness
+        xy[id][0] += (Math.random() - 0.5) * 0.2;
+        xy[id][1] += (Math.random() - 0.5) * 0.2;
+        id += 1;
+      }
+    }
+  }
+  v = new Array(n);
+  f = new Array(n);
+  for ( i = 0; i < n; i++ ) {
+    v[i] = [0, 0];
+    f[i] = [0, 0];
+  }
+  // potential energy
+  eptail = Math.PI * rho * n * (0.4 / Math.pow(rc, 6) - 1) / Math.pow(rc, 4);
+  epot = force(f) + eptail;
+  ekin = 0;
+  etot = epot + ekin;
+
+  step = 0;
+  epsum = 0;
+  eksum = 0;
+  clearInterval(timer);
+}
+
+// a step of Monte Carlo simulation
+function mdstep() {
+  // initialize the system if needed
+  if ( !xy ) initsys();
+
+  for ( var i = 0; i < n; i++ ) {
+    v[i][0] += f[i][0] * mddt * 0.5;
+    v[i][1] += f[i][1] * mddt * 0.5;
+    xy[i][0] += v[i][0] * mddt;
+    xy[i][1] += v[i][1] * mddt;
+    while ( xy[i][0] < 0 ) xy[i][0] += l;
+    while ( xy[i][0] > l ) xy[i][0] -= l;
+    while ( xy[i][1] < 0 ) xy[i][1] += l;
+    while ( xy[i][1] > l ) xy[i][1] -= l;
+    //console.log(i, xy[i][0], xy[i][1], v[i][0], v[i][1], f[i][0], f[i][1]);
+  }
+  epot = force(f) + eptail;
+  for ( i = 0; i < n; i++ ) {
+    v[i][0] += f[i][0] * mddt * 0.5;
+    v[i][1] += f[i][1] * mddt * 0.5;
+  }
+  ekin = thermostat(dof, tp);
+
+  step += 1;
+  epsum += epot;
+  eksum += ekin;
+  etot = epot + ekin;
+}
+
+// draw a ball
+function drawball(ctx, x, y, r, color0, color1) {
+  // the main blue ball
+  var grd = ctx.createRadialGradient(x + r*.3, y - r*.4, r*.1, x, y, r);
+  grd.addColorStop(0, color0);
+  grd.addColorStop(1, color1);
+  ctx.fillStyle = grd;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, 2*Math.PI);
+  ctx.closePath();
+  ctx.fill();
+}
+
+// draw all atoms in the box
+function draw() {
+  var canvas = document.getElementById("simulbox");
+  var w = canvas.width;
+  var h = canvas.height;
+  var asp = 1.0 * h / (l + 1); // aspect ratio
+  var ctx = canvas.getContext("2d");
+  // clear the background
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, w, h);
+  // draw the box region
+  ctx.fillStyle = "#cccccc";
+  ctx.fillRect(0.5*asp, 0.5*asp, l*asp, l*asp);
+  for (var i = 0; i < n; i++) {
+    var x = (xy[i][0] + 0.5) * asp;
+    var y = (xy[i][1] + 0.5) * asp;
+    var r = 0.5 * asp;
+    drawball(ctx, x, y, r, "#a0a0e0", "#2040a0");
+  }
+
+  var epave = epsum / step / n;
+  var ekave = eksum / step / dof;
+  document.getElementById("info").innerHTML =
+    "Number of steps: " + step + ".<br>" +
+    "Potential energy per particle: <b>" + epave.toPrecision(4) + "</b>.<br>" +
+    "Kinetic energy per d.o.f.: <b>" + ekave.toPrecision(4) + "</b>.<br>" +
+    "Current total energy: <b>" + etot.toPrecision(4) + "</b>.";
+}
+
+// a single Monte Carlo step
+function singlestep()
+{
+  stopsimul();
+  mdstep();
+  draw();
+}
+
+// things to do in an automatic simulation run
+function pulse()
+{
+  var i;
+  var nsteps = parseInt( document.getElementById("nstepspersec").value, 10 );
+
+  for ( i = 0; i < nsteps; i++ ) {
+    mdstep();
+  }
+  draw();
+}
+
+// start an automatic simulation
+function startsimul()
+{
+  initsys();
+  // call the function pulse() every 100 milliseconds
+  timer = setInterval( function() { pulse(); }, 100);
+}
+
+// stop the simulation
+function stopsimul()
+{
+  clearInterval(timer);
+  timer = null;
+}
+
+// switch between start and stop simulations
+function togglesimul()
+{
+  if ( timer === null ) {
+    startsimul();
+  } else {
+    stopsimul();
+  }
+}
+
+// compile the user-defined function accept_move()
+function compile_userfunc()
+{
+  var s = document.getElementById("usercode").value;
+  var p0 = s.indexOf("function(");
+  var p1 = s.indexOf("(", p0);
+  var p2 = s.indexOf(",", p1);
+  var p3 = s.indexOf(")", p2);
+  var var1 = s.substring(p1 + 1, p2).trim();
+  var var2 = s.substring(p2 + 1, p3).trim();
+  var id0 = s.indexOf("{");
+  var id1 = s.lastIndexOf("}");
+  var funcbody = s.substring(id0, id1 + 1);
+  thermostat = new Function(var1, var2, funcbody);
+}
+
+// give a hint
+function showhint()
+{
+  document.getElementById("surrender").disabled = false;
+}
+
+var initcode = "" +
+"// This function provides a thermostat by scaling\n" +
+"// the velocities using Monte Carlo. `dof` is the\n" +
+"// number of degrees of freedom, `tp` the temperature.\n" +
+"function thermostat(dof, tp) {\n" +
+"  var i, ke_o = 0;\n" +
+"  // compute the kinetic energy\n" +
+"  for ( i = 0; i < n; i++ )\n" +
+"    ke_o += 0.5 * (v[i][0]*v[i][0] + v[i][1]*v[i][1]);\n" +
+"  var lnke_o = Math.log( ke_o );\n" +
+"  var amp = 1.0 / Math.sqrt( dof ); // move size\n" +
+"  // compute the new kinetic energy\n" +
+"  var lnke_n = lnke_o + (2*Math.random() - 1) * amp;\n" +
+"  var ke_n = Math.exp( lnke_n );\n" +
+"  var delta = (ke_o - ke_n)/tp + (lnke_n - lnke_o)*dof/2;\n" +
+"  // Metropolis acceptance probability\n" +
+"  var rref = Math.exp(delta);\n" +
+"  // Generate a random number between 0 and 1\n" +
+"  var r = Math.random();\n" +
+"  if ( r < rref ) {\n" +
+"    // TODO: scale the velocities to apply\n" +
+"    // the new kinetic energy\n" +
+"    \n" +
+"    for ( i = 0; i < n; i++ ) {\n" +
+"       \n" +
+"       \n" +
+"    }\n" +
+"  }\n" +
+"  return ke_n;\n" +
+"}\n";
+
+var refcode = "" +
+"// This function provides a thermostat by scaling\n" +
+"// the velocities using Monte Carlo. `dof` is the\n" +
+"// number of degrees of freedom, `tp` the temperature.\n" +
+"function thermostat(dof, tp) {\n" +
+"  var i, ke_o = 0;\n" +
+"  // compute the kinetic energy\n" +
+"  for ( i = 0; i < n; i++ )\n" +
+"    ke_o += 0.5 * (v[i][0]*v[i][0] + v[i][1]*v[i][1]);\n" +
+"  var lnke_o = Math.log( ke_o );\n" +
+"  var amp = 1.0 / Math.sqrt( dof ); // move size\n" +
+"  // compute the new kinetic energy\n" +
+"  var lnke_n = lnke_o + (2*Math.random() - 1) * amp;\n" +
+"  var ke_n = Math.exp( lnke_n );\n" +
+"  var delta = (ke_o - ke_n)/tp + (lnke_n - lnke_o)*dof/2;\n" +
+"  // Metropolis acceptance probability\n" +
+"  var rref = Math.exp(delta);\n" +
+"  // Generate a random number between 0 and 1\n" +
+"  var r = Math.random();\n" +
+"  if ( r < rref ) { // scale the velocities\n" +
+"    var s = Math.sqrt( ke_n / ke_o );\n" +
+"    for ( i = 0; i < n; i++ ) {\n" +
+"      v[i][0] *= s;\n" +
+"      v[i][1] *= s;\n" +
+"    }\n" +
+"  }\n" +
+"  return ke_n;\n" +
+"}\n";
+
+function showanswer()
+{
+  if ( confirm("Do you really want to give up?") ) {
+    document.getElementById("usercode").value = refcode;
+    compile_userfunc();
+    document.getElementById("surrender").disabled = true;
+  }
+}
+
+// reset the user's code
+function usercode_reset(what)
+{
+  localStorage.removeItem(what);
+  document.getElementById("usercode").value = initcode;
+}
+
+// save the user's code
+function usercode_save(what)
+{
+  var usercode = document.getElementById("usercode").value;
+  localStorage.setItem(what, usercode);
+  //alert("saving " + what + " " + usercode);
+}
+
+// load the user's code
+function usercode_load(what)
+{
+  var usercode = localStorage.getItem(what);
+  if ( usercode ) {
+    document.getElementById("usercode").value = usercode;
+    //alert("loading " + what + " " + usercode);
+  } else {
+    usercode_reset(what);
+  }
+}
+
+</script>
+</head>
+<body onload="usercode_load('mc_thermostat')">
+
+
+<div style="width:970px; margin:auto; font-family:Verdana; line-height:140%">
+  <h2>Thermostat for a molecular dynamics (MD) simulation on the 2D Lennard-Jones fluid</h2>
+  <div style="width:540px; display:inline-block; vertical-align:text-top;">
+    <h4>Instructions:</h4>
+    <ol style="line-height:135%">
+      <li>Save this web page, <tt>md.html</tt>, in a local directory.
+      <li>Open this web page in a modern web browser, like Firefox or Chrome.
+          Enable JavaScript if necessary.
+      <li>Click the &ldquo;<tt>MD step</tt>&rdquo; button
+          a few times. Pay attention to the information section.
+          Currently the code is broken, so the average kinetic energy
+          per degree of freedom is not equal to the temperature.
+      <li>Complete the following function to make a good thermostat.
+          Click the &ldquo;<tt>Save</tt>&rdquo; button when you
+          have finish editing the code.
+          You only need to add a few lines after &ldquo;<tt>TODO: </tt>&rdquo;
+
+  <textarea id="usercode" rows="28" cols="50"
+    class="form-control" style="background-color:#ffffe0; font-family: monospace;"
+    onChange="usercode_save('mc_thermostat')">
+
+  </textarea>
+    <input type="button" value="Save" class="btn btn-primary"
+      id="done_userfunc" onclick="compile_userfunc();">
+    <input type="button" value="Save and Run" class="btn btn-success"
+      id="done_and_run" onclick="compile_userfunc();startsimul();">
+    <input type="button" value="Start over" class="btn btn-danger"
+      id="stop2" onclick="usercode_reset('mc_thermostat')">
+    <input type="button" value="Hint" class="btn btn-info"
+      id="hint" data-toggle="collapse" data-target="#hintinfo"
+      onclick="showhint()">
+    <input type="button" value="Surrender" class="btn btn-warning"
+      id="surrender" data-toggle="collapse" data-target="#hintinfo2"
+      onclick="showanswer()">
+      <br>
+      <div id="hintinfo" class="collapse"
+        style="font-size:90%; padding:2px 5px; margin: 2px 45px 2px 5px;">
+        <strong>Hint:</strong>
+        The old and new velocities are related by
+        <div style="font: 150% Times; text-align: center">
+        <i>v</i><sup>new</sup> = <i>v</i><sup>old</sup>
+        (K.E.<sup>new</sup> / K.E.<sup>old</sup>)<sup>1/2</sup>,
+        </div>
+        This means that all velocity components,
+        <tt>v[i][0]</tt> and <tt>v[i][1]</tt>, should be multiplied
+        by a factor of
+        <div style="font: 150% Times; text-align: center">
+        (K.E.<sup>new</sup> / K.E.<sup>old</sup>)<sup>1/2</sup>.
+        </div>
+      </div>
+      <div id="hintinfo2" class="collapse">
+        Click the run button, it should be fine now.
+      </div>
+      <li>Click the &ldquo;<tt>Run</tt>&rdquo; button.  Wait a while.
+          Verify that the average kinetic energy per degree of freedom
+          is around half of the temperature.
+    </ol>
+  </div>
+
+  <!-- right column -->
+  <div class="form-group"
+    style="width:410px; display:inline-block; vertical-align:text-top; padding:5px;">
+    <h4>Parameters (hover for explanation)</h4>
+
+    <div class="col-xs-6">
+      <label for="n">Number of atoms:</label>
+      <input type="text" class="form-control" size="4" value="50" id="n" onchange="initsys()">
+    </div>
+
+    <div class="col-xs-6">
+      <label for="rho"
+        title="The number of particles per area. Thus, the area of the simulation box is the number of atoms divided by the density.">
+        Density:
+      </label>
+      <input type="text" class="form-control" size="4" value="0.5" id="rho" onchange="initsys()">
+    </div>
+
+    <div class="col-xs-6">
+      <label for="tp" title="This is the reduced temperature, with the Boltzmann constant being 1.0">
+        Temperature:
+      </label>
+      <input type="text" class="form-control" size="4" value="2.0" id="tp" onchange="initsys()">
+    </div>
+
+    <div class="col-xs-6">
+      <label for="rc"
+        title="Distance beyond which the potential is treated as zero. It should not exceed half of the box size.">
+        Potential cutoff:
+      </label>
+      <input type="text" class="form-control" size="4" value="2.5" id="rc" onchange="initsys()">
+    </div>
+
+    <div class="col-xs-6">
+      <label for="mddt"
+        title="How much an atom is displaced in an MC move.">
+        MD time step:
+      </label>
+      <input type="text" class="form-control" size="4" value="0.002" id="mddt" onchange="initsys()">
+    </div>
+
+    <div class="col-xs-12">
+      <label for="nstepspersc">
+        MD steps per second:
+      </label>
+      <input type="text" class="form-control" size="7" value="1000" id="nstepspersec" onclick="initsys()">
+    </div>
+
+    <div class="col-xs-4">
+      <input type="button" value="MD step" id="runmdstep" onclick="singlestep()" class="btn btn-primary">
+    </div>
+    <div class="col-xs-4">
+      <input type="button" value="Run" id="start" onclick="startsimul()" class="btn btn-success">
+    </div>
+    <div class="col-xs-4">
+      <input type="button" value="Stop" id="stop" onclick="stopsimul()" class="btn btn-danger">
+    </div>
+
+    <!-- animation box -->
+    <canvas id="simulbox" width="400" height="400"
+      style="margin:auto; display:block" onclick="togglesimul()">
+    </canvas>
+
+    <!--information -->
+    <div class="alert alert-info" style="padding:1px 10px 5px 10px; margin:5px 0px">
+      <b>Information</b><br>
+      <span id="info"></span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
