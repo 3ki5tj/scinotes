@@ -80,6 +80,10 @@ function initsys() {
 
   vol = n / rho;
   l = Math.sqrt(vol);
+  if ( rc > 0.5 * l ) {
+    rc = 0.5 * l;
+    document.getElementById("rc").value = rc.toPrecision(6);
+  }
 
   // initialize the position
   var i, j, id = 0;

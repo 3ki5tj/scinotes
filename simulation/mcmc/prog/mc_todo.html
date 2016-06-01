@@ -88,6 +88,10 @@ function initsys() {
 
   vol = n / rho;
   l = Math.sqrt(vol);
+  if ( rc > 0.5 * l ) {
+    rc = 0.5 * l;
+    document.getElementById("rc").value = rc.toPrecision(6);
+  }
 
   // initialize the position
   var i, j, id = 0;
@@ -256,8 +260,10 @@ function startsimul()
 // stop the simulation
 function stopsimul()
 {
-  clearInterval(timer);
-  timer = null;
+  if ( timer ) {
+    clearInterval(timer);
+    timer = null;
+  }
 }
 
 // switch between start and stop simulations
@@ -345,13 +351,13 @@ function usercode_load()
       <li>Save this web page, <tt>mc_todo.html</tt>, in a local directory.
       <li>Open this web page in a modern web browser, like Firefox or Chrome.
           Enable JavaScript if necessary.
-      <li>Click the &ldquo;<tt>Execute a single MC step</tt>&rdquo; button
+      <li>Click the &ldquo;<tt>Single MC step</tt>&rdquo; button
           a few times. Pay attention to the information section.
           Currently, the code is broken, so no move that increases the energy
           is accepted.
       <li>Modify the following function, which is used to decide if a move
           is to be accepted or rejected.
-          Click the &ldquo;<tt>Done coding</tt>&rdquo; button when you
+          Click the &ldquo;<tt>Save</tt>&rdquo; button when you
           have finish editing the code.
 
   <textarea id="usercode" rows="16" cols="50"
@@ -373,9 +379,9 @@ function accept_move(de, tp) {
   return (de < 0);
 }
   </textarea>
-    <input type="button" value="Done coding" class="btn btn-primary"
+    <input type="button" value="Save" class="btn btn-primary"
       id="done_userfunc" onclick="compile_userfunc();">
-    <input type="button" value="Done and Run" class="btn btn-success"
+    <input type="button" value="Save and Run" class="btn btn-success"
       id="done_and_run" onclick="compile_userfunc();startsimul();">
     <input type="button" value="Stop" class="btn btn-danger"
       id="stop2" onclick="stopsimul();">
@@ -402,10 +408,10 @@ function accept_move(de, tp) {
         Click the run button, it should be fine now.
       </div>
       <li>Test a few steps by clicking the
-          &ldquo;<tt>Execute a single MC step</tt>&rdquo; button.
+          &ldquo;<tt>Single MC step</tt>&rdquo; button.
           Then click the
           &ldquo;<tt>Run</tt>&rdquo; button.
-          You should get the potential energy per particle around &minus;1.1,
+          You should get the potential energy per particle around &minus;1.15,
           and an acceptance ratio around 43%.
       <li>If have problems, right click the page and click "Inspect Elements" or "Inspect"
           in the pop up menu.  Go to the Console or Debugger tab to fix the problem.
@@ -454,11 +460,6 @@ function accept_move(de, tp) {
       <input type="text" class="form-control" size="4" value="0.5" id="mcamp" onchange="initsys()">
     </div>
 
-    <div class="col-xs-6">
-    <input type="button" value="Execute a single MC step" class="btn btn-primary"
-      id="step" onclick="singlestep()">
-    </div>
-
     <div class="col-xs-12">
       <label for="nstepspersc">
         MC steps per second:
@@ -466,10 +467,15 @@ function accept_move(de, tp) {
       <input type="text" class="form-control" size="7" value="10000" id="nstepspersec" onclick="initsys()">
     </div>
 
-    <div class="col-xs-4">
+    <div class="col-xs-5">
+    <input type="button" value="Single MC step" class="btn btn-primary"
+      id="step" onclick="singlestep()">
+    </div>
+
+    <div class="col-xs-3">
       <input type="button" value="Run" id="start" onclick="startsimul()" class="btn btn-success">
     </div>
-    <div class="col-xs-4">
+    <div class="col-xs-3">
       <input type="button" value="Stop" id="stop" onclick="stopsimul()" class="btn btn-danger">
     </div>
 
