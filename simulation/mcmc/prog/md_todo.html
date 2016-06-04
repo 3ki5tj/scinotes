@@ -5,9 +5,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
 <script type="text/javascript">
 "use strict";
 
@@ -226,8 +227,7 @@ function updatehistplot()
     if ( kehist[i] <= 0 ) continue;
     var ke = (i + 0.5) * dke;
     var hval = kehist[i] / htot / dke;
-    var ref = Math.pow(ke/tp, dof*0.5 - 1) / tp
-           * Math.exp(-ke/tp - norm);
+    var ref = Math.exp(Math.log(ke/tp) * (dof*0.5-1) -ke/tp - norm) / tp;
     dat += "" + ke + "," + hval + "," + ref + "\n";
   }
 
@@ -297,11 +297,32 @@ function togglesimul()
   }
 }
 
+// ace editor
+var aceeditor = null;
+
+function geteditorvalue()
+{
+  if ( aceeditor ) {
+    return aceeditor.getValue();
+  } else {
+    return document.getElementById("usercode").value;
+  }
+}
+
+function seteditorvalue(s)
+{
+  if ( aceeditor ) {
+    aceeditor.setValue(s);
+  } else {
+    document.getElementById("usercode").value = s;
+  }
+}
+
 // compile the user-defined function accept_move()
 function compile_userfunc()
 {
   stopsimul();
-  var s = document.getElementById("usercode").value;
+  var s = geteditorvalue();
   var p0 = s.indexOf("function(");
   var p1 = s.indexOf("(", p0);
   var p2 = s.indexOf(",", p1);
@@ -326,7 +347,7 @@ var initcode = "" +
 "// number of degrees of freedom, `tp` the temperature.\n" +
 "function thermostat(dof, tp) {\n" +
 "  var i, ke_o = 0;\n" +
-"  // compute the kinetic energy\n" +
+"  // compute the current (old) kinetic energy\n" +
 "  for ( i = 0; i < n; i++ )\n" +
 "    ke_o += 0.5 * (v[i][0]*v[i][0] + v[i][1]*v[i][1]);\n" +
 "  var lnke_o = Math.log( ke_o );\n" +
@@ -339,12 +360,12 @@ var initcode = "" +
 "  var rref = Math.exp(delta);\n" +
 "  // Generate a random number between 0 and 1\n" +
 "  var r = Math.random();\n" +
-"  if ( r < rref ) { // scale the velocities \n" +
+"  if ( r < rref ) { // accept the move from ke_o to ke_n\n" +
 "    var s = Math.sqrt( ke_n / ke_o );\n" +
-"    // TODO: scale the velocities by s\n" +
+"    // scale the velocities by s in the loop\n" +
 "    for ( i = 0; i < n; i++ ) {\n" +
-"       \n" +
-"       \n" +
+"       ; // TODO: scale v[i][0] by s\n" +
+"       ; // TODO: scale v[i][1] by s\n" +
 "    }\n" +
 "  }\n" +
 "  return ke_n;\n" +
@@ -356,7 +377,7 @@ var refcode = "" +
 "// number of degrees of freedom, `tp` the temperature.\n" +
 "function thermostat(dof, tp) {\n" +
 "  var i, ke_o = 0;\n" +
-"  // compute the kinetic energy\n" +
+"  // compute the current (old) kinetic energy\n" +
 "  for ( i = 0; i < n; i++ )\n" +
 "    ke_o += 0.5 * (v[i][0]*v[i][0] + v[i][1]*v[i][1]);\n" +
 "  var lnke_o = Math.log( ke_o );\n" +
@@ -369,7 +390,7 @@ var refcode = "" +
 "  var rref = Math.exp(delta);\n" +
 "  // Generate a random number between 0 and 1\n" +
 "  var r = Math.random();\n" +
-"  if ( r < rref ) { // scale the velocities\n" +
+"  if ( r < rref ) { // accept the move from ke_o to ke_n\n" +
 "    var s = Math.sqrt( ke_n / ke_o );\n" +
 "    for ( i = 0; i < n; i++ ) {\n" +
 "      v[i][0] *= s;\n" +
@@ -382,7 +403,7 @@ var refcode = "" +
 function showanswer()
 {
   if ( confirm("Do you really want to give up?") ) {
-    document.getElementById("usercode").value = refcode;
+    seteditorvalue( refcode );
     compile_userfunc();
     document.getElementById("surrender").disabled = true;
   }
@@ -392,13 +413,13 @@ function showanswer()
 function usercode_reset(what)
 {
   localStorage.removeItem(what);
-  document.getElementById("usercode").value = initcode;
+  seteditorvalue( initcode );
 }
 
 // save the user's code
 function usercode_save(what)
 {
-  var usercode = document.getElementById("usercode").value;
+  var usercode = geteditorvalue();
   localStorage.setItem(what, usercode);
   //alert("saving " + what + " " + usercode);
 }
@@ -408,7 +429,7 @@ function usercode_load(what)
 {
   var usercode = localStorage.getItem(what);
   if ( usercode ) {
-    document.getElementById("usercode").value = usercode;
+    seteditorvalue( usercode );
     //alert("loading " + what + " " + usercode);
   } else {
     usercode_reset(what);
@@ -425,7 +446,7 @@ function reset_code()
 
 </script>
 </head>
-<body onload="usercode_load('mc_thermostat')">
+<body>
 
 
 <div style="width:970px; margin:auto; font-family:Verdana; line-height:140%">
@@ -443,13 +464,32 @@ function reset_code()
       <li>Complete the following function to provide a thermostat.
           Click the &ldquo;<tt>Save</tt>&rdquo; button when you
           have finish editing the code.
-          You only need to add a few lines after &ldquo;<tt>TODO: </tt>&rdquo;
-
+          You only need to complete lines 23 and 24
+          indicated by &ldquo;<tt>TODO: </tt>&rdquo;
+  <div id="usercode-par">
   <textarea id="usercode" rows="28" cols="50"
-    class="form-control" style="background-color:#ffffe0; font-family: monospace;"
-    onChange="usercode_save('mc_thermostat')">
-
+    class="form-control" oninput="usercode_save()"
+    style="background-color:#ffffe0; font-family: monospace;">
   </textarea>
+</div>
+
+  <div id="usercode-aceeditor"></div>
+  <script>
+    if ( ace ) {
+      // remove the textarea
+      var txt = document.getElementById("usercode");
+      var par = document.getElementById("usercode-par");
+      par.removeChild(txt);
+      // resize the Ace editor
+      document.getElementById("usercode-aceeditor").style.height = "420px";
+      aceeditor = ace.edit("usercode-aceeditor");
+      aceeditor.setTheme("ace/theme/dawn");
+      aceeditor.getSession().setMode("ace/mode/javascript");
+      aceeditor.getSession().on('change', function(e) { usercode_save('mc_thermostat') });
+    }
+    usercode_load('mc_thermostat');
+  </script>
+
     <input type="button" value="Save" class="btn btn-primary"
       id="done_userfunc" onclick="compile_userfunc();">
     <input type="button" value="Save and Run" class="btn btn-success"
@@ -481,13 +521,15 @@ function reset_code()
       <div id="hintinfo2" class="collapse">
         Click the run button, it should be fine now.
       </div>
-      <li>Click the &ldquo;<tt>Run</tt>&rdquo; button.  Wait a while.
+      <li>Click the &ldquo;<tt>Save and Run</tt>&rdquo; button.  Wait a while.
           Verify that the average kinetic energy per degree of freedom
           is around half of the temperature.
           The distribution of the kinetic energy (green) should also match
           the reference curve (blue).
-      <li>Does the average energy per atom match the value obtained from
-          the previous Monte Carlo simulation?
+      <li>How does the average energy per atom agree with the previous value,
+          &minus;1.15, obtained from the Monte Carlo simulation?
+      <li>Can you change the move size of the kinetic energy
+          to make the thermostat more efficient?
     </ol>
   </div>
 
