@@ -1,0 +1,439 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+\newcommand{\vct}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vct{x}}
+\newcommand{\vy}{\vct{y}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\Ham}{\mathcal{H}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\com}{\mathrm{com}}
+
+\newcommand{\llbra}{[\![}
+\newcommand{\llket}{]\!]}
+
+% annotation macros
+\newcommand{\repl}[2]{{\color{gray} [#1] }{\color{blue} #2}}
+\newcommand{\add}[1]{{\color{blue} #1}}
+\newcommand{\del}[1]{{\color{gray} [#1]}}
+\newcommand{\note}[1]{{\color{OliveGreen}\small [\textbf{Comment.} #1]}}
+
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2
+}
+
+
+\begin{document}
+
+
+
+\title{NAMD Hacking Notes}
+\author{ \vspace{-10ex} }
+\date{ \vspace{-10ex} }
+
+
+\maketitle
+
+\tableofcontents
+
+
+\section{SimParameters}
+
+Let us start with something easy--the input parameters.
+%
+The header file `SimParameters.h' effectively
+lists every parameter we can use in the `.conf' configuration file.
+%
+For example,
+\begin{lstlisting}
+  Bool commOnly; // Don't do any force evaluations
+  Bool tclForcesOn; // Are Tcl forces on?
+  Bool colvarsOn;
+\end{lstlisting}
+%
+These parameters are organized in a class,
+and the instance \texttt{simParams}
+(which is a nick name \texttt{Node::Object()->simParameters})
+is available in both master and slave nodes (see later),
+which means that the input files are accessible
+by every computing node.
+
+
+\section{Master/slave architecture}
+
+NAMD is a parallel code of molecular dynamics (MD).
+%
+Different computer nodes do different jobs.
+
+Tasks that can be parallelized are done on the slave nodes.
+%
+For example, integrating Newton's equation, computing the force and energy, etc.
+
+Tasks that are not parallelized are done on the master node.
+%
+For example, reading the user input file,
+writing the restart file, etc.
+
+When the code is running, there are many slave nodes,
+but only one master node.
+%
+In NAMD, the notion `node' is a virtual node,
+and it does not match the number of CPU cores.
+%
+For example, you can run NAMD on a 16-core machine
+for a large protein/water system;
+NAMD may decide to use thousands of virtual slave nodes
+instead of 15 or 16 of them.
+
+
+\subsection{Master-slave communication}
+
+Because of the master/slave architecture,
+we need some tools to communicate between master and slave nodes.
+%
+Section \ref{sec:broadcasting} shows how the master node
+can send information to the slave nodes (broadcasting).
+%
+Section \ref{sec:collection} shows how the slave nodes
+can send information to the master.
+%
+Section \ref{sec:reduction} shows how the master node
+can get the sum of an additive quantity
+computed at slave nodes (called reduction).
+
+
+\section{Controller (master) and Sequencer (slave)}
+
+`Controller.C' is the code running on the master node.
+`Sequencer.C' is the code running on the slave nodes.
+For functions that require communication between
+the master and slave nodes, e.g., \texttt{integrate()},
+there is a version for the master node,
+and another version for the slave nodes.
+
+\subsection{Controller}
+
+The most important function is \texttt{integrate()},
+which runs the main MD loop,
+this function is independent of the function of the same name
+in \texttt{Sequencer.C},
+which is for the slave nodes.
+
+\begin{lstlisting}
+void Controller::integrate(int scriptTask) {
+  for ( ++step ; step <= numberOfSteps; step++ ) {
+    adaptTempUpdate(step);
+    tcoupleVelocities(step);
+    berendsenPressure(step);
+    enqueueCollections(step);  // collect positions, velocities, forces
+    receivePressure(step);
+    if ( zeroMomentum && dofull && ! (step % slowFreq) )
+      correctMomentum(step);
+    ...
+#if STEP_BARRIER
+    cycleBarrier(1, step);
+#endif
+    rebalanceLoad(step);
+  }
+}
+\end{lstlisting}
+%
+Now notice that the master node does not actually
+integrate Newton's equation of motion,
+because it is a job of slaves.
+%
+All the master does is to collect data from slaves
+and assist some tricky steps for the thermostat and barostat.
+%
+It also does the writing of restart files.
+%
+For example, for adaptive tempering,
+it is done in \texttt{adaptTempUpdate(step)}.
+
+The `Controller' has a few handy variables,
+they are quite self explanatory.
+\begin{lstlisting}
+  BigReal totalEnergy;
+  BigReal kineticEnergy;
+  int     numDegFreedom;
+  Tensor  pressure;
+\end{lstlisting}
+
+The data collection part is done by the function
+\texttt{enqueueCollections()}.
+
+\begin{lstlisting}
+// collect positions, velocities, forces from slave nodes
+void Controller::enqueueCollections(int timestep)
+{
+  if ( Output::coordinateNeeded(timestep) ){
+    collection->enqueuePositions(timestep,state->lattice);
+  }
+  if ( Output::velocityNeeded(timestep) )
+    collection->enqueueVelocities(timestep);
+  if ( Output::forceNeeded(timestep) )
+    collection->enqueueForces(timestep);
+}
+\end{lstlisting}
+
+
+\subsection{Sequencer}
+
+The slave version of function \texttt{integrate()}
+is much more complex.  Below is a simplified version.
+
+\begin{lstlisting}
+void Sequencer::integrate(int scriptTask) {
+  for ( ++step; step <= numberOfSteps; step++ ) {
+    rescaleVelocities(step);
+    tcoupleVelocities(timestep,step);
+    berendsenPressure(step);
+
+    if ( ! commOnly )
+      addForceToMomentum(0.5*timestep);
+    ...
+    if ( ! commOnly ) addVelocityToPosition(0.5*timestep);
+    ...
+    langevinPiston(step);
+    if ( ! commOnly ) addVelocityToPosition(0.5*timestep);
+    ...
+    submitHalfstep(step);
+    ...
+    runComputeObjects(!(step%stepsPerCycle),step<numberOfSteps);
+
+    // reassignment based on full-step velocities
+    if ( !commOnly && ( reassignFreq>0 ) && ! (step%reassignFreq) ) {
+      reassignVelocities(timestep,step);
+      addForceToMomentum(-0.5*timestep);
+      rattle1(-timestep,0);
+    }
+
+    if ( ! commOnly ) {
+      langevinVelocitiesBBK1(timestep);
+      addForceToMomentum(timestep);
+      langevinVelocitiesBBK2(timestep);
+    }
+    ...
+    rattle1(timestep,1);
+    ...
+    submitHalfstep(step);
+    if ( zeroMomentum && doFullElectrostatics ) submitMomentum(step);
+    ...
+    if ( ! commOnly ) {
+      addForceToMomentum(-0.5*timestep);
+    }
+    ...
+    submitReductions(step);
+    submitCollections(step);
+    adaptTempUpdate(step);
+    ...
+#if  STEP_BARRIER
+    cycleBarrier(1, step);
+#endif
+    rebalanceLoad(step);
+  }
+}
+\end{lstlisting}
+
+
+
+
+\section{\label{sec:collection}CollectionMaster (master) and CollectionMgr (slave)}
+
+
+We will focus on the non-\texttt{MEM\_OPT\_VERSION}.
+
+\subsection{CollectionMaster}
+
+The most important function is
+\texttt{CollectionMaster::enqueuePositions()},
+which is used in \texttt{Controller.C}.
+
+\begin{lstlisting}
+void CollectionMaster::receivePositions(CollectVectorMsg *msg)
+{
+  positions.submitData(msg,Node::Object()->molecule->numAtoms);
+  delete msg;
+
+  CollectVectorInstance *c;
+  while ( ( c = positions.removeReady() ) ) { disposePositions(c); }
+}
+
+// request from slaves the coordinates in step `seq'
+// use the coordinates (for file writing, TCL scripting, etc),
+// and dispose of it
+void CollectionMaster::enqueuePositions(int seq, Lattice &lattice)
+{
+  positions.enqueue(seq,lattice);
+
+  CollectVectorInstance *c;
+  while ( ( c = positions.removeReady() ) ) { disposePositions(c); }
+}
+
+// write and use the position saved in the
+// CollectVectorInstance *c, and then delete it
+void CollectionMaster::disposePositions(CollectVectorInstance *c)
+{
+  int seq = c->seq;
+  int size = c->data.size();
+  if ( ! size ) size = c->fdata.size();
+  Vector *data = c->data.begin();
+  FloatVector *fdata = c->fdata.begin();
+  Node::Object()->output->coordinate(seq,size,data,fdata,c->lattice);
+  c->free();
+}
+\end{lstlisting}
+
+
+
+
+\section{Output.C}
+
+The \texttt{output->coordinate()} function is used to write coordinates.
+%
+This function is used in \texttt{CollectionMaster::disposePosition()}
+defined in \texttt{CollectionMaster.C}.
+
+\begin{lstlisting}
+void Output::coordinate(timestep, n, Vector coor, FloatVector fcoor,
+                        Lattice &lattice)
+{
+  // Output to DCD trajectory use the float coordinates
+  if ( timestep % simParam->dcdFrequency == 0 ) {
+    wrap_coor(fcoor, lattice, ...);
+    output_dcdfile(timestep, n, fcoor, &lattice);
+  }
+
+  // Output a restart file
+  if ( timestep % simParams->restartFrequency == 0 ) {
+    wrap_coor(coor, lattice, ...);
+    output_restart_coordinates(coor, n, timestep);
+  }
+  ...
+
+  // TCL scripts
+  if ( timestep == EVAL_MEASURE ) {
+    wrap_coor(coor, lattice, ...);
+    Node::Object()->getScript()->measure(coor);
+  }
+  ...
+}
+\end{lstlisting}
+
+
+\section{HomePatch}
+
+This is a patch of atoms that are handled by a computing node.
+%\bibliographystyle{plain}
+%\bibliography{simul}
+
+
+\section{\label{sec:reduction}Summing parts, ReductionMgr}
+
+In most cases,
+``reduction'' means adding things up.
+%
+For example, each slave node has computed
+a part of the potential energy,
+the total potential energy is the sum of them.
+%
+Then after a reduction,
+the \emph{master} node gets the total potential.
+
+A limitation is that the reduced thing
+must be a \texttt{double} or \texttt{BigReal}.
+%
+For a vector, you need to do it for the three components.
+%
+
+If you need to reduce something new,
+just add something in \texttt{ReductionMgr.h}.
+\begin{lstlisting}
+enum {
+  ...
+  REDUCTION_MY_QUANTITY,
+  // semaphore (must be the last)
+  REDUCTION_MAX_RESERVED
+} ReductionTag;
+\end{lstlisting}
+%
+Then in the code for slave nodes, e.g. \texttt{Sequence.C},
+%
+\begin{lstlisting}
+  reduction->item(REDUCTION_MY_QUANTITY) += my_quantity;
+\end{lstlisting}
+%
+and the master (e.g. \texttt{Controller.C}) can read the sum,
+%
+\begin{lstlisting}
+  my_quantity = reduction->item(REDUCTION_MY_QUANTITY);
+\end{lstlisting}
+
+
+\section{\label{sec:broadcast}Broadcast}
+
+``Broadcast'' means sending information from the master node
+to the slave nodes.
+%
+If we want to broadcast a \texttt{Vector} called \texttt{myvec1},
+we modify \texttt{Broadcasts.h}
+%
+\begin{lstlisting}
+enum {
+  ...
+  myvec1Tag,
+  dummyTag
+};
+
+struct ControllerBroadcasts
+{
+  ...
+  SimpleBroadcastObject<Vector> myvec1;
+  ControllerBroadcasts(const LDObjHandle *ldObjPtr = 0) :
+    ...
+    myvec1(myvec1Tag, ldObjPtr),
+    ...
+  { ; }
+};
+
+\end{lstlisting}
+
+\end{document}
