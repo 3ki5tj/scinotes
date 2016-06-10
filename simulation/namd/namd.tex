@@ -191,11 +191,20 @@ it is done in \texttt{adaptTempUpdate(step)}.
 The `Controller' has a few handy variables,
 they are quite self explanatory.
 \begin{lstlisting}
+  NamdState *const state;
   BigReal totalEnergy;
   BigReal kineticEnergy;
   int     numDegFreedom;
   Tensor  pressure;
 \end{lstlisting}
+%
+For example, \texttt{state->pdb} contains information
+of the initial PDB, which can help determine the number of atoms
+via \texttt{state->pdb->num\_atoms()}, or the position of the \texttt{i}th atom
+via \texttt{state->pdb->get\_position\_for\_atom(pos, i)}.
+Similarly, \texttt{state->molecule} contains information of charge and mass,
+e.g., \texttt{state->molecule->atommass(i)} gives the mass
+of the \texttt{i}th atom.
 
 The data collection part is done by the function
 \texttt{enqueueCollections()}.
