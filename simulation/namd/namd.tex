@@ -124,7 +124,15 @@ for a large protein/water system;
 NAMD may decide to use thousands of slaves
 instead of 15 or 16 of them.
 
-The real node can be accessed by \texttt{Node::Object()}.
+Information about virtual workers can be
+accessed via \texttt{PatchMap::Object()}.
+%
+For example, the number of workers is
+\texttt{PatchMap::Object()->numHomePatches()},
+or \texttt{PatchMap::Object()->numPatches()}.
+
+In contrast, information about the real nodes
+can be accessed by \texttt{Node::Object()}.
 %
 For example, we can print out the node id and the number of nodes by
 \begin{lstlisting}
@@ -331,6 +339,7 @@ which is used in \texttt{Controller.C}.
 \begin{lstlisting}
 // this function is to be called by a slave node for the
 // master to receive the coordinates
+// the prototype of this function exists in CollectionMaster.ci
 void CollectionMaster::receivePositions(CollectVectorMsg *msg)
 {
   // the size is the total number of atoms in the system
@@ -365,6 +374,21 @@ void CollectionMaster::disposePositions(CollectVectorInstance *c)
 }
 \end{lstlisting}
 
+The function \texttt{receivePosition()} is special,
+to allow it to be called from a slave node,
+we need to add its prototype in \texttt{CollectionMaster.ci}.
+
+\begin{lstlisting}
+module CollectionMaster {
+  ...
+  chare CollectionMaster {
+  {
+    entry CollectionMaster(void);
+    entry void receivePosition(CollectionVectorMsg *);
+    ...
+  };
+}
+\end{lstlisting}
 
 \texttt{CollectVectorSequence} is an array
 of \texttt{CollectVectorInstance}s at different time steps.
@@ -693,8 +717,6 @@ struct ControllerBroadcasts
   { ; }
 };
 \end{lstlisting}
-
-
 
 
 
