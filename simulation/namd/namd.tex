@@ -156,8 +156,12 @@ we need some tools to communicate between master and slaves.
     computed at slaves (called reduction).
 
   \item \textbf{Broadcast.}
-    Section \ref{sec:broadcast} shows how the master
-    can send information to the slaves.
+    Sections \ref{sec:broadcast} and \ref{sec:initbroadcast}
+    shows how the master can send information to the slaves.
+    Section \ref{sec:broadcast} is about sending a
+    single variable in a step-by-step basis.
+    Section \ref{sec:initbroadcast} is about sending
+    a large chunk of data initially.
 \end{enumerate}
 %
 
@@ -337,8 +341,8 @@ The most important function is
 which is used in \texttt{Controller.C}.
 
 \begin{lstlisting}
-// this function is to be called by a slave node for the
-// master to receive the coordinates
+// a slave calls this function to notify the master
+// to receive the coordinates
 // the prototype of this function exists in CollectionMaster.ci
 void CollectionMaster::receivePositions(CollectVectorMsg *msg)
 {
@@ -375,7 +379,7 @@ void CollectionMaster::disposePositions(CollectVectorInstance *c)
 \end{lstlisting}
 
 The function \texttt{receivePosition()} is special,
-to allow it to be called from a slave node,
+to allow it to be called from a slave,
 we need to add its prototype in \texttt{CollectionMaster.ci}.
 
 \begin{lstlisting}
@@ -407,7 +411,7 @@ class CollectVectorSequence
   int blocked;
   CollectVectorSequence() : blocked(0) { ; }
 
-  // this function is called when a slave node try to
+  // this function is called when a slave try to
   // send a message `msg' to the master, via
   //  CollectionMaster::receivePositions(msg);
   void submitData(CollectVectorMsg *msg, int max_index) {
@@ -426,7 +430,7 @@ class CollectVectorSequence
       }
       (*c)->reset(seq);
     }
-    // absorb the message `msg' from the sending slave node
+    // absorb the message `msg' from the sending slave
     (*c)->append(msg, max_index);
   }
 
@@ -514,7 +518,7 @@ class CollectVectorInstance
 
 
 
-The slave node version of submitPositions() basically
+The slave version of submitPositions() basically
 copies the coordinates and the global atom IDs to
 a message, and then calls CollectionMaster to receive the message.
 %
@@ -558,16 +562,16 @@ which is a few \texttt{CollectVectorInstance}
 at different time steps.
 %
 The class \texttt{CollectVectorSequence} serves
-as a local buffer on the slave node for data
+as a local buffer on the slave for data
 \emph{to be} sent to the master.
 %
-When the slave node want to send something
+When the slave want to send something
 (array indices \texttt{i} and vectors \texttt{d})
 of step \texttt{seq} to the master,
 it calls the function \texttt{submitData(seq, i, d)}.
 %
 After the call, the data are not sent,
-but cached on the local slave node.
+but cached on the local slave.
 
 
 \begin{lstlisting}
@@ -638,23 +642,23 @@ class CollectVectorInstance
       if ( precisions & 2 ) data.add(d[i]); // add as double
       if ( precisions & 1 ) fdata.add(d[i]); // add as float
     }
-    return ( ! --remaining ); // return 1 if I'm the last slave node
+    return ( ! --remaining ); // return 1 if I'm the last slave
   }
 };
 \end{lstlisting}
 
 
-% (*c)->reset();   // slave node 1
-% (*c)->append();   // slave node 2, remaining = 2
-% (*c)->append();   // slave node 3, remaining = 1
-% (*c)->append();   // slave node 1, remaining = 0
+% (*c)->reset();   // slave 1
+% (*c)->append();   // slave 2, remaining = 2
+% (*c)->append();   // slave 3, remaining = 1
+% (*c)->append();   // slave 1, remaining = 0
 
 \section{\label{sec:reduction}ReductionMgr}
 
 In most cases,
 ``reduction'' means adding things up.
 %
-For example, each slave node has computed
+For example, each slave has computed
 a part of the potential energy,
 the total potential energy is the sum of them.
 %
@@ -719,6 +723,50 @@ struct ControllerBroadcasts
 \end{lstlisting}
 
 
+\section{\label{sec:initbroadcast}Initial broadcast}
+
+The above technique is fine for a few small quantities.
+%
+But what if we want to send a large chunk data from the master to slaves.
+%
+This is particularly common in the beginning of a simulation.
+%
+When the master read something from the input,
+all slaves want to know the information.
+%
+The answer lies in \texttt{Molecule.C}, where we have
+a pair of functions
+\texttt{send\_Molecule(MOStream *)}
+and
+\texttt{recv\_Molecule(MOSteam *)}.
+%
+The two function are respectively used in \texttt{Node::namdOneSend()}
+and \texttt{Node::namdOneRecv()},
+which were in turn used in Phase 1 (a very early phase) of \texttt{Node::startup()}
+in \texttt{Node.C}.
+
+In \texttt{Molecule::send\_Molecule(MOStream *)},
+we have a few calls to \texttt{msg->put()}:
+\begin{lstlisting}
+void Molecule::send_Molecule(MOStream *msg){
+  msg->put(numAtoms);
+  msg->put(numAtoms*sizeof(Atom), (char *)atoms);
+  ...
+}
+\end{lstlisting}
+and in \texttt{Molecule::recv\_Molecule(MOSteam *)},
+we have a few corresponding calls to \texttt{msg->get()}:
+%
+\begin{lstlisting}
+void Molecule::receive_Molecule(MIStream *msg){
+  msg->get(numAtoms);
+  atoms = new Atom[numAtoms];
+  msg->get(numAtoms*sizeof(Atom), (char*)atoms);
+  ...
+}
+\end{lstlisting}
+
+
 
 \section{Output}
 
@@ -751,6 +799,275 @@ void Output::coordinate(timestep, n, Vector coor, FloatVector fcoor,
   }
   ...
 }
+\end{lstlisting}
+
+
+\section{Node}
+
+\texttt{Node} contains code for
+the overall flow and structure of NAMD.
+%
+That is, how the master/slaves are setup.
+%
+We can access a lot of useful information
+in \texttt{Node.C} and \texttt{Node.h}.
+%
+For any code to access the Node instance,
+we use \texttt{Node::Object()},
+which returns a pointer to the class \texttt{Node}.
+%
+For example,
+\texttt{computeMgr}
+gives an instance of the class \texttt{ComputeMgr}.
+
+The following function \texttt{startup()}
+shows what happens when NAMD starts.
+
+\begin{lstlisting}
+void Node::startup() {
+  ...
+  switch (startupPhase) {
+    case 1: // phase one
+      if (CkMyPe() != 0) namdOneRecv();
+      else namdOneSend();
+      break;
+
+    case 2: // phase two
+      simParameters = node_simParameters;
+      ...
+      break;
+
+    ...
+
+    case 10: // phase 10
+      computeMgr->createComputes(ComputeMap::Object());
+      buildSequencers();
+  }
+}
+
+void Node::namdOneRecv() {
+  MIStream *conv_msg = CkpvAccess(comm)->newInputStream(0, MOLECULETAG);
+  molecule->receive_Molecule(conv_msg);
+}
+
+void Node::namdOneSend() {
+  MOStream *conv_msg = CkpvAccess(comm)->newOutputStream(ALLBUTME, MOLECULETAG, bufSize);
+  molecule->send_Molecule(conv_msg);
+}
+
+\end{lstlisting}
+
+
+\section{\label{globalforce}Global forces}
+
+
+A common problem is to add a bias force of a collective variable,
+which involves all atoms.
+%
+Such a force is called a \emph{global} force in NAMD.
+%
+This feature, \texttt{simParams->globalForcesOn}, is turned on if any of
+\texttt{TclForces}, free energy, \texttt{colvars}, etc.,
+is turned on.
+
+The relevant code are listed below.
+\begin{enumerate}
+  \item \texttt{ComputeMgr}. Manager of the global/slave set-up.
+
+  \item \texttt{ComputeGlobal}.  The slave-end code.
+
+  \item \texttt{GlobalMasterServer}. The framework for the master-end code.
+
+  \item \texttt{GlobalMaster}.  The interface of the master-end code.
+    It provides a virtual function \texttt{calculate()}.
+
+  \item \texttt{GlobalMasterXXX}. Your funny code goes here.
+    \texttt{GlobalMasterEasy} is a good template to start with.
+    Basically, you need to write a function of
+    \texttt{GlobalMasterXXX::calculate()},
+    in which do something with
+    \texttt{modifyForcedAtoms()}
+    and \texttt{modifyAppliedForces()}.
+\end{enumerate}
+
+
+\subsection{ComputeMgr}
+
+The code \texttt{ComputeMgr}
+gives the structure of master/slave set-up.
+%
+\begin{lstlisting}
+// this function is called in Node::startup() phase 10
+void ComputeMgr::createComputes(ComputeMap *map) {
+  Node *node = Node::Object();
+  SimParameters *simParams = node->simParameters;
+
+  if ( simParams->globalForcesOn && node->myid == 0 ) {
+    /* create a master server to allow multiple masters */
+    masterServerObject = new GlobalMasterServer(this,
+            PatchMap::Object()->numNodesWithPatches());
+    /* create the individual global masters */
+    if (simParams->tclForcesOn) // adding to ->clientList
+        masterServerObject->addClient(new GlobalMasterTcl());
+    ...
+  }
+}
+
+// slave call this function to send the master coordinates
+void ComputeMgr::sendComputeGlobalData(ComputeGlobalDataMsg *msg) {
+  CProxy_ComputeMgr cm(CkpvAccess(BOCclass_group).computeMgr);
+  cm[0].recvComputeGlobalData(msg);
+}
+
+// master calls this via charm++, to receive coordinates
+void ComputeMgr::recvComputeGlobalData(ComputeGlobalDataMsg *msg) {
+  masterServerObject->recvData(msg);
+}
+
+// master calls this in GlobalMasterServer::callClients()
+// to send slaves the global forces
+void ComputeMgr::sendComputeGlobalResults(ComputeGlobalResultsMsg *msg) {
+  msg->seq = ++computeGlobalResultsMsgMasterSeq;
+  thisProxy.recvComputeGlobalResults(msg);
+}
+
+// slave calls this via charm++ to receive the global forces
+void ComputeMgr::recvComputeGlobalResults(ComputeGlobalResultsMsg *msg) {
+  if ( computeGlobalObject && msg->seq == computeGlobalResultsMsgSeq ) {
+    CmiEnableUrgentSend(1);
+    computeGlobalObject->recvResults(msg);
+    CmiEnableUrgentSend(0);
+  }
+}
+\end{lstlisting}
+
+
+\subsection{ComputeGlobal}
+
+Slave-end code.
+%The class \texttt{ComputeGlobal} inherits \texttt{ComputeHomePatches}.
+
+\begin{lstlisting}
+// called when a slave receives the global force
+// called by ComputeMgr::recvComputeGlobalResults()
+void ComputeGlobal::recvResults(ComputeGlobalResultsMsg *msg) {
+  // set the forces only if we aren't going to resend the data
+  if( !msg->resendCoordinates ) { // apply forces to patches
+    AtomMap *atomMap = AtomMap::Object();
+    ResizeArrayIter<PatchElem> ap(patchList);
+
+    for (ap = ap.begin(); ap != ap.end(); ap++) {
+      (*ap).r = (*ap).forceBox->open();
+      forcePtrs[(*ap).patchID] = (*ap).r->f[Results::normal];
+      atomPtrs[(*ap).patchID] = (*ap).p->getAtomList().begin();
+    }
+
+    AtomIDList::iterator a = msg->aid.begin();
+    ForceList::iterator f2 = msg->f.begin();
+    for ( ; a != msg->aid.end(); ++a, ++f2 ) {
+      LocalID localID = atomMap->localID(*a);
+      if ( localID.pid == notUsed || ! forcePtrs[localID.pid] ) continue;
+      forcePtrs[localID.pid][localID.index] += *f2;
+      FullAtom &atom = atomPtrs[localID.pid][localID.index];
+    }
+  }
+}
+
+void ComputeGlobal::sendData() {
+  // Get positions from patches
+  AtomMap *atomMap = AtomMap::Object();
+  const Lattice & lattice = patchList[0].p->lattice;
+  ResizeArrayIter<PatchElem> ap(patchList);
+  ComputeGlobalDataMsg *msg = new  ComputeGlobalDataMsg;
+
+  msg->step = patchList[0].p->flags.step;
+  for ( AtomIDList::iterator a = aid.begin(); a != aid.end(); ++a ) {
+    LocalID localID = atomMap->localID(*a);
+    if ( localID.pid == notUsed || ! atomPtrs[localID.pid] ) continue;
+    msg->aid.add(*a);
+    FullAtom &atom = atomPtrs[localID.pid][localID.index];
+    msg->p.add(lattice.reverse_transform(atom.position, atom.transform));
+  }
+
+  comm->sendComputeGlobalData(msg);
+  comm->enableComputeGlobalResults();
+}
+\end{lstlisting}
+
+
+
+
+\subsection{GlobalMasterServer}
+
+
+Master-end code (framework).
+
+\begin{lstlisting}
+// called at the beginning of simulation in ComputeMsg::createComputes()
+// a client is a specialized master, e.g., GlobalMasterTcl
+void GlobalMasterServer::addClient(GlobalMaster *newClient) {
+  clientList.add(newClient);
+  newClient->setLattice(&lattice);
+}
+
+// handle coordinates from slaves,
+// called by ComputeMgr::recvComputeGlobalData()
+void GlobalMasterServer::recvData(ComputeGlobalDataMsg *msg) {
+  // handle msg ...
+  if(recvCount == numDataSenders + numForceSenders + 1) {
+    ...
+    int resendCoordinates = callClients();
+  }
+}
+
+int GlobalMasterServer::callClients() {
+  for ( GlobalMaster **m_i = clientList.begin();
+        m_i != clientList.end(); m_i++ ) {
+    GlobalMaster *master = *m_i;
+    master->processData(...);
+  }
+  ...
+  ComputeGlobalResultsMsg *msg = new ComputeGlobalResultsMsg;
+  ...
+  // expanding the function resetForceList(msg->aid,msg->f,...);
+  // iterate over all of the masters
+  // e.g., (*m_i) may be a point to GlobalMasterTcl
+  for ( GlobalMaster **m_i = clientList.begin();
+        m_i != clientList.end(); m_i++ ) {
+    /* add all of the atoms in this master */
+    for(int i = 0; i < (*m_i)->forcedAtoms().size(); i++) {
+      msg->aid.add((*m_i)->forcedAtoms()[i]);
+      msg->f.add((*m_i)->appliedForces()[i]);
+      ...
+    }
+  }
+  myComputeManager->sendComputeGlobalResults(msg);
+  return 0;
+}
+\end{lstlisting}
+
+
+\subsection{GlobalMaster}
+
+Here is the interface of the master end.
+\begin{lstlisting}
+class GlobalMaster {
+  // after receiving the coordinates, things to do before
+  // sending out the global force
+  // calls the virtual function calculate();
+  void processData(...);
+
+  // basically, all we need to do is to
+  // inherit GlobalMaster, and override this method
+  virtual void calculate();
+
+  AtomIDList &modifyForcedAtoms(); // returns fAtoms
+  ForceList &modifyAppliedForces(); // returns appForces
+
+  bool appForcesChanged;
+  AtomIDList fAtoms; // atoms that are being forced
+  ForceList appForces; // the corresponding forces
+};
 \end{lstlisting}
 
 
