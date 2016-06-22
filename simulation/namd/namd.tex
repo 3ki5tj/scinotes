@@ -7,6 +7,7 @@
 \usepackage{listings}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{tikz}
+\usepackage[margin=1.2in]{geometry}
 \usepackage{hyperref}
 
 \hypersetup{
@@ -870,7 +871,7 @@ This feature, \texttt{simParams->globalForcesOn}, is turned on if any of
 \texttt{TclForces}, free energy, \texttt{colvars}, etc.,
 is turned on.
 
-The relevant code are listed below.
+The relevant modules are listed below.
 \begin{enumerate}
   \item \texttt{ComputeMgr}. Manager of the global/slave set-up.
 
@@ -881,7 +882,7 @@ The relevant code are listed below.
   \item \texttt{GlobalMaster}.  The interface of the master-end code.
     It provides a virtual function \texttt{calculate()}.
 
-  \item \texttt{GlobalMasterXXX}. Your funny code goes here.
+  \item \texttt{GlobalMasterXXX}. Your code goes here.
     \texttt{GlobalMasterEasy} is a good template to start with.
     Basically, you need to write a function of
     \texttt{GlobalMasterXXX::calculate()},
@@ -890,6 +891,60 @@ The relevant code are listed below.
     and \texttt{modifyAppliedForces()}.
 \end{enumerate}
 
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}\small
+
+    \node[] (master) at (0, 10) {\large Master};
+
+    \draw[dashed] (4, 10.5) -- (4, 4);
+
+    \node[draw, align=left] (masterRecv) at (0, 9)
+    { \textcolor{dkgreen}{ComputeMgr}::recvComputeGlobalData() \\
+      \hskip 5mm masterServerObject-\textgreater recvData(); };
+
+    \node[draw, align=left] (GlobalMasterServer) at (0, 7)
+      { \textcolor{red}{GlobalMasterServer}::recvData() \\
+      \hskip 5mm  \textcolor{red}{GlobalMasterServer}::callClients() \\
+      \hskip 7mm \textcolor{Plum}{GlobalMaster}::processData() \\
+      \hskip 9mm \textcolor{Plum}{GlobalMaster}::calculate() \\
+      \hskip 5mm myComputeManager \\
+      \hskip 10mm -\textgreater sendComputeGlobalResults(); };
+
+
+    \node[draw, align=left] (masterSend) at (0, 5)
+    { \textcolor{dkgreen}{ComputeMgr}::sendComputeGlobalResults() \\
+      \hskip 5mm thisProxy.recvComputeGlobalResults(); };
+
+    \node[] (slave) at (8, 10) {\large Slave};
+
+    \node[draw, align=left] (slaveSend) at (8, 9)
+    { \textcolor{dkgreen}{ComputeMgr}::sendComputeGlobalData() \\
+      \hskip 5mm cm[0].recvComputeGlobalData(); };
+
+    \node[draw, align=left] (slaveRecv2) at (8, 7)
+      { \textcolor{blue}{ComputeGlobal}::recvResults() \\
+      \hskip 5mm Apply the bias force. };
+
+    \node[draw, align=left] (slaveRecv) at (8, 5)
+    { \textcolor{dkgreen}{ComputeMgr}::recvComputeGlobalResults() \\
+      \hskip 5mm computeGlobalObject.recvResults(); };
+
+    \draw[->, >=latex, thick]
+      (masterRecv) edge (GlobalMasterServer)
+      (GlobalMasterServer) edge (masterSend);
+
+    \draw[->, >=latex, thick]
+      (slaveSend) edge node[anchor=south]{coordinates} (masterRecv);
+
+    \draw[->, >=latex, thick]
+      (masterSend) edge node[anchor=south]{forces} (slaveRecv);
+
+    \draw[->, >=latex, thick]
+    (slaveRecv) -| (11.5,6) |- (slaveRecv2);
+  \end{tikzpicture}
+\end{figure}
 
 \subsection{ComputeMgr}
 
