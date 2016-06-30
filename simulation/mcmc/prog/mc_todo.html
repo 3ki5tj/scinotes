@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
 <script type="text/javascript">
 "use strict";
 
@@ -276,71 +277,125 @@ function togglesimul()
   }
 }
 
-// compile the user-defined function accept_move()
-function compile_userfunc()
+var usercode_funcname = "mc_acceptance";
+
+var usercode_init = "" +
+"// This function returns true if a move that changes the\n" +
+"// energy by `de` is to be accepted, or false otherwise.\n" +
+"// The argument `tp` is the temperature.\n" +
+"// The Boltzmann constant is 1.0 here.\n" +
+"function accept_move(de, tp) {\n" +
+"  // Generate a random number between 0 and 1\n" +
+"  var r = Math.random();\n" +
+"  // Metropolis acceptance probability\n" +
+"  var rref = Math.exp(-de/tp);\n" +
+"  // Currently, we only accept a move that decreases the\n" +
+"  // energy. You job is to change the following line such\n" +
+"  // that the probability of accepting the move is equal\n" +
+"  // to the Metropolis acceptance probability.\n" +
+"  return (de < 0);\n" +
+"}";
+
+var usercode_ref = "" +
+"// This function returns true if a move that changes the\n" +
+"// energy by `de` is to be accepted, or false otherwise.\n" +
+"// The argument `tp` is the temperature.\n" +
+"// The Boltzmann constant is 1.0 here.\n" +
+"function accept_move(de, tp) {\n" +
+"  // Generate a random number between 0 and 1\n" +
+"  var r = Math.random();\n" +
+"  // Metropolis acceptance probability\n" +
+"  var rref = Math.exp(-de/tp);\n" +
+"  // Currently, we only accept a move that decreases the\n" +
+"  // energy. You job is to change the following line such\n" +
+"  // that the probability of accepting the move is equal\n" +
+"  // to the Metropolis acceptance probability.\n" +
+"  return (r < rref);\n" +
+"}";
+
+// ace editor
+var aceeditor = null;
+
+function geteditorvalue()
 {
-  var s = document.getElementById("usercode").value;
+  if ( aceeditor ) {
+    return aceeditor.getValue();
+  } else {
+    return document.getElementById("usercode").value;
+  }
+}
+
+function seteditorvalue(s)
+{
+  if ( aceeditor ) {
+    aceeditor.setValue(s);
+  } else {
+    document.getElementById("usercode").value = s;
+  }
+}
+
+// compile the user-defined function
+function usercode_compile()
+{
+  stopsimul();
+  var s = geteditorvalue();
   var p0 = s.indexOf("function(");
   var p1 = s.indexOf("(", p0);
   var p2 = s.indexOf(",", p1);
   var p3 = s.indexOf(")", p2);
-  var varde = s.substring(p1 + 1, p2).trim();
-  var vartp = s.substring(p2 + 1, p3).trim();
+  var var1 = s.substring(p1 + 1, p2).trim();
+  var var2 = s.substring(p2 + 1, p3).trim();
   var id0 = s.indexOf("{");
   var id1 = s.lastIndexOf("}");
   var funcbody = s.substring(id0, id1 + 1);
-  accept_move = new Function(varde, vartp, funcbody);
+  accept_move = new Function(var1, var2, funcbody);
 }
 
-// give a hint
-function showhint()
+function usercode_reset(ask)
 {
-  document.getElementById("surrender").disabled = false;
-}
-
-function showanswer()
-{
-  if ( confirm("Do you really want to give up?") ) {
-    document.getElementById("usercode").value =
-        "// This function returns true if a move that changes the\n"
-      + "// energy by `de` is to be accepted, or false otherwise.\n"
-      + "// The argument `tp` is the temperature.\n"
-      + "// The Boltzmann constant is 1.0 here.\n"
-      + "function accept_move(de, tp) {\n"
-      + "  // Generate a random number between 0 and 1\n"
-      + "  var r = Math.random();\n"
-      + "  // Metropolis acceptance probability\n"
-      + "  var rref = Math.exp(-de/tp);\n"
-      + "  // Currently, we only accept a move that decreases the\n"
-      + "  // energy. You job is to change the following line such\n"
-      + "  // that the probability of accepting the move is equal\n"
-      + "  // to the Metropolis acceptance probability.\n"
-      + "  return (r < rref);\n"
-      + "}\n";
-    compile_userfunc();
-    document.getElementById("surrender").disabled = true;
+  if ( !ask || confirm("This will erase your current code, continue?") ) {
+    localStorage.removeItem(usercode_funcname);
+    seteditorvalue( usercode_init );
   }
 }
 
 // save the user's code
 function usercode_save()
 {
-  var usercode = document.getElementById("usercode").value;
-  localStorage.setItem("usercode", usercode);
+  var usercode = geteditorvalue();
+  localStorage.setItem(usercode_funcname, usercode);
 }
 
 // load the user's code
 function usercode_load()
 {
-  var usercode = localStorage.usercode;
+  var usercode = localStorage.getItem(usercode_funcname);
   if ( usercode ) {
-    document.getElementById("usercode").value = usercode;
+    seteditorvalue( usercode );
+  } else {
+    usercode_reset(false);
+  }
+}
+
+// give a hint
+function showhint()
+{
+  document.getElementById("answer").disabled = false;
+}
+
+// show the answer
+function showanswer()
+{
+  if ( confirm("Do you really want to give up?") ) {
+    seteditorvalue( usercode_ref );
+    usercode_compile();
+    document.getElementById("answer").disabled = true;
   }
 }
 
 </script>
 </head>
-<body onload="usercode_load()">
+<body>
 
 
 <div style="width:970px; margin:auto; font-family:Verdana; line-height:140%">
@@ -360,36 +415,41 @@ function usercode_load()
           Click the &ldquo;<tt>Save</tt>&rdquo; button when you
           have finish editing the code.
 
-  <textarea id="usercode" rows="16" cols="50"
-    class="form-control" style="background-color:#ffffe0; font-family: monospace;"
-    onChange="usercode_save()">
-// This function returns true if a move that changes the
-// energy by `de` is to be accepted, or false otherwise.
-// The argument `tp` is the temperature.
-// The Boltzmann constant is 1.0 here.
-function accept_move(de, tp) {
-  // Generate a random number between 0 and 1
-  var r = Math.random();
-  // Metropolis acceptance probability
-  var rref = Math.exp(-de/tp);
-  // Currently, we only accept a move that decreases the
-  // energy. You job is to change the following line such
-  // that the probability of accepting the move is equal
-  // to the Metropolis acceptance probability.
-  return (de < 0);
-}
-  </textarea>
+    <div id="usercode-par">
+      <textarea id="usercode" rows="16" cols="50"
+        class="form-control" oninput="usercode_save()"
+        style="background-color:#ffffe0; font-family: monospace;">
+      </textarea>
+    </div>
+
+    <div id="usercode-aceeditor"></div>
+    <script>
+      if ( ace ) {
+        // remove the textarea
+        var txt = document.getElementById("usercode");
+        var par = document.getElementById("usercode-par");
+        par.removeChild(txt);
+        // resize the Ace editor
+        document.getElementById("usercode-aceeditor").style.height = "260px";
+        aceeditor = ace.edit("usercode-aceeditor");
+        aceeditor.setTheme("ace/theme/dawn");
+        aceeditor.getSession().setMode("ace/mode/javascript");
+        aceeditor.getSession().on('change', function(e) { usercode_save() });
+      }
+      usercode_load();
+    </script>
+
     <input type="button" value="Save" class="btn btn-primary"
-      id="done_userfunc" onclick="compile_userfunc();">
+      id="done_userfunc" onclick="usercode_compile();">
     <input type="button" value="Save and Run" class="btn btn-success"
-      id="done_and_run" onclick="compile_userfunc();startsimul();">
-    <input type="button" value="Stop" class="btn btn-danger"
-      id="stop2" onclick="stopsimul();">
+      id="done_and_run" onclick="usercode_compile();startsimul();">
+    <input type="button" value="Start over" class="btn btn-danger"
+      id="reset" onclick="usercode_reset()">
     <input type="button" value="Hint" class="btn btn-info"
       id="hint" data-toggle="collapse" data-target="#hintinfo"
       onclick="showhint()">
-    <input type="button" value="Surrender" class="btn btn-warning"
-      id="surrender" data-toggle="collapse" data-target="#hintinfo2"
+    <input type="button" value="Answer" class="btn btn-warning"
+      id="answer" data-toggle="collapse" data-target="#hintinfo2"
       onclick="showanswer()">
       <br>
       <div id="hintinfo" class="collapse"

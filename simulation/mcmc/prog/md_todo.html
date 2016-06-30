@@ -297,51 +297,9 @@ function togglesimul()
   }
 }
 
-// ace editor
-var aceeditor = null;
+var usercode_funcname = "mc_thermostat";
 
-function geteditorvalue()
-{
-  if ( aceeditor ) {
-    return aceeditor.getValue();
-  } else {
-    return document.getElementById("usercode").value;
-  }
-}
-
-function seteditorvalue(s)
-{
-  if ( aceeditor ) {
-    aceeditor.setValue(s);
-  } else {
-    document.getElementById("usercode").value = s;
-  }
-}
-
-// compile the user-defined function accept_move()
-function compile_userfunc()
-{
-  stopsimul();
-  var s = geteditorvalue();
-  var p0 = s.indexOf("function(");
-  var p1 = s.indexOf("(", p0);
-  var p2 = s.indexOf(",", p1);
-  var p3 = s.indexOf(")", p2);
-  var var1 = s.substring(p1 + 1, p2).trim();
-  var var2 = s.substring(p2 + 1, p3).trim();
-  var id0 = s.indexOf("{");
-  var id1 = s.lastIndexOf("}");
-  var funcbody = s.substring(id0, id1 + 1);
-  thermostat = new Function(var1, var2, funcbody);
-}
-
-// give a hint
-function showhint()
-{
-  document.getElementById("surrender").disabled = false;
-}
-
-var initcode = "" +
+var usercode_init = "" +
 "// This function provides a thermostat by scaling\n" +
 "// the velocities using Monte Carlo. `dof` is the\n" +
 "// number of degrees of freedom, `tp` the temperature.\n" +
@@ -371,7 +329,7 @@ var initcode = "" +
 "  return ke_n;\n" +
 "}\n";
 
-var refcode = "" +
+var usercode_ref = "" +
 "// This function provides a thermostat by scaling\n" +
 "// the velocities using Monte Carlo. `dof` is the\n" +
 "// number of degrees of freedom, `tp` the temperature.\n" +
@@ -400,49 +358,85 @@ var refcode = "" +
 "  return ke_n;\n" +
 "}\n";
 
-function showanswer()
+// ace editor
+var aceeditor = null;
+
+function geteditorvalue()
 {
-  if ( confirm("Do you really want to give up?") ) {
-    seteditorvalue( refcode );
-    compile_userfunc();
-    document.getElementById("surrender").disabled = true;
+  if ( aceeditor ) {
+    return aceeditor.getValue();
+  } else {
+    return document.getElementById("usercode").value;
   }
 }
 
-// reset the user's code
-function usercode_reset(what)
+function seteditorvalue(s)
 {
-  localStorage.removeItem(what);
-  seteditorvalue( initcode );
+  if ( aceeditor ) {
+    aceeditor.setValue(s);
+  } else {
+    document.getElementById("usercode").value = s;
+  }
+}
+
+// compile the user-defined function
+function usercode_compile()
+{
+  stopsimul();
+  var s = geteditorvalue();
+  var p0 = s.indexOf("function(");
+  var p1 = s.indexOf("(", p0);
+  var p2 = s.indexOf(",", p1);
+  var p3 = s.indexOf(")", p2);
+  var var1 = s.substring(p1 + 1, p2).trim();
+  var var2 = s.substring(p2 + 1, p3).trim();
+  var id0 = s.indexOf("{");
+  var id1 = s.lastIndexOf("}");
+  var funcbody = s.substring(id0, id1 + 1);
+  thermostat = new Function(var1, var2, funcbody);
+}
+
+function usercode_reset(ask)
+{
+  if ( !ask || confirm("This will erase your current code, continue?") ) {
+    localStorage.removeItem(usercode_funcname);
+    seteditorvalue( usercode_init );
+  }
 }
 
 // save the user's code
-function usercode_save(what)
+function usercode_save()
 {
   var usercode = geteditorvalue();
-  localStorage.setItem(what, usercode);
-  //alert("saving " + what + " " + usercode);
+  localStorage.setItem(usercode_funcname, usercode);
 }
 
 // load the user's code
-function usercode_load(what)
+function usercode_load()
 {
-  var usercode = localStorage.getItem(what);
+  var usercode = localStorage.getItem(usercode_funcname);
   if ( usercode ) {
     seteditorvalue( usercode );
-    //alert("loading " + what + " " + usercode);
   } else {
-    usercode_reset(what);
+    usercode_reset(false);
   }
 }
 
-function reset_code()
+// give a hint
+function showhint()
 {
-  if ( confirm("This will erase your current code, continue?") ) {
-    usercode_reset("mc_thermostat");
-  }
+  document.getElementById("answer").disabled = false;
 }
 
+// show the answer
+function showanswer()
+{
+  if ( confirm("Do you really want to give up?") ) {
+    seteditorvalue( usercode_ref );
+    usercode_compile();
+    document.getElementById("answer").disabled = true;
+  }
+}
 
 </script>
 </head>
@@ -467,11 +461,11 @@ function reset_code()
           You only need to complete lines 23 and 24
           indicated by &ldquo;<tt>TODO: </tt>&rdquo;
   <div id="usercode-par">
-  <textarea id="usercode" rows="28" cols="50"
-    class="form-control" oninput="usercode_save()"
-    style="background-color:#ffffe0; font-family: monospace;">
-  </textarea>
-</div>
+    <textarea id="usercode" rows="28" cols="50"
+      class="form-control" oninput="usercode_save()"
+      style="background-color:#ffffe0; font-family: monospace;">
+    </textarea>
+  </div>
 
   <div id="usercode-aceeditor"></div>
   <script>
@@ -485,22 +479,22 @@ function reset_code()
       aceeditor = ace.edit("usercode-aceeditor");
       aceeditor.setTheme("ace/theme/dawn");
       aceeditor.getSession().setMode("ace/mode/javascript");
-      aceeditor.getSession().on('change', function(e) { usercode_save('mc_thermostat') });
+      aceeditor.getSession().on('change', function(e) { usercode_save() });
     }
-    usercode_load('mc_thermostat');
+    usercode_load();
   </script>
 
     <input type="button" value="Save" class="btn btn-primary"
-      id="done_userfunc" onclick="compile_userfunc();">
+      id="done_userfunc" onclick="usercode_compile();">
     <input type="button" value="Save and Run" class="btn btn-success"
-      id="done_and_run" onclick="compile_userfunc();startsimul();">
+      id="done_and_run" onclick="usercode_compile();startsimul();">
     <input type="button" value="Start over" class="btn btn-danger"
-      id="stop2" onclick="reset_code()">
+      id="reset" onclick="usercode_reset()">
     <input type="button" value="Hint" class="btn btn-info"
       id="hint" data-toggle="collapse" data-target="#hintinfo"
       onclick="showhint()">
-    <input type="button" value="Surrender" class="btn btn-warning"
-      id="surrender" data-toggle="collapse" data-target="#hintinfo2"
+    <input type="button" value="Answer" class="btn btn-warning"
+      id="answer" data-toggle="collapse" data-target="#hintinfo2"
       onclick="showanswer()">
       <br>
       <div id="hintinfo" class="collapse"
