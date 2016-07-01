@@ -9,6 +9,13 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+<style>
+.math {
+  font-family: Times, Times New Roman, serif;
+  font-size: 130%;
+  text-align: center;
+}
+</style>
 <script type="text/javascript">
 "use strict";
 
@@ -223,9 +230,10 @@ function updatehistplot()
   var dat = "Kinetic energy,Histogram,Reference\n";
   for ( i = 0; i < kehistn; i++ )
     htot += kehist[i];
+  var kemax = (dof + 5 * Math.sqrt(dof)) * tp * 0.5;
   for ( i = 0; i < kehistn; i++ ) {
-    if ( kehist[i] <= 0 ) continue;
     var ke = (i + 0.5) * dke;
+    if ( ke > kemax ) break;
     var hval = kehist[i] / htot / dke;
     var ref = Math.exp(Math.log(ke/tp) * (dof*0.5-1) -ke/tp - norm) / tp;
     dat += "" + ke + "," + hval + "," + ref + "\n";
@@ -238,10 +246,8 @@ function updatehistplot()
       includeZero: true,
       drawPoints: true,
       axisLabelFontSize: 10,
-      pointSize: 2,
       width: 350,
       height: 250,
-      xRangePad: 2,
     };
     histplot = new Dygraph(document.getElementById("histplot"), dat, options);
   } else {
@@ -445,6 +451,32 @@ function showanswer()
 
 <div style="width:970px; margin:auto; font-family:Verdana; line-height:140%">
   <h2>Thermostat for molecular dynamics (MD) on the 2D Lennard-Jones fluid</h2>
+  <div style="margin:10px 0px">
+    <h4>Description:</h4>
+    In this exercise, we will implement a thermostat
+    for molecular dynamics simulations
+    using Monte Carlo.
+    
+    The thermostat carries out sampling in
+    the kinetic energy, <span class="math"><i>K</i></span>, space,
+    according to the distribution
+    <div class="math" style="text-align:center;">
+      <i>&rho;</i>(<i>K</i>) <i>d</i><i>K</i>
+      &propto;
+      <i>K</i><sup><i>N<sub>f</sub></i></sup>
+      exp(&minus;<i>&beta; K</i>) <i>d</i>(ln<i>K</i>),
+    </div>
+    where,
+    <span class="math"><i>N<sub>f</sub></i></span>
+    is the number of degrees of freedom,
+    and
+    <span class="math"><i>&beta;</i> = 1 / (<i>k<sub>B</sub>T</i>)</span>
+    is the inverse temperature.
+
+    Once the kinetic energy is changed according to the above distribution,
+    the velocities will be scaled uniformly.
+  </div>
+
   <div style="width:540px; display:inline-block; vertical-align:text-top;">
     <h4>Instructions:</h4>
     <ol style="line-height:135%">

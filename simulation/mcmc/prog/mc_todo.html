@@ -8,6 +8,13 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+<style>
+.math {
+  font-family: Times, Times New Roman, serif;
+  font-size: 130%;
+  text-align: center;
+}
+</style>
 <script type="text/javascript">
 "use strict";
 
@@ -400,6 +407,32 @@ function showanswer()
 
 <div style="width:970px; margin:auto; font-family:Verdana; line-height:140%">
   <h2>Monte Carlo (MC) simulation on the 2D Lennard-Jones fluid</h2>
+  <div>
+    <h4>Description:</h4>
+    In this exercise, we will implement a basic Monte Carlo simulation.
+    Particularly, we will focus on the core part of accepting
+    an attempt of changing configuration.
+    By the Metropolis rule, we accept a move that increases
+    the energy from
+    <span class="math"><i>E</i><sup>old</sup></span>
+    to
+    <span class="math"><i>E</i><sup>new</sup></span>
+    by probability
+    <div class="math">
+      <i>A</i>(old &rarr; new)
+      =
+      min{exp(&minus;<i>&beta;&Delta;E</i>), 1},
+    </div>
+    where
+    <span class="math">
+      <i>&Delta;E</i> = <i>E</i><sup>new</sup> &minus; <i>E</i><sup>old</sup> 
+    </span>
+    is the energy change,
+    and
+    <span class="math"><i>&beta;</i> = 1 / (<i>k<sub>B</sub>T</i>)</span>
+    is the inverse temperature.
+  </div>
+
   <div style="width:540px; display:inline-block; vertical-align:text-top;">
     <h4>Instructions:</h4>
     <ol style="line-height:135%">
