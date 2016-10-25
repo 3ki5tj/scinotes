@@ -1131,7 +1131,21 @@ class GlobalMaster {
 This is a patch of atoms that are handled by a computing node.
 
 
+\section{Misc.}
 
+The seed of the random number generator is initialized in SimParameters.C
+Search the variable \texttt{randomSeed}.
+
+The initial velocities is initialized in WorkDistrib.C,
+\texttt{createHomePatches() --> createAtomLists() --> random\_velocities()}
+before Sequencers are created.
+
+But these random velocities are subject to rattle in Sequencer::integrate().
+
+Another way to reinitialize velocities in to use the function
+\texttt{reinitVelocities()} in Sequencer.C.
+This is only invoked if there is a command 
+\texttt{reinitvels 300} in the configuration file.
 
 
 
