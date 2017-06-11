@@ -1,0 +1,528 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+\begin{document}
+\tableofcontents
+\title{Mid-term notes}
+\author{\vspace{-10ex}}
+\date{\vspace{-10ex}}
+%\maketitle
+
+\section{Problem 3-22. Fluctuation in grand-canonical ensemble}
+
+\paragraph{Problem 3-22.}
+Show that in the grand-canonical ensemble,
+$$
+\sigma_E^2 = k \, T^2 \, C_V
+  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2.
+$$
+
+There is clearly a typo here, since the units do not match.
+%
+The most likely correction is
+\begin{equation}
+  \sigma_E^2 = k \, T^2 \, C_V
+  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2 \, \textcolor{red}{\mu}.
+  \label{eq:prob3-22a}
+\end{equation}
+%
+Another possible correction is
+%
+\begin{equation}
+  \sigma_E^2 = k \, T^2 \, C_{V,\textcolor{blue}{N}}
+  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V}^{\textcolor{blue}{2}} \sigma_N^2.
+  \label{eq:prob3-22b}
+\end{equation}
+%
+Note that in the second correction,
+$C_V$ is interpreted as the heat capacity in the canonical ensemble,
+so it is less likely.
+
+\paragraph{Solution.}
+
+We will show Eq. \eqref{eq:prob3-22a} first.
+The grand partition function is defined as
+\begin{equation}
+\Xi
+=
+  \sum_{N} Q(N, V, T) \, z^N
+=
+  \sum_{N, E} \Omega(N, V, E) \, e^{-\beta \, E + \mu^* \, N}
+,
+  \label{eq:Xi_def}
+\end{equation}
+%
+where we have defined the reduced chemical potential $\mu^* = \beta \, \mu = \ln z$.
+%
+As $\ln \Omega$ corresponds to the entropy $S/k$,
+$\ln Q$ corresponds to the Helmholtz free energy $S/k - \beta \, E = -\beta \, A$,
+the free energy corresponding to $\ln \Xi$
+is the so-called grand potential:
+%
+\begin{equation}
+  \ln \Xi
+  = \frac{S}{k} - \beta \, E + \mu^* N
+  = \beta \, p \, V
+  .
+  \label{eq:lnXi}
+\end{equation}
+Here, the last step follows from Euler's theorem,
+i.e. $E = T \, S - p \, V + \mu \, N$.\footnote{
+  From McQuarrie Eq. (1-60),
+  $$
+  G = \sum_i \mu_i \, N_i
+  $$
+  But by definition $G = E - TS + pV$, so
+  $$
+  E = T \, S - p \, V + \sum_i \mu_i \, N_i.
+  $$
+  We are using the one component case.
+}
+%
+By differentiating Eq. \eqref{eq:Xi_def}, we get
+%
+\begin{align}
+  \overline E &= -\frac{ \partial \ln \Xi } { \partial \beta }
+  ,
+  \label{eq:dXidbeta}
+  \\
+  \overline N &= \frac{ \partial \ln \Xi } { \partial \mu^* }
+  ,
+  \label{eq:dXidmu}
+\end{align}
+%
+or
+\begin{equation}
+  d \ln \Xi
+  =
+  \frac{ \partial \ln \Xi } { \partial \beta } d\beta
+  +
+  \frac{ \partial \ln \Xi } { \partial \mu^* } d\mu^*
+  = -\overline E \, d\beta + \overline N \, d\mu^*
+  .
+  \notag
+  %\label{eq:firstlawXi}
+\end{equation}
+%
+We can compare this to the first law of thermodynamics,
+$dE = T \, dS - p \, dV + \mu \, dN$,
+which after some Legrendre transforms, can be written as
+%
+\begin{equation}
+  d(\beta \, p \, V) = -E \, d\beta + N \, d\mu^* + \beta \, p \, dV
+  .
+  \notag
+  %\label{eq:firstlaw}
+\end{equation}
+This means that we should interpret $E$ and $N$ in the first law
+as the ensemble averages, $\overline E$ and $\overline N$, respectively.
+%
+We can further differentiate Eqs. \eqref{eq:dXidbeta} and \eqref{eq:dXidmu}
+%
+\begin{align}
+  \sigma_E^2
+  &=
+  -\left( \frac{ \partial \overline E } { \partial \beta } \right)_{\mu^*, V}
+  = \frac{ \partial^2 \ln \Xi } { \partial \beta^2 }
+  ,
+  \label{eq:varE}
+  \\
+  \sigma_N^2
+  &= \left( \frac{ \partial \overline N } { \partial \mu^* } \right)_{\beta, V}
+  = \frac{ \partial^2 \ln \Xi } { \partial \mu^{*2} }
+  \label{eq:varN}
+  ,
+  \\
+  \left( \frac{ \partial \overline E } { \partial \mu^* } \right)_{\beta, V}
+  &= -\frac{ \partial^2 \ln \Xi } { \partial \mu^* \, \partial \beta }
+  = - \left( \frac{ \partial \overline N } { \partial \beta } \right)_{\mu^*, V}
+  \label{eq:covEN}
+  .
+\end{align}
+
+Now the heat capacity in the grand-canonical ensemble can be defined as
+%
+\begin{equation}
+= \left( \frac{ T \, \partial S } { \partial T } \right)_{\mu^*, V}
+= -\beta \left( \frac{ \partial S } { \partial \beta } \right)_{\mu^*, V}
+= -\frac{1}{T} \left( \frac{ \partial (S/k) } { \partial \beta } \right)_{\mu^*, V}.
+\label{eq:CV_def}
+\end{equation}
+%
+Using Eq. \eqref{eq:lnXi}, we have
+\begin{align}
+-T \, C_V
+  &= \left( \frac{ \partial (\ln \Xi + \beta \, \overline E - \mu^* \, \overline N) }
+  { \partial \beta } \right)_{\mu^*, V}.
+  \notag
+  \\
+  &= \frac{ \partial \ln \Xi } { \partial \beta }
+  + \overline E
+  + \beta \left( \frac{ \partial \overline E } { \partial \beta } \right)_{\mu^*, V}
+  - \mu^* \left( \frac{ \partial \overline N } { \partial \beta } \right)_{\mu^*, V}
+  \notag
+  \\
+  &=
+  - \beta \, \sigma_E^2
+  + \mu^* \left( \frac{ \partial \overline E } { \partial \mu^* } \right)_{\beta, V}
+  ,
+  \notag
+\end{align}
+%
+where we have used Eqs. \eqref{eq:dXidbeta}, \eqref{eq:varE}, and \eqref{eq:covEN}
+in the last step.
+%
+Further using Eq. \eqref{eq:varN}, we have
+\begin{equation}
+T \, C_V
+=
+\beta \, \sigma_E^2
++
+\mu^* \,
+\frac{ \left( \partial \overline E / \partial \mu^* \right)_{\beta, V} }
+     { \left( \partial \overline N / \partial \mu^* \right)_{\beta, V} }
+\, \sigma_N^2
+.
+\label{eq:TCV}
+\end{equation}
+Finally, if we interpret
+$$
+\frac{ \left( \partial \overline E / \partial \mu^* \right)_{\beta, V} }
+     { \left( \partial \overline N / \partial \mu^* \right)_{\beta, V} }
+\to
+\left(
+  \frac{ \partial \overline E }
+       { \partial \overline N }
+\right)_{T, V}
+,
+$$
+and multiply both sides of Eq. \eqref{eq:TCV} by $k T = 1/\beta$,
+we recover Eq. \eqref{eq:prob3-22a}.
+
+\paragraph{Second interpretation.}
+
+
+About the second interpretation, Eq. \eqref{eq:prob3-22b},
+we will use the advanced technique of transforming thermodynamic variables
+(i.e. chain rule),
+so it is okay to ignore it if it sounds unfamiliar.
+%
+Similar to Eq. \eqref{eq:CV_def},
+the heat capacity in the canonical ensemble is defined as
+\begin{equation}
+C_{V, N}
+= -\frac{1}{T} \left( \frac{ \partial S^* } { \partial \beta } \right)_{V, N},
+  \label{eq:CVN_def}
+\end{equation}
+where we have introduced $S^* = S/k$ for convenience.
+%
+To be clear, the heat capacity in the grand-canonical ensemble
+will be denoted as
+\begin{equation}
+C_{V, \mu^*} = -\frac{1}{T} \left( \frac{ \partial S^* } { \partial \beta } \right)_{V, \mu^*}.
+  \label{eq:CVmu_def}
+\end{equation}
+%
+Using the technique of determinants for transforming variables, we have
+\begin{align*}
+  \left( \frac{ \partial S^* } {\partial \beta } \right)_{\mu^*}
+  &=
+  \frac{ \partial (S^*, \mu^*) } { \partial (\beta, \mu^*) }
+  =
+  \left.
+  \frac{ \partial (S^*, \mu^*) } { \partial (\beta, N) }
+  \middle/
+  \frac{ \partial (\beta, \mu^*) } { \partial (\beta, N) }
+  \right.
+  \\
+  &=
+  \left( \frac{ \partial S^* } {\partial \beta } \right)_{N}
+  -
+  \left.
+  \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
+  \left( \frac{ \partial S^* } {\partial N } \right)_{\beta}
+  \middle/
+  \left( \frac{ \partial \mu^* } {\partial N } \right)_{\beta}
+  \right.
+\end{align*}
+From the first law, we have
+$$
+d(S^* - \beta \, E) = -E \, d\beta -\mu^* dN + \beta p \, dV
+,
+$$
+%
+so
+\begin{align*}
+  \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
+  &=
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}
+  ,
+  \\
+  \left( \frac{ \partial S^* } {\partial N } \right)_{\beta}
+  &=
+  \left( \frac{ \partial (S^* - \beta \, E) } {\partial N } \right)_{\beta}
+  +
+  \left( \frac{ \partial ( \beta \,  E) } {\partial N } \right)_{\beta}
+  =
+  -\mu^*
+  +
+  \beta \, \left( \frac{ \partial E } {\partial N } \right)_{\beta}
+  .
+\end{align*}
+Using the above two expressions, we get
+\begin{align*}
+  \left( \frac{ \partial S^* } {\partial \beta } \right)_{\mu^*}
+  &=
+  \left( \frac{ \partial S^* } {\partial \beta } \right)_{N}
+  +
+  \mu^* \,
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}
+  \left( \frac{ \partial N } {\partial \mu^* } \right)_{\beta}
+  -
+  \beta \,
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}^2
+  \left( \frac{ \partial N } {\partial \mu^* } \right)_{\beta}
+  .
+\end{align*}
+%
+Dividing both sides by $-1/(k T) = -\beta$,
+and using Eqs. \eqref{eq:CVN_def}, \eqref{eq:CVmu_def}, and \eqref{eq:varN},
+we get
+$$
+  k T^2 C_{V, \mu^*}
+  +
+  \mu \,
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}
+  \sigma_N^2
+  =
+  k T^2 C_{V, N}
+  +
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}^2
+  \sigma_N^2
+  .
+$$
+If we interpret
+$\left( \partial E / \partial N \right)_{\beta}$
+as
+$\left( \partial \overline E / \partial \overline N \right)_{T, V}$,
+we recover Eq. \eqref{eq:prob3-22b}.
+Note that we have implicitly assumed that $V$ is fixed in the above derivation.
+
+
+\section{Tsallis entropy: application of Lagrange multiplier}
+
+\paragraph{Problem.}
+[This problem extends Problems 1-51 and 2-6 in McQuarrie].
+
+Unlike the usual definition of entropy,
+$S = -k \sum_i P_i \, \ln P_i$,
+in this problem we wish to explore the idea of Tsallis entropy,
+which is defined as\footnote{
+  The Tsallis entropy is reduced to the usual entropy in the limit of $q \to 1$.
+  To see this, we note that
+  \begin{align*}
+  P_i^q
+    &= P_i \, P_i^{q-1} = P_i \, e^{(q - 1) \, \ln P_i}
+    \approx P_i \, \left[ 1 + (q - 1) \, \ln P_i \right]
+    .
+  \end{align*}
+  %
+  The last step holds because when $x = (q-1) \, \ln P_i$ is small,
+  $$
+  e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots \approx 1 + x.
+  $$
+  %
+  Then summing over $i$ yields
+  \begin{equation}
+  \sum_i P_i^q = \sum_i P_i  + (q - 1) \sum_i P_i \, \ln P_i
+  = 1 + (q - 1) \sum_i P_i \, \ln P_i
+    ,
+    \notag %\label{eq:pqsum}
+  \end{equation}
+  where we have used Eq. \eqref{eq:psum} in the second step.
+  Using this expression in Eq. \eqref{eq:Sq_def} yields
+  $$
+  \lim_{q \to 1} S_q =
+  \frac{k}{q - 1} \left( 1 - 1 - (q-1) \sum_i P_i \, \ln P_i \right)
+  = -k \sum_i P_i \, \ln P_i.
+  $$
+}
+\begin{equation}
+S_q = \frac{k}{q - 1} \left( 1 - \sum_i P_i^q \right).
+  \label{eq:Sq_def}
+\end{equation}
+
+If we impose two constraints (as in Problem 2-6)
+%
+\begin{align}
+  \sum_i P_i = 1, \label{eq:psum} \\
+  \sum_i E_i \, P_i = E, \label{eq:pEsum}
+\end{align}
+%
+Show that the equilibrium distribution is
+$$
+P_i \propto (E_0 - \, E_i)^{1/(q-1)},
+$$
+for some value of $E_0$.\footnote{
+  This is distribution is not complete artificial.
+  %
+  The potential energy distribution in the microcanonical ensemble is
+  $$
+  P_i(U) \propto (E_\mathrm{tot} - U)^{\frac{N_f}{2} - 1},
+  $$
+  where
+  $E_\mathrm{tot}$ is the total energy, and
+  $N_f$ is the number of degrees of freedom (usually $3N$ in three dimensions).
+  %
+  Thus, the distribution of the potential energy, $U$,
+  maximizes the Tsallis entropy for $q = N_f/(N_f - 2)$.
+}
+
+
+\paragraph{Solution.}
+
+To find the equilibrium distribution
+we need to find the numbers $P_1, P_2, \dots$
+that maximize the Tsallis entropy, $S_q$.
+%
+Using the method of Lagrange multiplier, we define the target function
+as
+$$
+F(P_1, P_2, \dots)
+= S_q(P_1, P_2, \dots) - \lambda_1 \sum_i P_i - \lambda_2 \sum_i E_i \, P_i,
+$$
+with $\lambda_1$ and $\lambda_2$ being two multipliers
+for the two constraints, Eqs. \eqref{eq:psum} and \eqref{eq:pEsum}, respectively.
+%
+To maximize $F$, we require
+$$
+\frac{ \partial F } { \partial P_i } = 0,
+$$
+for each $i$, which leads to
+$$
+\frac{ \partial S_q } { \partial P_i } - \lambda_1 - \lambda_2 \, E_i = 0.
+$$
+This condition leads to
+$$
+P_i = \left[ \frac{q - 1} { k \, q} (-\lambda_1 - \lambda_2 \, E_i) \right]^{1/(q-1)}.
+$$
+Finally, we can redefine $-\lambda_1/\lambda_0$ as $E_0$.
+
+
+
+
+\section{A note on Legendre transform}
+
+In pages 14-17, McQuarrie has given a lucid explanation on Legendre transform.\footnote{
+  Another explanation can be found in Arnold's Mathematical Methods of Classical Mechanics, pages 61-64.
+}
+%
+Here is a piece of personal understanding.
+%
+Legendre transform is more readily understood
+through the calculus technique of integration by parts.
+%
+If we have a hard integral,
+$$A = \int p(x) \, dx,$$
+but we totally know how to compute
+$$G = \int x(p) \, dp,$$
+where $x(p)$ is the inverse function of $p(x)$,
+then we can use integration by parts:
+%
+$$
+A = \int p(x) \, dx = x p - \int x(p) \, dp = x p - G.
+$$
+That is, we can compute the hard integral, $A$, through
+the easier one, $G$.
+
+For example, for $p(x) = \sin^{-1}(x)$, the integral
+$$
+A = \int \sin^{-1}(x) \, dx
+$$
+is intimidating.
+%
+But since $x = \sin(p(x))$,
+the integral
+$$
+G = \int x \, dp = \int \sin(p) \, dp = -\cos p
+$$
+is rather simple. So we calculate the original integral as
+$$
+A = x \, p - G = x p + \cos p = x \, \sin^{-1}(x) + \sqrt{1-x^2}.
+$$
+
+Here is another analogy in physical experiment.
+%
+Suppose we want to measure the Helmholtz free energy of a balloon.
+%
+We know that
+%
+\begin{equation}
+  dA = -S\,dT - p \, dV + \mu dN,
+  \label{eq:firstlaw1}
+\end{equation}
+%
+Assuming the temperature, $T$,
+and the number of particles in the balloon, $N$, are fixed,
+all we need to do is to design an experiment to calculate the integral
+$$
+-\int p \, dV,
+$$
+which requires us to change the volume of the balloon.
+%
+But this is a challenging task, and
+even if this can be done, we have to measure the pressure of balloon,
+which is also difficult.
+%
+A easier task is to place the balloon in an environment
+under a known pressure and measure the volume of the balloon.
+%
+For example, we can push the balloon under water,
+where the pressure is known to be $p_0 + \rho_w \, g \, h$.
+Here, $p_0$ is the atmospheric pressure, $\rho_w$ is the mass density of water,
+$g$ is the gravity of Earth, and $h$ is the vertical distance from the water surface.
+%
+The volume of the balloon can be readily measured from the amount of displaced water.
+%
+In other words, we can compute the integral
+\begin{equation}
+\int V \, dp.
+\label{eq:Vdp}
+\end{equation}
+%
+If we apply Legendre transform or
+integration by parts on Eq. \eqref{eq:firstlaw1},
+%
+\begin{equation}
+  dG = d(A + pV) = -S\,dT + V \, dp + \mu dN
+  ,
+  \notag
+  %\label{eq:firstlaw2}
+\end{equation}
+%
+then we find that the integral \eqref{eq:Vdp} corresponds to
+the change of the Gibbs free energy, $G$.
+%
+Once we have determined $\Delta G$
+from a series of balloon-dipping experiment,
+the change of the Helmholtz free energy, $\Delta A$,
+can be readily found from $\Delta G - \Delta( p \, V)$.
+
+
+
+
+
+\end{document}
+
