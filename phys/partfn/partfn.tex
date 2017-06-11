@@ -1,0 +1,453 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+\begin{document}
+
+\title{Partition function is your friend.}
+
+\author{\vspace{-10ex}}
+\date{\vspace{-10ex}}
+\maketitle
+
+[The title is a quote from Dr. Pettitt.]
+
+This is a gentle introduction on the idea of partition function,
+which plays a key role in statistical mechanics.
+%
+Although it sounds intimidating at first,
+partition function is really a neat and handy tool for
+calculating on averages and variances.
+%
+It is a purely mathematical concept and there is no need to attach
+any physics to it,
+and I bet you will love it once you get the hang of it.
+
+On the next level, if we associate
+the key players introduced in this technique
+to physical quantities
+we get a statistical mechanical \emph{interpretation}
+of thermodynamics, which can be both profound and useful.
+%
+For example, ``entropy'' is no longer a philosophical concept
+but a concrete mathematical formula that can be coded into computer programs
+to process simulation and experimental data.
+
+Let us start with a ``real-world'' example
+to illustrate the mathematical aspects,
+and we will draw physical connection later on.
+
+\paragraph{Problem.}
+
+In a class of four students,
+one student bought no textbook,
+another spent 200 dollars on textbooks,
+each of the rest two spent 100 dollars on textbooks.
+What were the average and variance of the expense on textbooks?
+
+\begin{table}[h]
+\centering
+  \begin{tabular}{l | ccc}
+    \hline
+    Group, $i$ & 1 & 2 & 3 \\
+    \hline
+    Expense, $E_i$ & 0 & 100 & 200 \\
+    \hline
+    Population, $n_i$ & 1 & 2 & 1 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\paragraph{Average.}
+Let us do the average first.  We know
+%
+\begin{equation}
+  \overline E = \frac{ E_1 \,  n_1 +  E_2 \, n_2 + E_3 \, n_3 } { n_1 + n_2 + n_3 }
+  = \frac{ 0 \times 1 + 100 \times 2  + 200 \times 1 } { 1 + 2 + 1 } = 100
+  .
+  \label{eq:Ebar_def}
+\end{equation}
+%
+Now this method requires two summation,
+one for the numerator,
+and the other for the denominator.
+%
+We will show a cooler solution that requires only one summation.
+
+Let us define a sum that generalizes the denominator with a free parameter, $\beta$,
+\begin{equation}
+  Q(\beta) = n_1 \, e^{-\beta \, E_1} + n_2 \, e^{-\beta \, E_2} + n_3 \, e^{-\beta \, E_3}
+  .
+  \label{eq:Q_def}
+\end{equation}
+%
+Clearly, if set $\beta = 0$, then
+$$
+Q(0) = n_1 + n_2 + n_3 = \sum_i n_i,
+$$
+becomes the denominator, or the total population.
+%
+But if we differentiate Eq. \eqref{eq:Q_def} with respect to $\beta$,
+we get
+%
+\begin{equation}
+  Q'(\beta) = \frac{ d Q(\beta) } { d\beta }
+  = -( E_1 \, n_1 \, e^{-\beta \, E_1}
+    +  E_2 \, n_2 \, e^{-\beta \, E_2}
+    +  E_3 \, n_3 \, e^{-\beta \, E_3} )
+  ,
+  \label{eq:dQ}
+\end{equation}
+and if we put $\beta = 0$, then
+$$
+  Q'(0) = - (E_1 \, n_1 + E_2 \, n_2 + E_3 \, n_3),
+$$
+is simply the negative of the numerator of Eq. \eqref{eq:Ebar_def}.
+%
+So,
+\begin{equation}
+\overline E = -\left. \frac{Q'(\beta)}{Q(\beta)} \right|_{\beta = 0}
+  = -\left. \frac{ d \log Q(\beta) } { d\beta } \right|_{\beta = 0 }
+.
+  \label{eq:Ebar_from_Q}
+\end{equation}
+%
+This means we can compute the average entirely from the function $Q(\beta)$,
+or $\log Q(\beta)$.
+%
+This function $Q(\beta)$ is called the \emph{partition function}
+(a function that sums the parts).
+
+Let us use this new method to compute the average.
+From Eq. \eqref{eq:Q_def}, we have
+$$
+Q(\beta) = 1 \, e^{-\beta \times 0 } + 2 \, e^{-\beta \times 100 } + 1 \, e^{-\beta \times 200}
+= (1 + e^{-100 \beta})^2.
+$$
+Taking the logarithm, we get
+$$
+\log Q(\beta) = 2 \log(1 + e^{-100 \beta}).
+$$
+Then, we differentiate the expression,
+%
+\begin{equation}
+\frac{ d \, \log Q(\beta) } { d\beta }
+= - \frac{200 \, e^{-100 \beta} }{ 1 + e^{-100 \beta} }
+= - \frac{200 }{ 1 + e^{100 \beta} }
+.
+\label{eq:dQ_ex1}
+\end{equation}
+%
+Finally, we take the value of $\beta = 0$, and apply Eq. \eqref{eq:Ebar_from_Q}
+$$
+\overline E = 
+-\left. \frac{ d \, \log Q(\beta) } { d\beta } \right|_{\beta = 0}
+= \frac{200}{1 + 1} = 100
+.
+$$
+which is the same as Eq. \eqref{eq:Ebar_def}.
+
+\paragraph{Variance.}
+Next, let us compute the variance, $\sigma_E^2$.
+%
+Starting with the usual method. We know
+$$
+\sigma_E^2 = \overline{ E^2 } - {\overline E}^2,
+$$
+and since we have already known $\overline E$,
+we only need to compute $\overline{ E^2 }$:
+%
+\begin{align}
+  \overline{ E^2 }
+  &=
+  \frac{ E_1^2 \,  n_1 +  E_2^2 \, n_2 + E_3^2 \, n_3 } { n_1 + n_2 + n_3 }
+  \label{eq:E2bar_def}
+  \\
+  &=
+  \frac{ 0 \times 1 + 100^2 \times 2  + 200^2 \times 1 } { 1 + 2 + 1 } = 15000
+  .
+  \notag
+\end{align}
+%
+So
+\begin{equation}
+  \sigma_E^2 = \overline{E^2 } - \overline E^2 = 5000.
+  \label{eq:varE_ex1}
+\end{equation}
+
+For the new method of partition function,
+we differentiate Eq. \eqref{eq:dQ},
+%
+\begin{equation}
+  Q''(\beta) = \frac{ d Q'(\beta) } { d\beta }
+  = E_1^2 \, n_1 \, e^{-\beta \, E_1} + E_2^2 \, n_2 \, e^{-\beta \, E_2} + E_3^2 \, n_3 \, e^{-\beta \, E_3}
+  ,
+  \notag
+  %\label{eq:ddQ}
+\end{equation}
+%
+which is the numerator of Eq. \eqref{eq:E2bar_def} if $\beta = 0$. Thus,
+%
+\begin{equation}
+\overline{ E^2 }
+  =
+  \left. \frac{ Q''(\beta) } { Q(\beta) } \right|_{\beta = 0}
+  .
+  \notag
+  %\label{eq:E2bar_from_Q}
+\end{equation}
+%
+So
+\begin{equation}
+  \sigma_E^2
+  =
+  \overline{ E^2 } - \overline E^2
+  =
+  \left[
+  \frac{ Q''(\beta) } { Q(\beta) }
+  -
+  \left( \frac{ Q'(\beta) } { Q(\beta) } \right)^2
+  \right]_{\beta = 0}
+.
+  \label{eq:varE_from_Q1}
+\end{equation}
+%
+Here is a cool mathematical identity:
+%
+$$
+\frac{ d^2 \log Q(\beta) } { d \beta^2 }
+=
+\frac{d }{d\beta}\left( \frac{ Q'(\beta) } { Q(\beta) } \right)
+=
+\frac{ Q''(\beta) } { Q(\beta) }
+-
+\left( \frac{ Q'(\beta) } { Q(\beta) } \right)^2
+$$
+which is precisely the right-hand side of Eq. \eqref{eq:varE_from_Q1}.
+So
+\begin{equation}
+  \sigma_E^2
+  =
+  \left.
+  \frac{ d^2 \log Q(\beta) } { d \beta^2 }
+  \right|_{\beta = 0}
+  ,
+  \label{eq:varE_from_Q}
+\end{equation}
+%
+which means the variance is simply the second derivative of
+the logarithmic partition function, $\log Q(\beta)$,
+evaluated at $\beta = 0$.
+%
+
+Going back to our problem.
+Differentiating Eq. \eqref{eq:dQ_ex1} yields
+$$
+\frac{ d^2 \log Q(\beta) } { d\beta^2 }
+=
+\frac{ 20000 } { (1 + e^{100 \beta})^2 }
+.
+$$
+Then, by using Eq. \eqref{eq:varE_from_Q} with $\beta = 0$,
+we get
+$$
+  \sigma_E^2
+  =
+  \left.
+  \frac{ d^2 \log Q(\beta) } { d \beta^2 }
+  \right|_{\beta = 0}
+  =
+  \frac{ 20000 } { 2^2 } = 5000,
+$$
+same as the previous result, Eq. \eqref{eq:varE_ex1}.
+
+\paragraph{Discussion.}
+
+
+Both Eq. \eqref{eq:Ebar_from_Q} and Eq. \eqref{eq:varE_from_Q}
+are beautiful, and they can be generalized for any value of
+$\beta$ (not just $\beta = 0$) as
+%
+\begin{align}
+  \overline E(\beta)
+  &= - \frac{ d \log Q(\beta) } { d\beta }
+  ,
+  \label{eq:Ebar_from_logQ}
+  \\
+  \sigma_E^2(\beta)
+  &= \frac{ d^2 \log Q(\beta) } { d\beta^2 }
+  ,
+  \label{eq:varE_from_logQ}
+\end{align}
+%
+Then, we found a relation between the average and variance:
+\begin{equation}
+  \sigma_E^2(\beta)
+  =
+  -
+  \frac{ d \overline E(\beta) } { d\beta }
+  .
+  \label{eq:varE_from_Ebar}
+\end{equation}
+The relation is particularly neat,
+because the partition function
+does not explicitly appear in it.
+
+
+%\paragraph{Exercise.}
+%The above relations can be extended to higher moments.
+%For example,
+%$$
+%\overline{ (E - \overline E)^3 }
+%=
+%-\frac{ d^3 \log Q(\beta) } { d\beta^3 }
+%=
+%-\frac{ d \, \sigma_E^2(\beta) } { d \beta }
+%.
+%$$
+
+
+\paragraph{Physical interpretation.}
+
+
+
+Now that we have learned the mathematical aspects of partition function,
+let us try to build a connection to thermodynamics,
+i.e., we want to map $E$, $\beta$, $Q(\beta)$
+to physical quantities, such that
+Eqs. \eqref{eq:Ebar_from_logQ}-\eqref{eq:varE_from_Ebar}
+are compatible with thermodynamics.
+%
+To start, we will reinterpret $E$ as the energy of the system
+(instead of the textbook expense in our problem).
+%
+Next, you might have guessed that $\beta$
+was meant to be the inverse temperature $1/(k_B \, T)$,
+where $k_B$ is the Boltzmann constant.
+%
+Let us assume the above two interpretations, and see where it leads us.
+In particular,
+does $Q(\beta)$ have any physical meaning?
+%
+Well, let us go back to the first law of thermodynamics:
+$$
+dE = T \, dS - p \, dV + \mu \, dN.
+$$
+We will fix $V$ and $N$, and simplify the first law as
+\begin{equation}
+  T \, dS = dE.
+  \label{eq:firstlaw1}
+\end{equation}
+Multiplying $\beta = 1/(k_B T)$ to both sides, we get
+$$
+d(S/k_B) = \beta \, dE.
+$$
+Subtracting $d(\beta \, E) = E \, d\beta + \beta \, dE$ from both sides, we get
+$$
+d(S/k_B - \beta \, E) = -E \, d\beta.
+$$
+which means
+\begin{equation}
+  E
+  =
+  -
+  \frac{ d(S/k_B - \beta \, E) } { d\beta }
+  ,
+  \label{eq:E_thermo}
+\end{equation}
+%
+Let us compare this result to Eq. \eqref{eq:Ebar_from_logQ}.
+We find that to establish a connection to thermodynamics,
+we need to
+interpret the internal energy, or $E$ in Eq. \eqref{eq:E_thermo},
+as the average energy, $\overline E(\beta)$ in Eq. \eqref{eq:Ebar_from_logQ}.
+%
+We also need to map the $S/k_B -\beta \, E$ to $\log Q(\beta)$.
+%
+But what is this $S/k_B - \beta \, E$?
+Well, we have
+$$
+\frac{S}{k_B} - \beta \, E
+=
+-\beta \, (E - T \, S)
+=
+-\beta \, A.
+$$
+where $A = E - T \, S$ is the Helmholtz free energy.\footnote{
+Some people prefer the symbol $F$.}
+%
+So the logarithm partition function, $\log Q(\beta)$,
+is essentially the Helmholtz free energy $-\beta \, A$.
+$$
+\log Q(\beta) = -\beta \, A,
+$$
+
+Similarly, for the entropy, we have
+\begin{align*}
+  S = \frac{ E - A } { T }
+  = \frac{ \overline E(\beta) + \frac{1}{\beta} \log Q(\beta) } { T }
+  = \frac{ \overline E(\beta) } {T } + k_B \log Q(\beta)
+  .
+\end{align*}
+%
+Thus, the entropy can be readily computed once we know the partition function.
+
+Finally, since $\beta = 1/(k_B T)$,
+a function of $\beta$ is a function of $T$,
+and
+$$
+d\beta = d\left( \frac{1}{k_B T} \right) = -\frac{dT}{k_B T^2}.
+$$
+Then, from Eq. \eqref{eq:varE_from_Ebar}, we have
+$$
+\sigma_E = -\frac{d \overline E } { d\beta}
+= k_B \, T^2 \, \frac{d\overline E}{dT}
+= k_B \, T^2 \, \frac{ T \, dS }{dT} = k_B \, T^2 \, C_V,
+$$
+where $C_V$ is the heat capacity defined as $TdS/dT$ in thermodynamics,
+and we have used Eq. \eqref{eq:firstlaw1}
+in the third step.
+%
+Therefore, we find that the heat capacity can be obtained
+from the variance of the energy.
+%
+This conclusion is a unique contribution from statistical mechanics,
+which was previously unavailable in thermodynamics.
+
+Finally, we wish to mention that the above interpretation is not unique.
+%
+Each successful interpretation leads to a particular statistical ensemble.
+%
+The above interpretation is associated with the canonical ensemble,
+parameterized by temperature $\beta$, volume $V$, and number of particles $N$.
+%
+If, however, we fix the temperature and volume,
+and interpret $\overline E$ and $\beta$ in
+Eqs. \eqref{eq:Ebar_from_logQ}-\eqref{eq:varE_from_Ebar}
+as the average number of particles, $N$,
+and the reduced chemical potential, $\beta \, \mu$, respectively,
+then it results in the grand-canonical ensemble,
+with $\log Q$ being mapped to the so-called grand potential,
+$\beta \, p \, V$.\footnote{This can be a fun exercise. Hint:
+with fixed $\beta$ and $V$, we have
+$$
+d(S/k_B - \beta \, E + \beta \, \mu \, N ) = \beta \, \mu \, d N.
+$$
+Note also the thermodynamic relation $E = T \, S - p \, V + \mu \, N$.
+}
+
+
+
+\end{document}
+
