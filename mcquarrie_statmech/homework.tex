@@ -1,8 +1,10 @@
 \documentclass[reprint]{revtex4-1}
 
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{hyperref}
+\usepackage{listings}
 
 \hypersetup{
     colorlinks,
@@ -10,6 +12,30 @@
     citecolor={blue!50!black},
     urlcolor={blue!80!black}
 }
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolor}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolor},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
 
 \numberwithin{equation}{section}
 
@@ -25,29 +51,6 @@
 \section{Notes}
 
 In this section, we collect a few results that are helpful in problem solving.
-
-\subsection{Euler's theorem}
-
-For a single-component system, we have
-the following useful equation
-\begin{equation}
-  E = T \, S - p \, V + \mu \, N.
-\label{eq:Euler}
-\end{equation}
-%
-We can show this from McQuarrie's Eq. (1-60),
-$$
-G = \sum_i \mu_i \, N_i
-$$
-But by definition $G = E - TS + pV$, so
-%
-\begin{equation}
-  E = T \, S - p \, V + \sum_i \mu_i \, N_i.
-\label{eq:Euler_multi}
-\end{equation}
-%
-We are using the one component case.
-
 
 \section{Lecture 1: Mechanics vs. Statistical Mechanics}
 
@@ -70,12 +73,45 @@ We are using the one component case.
 
 \subsection{Programming problem}
 
-\paragraph*{Problem}
+\paragraph*{Problem.}
 
 Write a program and draw $10$ random numbers between $-1$ and $+1$,
 add them together and divide by $10$ and save it.
 Do this $100$ times, $1000$ times and $100,000$ times.
 Plot the distributions as histograms using only $10$ points on the $x$-axis.
+
+\paragraph*{Solution.}
+
+Here is a sample code in Python.
+\begin{lstlisting}[language=Python]
+import random
+def randsum(ntimes):
+    # initialize an empty histogram of 10 bins
+    hist = [0]*10
+    dx = 2.0/10 # set the bin width
+    for t in range(ntimes):
+        # add 10 random numbers between -1 and 1
+        s = 0
+        for i in range(10):
+            s += random.random()*2 - 1
+        s /= 10 # divide the sum by 10
+        # find the bin index
+        binid = int((s + 1) / dx)
+        # update the histogram
+        hist[binid] += 1
+    # compute the distribution and plot it
+    print "\nDistribution, %d trials:" % ntimes
+    for binid in range(10):
+        y = hist[binid]/(ntimes*dx) # normalize
+        bar = "#" * int(y*50)
+        print "%10.8f%s" % (y, bar)
+
+randsum(100)
+randsum(1000)
+randsum(100000)
+\end{lstlisting}
+
+
 
 
 \section{Lecture 3. Thermodynamics and Entropy}
@@ -97,6 +133,8 @@ Plot the distributions as histograms using only $10$ points on the $x$-axis.
 
 \subsection{Programming problem}
 
+\paragraph*{Problem.}
+
 Write a program to estimate $\pi$ from Monte Carlo integration.
 %
 Pick points randomly on a unit square.
@@ -107,6 +145,28 @@ some outside.
 Use the ratio of the hits inside to the total number of trials
 to estimate the area of the circle and therefore $\pi$.
 How does it converge with the number of attempts.
+
+\paragraph*{Solution.}
+
+A sample Python program is listed below.
+The error should scale
+with the number of sampling points, $N$,
+as $1/\sqrt N$.
+
+\begin{lstlisting}[language=Python]
+import math, random
+def estpi(n):
+    hits = 0
+    for i in range(n):
+        x = random.random() * 2 - 1
+        y = random.random() * 2 - 1
+        if x*x + y*y < 1:
+            hits += 1
+    p = 4.0*hits/n
+    print "pi %g, error %g" % (p, p - math.pi)
+
+estpi(10000)
+\end{lstlisting}
 
 \section{Lecture 6: The Principles of A Priori Probabilities}
 
@@ -140,24 +200,24 @@ How does it converge with the number of attempts.
 
 \paragraph*{Problem}
 
-Show that in the grand-canonical ensemble,
+Show that in the grand canonical ensemble,
 $$
 \sigma_E^2 = k \, T^2 \, C_V
   + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2.
 $$
 
-\paragraph*{Corrections.}
+\paragraph*{Interpretations.}
 
-There is clearly a typo here, since the units do not match.
+There is a typo here, since the units do not match.
 %
-The most likely correction is
+The most likely fix is
 \begin{equation}
   \sigma_E^2 = k \, T^2 \, C_V
   + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2 \, \textcolor{red}{\times \mu}.
   \label{eq:prob3-22a}
 \end{equation}
 %
-Another possible correction is
+Another possible fix is
 %
 \begin{equation}
   \sigma_E^2 = k \, T^2 \, C_{V,\textcolor{blue}{N}}
@@ -165,7 +225,7 @@ Another possible correction is
   \label{eq:prob3-22b}
 \end{equation}
 %
-Note that in the second correction,
+In the second correction,
 $C_V$ is interpreted as the heat capacity in the canonical ensemble,
 so it is less likely.
 
@@ -173,15 +233,16 @@ so it is less likely.
 
 We will show Eq. \eqref{eq:prob3-22a} first.
 The grand partition function is defined as
-\begin{equation}
+\begin{align}
 \Xi
-=
+  &=
   \sum_{N} Q(N, V, T) \, z^N
-=
+  \notag \\
+  &=
   \sum_{N, E} \Omega(N, V, E) \, e^{-\beta \, E + \mu^* \, N}
 ,
   \label{eq:Xi_def}
-\end{equation}
+\end{align}
 %
 where we have defined the reduced chemical potential $\mu^* = \beta \, \mu = \ln z$.
 %
@@ -197,7 +258,8 @@ is the so-called grand potential:
   .
   \label{eq:lnXi}
 \end{equation}
-Here, the last step follows from Euler's theorem, Eq. \eqref{eq:Euler}.
+Here, the last step follows from Euler's theorem,
+$E = T \, S - p \, V + \mu \, N$ [cf. Eq. \eqref{eq:Euler}].
 %
 By differentiating Eq. \eqref{eq:Xi_def}, we get
 %
@@ -262,12 +324,14 @@ We can further differentiate Eqs. \eqref{eq:dXidbeta} and \eqref{eq:dXidmu}
 
 Now the heat capacity in the grand-canonical ensemble can be defined as
 %
-\begin{equation}
-= \left( \frac{ T \, \partial S } { \partial T } \right)_{\mu^*, V}
-= -\beta \left( \frac{ \partial S } { \partial \beta } \right)_{\mu^*, V}
+\begin{align}
+C_V
+&= \left( \frac{ T \, \partial S } { \partial T } \right)_{\mu^*, V}
+\notag \\
+&= -\beta \left( \frac{ \partial S } { \partial \beta } \right)_{\mu^*, V}
 = -\frac{1}{T} \left( \frac{ \partial (S/k) } { \partial \beta } \right)_{\mu^*, V}.
 \label{eq:CV_def}
-\end{equation}
+\end{align}
 %
 Using Eq. \eqref{eq:lnXi}, we have
 \begin{align}
@@ -305,6 +369,7 @@ T \, C_V
 .
 \label{eq:TCV}
 \end{equation}
+%
 Finally, if we interpret
 $$
 \frac{ \left( \partial \overline E / \partial \mu^* \right)_{\beta, V} }
@@ -318,6 +383,27 @@ $$
 $$
 and multiply both sides of Eq. \eqref{eq:TCV} by $k T = 1/\beta$,
 we recover Eq. \eqref{eq:prob3-22a}.
+
+\paragraph*{Additional notes: Euler's theorem}
+
+For a single-component system, we have
+the following useful equation
+\begin{equation}
+  E = T \, S - p \, V + \mu \, N.
+\label{eq:Euler}
+\end{equation}
+%
+We can show this from McQuarrie's Eq. (1-60),
+$$
+G = \sum_i \mu_i \, N_i
+$$
+But by definition $G = E - TS + pV$, so
+%
+$$
+  E = T \, S - p \, V + \sum_i \mu_i \, N_i.
+$$
+%
+The one-component case gives Eq. \eqref{eq:Euler}.
 
 \paragraph*{Second interpretation.}
 
@@ -451,7 +537,7 @@ The answer is that no such thermodynamic potential exists.
 If there were a thermodynamic potential for the $(\mu, p, T)$ ensemble,
 the independent variables would be $\beta$, $\beta \, p$ and $\beta \, \mu$.
 %
-The partition function would look be
+The partition function would look like
 \begin{align*}
   \Psi
   &=
@@ -466,55 +552,126 @@ The partition function would look be
   .
 \end{align*}
 %
-Now let us map the partition functions to thermodynamic potentials.
+Let us now recall the process of mapping
+partition functions to thermodynamic potentials.
 %
-Recall that the logarithm, $\ln \Omega$,
-corresponds to the entropy, $S/k$.
+For the microcanonical ensemble,
+we map the logarithm of the density of states,
+$\ln \Omega(N, V, E)$,
+to the entropy, $S/k$.
 
 The canonical partition function is
-$Q = \sum_E \Omega \, e^{-\beta \, E}$,
+$Q(N, V, T) = \sum_E \Omega(N, V, E) \, e^{-\beta \, E}$,
 and its logarithm corresponds to
 $$
-\ln Q = /k - \beta \, E = -\beta \, A,
+\ln Q(N, V, T) = S/k - \beta \, E = -\beta \, A,
 $$
 where $A = E - T \, S$ is the Helmholtz free energy.
 
-Similarly, the grand canonical partition function is
-$\Xi = \sum_N Q \, e^{\beta \, \mu \, N}$,
+Similarly, the partition function
+of the grand canonical ensemble is
+$\Xi(\mu, V, T) = \sum_N Q(N, V, T) \, e^{\beta \, \mu \, N}$,
 and its logarithm corresponds to
 $$
-\ln \Xi = \ln Q + \beta \, \mu \, N = -\beta \, (A - \mu \, N).
+\ln \Xi(\mu, V, T) = \ln Q(N, V, T) + \beta \, \mu \, N = -\beta \, (A - \mu \, N).
 $$
-But from Euler's theorem, Eq. \eqref{eq:Euler}, we know that
+But from Euler's theorem, $E = T \, S - p \, V + \mu \, N$
+[cf. Eq. \eqref{eq:Euler}], we know that
 $$
-A - \mu N = E - T S - \mu N = -p \, V.
+A - \mu N = E - T S - \mu N = -p \, V,
 $$
-Thus,
+and
 \begin{equation}
-  \ln \Xi = \beta \, p \, V.
+  \ln \Xi(\mu, V, T) = \beta \, p \, V.
 \label{eq:lnXi_bpV}
 \end{equation}
 
-Finally, for the thermodynamic potential, $\Psi$,
+Finally, for our thermodynamic potential, $\Psi(\mu, V, T)$,
 we would have
 $$
-\ln \Psi = \ln \Xi - \beta \, p \, V.
+\ln \Psi(\mu, p, T) = \ln \Xi(\mu, V, T) - \beta \, p \, V.
 $$
 But from Eq. \eqref{eq:lnXi_bpV},
-we simply get zero,
-which means that such a thermodynamic potential does not exist.
+the expression on the right-hand side is simply zero,
+which means that such a thermodynamic potential
+would not exist (under the above mapping to thermodynamics).
 
 \paragraph*{Solution 2.}
 
 There is actually a simpler explanation.
 %
 A thermodynamic potential must be an extensive quantity,
-which means that it depends linearly with the system size.
+which means that it should grow linearly with the system size.
 %
-But $\mu$, $p$, and $T$ are all intensive quantities.
+But since $\mu$, $p$, and $T$ are all intensive quantities,
+there is no way to specify how big the system is
+and to write down the thermodynamic potential.
+
+\paragraph*{Further discussion.}
+
+The above argument is based on thermodynamics.
 %
-So there is no way to construct an extensive quantity
-from the three variables.
+If we rely completely on the mathematics of statistical mechanics,
+we will find that either $\ln \Psi(\mu, p, T)$
+would vanish in the thermodynamic limit,
+i.e. its magnitude is $\mathcal O(1)$,
+or the integral for $\Psi(\mu, p, T)$ would diverge.
+%
+It is instructive to see this on the ideal-gas case.
+%
+Here, we have
+\begin{align*}
+  Q(N, V, T)
+  &= \frac{(V/\Lambda^3)^N} {N!}, \\
+  \Xi(\mu, V, T)
+  &= \sum_{N=0}^\infty Q(N, V, T) \, e^{\beta \mu N}
+  =
+  \exp\left[
+    \frac{ V \, e^{\beta \mu} } { \Lambda^3 }
+  \right]
+  .
+\end{align*}
+Then, for $\Psi(\mu, p, T)$, we have
+$$
+\Psi(\mu, p, T)
+=\sum_{V}
+  \exp\left[
+    \frac{ V \, e^{\beta \mu} } { \Lambda^3 }
+  \right]
+  e^{-\beta \, p \, V}
+\equiv
+\sum_{V} e^{-\beta \, (p - p^*) \, V},
+$$
+where $p^* = kT \, e^{\beta \mu}/\Lambda^3$
+%
+Since the volume is continuous,
+we should replace the sum $\sum_V \cdots$
+with an integral $\int C(V) \, dV \cdots$
+with some proper coefficient, $C(V)$.
+%
+If we assume that
+$C(V)$ is a constant that does not depend on $V$,
+then
+\begin{align*}
+\Psi(\mu, p, T)
+&\propto
+\int_0^\infty dV \, e^{-\beta \, (p - p^*) \, V}
+\\
+&=
+\begin{dcases}
+  \frac{1}{\beta (p - p^*)} & \mbox{if $p > p^*$} \\
+  +\infty & \mbox{if $p \le p^*$},
+\end{dcases}
+\end{align*}
+%
+In the case of $p \ge p^*$,
+although $\Psi(\mu, p, T)$ exists,
+its magnitude is of order $\mathcal O(1)$,
+i.e. $\ln \Psi(\mu, p, T)$
+is not an extensive quantity,
+and hence cannot represent a physical thermodynamic potential.
+
+
 
 
 \subsection{Problem 5-9}
@@ -529,44 +686,76 @@ from the three variables.
 
 \subsection{Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.}
 
+\paragraph*{Problem.}
+
 Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.
 
+\paragraph*{Solution.}
 
-\section{Lecture 14: Classical Statistical Mechanics}
+We start from the quantum mechanical expression,
+$$
+q_\mathrm{vib} = \frac{e^{-\beta h\nu/2}}{1- e^{-\beta h\nu}}.
+$$
+Since $kT \gg h\nu$, we have $\beta h\nu \ll 1$,
+which allows us to use the series expansion on $x = \beta h \nu$
+around $x = 0$:
+%
+$$
+e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots \approx 1 + x.
+$$
+%
+So, with $x = \beta h \nu$ and $x = \beta h \nu/2$, we get
+$$
+e^{-\beta h \nu} \approx 1 - \beta h \nu,
+\quad
+\mbox{and}
+\quad
+e^{-\beta h \nu/2} \approx 1 - \beta h \nu/2.
+$$
+Thus,
+$$q_\mathrm{vib} \approx
+\frac{1-\beta h\nu/2}{1- (1-\beta h\nu)}
+\approx
+\frac{1}{\beta h\nu} = \frac{kT}{h\nu}.
+$$
 
-\subsection{Problem 7-15}
 
-\subsection{Problem 7-16}
 
-\paragraph{Hint: use 7-15.}
-
-\subsection{Problem 7-18}
-
-\section{Lecture 15: Classical Mechanics and Phase Space}
-
-\subsection{Problem 7-6}
-
-\paragraph{Hint: see 2-16, i.e. $q \sim \sinh(E)$.}
-
-\subsection{Problem 7-17}
-
-\section{Lecture 16: Classical Phase Space}
-
-\section{Lecture 17: Crystals, Glasses, and Polymers}
-
-\section{Lecture 18: Imperfect Gases}
-
-\section{Lecture 19: Classical Monatomic liquids}
-
-\section{Lecture 20: Density Distributions and Correlation Functions}
-
-\section{Lecture 21: Evaluating Correlation Functions}
-
-\section{Lecture 22: Equilibria and Multi-Component Systems}
-
-\section{Lecture 23: Thermodynamic Perturbation Theory}
-
-\section{Lecture 24: Electrolyte Solutions}
+%\section{Lecture 14: Classical Statistical Mechanics}
+%
+%\subsection{Problem 7-15}
+%
+%\subsection{Problem 7-16}
+%
+%\paragraph{Hint: use 7-15.}
+%
+%\subsection{Problem 7-18}
+%
+%\section{Lecture 15: Classical Mechanics and Phase Space}
+%
+%\subsection{Problem 7-6}
+%
+%\paragraph{Hint: see 2-16, i.e. $q \sim \sinh(E)$.}
+%
+%\subsection{Problem 7-17}
+%
+%\section{Lecture 16: Classical Phase Space}
+%
+%\section{Lecture 17: Crystals, Glasses, and Polymers}
+%
+%\section{Lecture 18: Imperfect Gases}
+%
+%\section{Lecture 19: Classical Monatomic liquids}
+%
+%\section{Lecture 20: Density Distributions and Correlation Functions}
+%
+%\section{Lecture 21: Evaluating Correlation Functions}
+%
+%\section{Lecture 22: Equilibria and Multi-Component Systems}
+%
+%\section{Lecture 23: Thermodynamic Perturbation Theory}
+%
+%\section{Lecture 24: Electrolyte Solutions}
 
 \end{document}
 
