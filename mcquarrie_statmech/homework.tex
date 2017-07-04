@@ -1,0 +1,572 @@
+\documentclass[reprint]{revtex4-1}
+
+\usepackage{amsmath}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!30!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+\numberwithin{equation}{section}
+
+\begin{document}
+\title{Homework problems for McQuarrie's Statistical Mechanics, \\
+  based on Dr. B. M. Pettitt's lectures}
+%\author{\vspace{-10ex}}
+%\date{\vspace{-10ex}}
+\maketitle
+
+\tableofcontents
+
+\section{Notes}
+
+In this section, we collect a few results that are helpful in problem solving.
+
+\subsection{Euler's theorem}
+
+For a single-component system, we have
+the following useful equation
+\begin{equation}
+  E = T \, S - p \, V + \mu \, N.
+\label{eq:Euler}
+\end{equation}
+%
+We can show this from McQuarrie's Eq. (1-60),
+$$
+G = \sum_i \mu_i \, N_i
+$$
+But by definition $G = E - TS + pV$, so
+%
+\begin{equation}
+  E = T \, S - p \, V + \sum_i \mu_i \, N_i.
+\label{eq:Euler_multi}
+\end{equation}
+%
+We are using the one component case.
+
+
+\section{Lecture 1: Mechanics vs. Statistical Mechanics}
+
+\subsection{Problem 1-5}
+
+\subsection{Problem 1-14}
+
+\subsection{Problem 1-28}
+
+\subsection{Problem 1-30}
+
+
+\section{Lecture 2: Probability and Distributions}
+
+\subsection{Problem 1-41}
+
+\subsection{Problem 1-44}
+
+\subsection{Problem 1-46}
+
+\subsection{Programming problem}
+
+\paragraph*{Problem}
+
+Write a program and draw $10$ random numbers between $-1$ and $+1$,
+add them together and divide by $10$ and save it.
+Do this $100$ times, $1000$ times and $100,000$ times.
+Plot the distributions as histograms using only $10$ points on the $x$-axis.
+
+
+\section{Lecture 3. Thermodynamics and Entropy}
+
+\subsection{Problem 1-52}
+
+\subsection{Problem 1-59}
+
+
+\section{Lecture 4: Second and Third Laws}
+
+\subsection{Problem 1-51}
+
+\subsection{Problem 2-6}
+
+\subsection{Problem 2-8}
+
+\section{Lecture 5: Idea of Ensembles}
+
+\subsection{Programming problem}
+
+Write a program to estimate $\pi$ from Monte Carlo integration.
+%
+Pick points randomly on a unit square.
+%
+Some points will lie inside a circle inscribed in the square,
+some outside.
+%
+Use the ratio of the hits inside to the total number of trials
+to estimate the area of the circle and therefore $\pi$.
+How does it converge with the number of attempts.
+
+\section{Lecture 6: The Principles of A Priori Probabilities}
+
+\subsection{Problem 2-11}
+
+\subsection{Problem 2-13}
+
+\section{Lecture 7: Partition Functions and the Use of Ensembles}
+
+\subsection{Problem 2-16}
+
+\subsection{Problem 2-17}
+
+\section{Lecture 8: The Canonical Ensemble}
+
+\subsection{Problem 3-4}
+
+\subsection{Problem 3-6}
+
+\section{Lecture 9: Grand Canonical Ensemble}
+
+\subsection{Problem 3-15}
+
+\subsection{Problem 3-17}
+
+\subsection{Problem 3-24}
+
+\section{Lecture 10: Fluctuations}
+
+\subsection{Problem 3-22}
+
+\paragraph*{Problem}
+
+Show that in the grand-canonical ensemble,
+$$
+\sigma_E^2 = k \, T^2 \, C_V
+  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2.
+$$
+
+\paragraph*{Corrections.}
+
+There is clearly a typo here, since the units do not match.
+%
+The most likely correction is
+\begin{equation}
+  \sigma_E^2 = k \, T^2 \, C_V
+  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2 \, \textcolor{red}{\times \mu}.
+  \label{eq:prob3-22a}
+\end{equation}
+%
+Another possible correction is
+%
+\begin{equation}
+  \sigma_E^2 = k \, T^2 \, C_{V,\textcolor{blue}{N}}
+  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V}^{\textcolor{blue}{2}} \sigma_N^2.
+  \label{eq:prob3-22b}
+\end{equation}
+%
+Note that in the second correction,
+$C_V$ is interpreted as the heat capacity in the canonical ensemble,
+so it is less likely.
+
+\paragraph*{Solution.}
+
+We will show Eq. \eqref{eq:prob3-22a} first.
+The grand partition function is defined as
+\begin{equation}
+\Xi
+=
+  \sum_{N} Q(N, V, T) \, z^N
+=
+  \sum_{N, E} \Omega(N, V, E) \, e^{-\beta \, E + \mu^* \, N}
+,
+  \label{eq:Xi_def}
+\end{equation}
+%
+where we have defined the reduced chemical potential $\mu^* = \beta \, \mu = \ln z$.
+%
+As $\ln \Omega$ corresponds to the entropy $S/k$,
+$\ln Q$ corresponds to the Helmholtz free energy $S/k - \beta \, E = -\beta \, A$,
+the free energy corresponding to $\ln \Xi$
+is the so-called grand potential:
+%
+\begin{equation}
+  \ln \Xi
+  = \frac{S}{k} - \beta \, E + \mu^* N
+  = \beta \, p \, V
+  .
+  \label{eq:lnXi}
+\end{equation}
+Here, the last step follows from Euler's theorem, Eq. \eqref{eq:Euler}.
+%
+By differentiating Eq. \eqref{eq:Xi_def}, we get
+%
+\begin{align}
+  \overline E &= -\frac{ \partial \ln \Xi } { \partial \beta }
+  ,
+  \label{eq:dXidbeta}
+  \\
+  \overline N &= \frac{ \partial \ln \Xi } { \partial \mu^* }
+  ,
+  \label{eq:dXidmu}
+\end{align}
+%
+or
+\begin{equation}
+  d \ln \Xi
+  =
+  \frac{ \partial \ln \Xi } { \partial \beta } d\beta
+  +
+  \frac{ \partial \ln \Xi } { \partial \mu^* } d\mu^*
+  = -\overline E \, d\beta + \overline N \, d\mu^*
+  .
+  \notag
+  %\label{eq:firstlawXi}
+\end{equation}
+%
+We can compare this to the first law of thermodynamics,
+$dE = T \, dS - p \, dV + \mu \, dN$,
+which after some Legrendre transforms, can be written as
+%
+\begin{equation}
+  d(\beta \, p \, V) = -E \, d\beta + N \, d\mu^* + \beta \, p \, dV
+  .
+  \notag
+  %\label{eq:firstlaw}
+\end{equation}
+This means that we should interpret $E$ and $N$ in the first law
+as the ensemble averages, $\overline E$ and $\overline N$, respectively.
+%
+We can further differentiate Eqs. \eqref{eq:dXidbeta} and \eqref{eq:dXidmu}
+%
+\begin{align}
+  \sigma_E^2
+  &=
+  -\left( \frac{ \partial \overline E } { \partial \beta } \right)_{\mu^*, V}
+  = \frac{ \partial^2 \ln \Xi } { \partial \beta^2 }
+  ,
+  \label{eq:varE}
+  \\
+  \sigma_N^2
+  &= \left( \frac{ \partial \overline N } { \partial \mu^* } \right)_{\beta, V}
+  = \frac{ \partial^2 \ln \Xi } { \partial \mu^{*2} }
+  \label{eq:varN}
+  ,
+  \\
+  \left( \frac{ \partial \overline E } { \partial \mu^* } \right)_{\beta, V}
+  &= -\frac{ \partial^2 \ln \Xi } { \partial \mu^* \, \partial \beta }
+  = - \left( \frac{ \partial \overline N } { \partial \beta } \right)_{\mu^*, V}
+  \label{eq:covEN}
+  .
+\end{align}
+
+Now the heat capacity in the grand-canonical ensemble can be defined as
+%
+\begin{equation}
+= \left( \frac{ T \, \partial S } { \partial T } \right)_{\mu^*, V}
+= -\beta \left( \frac{ \partial S } { \partial \beta } \right)_{\mu^*, V}
+= -\frac{1}{T} \left( \frac{ \partial (S/k) } { \partial \beta } \right)_{\mu^*, V}.
+\label{eq:CV_def}
+\end{equation}
+%
+Using Eq. \eqref{eq:lnXi}, we have
+\begin{align}
+-T \, C_V
+  &= \left( \frac{ \partial (\ln \Xi + \beta \, \overline E - \mu^* \, \overline N) }
+  { \partial \beta } \right)_{\mu^*, V}.
+  \notag
+  \\
+  &= \frac{ \partial \ln \Xi } { \partial \beta }
+  + \overline E
+  + \beta \left( \frac{ \partial \overline E } { \partial \beta } \right)_{\mu^*, V}
+  - \mu^* \left( \frac{ \partial \overline N } { \partial \beta } \right)_{\mu^*, V}
+  \notag
+  \\
+  &=
+  - \beta \, \sigma_E^2
+  + \mu^* \left( \frac{ \partial \overline E } { \partial \mu^* } \right)_{\beta, V}
+  ,
+  \notag
+\end{align}
+%
+where we have used Eqs. \eqref{eq:dXidbeta}, \eqref{eq:varE}, and \eqref{eq:covEN}
+in the last step.
+%
+Further using Eq. \eqref{eq:varN}, we have
+\begin{equation}
+T \, C_V
+=
+\beta \, \sigma_E^2
++
+\mu^* \,
+\frac{ \left( \partial \overline E / \partial \mu^* \right)_{\beta, V} }
+     { \left( \partial \overline N / \partial \mu^* \right)_{\beta, V} }
+\, \sigma_N^2
+.
+\label{eq:TCV}
+\end{equation}
+Finally, if we interpret
+$$
+\frac{ \left( \partial \overline E / \partial \mu^* \right)_{\beta, V} }
+     { \left( \partial \overline N / \partial \mu^* \right)_{\beta, V} }
+\to
+\left(
+  \frac{ \partial \overline E }
+       { \partial \overline N }
+\right)_{T, V}
+,
+$$
+and multiply both sides of Eq. \eqref{eq:TCV} by $k T = 1/\beta$,
+we recover Eq. \eqref{eq:prob3-22a}.
+
+\paragraph*{Second interpretation.}
+
+
+About the second interpretation, Eq. \eqref{eq:prob3-22b},
+we will use the advanced technique of transforming thermodynamic variables
+(i.e. chain rule),
+so it is okay to ignore it if it sounds unfamiliar.
+%
+Similar to Eq. \eqref{eq:CV_def},
+the heat capacity in the canonical ensemble is defined as
+\begin{equation}
+C_{V, N}
+= -\frac{1}{T} \left( \frac{ \partial S^* } { \partial \beta } \right)_{V, N},
+  \label{eq:CVN_def}
+\end{equation}
+where we have introduced $S^* = S/k$ for convenience.
+%
+To be clear, the heat capacity in the grand-canonical ensemble
+will be denoted as
+\begin{equation}
+C_{V, \mu^*} = -\frac{1}{T} \left( \frac{ \partial S^* } { \partial \beta } \right)_{V, \mu^*}.
+  \label{eq:CVmu_def}
+\end{equation}
+%
+Using the technique of determinants for transforming variables, we have
+\begin{align*}
+  \left( \frac{ \partial S^* } {\partial \beta } \right)_{\mu^*}
+  &=
+  \frac{ \partial (S^*, \mu^*) } { \partial (\beta, \mu^*) }
+  =
+  \left.
+  \frac{ \partial (S^*, \mu^*) } { \partial (\beta, N) }
+  \middle/
+  \frac{ \partial (\beta, \mu^*) } { \partial (\beta, N) }
+  \right.
+  \\
+  &=
+  \left( \frac{ \partial S^* } {\partial \beta } \right)_{N}
+  -
+  \left.
+  \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
+  \left( \frac{ \partial S^* } {\partial N } \right)_{\beta}
+  \middle/
+  \left( \frac{ \partial \mu^* } {\partial N } \right)_{\beta}
+  \right.
+\end{align*}
+From the first law, we have
+$$
+d(S^* - \beta \, E) = -E \, d\beta -\mu^* dN + \beta p \, dV
+,
+$$
+%
+so
+\begin{align*}
+  \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
+  &=
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}
+  ,
+  \\
+  \left( \frac{ \partial S^* } {\partial N } \right)_{\beta}
+  &=
+  \left( \frac{ \partial (S^* - \beta \, E) } {\partial N } \right)_{\beta}
+  +
+  \left( \frac{ \partial ( \beta \,  E) } {\partial N } \right)_{\beta}
+  \\
+  &=
+  -\mu^*
+  +
+  \beta \, \left( \frac{ \partial E } {\partial N } \right)_{\beta}
+  .
+\end{align*}
+Using the above two expressions, we get
+\begin{align*}
+  \left( \frac{ \partial S^* } {\partial \beta } \right)_{\mu^*}
+  &=
+  \left( \frac{ \partial S^* } {\partial \beta } \right)_{N}
+  +
+  \mu^* \,
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}
+  \left( \frac{ \partial N } {\partial \mu^* } \right)_{\beta}
+  \\
+  &-
+  \beta \,
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}^2
+  \left( \frac{ \partial N } {\partial \mu^* } \right)_{\beta}
+  .
+\end{align*}
+%
+Dividing both sides by $-1/(k T) = -\beta$,
+and using Eqs. \eqref{eq:CVN_def}, \eqref{eq:CVmu_def}, and \eqref{eq:varN},
+we get
+$$
+  k T^2 C_{V, \mu^*}
+  +
+  \mu \,
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}
+  \sigma_N^2
+  =
+  k T^2 C_{V, N}
+  +
+  \left( \frac{ \partial E } {\partial N } \right)_{\beta}^2
+  \sigma_N^2
+  .
+$$
+If we interpret
+$\left( \partial E / \partial N \right)_{\beta}$
+as
+$\left( \partial \overline E / \partial \overline N \right)_{T, V}$,
+we recover Eq. \eqref{eq:prob3-22b}.
+Note that we have implicitly assumed that $V$ is fixed in the above derivation.
+
+
+\subsection{Problem 3-23}
+
+\section{Lecture 11: Quantum vs. Classical Statistics}
+
+\section{Lecture 12: Ideal Monatomic Gas}
+
+\subsection{Derive the thermodynamic potential for $(\mu, p, T)$}
+
+\paragraph*{Problem.}
+
+Derive the thermodynamic potential for the $(\mu, p, T)$ ensemble.
+
+
+\paragraph*{Solution 1.}
+
+The answer is that no such thermodynamic potential exists.
+
+If there were a thermodynamic potential for the $(\mu, p, T)$ ensemble,
+the independent variables would be $\beta$, $\beta \, p$ and $\beta \, \mu$.
+%
+The partition function would look be
+\begin{align*}
+  \Psi
+  &=
+  \sum_V \Xi(N, V, \beta) \, e^{-\beta \, p \, V}
+  \\
+  &=
+  \sum_V \sum_N Q(N, V, \beta) \, e^{\beta \, \mu \, N} \, e^{-\beta \, p \, V}
+  \\
+  &=
+  \sum_V \sum_N \sum_E \Omega(N, V, E) \, e^{-\beta \, E}
+  \, e^{\beta \, \mu \, N} \, e^{-\beta \, p \, V}
+  .
+\end{align*}
+%
+Now let us map the partition functions to thermodynamic potentials.
+%
+Recall that the logarithm, $\ln \Omega$,
+corresponds to the entropy, $S/k$.
+
+The canonical partition function is
+$Q = \sum_E \Omega \, e^{-\beta \, E}$,
+and its logarithm corresponds to
+$$
+\ln Q = /k - \beta \, E = -\beta \, A,
+$$
+where $A = E - T \, S$ is the Helmholtz free energy.
+
+Similarly, the grand canonical partition function is
+$\Xi = \sum_N Q \, e^{\beta \, \mu \, N}$,
+and its logarithm corresponds to
+$$
+\ln \Xi = \ln Q + \beta \, \mu \, N = -\beta \, (A - \mu \, N).
+$$
+But from Euler's theorem, Eq. \eqref{eq:Euler}, we know that
+$$
+A - \mu N = E - T S - \mu N = -p \, V.
+$$
+Thus,
+\begin{equation}
+  \ln \Xi = \beta \, p \, V.
+\label{eq:lnXi_bpV}
+\end{equation}
+
+Finally, for the thermodynamic potential, $\Psi$,
+we would have
+$$
+\ln \Psi = \ln \Xi - \beta \, p \, V.
+$$
+But from Eq. \eqref{eq:lnXi_bpV},
+we simply get zero,
+which means that such a thermodynamic potential does not exist.
+
+\paragraph*{Solution 2.}
+
+There is actually a simpler explanation.
+%
+A thermodynamic potential must be an extensive quantity,
+which means that it depends linearly with the system size.
+%
+But $\mu$, $p$, and $T$ are all intensive quantities.
+%
+So there is no way to construct an extensive quantity
+from the three variables.
+
+
+\subsection{Problem 5-9}
+
+
+\subsection{Problem 5-14}
+
+
+\section{Lecture 13: Ideal Diatomic Gas}
+
+\subsection{Problem 6-19}
+
+\subsection{Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.}
+
+Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.
+
+
+\section{Lecture 14: Classical Statistical Mechanics}
+
+\subsection{Problem 7-15}
+
+\subsection{Problem 7-16}
+
+\paragraph{Hint: use 7-15.}
+
+\subsection{Problem 7-18}
+
+\section{Lecture 15: Classical Mechanics and Phase Space}
+
+\subsection{Problem 7-6}
+
+\paragraph{Hint: see 2-16, i.e. $q \sim \sinh(E)$.}
+
+\subsection{Problem 7-17}
+
+\section{Lecture 16: Classical Phase Space}
+
+\section{Lecture 17: Crystals, Glasses, and Polymers}
+
+\section{Lecture 18: Imperfect Gases}
+
+\section{Lecture 19: Classical Monatomic liquids}
+
+\section{Lecture 20: Density Distributions and Correlation Functions}
+
+\section{Lecture 21: Evaluating Correlation Functions}
+
+\section{Lecture 22: Equilibria and Multi-Component Systems}
+
+\section{Lecture 23: Thermodynamic Perturbation Theory}
+
+\section{Lecture 24: Electrolyte Solutions}
+
+\end{document}
+
