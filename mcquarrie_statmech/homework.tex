@@ -966,7 +966,7 @@ which is much larger than the thermal De Broglie wavelength.
 
 \begin{problem}
   Derive the standard thermodynamic formula for the entropy of mixing
-  by starting with Eq. (5-20):
+  by starting with Eq. (5-20) (the Sackur-Tetrode equation):
   \begin{equation}
     S = N k \ln \left[
       \left( \frac{ 2 \, \pi \, m \, k \, T } { h^2 }
@@ -974,13 +974,95 @@ which is much larger than the thermal De Broglie wavelength.
       \frac{ V e^{5/2} } { N }
       \right] + S_\mathrm{elec}
     \tag{5-20}
+    \label{eq:Sstd}
   \end{equation}
 \end{problem}
+
+\begin{solution}
+Consider the following process.
+We have two boxes of different gas
+separated by a dividing partition.
+%
+There are $N_1$ particles of type $1$ in the first box of volume $V_1$,
+and $N_2$ particles of type $2$ in the second box of volume $V_2$.
+%
+Upon removal of the dividing partition,
+particles of either type would have volume $V = V_1 + V_2$,
+and the change of entropy is given by
+%
+\begin{align*}
+  \Delta S
+  &=
+    \bigl[ S(N_1, V) - S(N_1, V_1) \bigr]
+  + \bigl[ S(N_2, V) - S(N_2, V_2) \bigr]
+  .
+\end{align*}
+%
+From Eq. \eqref{eq:Sstd}, we have
+\begin{align}
+  \Delta S
+  &=
+  N_1 k \ln \frac{V}{V_1}
+  +
+  N_2 k \ln \frac{V}{V_2}.
+  \label{eq:Smix1}
+\end{align}
+%
+If we define the molar fractions
+$$x_i = \frac{ N_i } { N } = \frac{ N_i } { N_1 + N_2 }$$
+for $i = 1, 2$,
+and assume that the volume fractions are the same
+$$x_i = \frac{ V_i } { V } = \frac{ V_i } { V_1 + V_2 },$$
+then Eq. \eqref{eq:Smix1} can be rewritten as
+$$
+\Delta S = -k \, N (x_1 \ln x_1 + x_2 \ln x_2),
+$$
+which is standard formula for the entropy of mixing.
+[Cf. Terrell L. Hill,
+  \emph{An Introduction to Statistical Thermodynamics},
+  pages 81 and 85. ]
+\end{solution}
 
 
 \section{Lecture 13: Ideal Diatomic Gas}
 
 \subsection{Problem 6-19}
+
+\begin{problem}
+Show that the thermodynamic quantities $p$ and $C_V$
+are independent of the choice of a zero of energy.
+\end{problem}
+
+\begin{solution}
+We start from the first law
+$$dE = T \, dS - p \, dV + \mu \, dN.$$
+If we understood $E$ as a function $S, V, N$,
+then
+$$
+  dE(S, V, N)
+  =
+   \left( \frac{\partial E}{\partial S} \right)_{V, N} dS
+  +\left( \frac{\partial E}{\partial V} \right)_{S, N} dV
+  +\left( \frac{\partial E}{\partial N} \right)_{S, V} dN
+  .
+$$
+This means
+\begin{align*}
+  p = -\left( \frac{\partial E}{\partial V} \right)_{S, N},
+\end{align*}
+and the zero of energy will not affect the pressure as its derivative.
+
+Further, if fix the volume, $V$, and the number of particles, $N$,
+then $dE = T \, dS$,
+and the heat capacity
+$$
+  C_V \equiv \left( \frac{ T \, dS } { dT } \right)_{V, N}
+  = \left( \frac{ \partial E } { \partial T } \right)_{V, N}.
+$$
+Again, as a derivative of the energy,
+the heat capacity will not be affected by the zero of energy.
+\end{solution}
+
 
 \subsection{Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.}
 
@@ -989,6 +1071,8 @@ Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.
 \end{problem}
 
 \begin{solution}
+  (\emph{Due to Alec Fraser.})
+
 We start from the quantum mechanical expression,
 $$
 q_\mathrm{vib} = \frac{e^{-\beta h\nu/2}}{1- e^{-\beta h\nu}}.

@@ -6,7 +6,7 @@ htmldir = $(patsubst %.tex, %_html, $(tex))
 all: $(pdf)
 
 $(pdf) : %.pdf: %.tex
-	latex $<
+	pdflatex $<
 	pdflatex $<
 
 # compile to latex .dvi first to figure out references
@@ -35,7 +35,7 @@ github:
 push: github
 
 clean:
-	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg
+	rm -f *~ *.out *.dvi *.aux *.log *.idv *.lg *.toc *Notes.bib
 	rm -rf $(htmldir)
 	rstrip.py
 
