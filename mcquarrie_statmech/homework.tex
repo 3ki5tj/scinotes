@@ -39,6 +39,20 @@
 
 \numberwithin{equation}{section}
 
+% define the problem and solution environments
+\definecolor{problue}{rgb}{0.2,0.2,0.5}
+\newenvironment{problem}
+{\par\medskip\sffamily \color{problue}
+  \textbf{Problem. }\ignorespaces}
+{\medskip}
+
+\newenvironment{solution}
+{\par\medskip
+  \textbf{Solution. }\ignorespaces}
+{\medskip}
+
+
+
 \begin{document}
 \title{Homework problems for McQuarrie's Statistical Mechanics, \\
   based on Dr. B. M. Pettitt's lectures}
@@ -73,15 +87,14 @@ In this section, we collect a few results that are helpful in problem solving.
 
 \subsection{Programming problem}
 
-\paragraph*{Problem.}
-
+\begin{problem}
 Write a program and draw $10$ random numbers between $-1$ and $+1$,
 add them together and divide by $10$ and save it.
 Do this $100$ times, $1000$ times and $100,000$ times.
 Plot the distributions as histograms using only $10$ points on the $x$-axis.
+\end{problem}
 
-\paragraph*{Solution.}
-
+\begin{solution}
 Here is a sample code in Python.
 \begin{lstlisting}[language=Python]
 import random
@@ -110,6 +123,7 @@ randsum(100)
 randsum(1000)
 randsum(100000)
 \end{lstlisting}
+\end{solution}
 
 
 
@@ -133,8 +147,7 @@ randsum(100000)
 
 \subsection{Programming problem}
 
-\paragraph*{Problem.}
-
+\begin{problem}
 Write a program to estimate $\pi$ from Monte Carlo integration.
 %
 Pick points randomly on a unit square.
@@ -144,10 +157,11 @@ some outside.
 %
 Use the ratio of the hits inside to the total number of trials
 to estimate the area of the circle and therefore $\pi$.
+%
 How does it converge with the number of attempts.
+\end{problem}
 
-\paragraph*{Solution.}
-
+\begin{solution}
 A sample Python program is listed below.
 The error should scale
 with the number of sampling points, $N$,
@@ -167,6 +181,9 @@ def estpi(n):
 
 estpi(10000)
 \end{lstlisting}
+\end{solution}
+
+
 
 \section{Lecture 6: The Principles of A Priori Probabilities}
 
@@ -198,22 +215,24 @@ estpi(10000)
 
 \subsection{Problem 3-22}
 
-\paragraph*{Problem}
-
-Show that in the grand canonical ensemble,
+\begin{problem}
+Show that the fluctuation in energy in a grand canonical ensemble is
 $$
 \sigma_E^2 = k \, T^2 \, C_V
-  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2.
+  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2
 $$
+\end{problem}
 
 \paragraph*{Interpretations.}
 
-There is a typo here, since the units do not match.
+There is probably a typo here, since the units do not match.
 %
 The most likely fix is
 \begin{equation}
   \sigma_E^2 = k \, T^2 \, C_V
-  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V} \sigma_N^2 \, \textcolor{red}{\times \mu}.
+  + \left( \frac{\partial \overline E }
+                { \partial \overline N} \right)_{T, V}
+    \sigma_N^2 \, \textcolor{red}{\times \mu}
   \label{eq:prob3-22a}
 \end{equation}
 %
@@ -221,7 +240,9 @@ Another possible fix is
 %
 \begin{equation}
   \sigma_E^2 = k \, T^2 \, C_{V,\textcolor{blue}{N}}
-  + \left( \frac{\partial \overline E } { \partial \overline N} \right)_{T, V}^{\textcolor{blue}{2}} \sigma_N^2.
+  + \left( \frac{\partial \overline E }
+                { \partial \overline N} \right)_{T, V}^{\textcolor{blue}{2}}
+    \sigma_N^2
   \label{eq:prob3-22b}
 \end{equation}
 %
@@ -229,10 +250,13 @@ In the second correction,
 $C_V$ is interpreted as the heat capacity in the canonical ensemble,
 so it is less likely.
 
-\paragraph*{Solution.}
-
+\begin{solution}
 We will show Eq. \eqref{eq:prob3-22a} first.
-The grand partition function is defined as
+The partition function of the grand canonical ensemble, $\Xi$,
+is defined as a superposition of
+the partition functions of the canonical ensemble, $Q(N, V, T)$
+at various numbers of particles, $N$:
+%
 \begin{align}
 \Xi
   &=
@@ -263,17 +287,45 @@ $E = T \, S - p \, V + \mu \, N$ [cf. Eq. \eqref{eq:Euler}].
 %
 By differentiating Eq. \eqref{eq:Xi_def}, we get
 %
+\begin{align*}
+  \frac{ \partial \Xi } { \partial \beta }
+  &=
+  \sum_{N, E} \Omega(N, V, E) \cdot (-E) \cdot e^{-\beta \, E + \mu^* N}
+  \\
+  &=
+  -\Xi \,
+  \sum_{N, E} E \cdot \frac{ \Omega(N, V, E) \, e^{-\beta \, E + \mu^* N} } { \Xi }
+  \\
+  &=
+  -\Xi \times \overline{E}
+  ,
+\end{align*}
+%
+where we have collected
+$\Omega(N, V, E) \, e^{-\beta \, E + \mu^* N}/\Xi$
+as the joint distribution of $E$ and $N$
+in the grand canonical ensemble.
+%
+Dividing both sides by $-\Xi$,
+we get
 \begin{align}
-  \overline E &= -\frac{ \partial \ln \Xi } { \partial \beta }
+  \overline E
+  &=
+  -\frac{ \partial \Xi } { \Xi \, \partial \beta }
+  =
+  -\frac{ \partial \ln \Xi } { \partial \beta }
   ,
   \label{eq:dXidbeta}
-  \\
+\end{align}
+Similarly, by differentiating Eq. \eqref{eq:Xi_def}
+with respect to $\mu^*$, we get
+\begin{align}
   \overline N &= \frac{ \partial \ln \Xi } { \partial \mu^* }
-  ,
+  .
   \label{eq:dXidmu}
 \end{align}
 %
-or
+Combining the above two results, we get
 \begin{equation}
   d \ln \Xi
   =
@@ -282,24 +334,49 @@ or
   \frac{ \partial \ln \Xi } { \partial \mu^* } d\mu^*
   = -\overline E \, d\beta + \overline N \, d\mu^*
   .
-  \notag
-  %\label{eq:firstlawXi}
+  \label{eq:firstlawXi}
 \end{equation}
 %
 We can compare this to the first law of thermodynamics,
-$dE = T \, dS - p \, dV + \mu \, dN$,
-which after some Legrendre transforms, can be written as
+%
+\begin{align*}
+  dE
+  &= T \, dS - p \, dV + \mu \, dN
+  ,
+  \\
+  d\left(\frac{S}{k} \right)
+  &= \beta \, dE + \beta \, p \, dV - \mu^* \, dN
+  ,
+  \\
+  d\left(\frac{S}{k} - \beta \, E \right)
+  &= -E \, d\beta + \beta \, p \, dV - \mu^* \, dN
+  ,
+  \\
+  d\left(\frac{S}{k} - \beta \, E + \mu^* N \right)
+  &= -E \, d\beta + \beta \, p \, dV + N \, d\mu^*
+  .
+\end{align*}
+%
+By Eq. \eqref{eq:lnXi},
+we recognize the last expression
+is the differential of $\ln Xi$,
+and with a fixed volume, $V$
+it becomes
 %
 \begin{equation}
-  d(\beta \, p \, V) = -E \, d\beta + N \, d\mu^* + \beta \, p \, dV
+  d\ln \Xi = -E \, d\beta + N \, d\mu^*
   .
-  \notag
-  %\label{eq:firstlaw}
+  \label{eq:firstlawXi2}
 \end{equation}
-This means that we should interpret $E$ and $N$ in the first law
+%
+Thus, to make the statistical mechanical expression, Eq. \eqref{eq:firstlawXi},
+agree with the thermodynamical expression, Eq. \eqref{eq:firstlawXi2},
+we should interpret $E$ and $N$ in the latter
 as the ensemble averages, $\overline E$ and $\overline N$, respectively.
 %
-We can further differentiate Eqs. \eqref{eq:dXidbeta} and \eqref{eq:dXidmu}
+We can further differentiate
+Eqs. \eqref{eq:dXidbeta} and \eqref{eq:dXidmu}
+to get fluctuations of $E$ and $N$:
 %
 \begin{align}
   \sigma_E^2
@@ -361,7 +438,7 @@ Further using Eq. \eqref{eq:varN}, we have
 T \, C_V
 =
 \beta \, \sigma_E^2
-+
+-
 \mu^* \,
 \frac{ \left( \partial \overline E / \partial \mu^* \right)_{\beta, V} }
      { \left( \partial \overline N / \partial \mu^* \right)_{\beta, V} }
@@ -384,7 +461,7 @@ $$
 and multiply both sides of Eq. \eqref{eq:TCV} by $k T = 1/\beta$,
 we recover Eq. \eqref{eq:prob3-22a}.
 
-\paragraph*{Additional notes: Euler's theorem}
+\paragraph*{Additional notes: Euler's theorem.}
 
 For a single-component system, we have
 the following useful equation
@@ -407,11 +484,10 @@ The one-component case gives Eq. \eqref{eq:Euler}.
 
 \paragraph*{Second interpretation.}
 
-
 About the second interpretation, Eq. \eqref{eq:prob3-22b},
 we will use the advanced technique of transforming thermodynamic variables
 (i.e. chain rule),
-so it is okay to ignore it if it sounds unfamiliar.
+so please ignore this section if it sounds unfamiliar.
 %
 Similar to Eq. \eqref{eq:CV_def},
 the heat capacity in the canonical ensemble is defined as
@@ -515,9 +591,161 @@ as
 $\left( \partial \overline E / \partial \overline N \right)_{T, V}$,
 we recover Eq. \eqref{eq:prob3-22b}.
 Note that we have implicitly assumed that $V$ is fixed in the above derivation.
+\end{solution}
 
 
 \subsection{Problem 3-23}
+
+\begin{problem}
+Show that in a two-component open, isothermal ensemble that
+  \begin{align*}
+    \overline{ N_1 \, N_2 }
+    - \overline{N_1} \, \overline{N_2}
+    &=
+    kT \left(
+      \frac{ \partial \overline{ N_1 } }
+           { \partial \mu_2 }
+      \right)_{V, T, \mu_1}
+    \\
+    &=
+    kT \left(
+      \frac{ \partial \overline{ N_2 } }
+           { \partial \mu_1 }
+      \right)_{V, T, \mu_2}
+  \end{align*}
+\end{problem}
+
+\begin{solution}
+The partition function of the grand canonical ensemble, $\Xi$,
+is defined as a superposition of
+the partition functions of the canonical ensemble, $Q(N_1, N_2, V, T)$
+at various numbers of particles, $N_1$ and $N_2$,
+of the two species:
+\begin{align}
+\Xi(\mu_1, \mu_2, V, T)
+=
+\sum_{N_1, N_2=0}^\infty
+  Q(N_1, N_2, V, T) \,
+  e^{\beta \, \mu_1 \, N_1 + \beta \, \mu_2 \, N_2}.
+\label{eq:Xi2_def}
+\end{align}
+%
+This means that the joint distribution of $N_1$ and $N_2$
+would be given by
+$$
+p(N_1, N_2) = \frac{ Q(N_1, N_2, V, T) \, e^{\beta \, \mu_1 \, N_1 + \beta \, \mu_2 \, N_2} }
+                   { \Xi(\mu_1, \mu_2, V, T) }.
+$$
+By differentiating Eq. \eqref{eq:Xi2_def},
+we have
+\begin{align}
+  \frac{ \partial \Xi(\mu_1, \mu_2, V, T) }
+       { \partial \mu_1 }
+  &=
+  \sum_{N_1, N_2}
+    (\beta \, N_1) \times Q \cdot
+    e^{\beta \, \mu_1 \, N_1 + \beta \, \mu_2 \, N_2}
+  \label{eq:dXi2_dmu1a}
+  \\
+  &=
+    \beta \, \Xi \cdot
+    \sum_{N_1, N_2}
+    N_1 \times p(N_1, N_2)
+  \notag
+  \\
+  &=
+    \beta \, \Xi \cdot
+    \overline{ N_1 }
+  .
+  \label{eq:dXi2_dmu1c}
+\end{align}
+%
+Dividing both sides by $\Xi$, we get
+%
+\begin{align*}
+  \frac{ \partial \ln \Xi } { \partial \mu_1 }
+  = \beta \cdot \overline{ N_1 },
+\end{align*}
+%
+Similarly, we have
+\begin{align}
+  \frac{ \partial \ln \Xi } { \partial \mu_2 }
+  = \beta \cdot \overline{ N_2 },
+  \label{eq:dlnXi2_dmu2}
+\end{align}
+%
+If we further differentiate Eq. \eqref{eq:dXi2_dmu1a}
+with respect to $\mu_2$, then
+\begin{align*}
+  \frac{ \partial^2 \Xi(\mu_1, \mu_2, V, T) }
+       { \partial \mu_1 \partial \mu_2 }
+  &=
+  \sum_{N_1, N_2}
+    Q \cdot (\beta^2 \, N_1 \, N_2) \cdot
+    e^{\beta \, \mu_1 \, N_1 + \beta \, \mu_2 \, N_2}
+  \\
+  &=
+    \beta^2 \, \Xi \cdot
+    \sum_{N_1, N_2}
+    p(N_1, N_2) \cdot (N_1 \, N_2)
+  \\
+  &=
+  \beta^2 \, \Xi \, \overline{ N_1 \, N_2 }
+  .
+\end{align*}
+%
+But if we differentiate Eq. \eqref{eq:dXi2_dmu1c}
+with respect to $\mu_2$,
+\begin{align*}
+  \frac{ \partial^2 \Xi(\mu_1, \mu_2, V, T) }
+       { \partial \mu_1 \partial \mu_2 }
+  &=
+    \beta \, \frac{ \partial \Xi } { \partial \mu_2 } \cdot
+    \overline{ N_1 }
+    +
+    \beta \, \Xi \cdot
+    \frac{ \partial \overline{ N_1 } } { \partial \mu_2 }
+  \\
+  &=
+    \beta^2 \, \Xi \cdot
+    \overline{ N_2 } \, \overline{ N_1 }
+    +
+    \beta \, \Xi \cdot
+    \frac{ \partial \overline{ N_1 } } { \partial \mu_2 }
+  ,
+\end{align*}
+%
+where we have used Eq. \eqref{eq:dlnXi2_dmu2} in the second step.
+To make the two expressions agree, we have
+$$
+  \beta^2 \, \Xi \, \overline{ N_1 \, N_2 }
+  =
+  \beta^2 \, \Xi \cdot
+  \overline{ N_2 } \, \overline{ N_1 }
+  +
+  \beta \, \Xi \cdot
+  \frac{ \partial \overline{ N_1 } } { \partial \mu_2 }
+  ,
+$$
+and by eliminating $\beta^2 \, \Xi$
+on both sides, we get
+$$
+  \overline{ N_1 \, N_2 }
+  =
+  \overline{ N_2 } \, \overline{ N_1 }
+  +
+  kT \,
+  \frac{ \partial \overline{ N_1 } } { \partial \mu_2 }
+  ,
+$$
+%
+which is the desired result.
+%
+The second equation can be shown by swapping the indices for $1$ and $2$.
+\end{solution}
+
+
+
 
 \section{Lecture 11: Quantum vs. Classical Statistics}
 
@@ -525,13 +753,11 @@ Note that we have implicitly assumed that $V$ is fixed in the above derivation.
 
 \subsection{Derive the thermodynamic potential for $(\mu, p, T)$}
 
-\paragraph*{Problem.}
-
+\begin{problem}
 Derive the thermodynamic potential for the $(\mu, p, T)$ ensemble.
+\end{problem}
 
-
-\paragraph*{Solution 1.}
-
+\begin{solution}
 The answer is that no such thermodynamic potential exists.
 
 If there were a thermodynamic potential for the $(\mu, p, T)$ ensemble,
@@ -595,8 +821,9 @@ But from Eq. \eqref{eq:lnXi_bpV},
 the expression on the right-hand side is simply zero,
 which means that such a thermodynamic potential
 would not exist (under the above mapping to thermodynamics).
+\end{solution}
 
-\paragraph*{Solution 2.}
+\paragraph*{Another explanation.}
 
 There is actually a simpler explanation.
 %
@@ -672,8 +899,6 @@ is not an extensive quantity,
 and hence cannot represent a physical thermodynamic potential.
 
 
-
-
 \subsection{Problem 5-9}
 
 
@@ -686,12 +911,11 @@ and hence cannot represent a physical thermodynamic potential.
 
 \subsection{Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.}
 
-\paragraph*{Problem.}
-
+\begin{problem}
 Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.
+\end{problem}
 
-\paragraph*{Solution.}
-
+\begin{solution}
 We start from the quantum mechanical expression,
 $$
 q_\mathrm{vib} = \frac{e^{-\beta h\nu/2}}{1- e^{-\beta h\nu}}.
@@ -718,7 +942,7 @@ $$q_\mathrm{vib} \approx
 \approx
 \frac{1}{\beta h\nu} = \frac{kT}{h\nu}.
 $$
-
+\end{solution}
 
 
 %\section{Lecture 14: Classical Statistical Mechanics}
