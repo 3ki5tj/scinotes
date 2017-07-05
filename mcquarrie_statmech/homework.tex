@@ -1,17 +1,20 @@
-\documentclass[reprint]{revtex4-1}
+%\documentclass[preprint]{revtex4-1}
+\documentclass[twocolumn, 10pt]{article}
 
+\usepackage[margin=0.6in]{geometry}
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{hyperref}
 \usepackage{listings}
-
 \hypersetup{
     colorlinks,
     linkcolor={red!30!black},
     citecolor={blue!50!black},
     urlcolor={blue!80!black}
 }
+
+\setlength{\columnsep}{0.3in}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -56,8 +59,8 @@
 \begin{document}
 \title{Homework problems for McQuarrie's Statistical Mechanics, \\
   based on Dr. B. M. Pettitt's lectures}
-%\author{\vspace{-10ex}}
-%\date{\vspace{-10ex}}
+\author{\vspace{-10ex}}
+\date{\vspace{-10ex}}
 \maketitle
 
 \tableofcontents
@@ -91,7 +94,55 @@ In this section, we collect a few results that are helpful in problem solving.
 
 \subsection{Problem 1-5}
 
+\begin{problem}
+  Show that
+  $$\xi(t) = A \, \sin \omega t + B \, \cos \omega t$$
+  can be written as
+  $$\xi(t) = C \, \sin( \omega t + \phi)$$
+\end{problem}
+
+\begin{solution}
+  Introducing $C = \sqrt{A^2 + B^2}$,
+  and $\phi = \sin^{-1} (B/A)$,
+  then $A = C \cos\phi$, $B = C \sin\phi$, and
+  $$
+  \xi(t) = C \, \cos\phi \, \sin \omega t + C \, \sin\phi \cos \omega t
+  = C \, \sin(\omega t + \phi).
+  $$
+\end{solution}
+
+
 \subsection{Problem 1-14}
+
+\begin{problem}
+If $H$, the classical Hamiltonian, does not depend explicitly on time,
+show that $dH/dt = 0$.
+What does this mean physically?
+Is this true if $H$ does depend explicitly upon time?
+\end{problem}
+
+\begin{solution}
+If the Hamiltonian does not depend explicitly on time,
+its time dependence lies in $p_j$ and $q_j$
+\begin{align*}
+  \frac{dH}{dt}
+  &= \sum_j
+  \frac{ \partial H } { \partial p_j} \dot p_j
+   +
+  \frac{ \partial H } { \partial q_j} \dot q_j
+  \\
+  &= \sum_j
+  \frac{ \partial H } { \partial p_j}
+  \left( - \frac{ \partial H } { \partial q_j} \right)
+   +
+  \frac{ \partial H } { \partial q_j}
+  \left( \frac{ \partial H } { \partial p_j} \right)
+  = 0.
+\end{align*}
+This means the energy is conserved.
+This however is no longer true if $H$ does depend on time.
+\end{solution}
+
 
 \subsection{Problem 1-28}
 
@@ -380,7 +431,7 @@ We can compare this to the first law of thermodynamics,
 %
 By Eq. \eqref{eq:lnXi},
 we recognize the last expression
-is the differential of $\ln Xi$,
+is the differential of $\ln \Xi$,
 and with a fixed volume, $V$
 it becomes
 %
@@ -482,7 +533,7 @@ $$
 and multiply both sides of Eq. \eqref{eq:TCV} by $k T = 1/\beta$,
 we recover Eq. \eqref{eq:prob3-22a}.
 
-\paragraph*{Additional notes: Euler's theorem.}
+\paragraph*{Notes on Euler's theorem.}
 
 For a single-component system, we have
 the following useful equation
@@ -502,6 +553,70 @@ $$
 $$
 %
 The one-component case gives Eq. \eqref{eq:Euler}.
+
+\paragraph*{Example on the monatomic ideal gas.}
+
+On the monatomic ideal gas, we have
+\begin{align*}
+  \ln \Xi
+  &= \frac{ V } { \Lambda^3 } e^{\mu^*}
+  = \frac{ V (2 \, \pi \, m)^{3/2}} { h^3 } e^{\mu^*} \beta^{-3/2}
+  \equiv C \, e^{\mu^*} \beta^{-3/2}
+  ,
+\end{align*}
+where we have defind $C = V (2 \, \pi \, m)^{3/2}/h^3$.
+%
+Taking derivatives, we get
+\begin{align*}
+  \overline{ E }
+  &= - \frac{ \partial \ln \Xi } { \partial \beta }
+  = \frac{3}{2} C \, e^{\mu^*} \beta^{-5/2}
+  ,
+  \\
+  \overline{ N }
+  &= \frac{ \partial \ln \Xi } { \partial \mu^* }
+  = C \, e^{\mu^*} \beta^{-3/2}
+  ,
+  \\
+  \frac{ d\overline E } { d\overline N}
+  &=
+  \frac{3}{2\,\beta}
+  ,
+  \\
+  \sigma_E^2
+  &= - \frac{ \partial \overline{E} } { \partial \beta }
+  = \frac{15}{4} \, C \, e^{\mu^*} \beta^{-7/2}
+  ,
+  \\
+  \sigma_N^2
+  &= \frac{ \partial \overline{N} } { \partial \mu^* }
+  = C \, e^{\mu^*} \beta^{-3/2}
+  ,
+  \\
+  \frac{S}{k}
+  &=
+  \ln \Xi + \beta \overline{E}
+  -\mu^* \overline{N}
+  =
+  \left(\frac{5}{2} - \mu^* \right) \, C \, e^{\mu^*} \beta^{-3/2}
+  ,
+  \\
+  \frac{C_{V, \mu^*}}{k}
+  &= -\beta \left( \frac{\partial (S/k) } {\partial \beta} \right)
+  = \left(\frac{15}{4} - \frac{3}{2} \, \mu^* \right)
+    \, C \, e^{\mu^*} \beta^{-3/2}
+  .
+\end{align*}
+Indeed, we have
+\begin{align}
+  k \, T^2 \, C_{V, \mu^*}
+  =
+  \sigma_E^2
+  - \frac{\mu^*}{\beta} \frac{ \partial \overline E } { \partial \overline N} \sigma_N^2
+  ,
+\end{align}
+
+
 
 \paragraph*{Second interpretation.}
 
@@ -613,6 +728,8 @@ $\left( \partial \overline E / \partial \overline N \right)_{T, V}$,
 we recover Eq. \eqref{eq:prob3-22b}.
 Note that we have implicitly assumed that $V$ is fixed in the above derivation.
 \end{solution}
+
+
 
 
 \subsection{Problem 3-23}
@@ -946,12 +1063,11 @@ and the (thermal) De Broglie wavelength
 On the other hand,
 the average interatomic spacing
   is given by $L = \sqrt[3]{V}$,
-where the volume is given by
+where the volume follows the ideal-gas-law $pV = kT$:
 \begin{align*}
   L
   &= \left(\frac{ kT } { p} \right)^{1/3}
-  \\
-  &= \left(
+  = \left(
   \frac{ 1.38064852 \times 10^{-23} \cdot 298.15 }
   { 101325 } \right)^{1/3}
   \\
