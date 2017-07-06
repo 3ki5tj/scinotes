@@ -1,6 +1,7 @@
 %\documentclass[preprint]{revtex4-1}
 \documentclass[twocolumn, 10pt]{article}
 
+\usepackage{mathrsfs}
 \usepackage[margin=0.6in]{geometry}
 \usepackage{amsmath}
 \usepackage{mathtools}
@@ -65,7 +66,7 @@
 
 \tableofcontents
 
-\section{Notes}
+\section*{Notes}
 
 In this section, we collect a few results that are helpful in problem solving.
 
@@ -171,16 +172,93 @@ which is not necessarily zero.
 
 \subsection{Problem 1-28}
 
+\begin{problem}
+  Derive the thermodynamic equation
+  $$
+  C_p - C_V
+  = \left[ p + \left( \frac{ \partial E } { \partial V } \right)_T \right]
+  \left( \frac{ \partial V } { \partial T } \right)_p
+  $$
+  and evaluate this difference for an ideal gas
+  and a gas that obeys the van der Waals equation.
+\end{problem}
+
 \subsection{Problem 1-30}
 
+\begin{problem}
+  Derive this equation
+  $$
+  dE = \left[ T \left( \frac{ \partial p} {\partial T } \right)_V - p \right]
+  dV + C_V dT
+  $$
+  and from this show that $(\partial E/\partial V)_T = a/V^2$
+  for a van der Waals gas.
+\end{problem}
 
 \section{Lecture 2: Probability and Distributions}
 
 \subsection{Problem 1-41}
 
+\begin{problem}
+  Show that $\overline{ (x - \bar x)^2 } = \overline{ x^2 } - \bar x^2$.
+\end{problem}
+
+\begin{solution}
+\begin{align*}
+  \overline{ (x - \bar x)^2 }
+  =
+  \overline{ x^2  - 2 x \bar x + {\bar x}^2 }
+  =
+  \overline{ x^2 } - 2 \bar x \bar x + {\bar x}^2
+  =
+  \overline{ x^2 }  - {\bar x}^2.
+\end{align*}
+\end{solution}
+
 \subsection{Problem 1-44}
 
+\begin{problem}
+  For the Gaussian distribution $p(x)$ show that
+
+  (a)
+  $$\int_{-\infty}^\infty p(x) \, dx  = 1$$
+
+  (b)
+  Calculate the $n$th central moment
+  where $n = 0$, $1$, $2$, and $3$.
+
+  (c)
+  In the limit $\sigma \to 0$
+  what kind of distribution is approached where
+  $$
+  p(x) = \frac{1}{\sigma \sqrt{2\pi}}
+  \exp\left( -\frac{ (x -\bar x)^2 } { 2 \sigma^2} \right)
+  $$
+\end{problem}
+
 \subsection{Problem 1-46}
+
+\begin{problem}
+  Let $f(x, y)$ be a joint probability density,
+  that is, $f(x, y)\, dx \, dy$
+  is the probability that $X$ lies between $x$ and $x+dx$
+  \emph{and}
+  $Y$ lies between $y$ and $y + dy$.
+  If $X$ and $Y$ are \emph{independent}, then
+  $$
+  f(x, y) \, dx \, dy = f_1(x) f_2(y) \, dx \, dy
+  $$
+  If $X$ and $Y$ are independent, show that the mean and variance
+  of their sum is equal to the sum of the means and variances, respectively,
+  of $X$ and $Y$;
+  that is, show that if $W = X + Y$, then
+  \begin{align*}
+    \bar W &= \bar X + \bar Y \\
+    \overline{ (W - \bar W)^2 } &=
+    \overline{ (X - \bar X)^2 } +
+    \overline{ (Y - \bar Y)^2 }
+  \end{align*}
+\end{problem}
 
 \subsection{Programming problem}
 
@@ -229,8 +307,153 @@ randsum(100000)
 
 \subsection{Problem 1-52}
 
+\begin{problem}
+  Consider the sum
+  $$
+  \sum_{N=0}^M \frac{ M! x^N } { N! (M-N)! }
+  $$
+  where $x = \mathcal O(1)$,
+  and $M$ and $N$ are $\mathcal O(10^{20})$.
+  First show that
+  $\ln\Sigma = M \ln(1+x)$
+  \emph{exactly}, and then calculate
+  the logarithm of the maximum term.
+  Hint: Remember the binomial expansion.
+\end{problem}
+
+\begin{solution}
+The sum is equal to $\Sigma = (1+x)^M$ by the binomial theorem,
+and $\ln \Sigma = M \ln(1+x)$.
+
+To find the maximum term,
+we compute the ratio of two successful terms,
+$$
+  \frac{ T_N } { T_{N - 1} }
+  =
+  \frac{ M - N + 1 } { N } x.
+$$
+If the ratio is greater/less than $1$,
+the term is increasing/decreasing.
+Thus the maximum is reached when
+  $T_N/T_{N-1} \ge 1 \ge T_{N+1}/T_N$, or
+$$
+  \frac{ M - N + 1} { N } x
+  \ge 1 \ge
+  \frac{ M - N } { N + 1 } x,
+$$
+which $N \approx M x /(1+x)$.
+The logarithm of the maximum term is
+\begin{align*}
+  \ln T_N
+  &= \ln M! + N \ln x - \ln N! - \ln (M-N)!
+\end{align*}
+%
+Using the Stirling approximation, Eq. \eqref{eq:Stirling1},
+we get
+\begin{align*}
+  \ln T_N
+  &\approx M \ln M - N \, \ln N - (M - N) \, \ln(M-N) \\
+  &\quad + N \ln x
+  -\frac{1}{2} \ln\frac{2\pi N \, 2\pi(M-N)}{2\pi M}
+  \\
+  &=- N \, \ln \frac{N}{M} - (M - N) \, \ln\left(1-\frac{N}{M}\right) \\
+  &\quad + N \ln x
+  -\frac{1}{2} \ln\frac{2\pi N (M-N)}{M}
+  \\
+  &=
+  N \, \ln\left( \frac{M-N}{N} \, x \right)
+  + M \, \ln \frac{M}{M-N}
+  \\
+  &\quad -\frac{1}{2} \ln\frac{2\pi N (M-N)}{M}
+  \\
+  &\approx
+  M\ln(1+x) - \ln\frac{ \sqrt{2\pi M x} } { 1 + x}
+  .
+\end{align*}
+\end{solution}
+
+
+
 \subsection{Problem 1-59}
 
+\begin{problem}
+We can derive Stirling's approximation from
+an asymptotic approximation to the gamma function $\Gamma(x)$.
+From the previous problem
+\begin{align*}
+  \Gamma(N+1) = N!
+  &= \int_0^\infty e^{-x} x^N \, dx
+  \\
+  &= \int_0^\infty e^{N g(x)} \, dx
+\end{align*}
+where $g(x) = \ln x - x/N$.
+%
+If $g(x)$ possesses a maximum at some point, say $x_0$,
+then for large $N$, $\exp(N g(x))$ will be extremely
+sharply peaked at $x_0$.
+%
+Under this condition, the integral for $N!$
+will be dominated by the contribution of the integrand
+from the point $x_0$.
+%
+First show that $g(x)$ does, in fact,
+possess at maximum at the point $x_0 = N$.
+%
+Expand $g(x)$ about this point,
+keeping terms only up to and including
+$(x-N)^2$ to get
+$$
+g(x) \approx g(N) - \frac{ (x - N)^2 } { 2 N^2 } + \cdots
+$$
+Why is there no linear term in $(x-N)$?
+Substituting this expression for $g(x)$
+into the integral for $N!$ and derive the asymptotic formula
+\begin{equation}
+  \ln N! \approx N \ln N - N + \ln (2\pi N)^{1/2}
+  \label{eq:Stirling1}
+\end{equation}
+\end{problem}
+
+\begin{solution}
+The series expansion of $g(x)$ is
+$$
+  g(x) \approx g(x_0)
+  + g'(x_0) (x - x_0)
+  + \frac{1}{2} g''(x_0) (x - x_0)^2
+  + \cdots.
+$$
+The maximum is reached at:
+$$
+  g'(x_0) = \frac{1}{x_0} - \frac{1}{N} = 0,
+$$
+or at $x_0 = N$.
+This is why the linear term vanishes.
+%
+At this point, $g(x_0) = \ln N - 1$
+and the second derivative
+$$
+  g''(x_0) = -\frac{1}{x_0^2} = -\frac{1}{N^2}.
+$$
+%
+Thus,
+\begin{align*}
+  N!
+  &= \int_0^\infty e^{Ng(x)} dx
+  \approx
+  e^{Ng(x_0)}
+  \int_0^\infty
+  e^{- \frac{(x-N)^2}{2N} } dx
+  \\
+  &\approx
+  e^{Ng(x_0)}
+  \int_{-\infty}^\infty
+  e^{- \frac{(x-N)^2}{2N} } dx
+  =
+  e^{N(\ln N - 1)} \sqrt{2\pi N}
+\end{align*}
+%
+Taking the logarithm, we get Eq. \eqref{eq:Stirling}.
+\end{solution}
 
 \section{Lecture 4: Second and Third Laws}
 
@@ -292,7 +515,77 @@ estpi(10000)
 
 \subsection{Problem 2-16}
 
+\begin{problem}
+In Chapter 13 of this author's textbook
+\emph{Statistical Thermodynamics},
+it is shown that the partition function of an ideal gas of diatomic molecules
+in an external electric field $\mathscr E$ is
+$$
+Q(N, V, T, \mathscr E) = \frac{ [q(V, T, \mathscr E)]^N } { N! }
+$$
+where
+\begin{align}
+  q(V, T, \mathscr E)
+  &= V \, \left( \frac{ 2 \pi m k T } { h^2 } \right)^{3/2}
+  \left( \frac{ 8\pi^2 I k T } { h^2 } \right)
+  \notag \\
+  &\frac{ e^{-hv/2kT} } { 1 - e^{-hv/kT} }
+  \left( \frac{ kT } { \mu \mathscr E } \right)
+  \sinh\left( \frac{ \mu \mathscr E } { k T } \right)
+\end{align}
+%
+where $I$ is the moment of inertia of the molecule;
+$\nu$ is its fundamental vibrational frequency;
+and $\mu$ is its dipole moment.
+%
+Using this partition function along with
+the thermodynamic relation,
+$$
+dA = -S \, dT - p \, dV - M \, d\mathscr E
+$$
+where $M = N \bar\mu$,
+where $\bar\mu$ is the average dipole moment
+of a molecule in the direction of the external field $\mathscr E$,
+show that
+$$
+\bar\mu = \mu \left[
+  \coth\left( \frac{ \mu \mathscr E } { k T } \right)
+  -\frac{ k T } { \mu \mathscr E }
+  \right]
+$$
+Sketch this result versus $\mathscr E$
+from $\mathscr E = 0$ to $\mathscr E = \infty$
+and interpret it.
+\end{problem}
+
+
 \subsection{Problem 2-17}
+
+\begin{problem}
+In Chapter 14 we shall derive an \emph{approximate}
+partition function for a dense gas,
+which is of the form
+$$
+  Q(N, V, T)
+  =
+  \frac{1}{N!}
+  \left( \frac{ 2\pi m k T }{ h^2 } \right)^{3N/2}
+  (V - N b)^N e^{a N^2/V k T}
+$$
+where $a$ and $b$ are constants that are given
+in terms of molecular parameters.
+%
+Calculate the equation of state from this partition function.
+%
+What equation of state is this?
+%
+Calculate the thermodynamic energy and the heat capacity
+and compare it to Problem 1-30.
+\end{problem}
+
+\begin{solution}
+The equation of state is the van der Waals equation of states.
+\end{solution}
 
 \section{Lecture 8: The Canonical Ensemble}
 
@@ -910,9 +1203,9 @@ The second equation can be shown by swapping the indices for $1$ and $2$.
 
 
 
-%\section{Lecture 11: Quantum vs. Classical Statistics}
-%
-%(No problem.)
+\section{Lecture 11: Quantum vs. Classical Statistics}
+
+(No problem.)
 
 \section{Lecture 12: Ideal Monatomic Gas}
 
@@ -1332,7 +1625,26 @@ $$
 
 \subsection{Problem 7-6}
 
-\paragraph{Hint: see 2-16, i.e. $q \sim \sinh(\beta \mu E)$.}
+\begin{problem}
+  Consider a perfect gas of molecules
+  with permanent electric dipole moments $\boldsymbol \mu$
+  in an electric field $\mathscr E$.
+  %
+  Neglecting the polarizability fo the molecules,
+  the potential energy is
+  $$
+  U = -\mu \mathscr E \, \cos\theta
+  $$
+  where $\theta$ is the angle between $\mu$
+  and $\mathscr E$.
+  %
+  Using classical mechanics,
+  derive an expression for the additional effect of $\mathscr E$
+  on the energy $E$ and heat capacity of the gas.
+
+  Hint: see Problem 2-16, i.e. $q \sim \sinh(\beta \mu E)$.
+\end{problem}
+
 
 \subsection{Problem 7-17}
 
