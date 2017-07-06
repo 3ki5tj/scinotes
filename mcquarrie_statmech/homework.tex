@@ -1301,7 +1301,7 @@ $$
   %
   Evaluate these for $\mathrm{H}_2$ and $\mathrm{N}_2$
   at $25^{\circ}\mathrm{C}$.
-  
+
   [Hint: use Problem 7-15.]
 \end{problem}
 
@@ -1348,8 +1348,100 @@ $$
   $$
 \end{problem}
 
-%\section{Lecture 16: Classical Phase Space}
+\section{Lecture 16: Classical Phase Space}
+
+\subsection{Problem 7-31}
+
+\begin{problem}
+  Let $H(p, q)$ be the classical Hamiltonian
+  for a classical system of $N$ interacting particles.
+  %
+  Let $x_j$ be one of the $3N$ momentum components
+  or one of the $3N$ spatial coordinates.
+  %
+  Prove the generalized equipartition theorem, namely, that
+  $$
+  \left\langle
+    x_i \frac{ \partial H } { \partial x_j }
+  \right\rangle
+  = kT \, \delta_{ij}
+  $$
+  and from this derive the principle
+  of equipartition of energy that we discussed earlier.
+
+  Hint: Realize that the potential $U \to \infty$
+  at the walls of the container.
+\end{problem}
+
+\begin{solution}
+If we use $x_1, x_2, \dots$, to denote
+the coordinates and momenta components,
+the distribution function of the canonical ensemble
+is $f(x_1, x_2, \dots) = e^{-\beta H}/Q$, and
 %
+\begin{align*}
+  \left\langle
+    x_i \frac{ \partial H } { \partial x_j }
+  \right\rangle
+  &=
+  \frac{1}{Q} \int
+    x_i \frac{ \partial H } { \partial x_j }
+    e^{-\beta \, H}
+    d x_1 \, d x_2 \cdots
+  \\
+  &=
+  -
+  \frac{1}{\beta}
+  \frac{1}{Q}
+  \int_{x_{\ne j}}
+    \left(
+      \int_{x_j}
+      x_i \frac{ \partial \, e^{-\beta \, H} } { \partial \, x_j }
+      d x_j
+    \right) \, d x_{\ne j}
+  \\
+  &=
+  \frac{1}{\beta}
+  \frac{1}{Q}
+  \int_{x_{\ne j}}
+    \left(
+      \int_{x_j}
+      \frac{ \partial \, x_i } { \partial \, x_j }
+      e^{-\beta \, H}
+      d x_j
+    \right)
+  \, d x_{\ne j}
+  \\
+  &=
+  \frac{\delta_{ij}}{\beta}
+  \frac{1}{Q}
+  \int e^{-\beta \, H} d x
+  = kT \, \delta_{ij}
+  ,
+\end{align*}
+where we have integrated by parts on the third line,
+and dropped the boundary term $x_i \, e^{-\beta H}$.
+This is valid because if $x_j$ is a momentum component,
+it would contribute to the Hamiltonian by $x_j^2/(2m)$
+and $e^{-\beta H}$ would vanish at the boundaries,
+$x_j = -\infty$ and $x_j = +\infty$.
+%
+But if $x_j$ is a coordinate component,
+we have assumed that the potential energy, $U(x_j)$,
+is infinite at the two walls,
+and $e^{-\beta H}$ would also vanish
+at the lower and upper limits of $x_j$.
+\end{solution}
+
+\begin{problem}
+  Given a potential
+  $$
+  UC = \sum_{i=2} q^i
+  $$
+  Use Problem (7-31) to derive a general
+  equipartition contribution for power law potentials.
+\end{problem}
+
 %\section{Lecture 17: Crystals, Glasses, and Polymers}
 %
 %\section{Lecture 18: Imperfect Gases}
