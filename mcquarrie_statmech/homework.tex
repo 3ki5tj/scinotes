@@ -72,18 +72,18 @@ In this section, we collect a few results that are helpful in problem solving.
 
 \subsection{Physical constants}
 
-\begin{table}[h]\centering
+\begin{table}[h]\centering\small
   \begin{tabular}{l l}
     Constant & Value \\
     \hline \\
     Boltzmann constant, $k$ or $k_B$ &
-    $1.38064852(79)\times10^{-23} \, \mathrm{J/K}$
+    $1.38064852\times10^{-23} \, \mathrm{J/K}$
     \\
     Avogadro constant, $N_A$ &
-    $6.022140857(74)\times10^{23} \, \mathrm{mol}^{-1}$
+    $6.022140857\times10^{23} \, \mathrm{mol}^{-1}$
     \\
     Planck constant, $h$ &
-    $6.626070040(81)\times10^{-34} \, \mathrm{J\cdot s}$
+    $6.626070040\times10^{-34} \, \mathrm{J\cdot s}$
     \\
     Atmospheric pressure, $p_0$ &
     $101325 \, \mathrm{Pa}$
@@ -157,7 +157,7 @@ on the second line
   .
 \end{align*}
 This means the energy is conserved.
-This however is no longer true if $H$ does depend on time.
+This, however, is not true if $H$ does depend on time.
 %
 In fact, we can show that
 $$
@@ -452,16 +452,120 @@ Thus,
   e^{N(\ln N - 1)} \sqrt{2\pi N}
 \end{align*}
 %
-Taking the logarithm, we get Eq. \eqref{eq:Stirling}.
+Taking the logarithm, we get Eq. \eqref{eq:Stirling1}.
 \end{solution}
 
 \section{Lecture 4: Second and Third Laws}
 
 \subsection{Problem 1-51}
 
+\begin{problem}
+  Use the method of undetermined multipliers to show that
+  $$
+  -\sum_{j=1}^N P_j \ln P_j
+  $$
+  subject to the condition
+  $$
+  \sum_{j=1}^N P_j = 1
+  $$
+  is a maximum when $P_j = \mathrm{constant}$.
+\end{problem}
+
+\begin{solution}
+The function to maximize is
+$$
+F(\{P_j\}) = -\sum_{j=1}^N P_j \ln P_j - \alpha \left( \sum_{j=1}^N P_j - 1 \right).
+$$
+Taking derivatives
+$$
+  0 = \frac{ \partial F } { \partial P_j }
+  =
+  -\ln P_j - 1 - \alpha,
+$$
+and $P_j = e^{-1-\alpha}$ which is a constant.
+\end{solution}
+
 \subsection{Problem 2-6}
 
+\begin{problem}
+Maximize the function defined as ``information'' in information theory,
+$$
+I = \sum_j P_j \ln P_j
+$$
+subject to the two constraints
+\begin{equation}
+  \sum_j P_j = 1
+  \label{eq:sumPj}
+\end{equation}
+and
+\begin{equation}
+  \sum_j E_j P_j = E = \mathrm{fixed}
+  \label{eq:sumEjPj}
+\end{equation}
+Compare this result to that of Problem 1-51.
+
+[Note: the leading word should read ``minimize''
+  instead of ``maximize.'']
+\end{problem}
+
+\begin{solution}
+The function to minimize is
+$$
+F(\{P_j\}) = \sum_{j=1}^N P_j \ln P_j
+  + \alpha \left( \sum_{j=1}^N P_j - 1 \right)
+  + \beta \left( \sum_{j=1}^N E_j P_j - E \right).
+$$
+Taking the derivative with respect to $P_j$,
+$$
+  0 = \frac{ \partial F } { \partial P_j }
+  =
+  \ln P_j + 1 + \alpha + \beta \, E_j,
+$$
+and $P_j = e^{-1-\alpha-\beta \, E_j}$.
+%
+The constants $\alpha$ and $\beta$
+are determined from Eqs. \eqref{eq:sumPj} and \eqref{eq:sumEjPj}.
+\end{solution}
+
+
 \subsection{Problem 2-8}
+
+\begin{problem}
+  Differentiating Eq. (2-16) with respect to $\beta$
+  to derive Eq. (2-13).
+  \begin{align}
+    Q(N, V, \beta)
+    &= \sum_j e^{-\beta E_j(N, V)}
+    \tag{2-16}
+    \\
+    \bar E = \bar E(N, V, \beta)
+    &=
+    \frac{ \sum_j E_j(N, V) \, e^{-\beta E_j(N, V)} }
+         { \sum_j e^{-\beta E_j(N, V) } }
+    \tag{2-13}
+  \end{align}
+\end{problem}
+
+\begin{solution}
+Differentiating (2-16), we get
+\begin{align*}
+  \frac{ \partial Q(N, V, \beta) } { \partial \beta }
+  = -\sum_j E_j(N, V) \, e^{-\beta E_j(N, V)}.
+\end{align*}
+So
+\begin{align*}
+  -\frac{ \partial \ln Q } { \partial \beta }
+  =
+  -\frac{1}{Q}
+  \frac{ \partial Q } { \partial \beta }
+  &=
+  \frac{ \sum_j E_j(N, V) \, e^{-\beta E_j(N, V)} }
+       { \sum_j e^{-\beta E_j(N, V)} }
+  \\
+  &=\bar E(N, V, \beta)
+  .
+\end{align*}
+\end{solution}
 
 \section{Lecture 5: Idea of Ensembles}
 
@@ -509,7 +613,78 @@ estpi(10000)
 
 \subsection{Problem 2-11}
 
+\begin{problem}
+  Derive Eqs. (2-31) through (2-33)
+  by starting with $A = -kT\ln Q$.
+  \begin{align*}
+    \overline E
+    &=
+    kT^2 \left(
+      \frac{ \partial \ln Q }
+           { \partial T }
+    \right)_{N, V}
+    \tag{2-31}
+    \\
+    \overline p
+    &=
+    kT \left(
+      \frac{ \partial \ln Q }
+           { \partial V }
+    \right)_{N, T}
+    \tag{2-32}
+    \\
+    S
+    &=
+    kT \left(
+      \frac{ \partial \ln Q }
+           { \partial T }
+    \right)_{N, V}
+    + k \ln Q
+    \tag{2-33}
+  \end{align*}
+\end{problem}
+
 \subsection{Problem 2-13}
+
+\begin{problem}
+  Show that for a particle confined to a cube of length $a$ that
+  $$
+  p_j = \frac 2 3 \frac{ E_j } { V }
+  $$
+  By taking the ensemble average of both sides, we have
+  $$
+  \overline p = \frac 2 3 \frac{ \overline E } { V }
+  $$
+  If we use the fact that $\overline E = \frac 3 2 N k T$
+  (to be proved in Chapter 5),
+  we get the ideal gas equation of state.
+\end{problem}
+
+\begin{solution}
+From quantum mechanics, we have
+$$
+E_j = \frac{ h^2 j^2 } { 8 m a^2 }
+  =
+  \frac{ h^2 j^2 } { 8 m } V^{-2/3}.
+$$
+From Eq. (2-14), we have for the pressure
+$$
+p_j = -\left( \frac{ \partial E_j } { \partial V } \right)_N
+= \frac{2}{3} \frac{ h^2 j^2 } { 8 m } V^{-5/3}
+= \frac{2}{3} \frac{ E_j } { V }.
+$$
+By averaging over the quantum states, we get
+$$
+  \overline p = \sum_j p_j P_j
+  =
+  \frac{2}{3} \frac{ \sum_j E_j P_j } { V}
+  =
+  \frac{2}{3} \frac{ \overline E } { V}.
+$$
+If $\overline E = \frac{3}{2} N k T$,
+then $\overline p = \frac{ N k T } { V}$,
+which is the ideal gas equation of states.
+\end{solution}
 
 \section{Lecture 7: Partition Functions and the Use of Ensembles}
 
