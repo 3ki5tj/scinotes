@@ -236,6 +236,51 @@ which is not necessarily zero.
   $$
 \end{problem}
 
+\begin{solution}
+  (a)
+  \begin{align*}
+  \int_{-\infty}^\infty p(x) \, dx
+  &=
+  \int_{-\infty}^\infty
+  \frac{1}{\sigma \sqrt{2\pi}}
+  \exp\left( -\frac{ (x -\bar x)^2 } { 2 \sigma^2} \right) dx
+  \\
+  &=
+  \frac{1}{\sqrt{2\pi}}
+  \int_{-\infty}^\infty
+  \exp\left( -\frac{ z^2 } { 2} \right) dz
+  =
+  1.
+  \end{align*}
+  The last step follows from the Gaussian integral,
+  see the result for $I_0$ in Problem 1-61 on page 33.
+
+  (b)
+  For the $0$th central moment, it yields $1$.
+  For the first central moment,
+  $\mu_1 = \overline{ x - \overline x} = 0$.
+  For the second central moment,
+  \begin{align*}
+  \mu_2
+  &= \overline{ (x - \overline x)^2 }
+  =
+  \int_{-\infty}^\infty
+  \frac{1}{\sigma \sqrt{2\pi}}
+    (x- \overline x)^2 \exp\left( -\frac{ (x -\bar x)^2 } { 2 \sigma^2} \right) dx
+  \\
+  &=
+  \frac{\sigma^2}{ \sqrt{2\pi}}
+  \int_{-\infty}^\infty
+    z^2 \exp\left( -\frac{ z^2 } {2} \right) dz
+  =
+  \sigma^2.
+  \end{align*}
+  For the third central moment,
+  $\mu_3 = \overline{ (x - \overline x)^3 } = 0$.
+
+  (c) The limit of $\sigma \to 0$ is Dirac's $\delta$-function.
+\end{solution}
+
 \subsection{Problem 1-46}
 
 \begin{problem}
@@ -261,12 +306,13 @@ which is not necessarily zero.
 \end{problem}
 
 \begin{solution}
-  For the average
+  For the average, we have
   \begin{align*}
     \overline W
     &=
     \int \int (x + y) f_1(x) f_2(y) \, dx \, dy
-    =
+    \\
+    &=
     \int \int x f_1(x) f_2(y) \, dx \, dy
     +
     \int \int y f_1(x) f_2(y) \, dx \, dy
@@ -275,7 +321,52 @@ which is not necessarily zero.
     \int x \, f_1(x) \, dx \int f_2(y) \, dy
     +
     \int y \, f_2(y) \, dy \int f_1(x) \, dy
+    \\
+    &=
+    \int x \, f_1(x) \, dx
+    +
+    \int y \, f_2(y) \, dy
+    =
+    \overline X + \overline Y.
   \end{align*}
+
+  For the variances,
+  we define
+  $\delta X = X - \overline X$,
+  $\delta Y = Y - \overline Y$,
+  and
+  $\delta W = W - \overline W = \delta X + \delta Y$.
+  %
+  \begin{align*}
+    \overline{ \delta W^2 }
+    =
+    \overline{ \delta X^2 }
+    +
+    \overline{ \delta Y^2 }
+    +
+    2 \overline{ \delta X \, \delta Y }.
+  \end{align*}
+  But
+  \begin{align*}
+    &\overline{ \delta X \, \delta Y }
+    =
+    \overline{ (X - \overline X) \, (Y - \overline Y) }
+    =
+    \overline{ X Y }
+    - \overline X \, \overline Y
+    \\
+    &=
+    \int \int x y f_1(x) f_2(y) \, dx \, dy
+    -
+    \int x f_1(x) \, dx \int y f_2(y) \, dy
+    = 0.
+  \end{align*}
+  So
+    $\overline{ \delta W^2 }
+    =
+    \overline{ \delta X^2 }
+    +
+    \overline{ \delta Y^2 }$.
 \end{solution}
 
 \subsection{Programming problem}
@@ -388,6 +479,9 @@ we get
   M\ln(1+x) - \ln\frac{ \sqrt{2\pi M x} } { 1 + x}
   .
 \end{align*}
+If we drop the relatively small
+$\ln[\sqrt{2\pi M x}/(1 + x)]$ term,
+the result is the same as the exact result.
 \end{solution}
 
 
