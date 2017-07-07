@@ -253,12 +253,30 @@ which is not necessarily zero.
   of $X$ and $Y$;
   that is, show that if $W = X + Y$, then
   \begin{align*}
-    \bar W &= \bar X + \bar Y \\
-    \overline{ (W - \bar W)^2 } &=
-    \overline{ (X - \bar X)^2 } +
-    \overline{ (Y - \bar Y)^2 }
+    \overline W &= \overline X + \overline Y \\
+    \overline{ (W - \overline W)^2 } &=
+    \overline{ (X - \overline X)^2 } +
+    \overline{ (Y - \overline Y)^2 }
   \end{align*}
 \end{problem}
+
+\begin{solution}
+  For the average
+  \begin{align*}
+    \overline W
+    &=
+    \int \int (x + y) f_1(x) f_2(y) \, dx \, dy
+    =
+    \int \int x f_1(x) f_2(y) \, dx \, dy
+    +
+    \int \int y f_1(x) f_2(y) \, dx \, dy
+    \\
+    &=
+    \int x \, f_1(x) \, dx \int f_2(y) \, dy
+    +
+    \int y \, f_2(y) \, dy \int f_1(x) \, dy
+  \end{align*}
+\end{solution}
 
 \subsection{Programming problem}
 
@@ -632,7 +650,7 @@ estpi(10000)
       \frac{ \partial \ln Q }
            { \partial V }
     \right)_{N, T}
-    \label{eq:p_from_lnQ}
+    \label{eq:pbar_from_lnQ}
     \tag{2-32}
     \\
     S
@@ -646,6 +664,65 @@ estpi(10000)
     \tag{2-33}
   \end{align*}
 \end{problem}
+
+\begin{solution}
+For Eq. \eqref{eq:Ebar_from_lnQ},
+see Problem 2-8.
+
+For Eq. \eqref{eq:pbar_from_lnQ},
+\begin{align*}
+\left(
+      \frac{ \partial \ln Q }
+           { \partial V }
+    \right)_{N, T}
+&=
+  (-\beta)
+  \frac{ \sum_j (\partial E_j /\partial V) \, e^{-\beta \, E_j} }
+       { \sum_j e^{-\beta \, E_j} }
+\\
+&=
+  (-\beta)
+  \frac{ \sum_j p_j \, e^{-\beta \, E_j} }
+       { \sum_j e^{-\beta \, E_j} }
+= -\beta \, \overline p.
+\end{align*}
+
+For Eq. \eqref{eq:S_from_lnQ}, we start with the first law
+$dE = T dS - p dV + \mu dN$, or for $A = E - TS$, we have
+$dA = -S dT - p dV + \mu dN$.
+%
+\begin{align*}
+  S &=
+  -
+  \left( \frac{ \partial A }{ \partial T } \right)_{N, V}
+  =
+  \left( \frac{ \partial \, ( kT \ln Q) } { \partial T } \right)_{N, V}
+  \\
+  &=
+  kT
+  \left( \frac{ \partial \ln Q } { \partial T } \right)_{N, V}
+  + k \ln Q.
+\end{align*}
+
+For Eqs. \eqref{eq:Ebar_from_lnQ} and \eqref{eq:pbar_from_lnQ},
+the thermodynamic interpretation follows from the first law
+$$\beta dE = d(S/k) - \beta \, p \, dV + \beta \, \mu \, dN,$$
+and
+$$d(S/k-\beta E) = -E \, d\beta + \beta \, p \, dV - \beta \, \mu \, dN.$$
+With $S/k -\beta E = -\beta A = \ln Q$, we get
+$$d \ln Q = -E \, d\beta + \beta \, p \, dV - \beta \, \mu \, dN,$$
+which means
+\begin{align*}
+  E &= -
+  \left( \frac{ \partial \ln Q } { \partial \beta } \right)_{N, V}
+   =
+  kT^2 \left( \frac{ \partial \ln Q } { \partial T } \right)_{N, V}, \\
+  \beta \, p &=
+  \left( \frac{ \partial \ln Q } { \partial V } \right)_{N, T}.
+\end{align*}
+\end{solution}
+
+
 
 \subsection{Problem 2-13}
 
@@ -763,7 +840,7 @@ and compare it to Problem 1-30.
 
 \begin{solution}
 The pressure can be derived from the partition function
-by Eq. \eqref{eq:p_from_lnQ}
+by Eq. \eqref{eq:pbar_from_lnQ}
 %
 \begin{align*}
 p &=
@@ -1817,6 +1894,58 @@ $$
   $$
 \end{problem}
 
+\begin{solution}
+Conversion to the polar coordinates:
+\begin{align*}
+  &\int f(p_x, p_y, p_z) \, d p_x \, d p_y \, d p_z
+  \\
+  &=
+  \int_0^\infty
+    (2\pi m kT)^{-3/2} e^{-p^2/2mkT} p^2
+    d p
+  \int_0^\pi \sin\theta d\theta
+  \int_0^{2\pi} d\phi
+  \\
+  &=
+  \int_0^\infty
+    (2\pi m kT)^{-3/2}
+    p^2 e^{-p^2/2mkT}
+    d p
+    \int_{-1}^{1} d(\cos\theta)
+    \, (2\pi)
+  \\
+  &=
+  \int_0^\infty
+    4 \, \pi (2\pi m kT)^{-3/2}
+    p^2 \, e^{-p^2/2mkT}
+    d p.
+\end{align*}
+By substituting $p = mv$, we get
+\begin{align*}
+  &\int_0^\infty
+    4 \, \pi (2\pi m kT)^{-3/2}
+    p^2 \, e^{-p^2/2mkT}
+    d p
+  \\
+  &=
+  \int_0^\infty
+    4 \, \pi (2\pi m kT)^{-3/2}
+    m^2 v^2 \, e^{-m v^2/2kT}
+    d (m v)
+  \\
+  &=
+  \int_0^\infty
+    4 \, \pi \left(\frac{m}{2\pi kT}\right)^{3/2}
+    v^2 \, e^{-m v^2/2kT}
+    d v.
+\end{align*}
+This shows
+$$
+f(v) = 4 \, \pi \left(\frac{m}{2\pi kT}\right)^{3/2}
+    v^2 \, e^{-m v^2/2kT}.
+$$
+\end{solution}
+
 \subsection{Problem 7-16}
 
 \begin{problem}
@@ -1833,6 +1962,140 @@ $$
   [Hint: use Problem 7-15.]
 \end{problem}
 
+\begin{solution}
+The most probable speed
+occurs at the zero of $f'(v) = 0$:
+$$
+0 =
+  2 \, v \, e^{-mv^2/2kT}
+  -v^2 \, \frac{mv}{kT} \, e^{-mv^2/2kT}.
+$$
+which shows $v_{mp} = (2kT/m)^{1/2}$.
+
+The mean speed is
+\begin{align}
+  \langle v \rangle
+  &=
+  \int_0^\infty v \, f(v) \, dv
+  =
+  \frac{4 \, a^{3/2}}{\sqrt\pi}
+  \int_0^\infty
+    v^3 e^{-av^2} dv
+  \notag
+  \\
+  &=
+  -\frac{2 \, a^{1/2}}{\sqrt\pi}
+  \int_0^\infty
+    v^2 d(e^{-av^2})
+  \notag
+  \\
+  &=
+  \frac{2 \, a^{1/2}}{\sqrt\pi}
+  \left(
+  -\left. v^2 \, e^{-av^2} \right|_0^\infty
+  +
+  \int_0^\infty
+    e^{-av^2} d(v^2)
+  \right)
+  \notag
+  \\
+  &=
+  -\frac{2}{\sqrt{\pi a}}
+  \left.  e^{-av^2}\right|_0^\infty
+  =
+  \frac{2}{\sqrt{\pi a}}
+  =
+    \sqrt{ \frac{8kT}{m} }
+  .
+  \label{eq:absv_ave}
+\end{align}
+where $a = m/(2kT)$,
+and we have integrated by parts
+on the third line.
+%
+Another way to evaluate the integral
+%
+\begin{align*}
+  &\int_0^\infty
+    v^3 e^{-av^2} \, dv
+  =
+  -\frac{\partial}{\partial a}
+  \int_0^\infty
+    v \, e^{-av^2} \, dv
+  \\
+  &=
+  -\frac{1}{2}
+  \frac{\partial}{\partial a}
+  \int_0^\infty
+    e^{-av^2} \, d(v^2)
+  =
+  -\frac{1}{2}
+  \frac{\partial}{\partial a}
+    \left(  \frac{1}{a} \right)
+  =\frac{1}{2 \, a^2}.
+\end{align*}
+
+For the root-mean-square speed,
+\begin{align}
+  \langle v^2 \rangle
+  &=
+  \int_0^\infty v^2 \, f(v) \, dv
+  =
+  \frac{4 \, a^{3/2}}{\sqrt\pi}
+  \int_0^\infty
+    v^4 e^{-av^2} dv
+  \notag \\
+  &=
+  \frac{4 \, a^{3/2}}{\sqrt\pi}
+    \frac{ \partial^2 } { \partial a^2 }
+  \int_0^\infty
+    e^{-av^2} d v
+  \notag \\
+  &=
+  \frac{4 \, a^{3/2}}{\sqrt\pi}
+    \frac{ \partial^2 } { \partial a^2 }
+    \left( \frac{1}{2} \sqrt{ \frac{ \pi } { a } } \right)
+  =
+  \frac{3}{2 \, a}
+  =
+  \frac{3kT}{m}
+  ,
+  \label{eq:v2_ave}
+\end{align}
+so $\langle v^2 \rangle^{1/2} = (3kT/m)^{1/2}$.
+%
+Another way to evaluate this:
+$$
+\langle v^2 \rangle
+=
+\langle v_x^2 + v_y^2 + v_z^2 \rangle
+=
+3 \langle v_x^2 \rangle
+=
+\frac{ 3 k T } { m },
+$$
+The last step is because
+the distribution of $v_x$
+is the Boltzmann-Maxwell distribution.
+
+The velocities in $\mathrm{m/s}$ are listed below:
+\begin{table}[h]
+\begin{tabular}{c | c c c}
+  \hline \hline
+  & $v_{mp}$  & $\langle v \rangle$ & $\langle v^2 \rangle^{1/2}$\\
+  \hline
+  $\mathrm H_2$ &
+  $1.57\times10^3$ &
+  $1.77\times10^3$ &
+  $1.92\times10^3$\\
+  $\mathrm N_2$ &
+  $421$ &
+  $475$ &
+  $515$ \\
+  \hline \hline
+\end{tabular}
+\end{table}
+\end{solution}
 
 \subsection{Problem 7-18}
 
@@ -1894,6 +2157,11 @@ $$
   \left(3 - \frac{8}{\pi} \right)
   $$
 \end{problem}
+
+\begin{solution}
+  This follows directly from Eqs.
+  \eqref{eq:v2_ave} and \eqref{eq:absv_ave}.
+\end{solution}
 
 \section{Lecture 16: Classical Phase Space}
 
