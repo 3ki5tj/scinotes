@@ -623,6 +623,7 @@ estpi(10000)
       \frac{ \partial \ln Q }
            { \partial T }
     \right)_{N, V}
+    \label{eq:Ebar_from_lnQ}
     \tag{2-31}
     \\
     \overline p
@@ -631,6 +632,7 @@ estpi(10000)
       \frac{ \partial \ln Q }
            { \partial V }
     \right)_{N, T}
+    \label{eq:p_from_lnQ}
     \tag{2-32}
     \\
     S
@@ -640,6 +642,7 @@ estpi(10000)
            { \partial T }
     \right)_{N, V}
     + k \ln Q
+    \label{eq:S_from_lnQ}
     \tag{2-33}
   \end{align*}
 \end{problem}
@@ -759,7 +762,64 @@ and compare it to Problem 1-30.
 \end{problem}
 
 \begin{solution}
-The equation of state is the van der Waals equation of states.
+The pressure can be derived from the partition function
+by Eq. \eqref{eq:p_from_lnQ}
+%
+\begin{align*}
+p &=
+  kT \frac{ \partial \ln Q } { \partial \, V }
+=
+  kT \frac{ \partial \, [ N \ln (V - N b)
+   + a \, N^2 / (V k T)] }
+  { \partial \, V }
+\\
+&=
+  \frac{ N k T } { V - N b} - \frac{ a N^2 }{ V^2 }
+=
+  \frac{ \rho \, k T } { 1 - \rho \, b} - a \rho^2
+,
+\end{align*}
+%
+where we have introduced
+the number density $\rho = N/V$ in the last step.
+%
+The equation of state is the van der Waals equation of states,
+  [cf. Eq. (14-18) on page 304].
+%
+From Eqs. \eqref{eq:Ebar_from_lnQ} and \eqref{eq:S_from_lnQ},
+we get
+\begin{align*}
+\overline E
+&=
+    kT^2 \left(
+      \frac{ \partial \ln Q }
+           { \partial T }
+    \right)_{N, V}
+=
+  \frac{ 3 N k T }{2}
+  -\frac{ a N^2 } { V}
+,
+\\
+S
+&=
+    kT \left(
+      \frac{ \partial \ln Q }
+           { \partial T }
+    \right)_{N, V}
+    + k \ln Q
+=
+  \frac{ \overline E } { T }
+  + k \ln Q
+,
+\\
+C_V
+&=
+\frac{ T \partial S } { \partial T }
+=
+\frac{ \partial \overline E } { \partial T }
+= \frac{ 3 N k}{2}
+.
+\end{align*}
 \end{solution}
 
 \section{Lecture 8: The Canonical Ensemble}
