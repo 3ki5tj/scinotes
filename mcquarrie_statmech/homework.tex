@@ -8,6 +8,8 @@
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{tikz}
+
 \hypersetup{
     colorlinks,
     linkcolor={red!30!black},
@@ -174,26 +176,199 @@ which is not necessarily zero.
 
 \begin{problem}
   Derive the thermodynamic equation
-  $$
-  C_p - C_V
-  = \left[ p + \left( \frac{ \partial E } { \partial V } \right)_T \right]
-  \left( \frac{ \partial V } { \partial T } \right)_p
-  $$
+  \begin{equation}
+    C_p - C_V
+    = \left[ p + \left( \frac{ \partial E } { \partial V } \right)_T \right]
+    \left( \frac{ \partial V } { \partial T } \right)_p
+    \label{eq:CpCV1}
+  \end{equation}
   and evaluate this difference for an ideal gas
   and a gas that obeys the van der Waals equation.
 \end{problem}
+
+\begin{solution}
+If we choose $p$ and $T$ as independent variables, then
+\begin{equation}
+  dS =
+  \left( \frac{ \partial S } { \partial T } \right)_p dT
+  +
+  \left( \frac{ \partial S } { \partial p } \right)_T dp.
+  \label{eq:dS_Tp}
+\end{equation}
+But if we choose $V$ and $T$ as independent variables, then
+\begin{equation}
+  dS =
+  \left( \frac{ \partial S } { \partial T } \right)_V dT
+  +
+  \left( \frac{ \partial S } { \partial V } \right)_T dV.
+  \label{eq:dS_TV}
+\end{equation}
+In the latter case,
+we may write $V$ as a function of $p$ and $T$, as
+$$
+  dV =
+  \left( \frac{ \partial V } { \partial T } \right)_p dT
+  +
+  \left( \frac{ \partial V } { \partial p } \right)_T dp.
+$$
+Using this expression in Eq. \eqref{eq:dS_TV}, we get
+$$
+  dS =
+  \left[
+  \left( \frac{ \partial S } { \partial T } \right)_V
+  +
+  \left( \frac{ \partial S } { \partial V } \right)_T
+  \left( \frac{ \partial V } { \partial T } \right)_p
+  \right] \, dT
+  +
+  \left( \frac{ \partial S } { \partial V } \right)_T
+  \left( \frac{ \partial V } { \partial p } \right)_T dp.
+$$
+Compare this to Eq. \eqref{eq:dS_Tp}, we get
+$$
+  \left( \frac{ \partial S } { \partial T } \right)_p
+  =
+  \left( \frac{ \partial S } { \partial T } \right)_V
+  +
+  \left( \frac{ \partial S } { \partial V } \right)_T
+  \left( \frac{ \partial V } { \partial T } \right)_p.
+$$
+After multiplying $T$,
+  and recognizing
+  $C_p = (dQ/dT)_p = T (\partial S/\partial T)_p$
+  and
+  $C_V = (dQ/dT)_V = T (\partial S/\partial T)_V$,
+  we get
+\begin{equation}
+  C_p
+  =
+  C_V
+  +
+  T \left( \frac{ \partial S } { \partial V } \right)_T
+  \left( \frac{ \partial V } { \partial T } \right)_p,
+  \label{eq:CpCV2}
+\end{equation}
+
+With a fixed $T$, we have $T dS = dE - dA$,
+where $A = E - TS$ is the Helmholtz free energy, and
+\begin{equation}
+  T \left( \frac{ \partial S } { \partial V } \right)_T
+  =
+  \left( \frac{ \partial E } { \partial V } \right)_T
+  -
+  \left( \frac{ \partial A } { \partial V } \right)_T
+  =
+  \left( \frac{ \partial E } { \partial V } \right)_T
+  +p.
+  \label{eq:TdSdV}
+\end{equation}
+The last step follows from
+the first law under independent variables $T$ and $V$,
+\begin{align*}
+  dA
+  &= d(E - TS) = -S \, dT - p \, dV
+  \\
+  &=
+  \left( \frac{ \partial A } { \partial T } \right)_V dT
+  +
+  \left( \frac{ \partial A } { \partial V } \right)_T dV
+  .
+\end{align*}
+Using Eq. \eqref{eq:TdSdV} in Eq. \eqref{eq:CpCV2},
+we get Eq. \eqref{eq:CpCV1}.
+
+%\begin{align*}
+%\frac{ \partial (S, V) }
+%     { \partial (T, V) }
+%&=
+%\frac{ \partial (S, V) / \partial(T, p) }
+%     { \partial (T, V) / \partial(T, p) }
+%\\
+%&=
+%\left( \frac{ \partial S } { \partial T } \right)_p
+%-
+%\left.
+%  \left( \frac{ \partial S } { \partial p } \right)_T
+%  \left( \frac{ \partial V } { \partial T } \right)_p
+%\middle/
+%  \left( \frac{ \partial p } { \partial V } \right)_T
+%\right.
+%\end{align*}
+\end{solution}
 
 \subsection{Problem 1-30}
 
 \begin{problem}
   Derive this equation
-  $$
-  dE = \left[ T \left( \frac{ \partial p} {\partial T } \right)_V - p \right]
+  \begin{equation}
+  dE
+  =
+  \left[ T \left( \frac{ \partial p} {\partial T } \right)_V - p \right]
   dV + C_V dT
-  $$
+    \label{eq:dE_VT}
+  \end{equation}
   and from this show that $(\partial E/\partial V)_T = a/V^2$
   for a van der Waals gas.
 \end{problem}
+
+\begin{solution}
+With fixed number of particles,
+the first law reads
+\begin{equation}
+  dE = T \, dS - p \, dV.
+  \label{eq:firstlawSV}
+\end{equation}
+Now if we assume $T$ and $V$ are independent variables,
+then $S$ is a function of $T$ and $V$ as well,
+\begin{align*}
+dS = \left( \frac{ \partial S }{ \partial T } \right)_V \, dT
++ \left( \frac{ \partial S } { \partial V } \right)_T \, d V.
+\end{align*}
+Thus, we have
+\begin{equation}
+  dE =
+    \left[\left( \frac{ \partial S } { \partial V } \right)_T -p \right]\, d V
+  +T \left( \frac{ \partial S }{ \partial T } \right)_V \, dT.
+  \label{eq:dE_VT1}
+\end{equation}
+We can readily recognize $T(\partial S/\partial T)_V$ as $C_V$
+  (change of heat $TdS$ under fixed volume $V$).
+%
+For $(\partial S/\partial V)_T$,
+we will Legendre transform Eq. \eqref{eq:firstlawSV}, and
+$$
+dA = d(E-TS) = - S \, dT - p \, dV,
+$$
+which shows
+\begin{align*}
+  \frac{\partial A } { \partial T} &= -S, \quad 
+  \frac{\partial A } { \partial V} = -p, \\
+  \frac{\partial^2 A } { \partial V \partial T}
+  &=
+  -\left( \frac{\partial S }{\partial V} \right)_T
+  =
+  -\left( \frac{\partial p }{\partial T} \right)_V.
+\end{align*}
+Using the last equation in Eq. \eqref{eq:dE_VT1}
+  we get Eq. \eqref{eq:dE_VT}.
+
+For a van der Waals gas,
+  $$
+  p = \frac{NkT}{V-Nb} - \frac{aN^2}{V^2},
+  $$
+  and
+  $T (\partial p/\partial T)_V = NkT/(V-Nb)$,
+  so
+  $$
+  \left( \frac{ \partial E } { \partial V} \right)_T
+  =
+  T \left( \frac{ \partial p} {\partial T } \right)_V - p
+  =
+  \frac{ a N^2 } { V^2 }.
+  $$
+Note that our ``$aN^2$'' might be the ``$a$''
+in the problem.
+\end{solution}
 
 \section{Lecture 2: Probability and Distributions}
 
@@ -310,12 +485,12 @@ which is not necessarily zero.
   \begin{align*}
     \overline W
     &=
-    \int \int (x + y) f_1(x) f_2(y) \, dx \, dy
+    \iint (x + y) f_1(x) f_2(y) \, dx \, dy
     \\
     &=
-    \int \int x f_1(x) f_2(y) \, dx \, dy
+    \iint x f_1(x) f_2(y) \, dx \, dy
     +
-    \int \int y f_1(x) f_2(y) \, dx \, dy
+    \iint y f_1(x) f_2(y) \, dx \, dy
     \\
     &=
     \int x \, f_1(x) \, dx \int f_2(y) \, dy
@@ -356,7 +531,7 @@ which is not necessarily zero.
     - \overline X \, \overline Y
     \\
     &=
-    \int \int x y f_1(x) f_2(y) \, dx \, dy
+    \iint x y f_1(x) f_2(y) \, dx \, dy
     -
     \int x f_1(x) \, dx \int y f_2(y) \, dy
     = 0.
@@ -622,11 +797,14 @@ Compare this result to that of Problem 1-51.
 
 \begin{solution}
 The function to minimize is
-$$
-F(\{P_j\}) = \sum_{j=1}^N P_j \ln P_j
-  + \alpha \left( \sum_{j=1}^N P_j - 1 \right)
-  + \beta \left( \sum_{j=1}^N E_j P_j - E \right).
-$$
+%
+\begin{align*}
+F(\{P_j\})
+  = \sum_{j=1}^N P_j \ln P_j
+  + \alpha ( \sum_{j=1}^N P_j - 1 )
+  + \beta  ( \sum_{j=1}^N E_j P_j - E ).
+\end{align*}
+%
 Taking the derivative with respect to $P_j$,
 $$
   0 = \frac{ \partial F } { \partial P_j }
@@ -678,6 +856,7 @@ So
   .
 \end{align*}
 \end{solution}
+
 
 \section{Lecture 5: Idea of Ensembles}
 
@@ -896,17 +1075,58 @@ where $M = N \bar\mu$,
 where $\bar\mu$ is the average dipole moment
 of a molecule in the direction of the external field $\mathscr E$,
 show that
-$$
+%
+\begin{equation}
 \bar\mu = \mu \left[
   \coth\left( \frac{ \mu \mathscr E } { k T } \right)
   -\frac{ k T } { \mu \mathscr E }
   \right]
-$$
+\label{eq:mubar}
+\end{equation}
+%
 Sketch this result versus $\mathscr E$
 from $\mathscr E = 0$ to $\mathscr E = \infty$
 and interpret it.
 \end{problem}
 
+\begin{solution}
+With $A = -kT \ln Q$, we have
+$$
+M = N \bar \mu = kT \frac{ \partial \ln Q } { \partial \mathscr E }
+ = N kT \frac{ \partial \ln q } { \partial \mathscr E }.
+$$
+Since
+$$
+  \ln q = \ln \sinh(\beta \, \mu \, \mathscr E)
+  - \ln{ \beta \mu \, \mathscr E}
+  + \mathrm{constant \; of \; \mathscr E},
+$$
+we have
+$$
+\frac{ \partial \ln q } { \partial \mathscr E }
+  = \left[
+    \coth(\beta \, \mu \, \mathscr E)
+  - \frac{1}{ \beta \mu \, \mathscr E}
+  \right] \beta \, \mu,
+$$
+which lead to Eq. \eqref{eq:mubar}.
+
+\begin{figure}[h]\centering
+\begin{tikzpicture}[scale=0.4]
+  \draw[->, thick] (0,0) -- (17,0) node[right] {$\mathscr E$};
+  \draw[->, thick] (0,0) -- (0,10) node[above] {$\bar \mu$};
+  \draw[scale=1.0, domain=0.1:16, variable=\x, blue!50!black, very thick]
+    plot ({\x}, {((1 + exp(-2*\x))/(1 - exp(-2*\x))-1/\x)*8} );
+  \draw[dashed] (0.0, 8.0) -- (16.0, 8.0);
+  \draw[] ( 0.0, 0.2) -- ( 0.0, 0.0) node[below] {$0.0$};
+  \draw[] ( 5.0, 0.2) -- ( 5.0, 0.0) node[below] {$5.0$};
+  \draw[] (10.0, 0.2) -- (10.0, 0.0) node[below] {$10.0$};
+  \draw[] (15.0, 0.2) -- (15.0, 0.0) node[below] {$15.0$};
+  \draw[] ( 0.2, 8.0) -- ( 0.0, 8.0) node[left] {$1.0$};
+\end{tikzpicture}
+\end{figure}
+
+\end{solution}
 
 \subsection{Problem 2-17}
 
@@ -2219,7 +2439,7 @@ The velocities in $\mathrm{m/s}$ are listed below:
 
 \begin{problem}
   Consider a perfect gas of molecules
-  with permanent electric dipole moments $\boldsymbol \mu$
+  with permanent electric dipole moments $\pmb\mu$
   in an electric field $\mathscr E$.
   %
   Neglecting the polarizability fo the molecules,
@@ -2227,15 +2447,72 @@ The velocities in $\mathrm{m/s}$ are listed below:
   $$
   U = -\mu \mathscr E \, \cos\theta
   $$
-  where $\theta$ is the angle between $\mu$
+  where $\theta$ is the angle between $\pmb\mu$
   and $\mathscr E$.
   %
   Using classical mechanics,
   derive an expression for the additional effect of $\mathscr E$
   on the energy $E$ and heat capacity of the gas.
 
-  Hint: see Problem 2-16, i.e. $q \sim \sinh(\beta \mu E)$.
+  Hint: see Problem 2-16, i.e.
+  $q \sim \sinh(\beta \mu \mathscr E)/(\beta \mu \mathscr E)$.
 \end{problem}
+
+\begin{solution}
+Since the coupling between the electric field
+and the dipole contributes $U$
+to the energy function,
+the relevant factor of the partition function
+for the angular degrees of freedom becomes
+\begin{align*}
+  q_{\mathscr E}
+  &=
+  \int e^{-\beta U} \sin\theta d\theta \, d\phi
+  =
+  \int_0^\pi \int_0^{2\pi}
+  e^{\beta \mu \mathscr E \cos\theta}
+  \sin\theta \, d\theta \, d\phi
+  \\
+  &=
+  2 \, \pi \left. \frac{
+    e^{\beta \mu \mathscr E \cos\theta }
+  } { \beta \mu \mathscr E}
+  \right|_{0}^\pi
+  =
+  4 \pi \frac{ \sinh(\beta\mu\mathscr E) }
+  {\beta \mu \mathscr E}
+  .
+\end{align*}
+For the average energy we have
+$$
+  \overline E
+  =
+  - \frac{ \partial \, \ln q_{\mathscr E} }
+         { \partial \, \beta }
+  =
+  -\mu \mathscr E
+  \left[
+    \coth(\beta \, \mu \, \mathscr E)
+    -
+    \frac{1}{\beta \, \mu \, \mathscr E}
+  \right]
+  ,
+$$
+and for the heat capacity,
+  \begin{align*}
+  C_V
+  =-\frac{ 1 } { k T^2 }
+    \frac{ \partial \overline E }
+    {\partial \beta }
+  =
+  \frac{ \mu^2 \mathscr E^2 } { kT^2 }
+  \left[
+    \frac{1}{(\beta \, \mu \, \mathscr E)^2}
+    -
+    \frac{1}{\sinh^2(\beta \, \mu \, \mathscr E)}
+  \right].
+  \end{align*}
+\end{solution}
 
 
 \subsection{Problem 7-17}
@@ -2253,7 +2530,7 @@ The velocities in $\mathrm{m/s}$ are listed below:
 \end{problem}
 
 \begin{solution}
-  This follows directly from Eqs.
+  This follows from Eqs.
   \eqref{eq:v2_ave} and \eqref{eq:absv_ave}.
 \end{solution}
 
@@ -2328,6 +2605,7 @@ is $f(x_1, x_2, \dots) = e^{-\beta H}/Q$, and
   = kT \, \delta_{ij}
   ,
 \end{align*}
+%
 where we have integrated by parts on the third line,
 and dropped the boundary term $x_i \, e^{-\beta H}$.
 This is valid because if $x_j$ is a momentum component,
@@ -2345,14 +2623,45 @@ at the lower and upper limits of $x_j$.
 \begin{problem}
   Given a potential
   $$
-  UC = \sum_{i=2} q^i
+  U = \sum_{i=2}^\infty C_i \, q^i
   $$
   Use Problem (7-31) to derive a general
   equipartition contribution for power law potentials.
 \end{problem}
 
-%\section{Lecture 17: Crystals, Glasses, and Polymers}
-%
+\begin{solution}
+Using the result of Problem 7-31, we have
+$$
+kT
+=
+\left\langle
+  q \frac{ \partial U } { \partial q }
+\right\rangle
+=
+\sum_{i = 2}^\infty
+  i \, C_i \, \langle q^i \rangle
+.
+$$
+If only a single term exists, we have
+$$
+  \langle U \rangle = \frac{kT}{i}.
+$$
+Note for odd orders, we will assume either $q \ge 0$,
+or replace $q$ by $|q|$.
+\end{solution}
+
+\section{Lecture 17: Crystals, Glasses, and Polymers}
+
+\subsection{Problem 11.11}
+
+\subsection{Entropy of a Debye crystal at low temperature}
+\begin{problem}
+  Show that the entropy of a Debye crystal at low
+  temperature is given by
+  $$
+  S = \frac{4}{5} \pi^4 N k \left(\frac{kT}{h\nu}\right)^3
+  $$
+\end{problem}
 %\section{Lecture 18: Imperfect Gases}
 %
 %\section{Lecture 19: Classical Monatomic liquids}
