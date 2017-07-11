@@ -1221,7 +1221,109 @@ C_V
 
 \subsection{Problem 3-4}
 
+\begin{problem}
+  Sate and use Euler's theorem to show
+  \begin{equation}
+  p
+  = kT \left(
+    \frac{ \partial \ln \Xi } { \partial \, V }
+    \right)_{\mu, T}
+  = kT \left(
+    \frac{ \ln \Xi } { V }
+    \right)_{\mu, T}
+  .
+    \label{eq:pV_lnXi}
+  \end{equation}
+\end{problem}
+
+\begin{solution}
+We can use the first law for the grand canonical ensemble
+$$
+d\ln\Xi = -\overline E \, d\beta + \beta \, p \, d V + N \, d(\beta\mu).
+$$
+Here $\beta$ and $\beta\,\mu$
+are intensive quantities, and $V$ is extensive.
+%
+The first equality of Eq. \eqref{eq:pV_lnXi}
+follows directly from the first law.
+%
+Now $\ln\Xi$, representing some free energy,
+should be extensive,
+and hence be a homogeneous function of order $1$
+for $V$.
+%
+Then, Euler's theorem (page 18) says that
+$$
+\ln\Xi = V \, \frac{ \partial \ln \Xi } { \partial V },
+$$
+which is the second equality of Eq. \eqref{eq:pV_lnXi}.
+\end{solution}
+
 \subsection{Problem 3-6}
+
+\begin{problem}
+  Derive the principle thermodynamic connection formulas
+  of the grand canonical ensemble starting from
+  \begin{equation}
+    pV = kT \ln \Xi
+    \label{eq:pV_lnXi1}
+  \end{equation}
+  and
+  \begin{equation}
+    d(pV) = S \, dT + N \, d\mu + p \, dV
+    \label{eq:dpV}
+  \end{equation}
+\end{problem}
+
+\begin{solution}
+  We start by differentiating Eq. \eqref{eq:pV_lnXi1}
+  $$
+  d(\ln \Xi) = d(\beta \, p V)
+  = p V \, d\beta + \beta \, d(p V).
+  $$
+  Then, by using Eq. \eqref{eq:dpV}, we get
+  \begin{align*}
+    d(\ln \Xi)
+    &=
+    p V \, d\beta +
+    \beta \, (S \, dT + N \, d\mu + p \, dV)
+    \\
+    &=
+    \left( pV-TS \right) \, d\beta
+    + N \, \beta \, d\mu + \beta p \, dV
+    \\
+    &=
+    \left(pV-TS - N \, \mu\right) \, d\beta
+    + N \, d(\beta \, \mu) + \beta p \, dV
+    \\
+    &=-E\, d\beta + N \, d(\beta \, \mu) + \beta p \, dV
+    .
+  \end{align*}
+  The final step follows from Euler's theorem,
+  (cf. the note).
+
+\paragraph*{Note on Euler's theorem.}
+
+For a single-component system, we have
+the following useful equation
+\begin{equation}
+  E = T \, S - p \, V + \mu \, N.
+\label{eq:Euler}
+\end{equation}
+%
+We can show this from McQuarrie's Eq. (1-60),
+$$
+G = \sum_i \mu_i \, N_i
+$$
+But by definition $G = E - TS + pV$, so
+%
+$$
+  E = T \, S - p \, V + \sum_i \mu_i \, N_i.
+$$
+%
+The one-component case gives Eq. \eqref{eq:Euler}.
+
+\end{solution}
 
 \section{Lecture 9: Grand Canonical Ensemble}
 
@@ -1484,27 +1586,6 @@ $$
 $$
 and multiply both sides of Eq. \eqref{eq:TCV} by $k T = 1/\beta$,
 we recover Eq. \eqref{eq:prob3-22a}.
-
-\paragraph*{Notes on Euler's theorem.}
-
-For a single-component system, we have
-the following useful equation
-\begin{equation}
-  E = T \, S - p \, V + \mu \, N.
-\label{eq:Euler}
-\end{equation}
-%
-We can show this from McQuarrie's Eq. (1-60),
-$$
-G = \sum_i \mu_i \, N_i
-$$
-But by definition $G = E - TS + pV$, so
-%
-$$
-  E = T \, S - p \, V + \sum_i \mu_i \, N_i.
-$$
-%
-The one-component case gives Eq. \eqref{eq:Euler}.
 
 \paragraph*{Example on the monatomic ideal gas.}
 
