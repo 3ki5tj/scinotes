@@ -1301,6 +1301,20 @@ which is the second equality of Eq. \eqref{eq:pV_lnXi}.
   \end{align*}
   The final step follows from Euler's theorem,
   (cf. the note).
+  Thus,
+  \begin{align*}
+    E
+    &=
+    -\frac{\partial \ln \Xi } { \partial \, \beta},
+    \\
+    N
+    &=
+    \frac{\partial \ln \Xi } { \partial \, (\beta \, \mu) },
+    \\
+    \beta \, p
+    &=
+    \frac{\partial \ln \Xi } { \partial \, V }.
+  \end{align*}
 
 \paragraph*{Note on Euler's theorem.}
 
@@ -1322,16 +1336,364 @@ $$
 $$
 %
 The one-component case gives Eq. \eqref{eq:Euler}.
-
 \end{solution}
 
 \section{Lecture 9: Grand Canonical Ensemble}
 
 \subsection{Problem 3-15}
 
+\begin{problem}
+  Fluctuation theory provides a simple method
+  to determine the characteristic function
+  associated with a particular partition function.
+  %
+  Consider the canonical partition function
+  $$
+  Q(N, V, T) = \sum_E \Omega(N, V, E) \, e^{-E/kT}
+  $$
+  According to the theory of fluctuations,
+  there is effectively only one term in this summation,
+  and so we write
+  $$
+  Q(N, V, T) = \Omega(N, V, \overline E) \, e^{-\overline E/kT}
+  $$
+  Remembering that $S = k \, \ln \Omega$,
+  we have, upon taking logarithms, that
+  $$
+  \ln Q = \frac{S}{k} - \frac{E}{kT}
+  $$
+  or that
+  $$
+  \ln Q = \frac{-A}{kT}
+  $$
+  Proceeding in a like manner, determine the characteristic
+  thermodynamic function of the following partition functions:
+  \begin{align*}
+    \Xi(V, T, \mu)
+    &=
+    \sum_{N} Q(N, V, T) \, e^{\beta \, \mu \, N}
+    \\
+    \Delta(p, T, N)
+    &=
+    \sum_{V} Q(N, V, T) \, e^{-\beta \, p \, V}
+    \\
+    \phi(V, E, \beta\mu)
+    &=
+    \sum_{N} \Omega(N, V, E) \, e^{\beta \, \mu \, N}
+    \\
+    \Psi(V, T, \mu_1, N_2)
+    &=
+    \sum_{N_1} Q(N_1, N_2, T, V) \, e^{\beta \, \mu_1 \, N_1}
+    \\
+    W(p, \gamma, T, N)
+    &=
+    \sum_V \sum_{\mathscr A}
+      Q(N, V, \mathscr A, T) \,
+      e^{-\beta \, p \, V} e^{\beta \, \gamma \, \mathscr A}
+  \end{align*}
+  where $\mathscr A$ is surface area, and $\gamma$ is the surface tension.
+\end{problem}
+
+\begin{solution}
+  For $\ln \Xi$, we have
+  \begin{align*}
+    \ln\Xi
+    &=
+    \ln Q + \beta \, \mu \, N
+    =
+    \frac{ -A + \mu \, N } { k T}
+    =
+    \frac{ p V } { kT},
+  \end{align*}
+  where the last step follows from Euler's theorem,
+  Eq. \eqref{eq:Euler},
+  $A = E - TS = -pV + \mu N$.
+
+  Similarly,
+  \begin{align*}
+    \ln\Delta
+    &=
+    \ln Q - \beta \, p \, V
+    =
+    \frac{ -A - p V } { kT}
+    =
+    -\frac{ \mu N } { kT}
+    ,
+    \\
+    \ln\phi
+    &=
+    \ln \Omega + \beta \, \mu \, N
+    =
+    \frac{ T S + \mu N } { kT}
+    =
+    \frac{ E + p V } { kT}
+    =
+    \frac{ H_\mathrm{enthalpy} } { k \, T }
+    ,
+    \\
+    \ln\Psi
+    &=
+    \ln Q + \beta \, \mu_1 \, N_1
+    =
+    \frac{ -A + \mu_1 \, N_1 } { kT}
+    =
+    \frac{ pV - \mu_2 \, N_2 } { kT}
+    ,
+    \\
+    \ln W
+    &=
+    \ln Q - \beta \, p \, V + \beta \, \gamma \, \mathscr A
+    =
+    \frac{ -A - p \, V + \gamma \, \mathscr A } { kT}
+    =
+    \frac{ - \mu N } {kT}.
+  \end{align*}
+\end{solution}
+
 \subsection{Problem 3-17}
 
+\begin{problem}
+  Show that
+  $$
+  \overline{ (E - \overline E)^3 }
+  =
+  k^2\left\{
+    T^4\left(
+      \frac{ \partial C_V } { \partial T }
+    \right)
+    +
+    2T^3 \, C_V
+  \right\}
+  $$
+  and that
+  $$
+  \frac{
+    \overline{ (E - \overline E)^3 }
+  }{
+    \overline E^3
+  }
+  =
+  \mathcal O(N^{-2})
+  $$
+\end{problem}
+
+\begin{solution}
+  The variance of the energy distribution is
+  \begin{align*}
+    \sigma_E^2
+    =
+    \sum_j
+    (E_j - \overline E)^2
+    P_j
+    =
+    \sum_j
+    (E_j - \overline E)^2
+    \frac{ e^{-\beta E_j} } { Q(\beta) }
+    .
+  \end{align*}
+  If we differentiate the expression with respect to $\beta$,
+  and use $\partial \ln Q/\partial \beta = -\overline E$,
+  we get
+  \begin{align*}
+    \frac{ \partial \sigma_E^2 }
+    { \partial \beta }
+    &=
+    \sum_j
+    (E - \overline E)^2
+    (-E + \overline E)
+    \frac{ e^{-\beta E_j} } { Q(\beta) }
+    \\
+    &=
+    -\sum_j
+    (E - \overline E)^3 P_j
+    =
+    -\overline{ (E - \overline E)^3 }
+    .
+  \end{align*}
+  From Eq. (3-42), we get
+  $$
+    \frac{ \partial \left( \sigma_E^2 \right) } { \partial \beta }
+    = kT^2 \, C_V,
+  $$
+  then
+  \begin{align*}
+    \overline{ (E - \overline E)^3 }
+    &=
+    k T^2
+    \frac{ \partial ( \sigma_E^2 ) }
+    { \partial T }
+    =
+    k T^2
+    \frac{ \partial ( k T^2 C_V ) }
+    { \partial T }
+    \\
+    &=
+    k^2 T^2
+    \left(
+    T^2
+    \frac{ \partial C_V }
+    { \partial T }
+    +
+    2 \, T \, C_V
+    \right),
+  \end{align*}
+  which is the desired result.
+
+  Since $C_V \sim \mathcal O(N)$
+  and $T \sim \mathcal O(1)$,
+  $\overline{ (E - \overline E)^3 } \sim \mathcal O(N)$,
+  and
+  $$
+  \frac{
+    \overline{ (E - \overline E)^3 }
+  }{
+    \overline E^3
+  }
+  \sim
+  \frac{ \mathcal O(N) } { \mathcal O(N^3) }
+  \sim
+  \mathcal O(N^{-2}).
+  $$
+\end{solution}
+
 \subsection{Problem 3-24}
+
+\begin{problem}
+  Show that
+  $$
+  \overline{ H^2 } - \overline H^2
+  =
+  kT^2 C_p
+  $$
+  in an $N$, $p$, $T$ ensemble.
+\end{problem}
+
+\begin{solution}
+  The ensemble we will use is the isothermal-isobaric ensemble,
+  whose partition function is
+  \begin{align}
+    \Delta(p, \beta, N)
+    &=
+    \sum_V Q(N, V, T) \, e^{-\beta \, p \, V}
+    \notag
+    \\
+    &=
+    \sum_V \sum_E \Omega(N, V, E) \,
+    e^{-\beta \, E } e^{-\beta \, p \, V}
+    .
+    \label{eq:Delta_def}
+  \end{align}
+  %
+
+  Differentiating Eq. \eqref{eq:Delta_def}
+  under fixed $N$,
+  \begin{equation}
+    d\ln\Delta
+    =
+    -\overline{H} \, d\beta
+    -\beta \, \overline{V} \, dp.
+    \label{eq:firstlawlnDelta}
+  \end{equation}
+  Then
+  $$
+  \overline H
+  =
+  -\frac{ \partial \ln \Delta } { \partial \beta }
+  =
+  \sum_{V}\sum_{E} H \,
+  \frac{ \Omega(N, V, E) \, e^{-\beta \, H} } { \Delta(p, \beta, N) }.
+  $$
+  Differentiating this expression with respect to $\beta$,
+  \begin{align*}
+  \frac{ \partial \overline H } { \partial \beta }
+  &=
+  -\sum_{V}\sum_{E} H \, (H - \overline H) \,
+  \frac{ \Omega(N, V, E) \, e^{-\beta \, H} } { \Delta(p, \beta, N) }.
+  \\
+  &=
+  -\left(
+  \overline{ H^2 } - \overline H^2 \right).
+  \end{align*}
+
+  We next try to establish a thermodynamic connection.
+  %
+  %From Problem 3-15, we know that
+  %$\ln \Delta$ can be mapped to
+  %$-\beta(A+pV) = \beta \, H - (S/k)$,
+  %with $H = E + pV$ being the enthalpy.
+  %
+  Using the first law, we have
+  \begin{align*}
+  d(-\beta\,A)
+  %&=
+  %  d\left(\frac{S}{k}-\beta \, E\right)
+  %=
+  %\frac{dS}{k}
+  %-\beta \, dE
+  %-E \,d\beta
+  %\\
+  &=
+  -E\, d\beta
+  +\beta \, p \, dV+ \beta \mu dN
+  \\
+  d(-\beta \, A) - d(\beta \, pV)
+  &=
+  -E\, d\beta
+  -V d( \beta \, p)
+  + \beta \mu dN
+  \\
+  &=  -H\, d\beta
+  -\beta \, V \, d p
+  + \beta \mu dN.
+  \end{align*}
+  %
+  Comparing this to Eq. \eqref{eq:firstlawlnDelta},
+  we found that
+  the enthalpy, $H$, in thermodynamics
+  is mapped to the mean enthalpy, $\overline H$,
+  and
+  $$
+  \ln \Delta = -\beta(A+pV) = \frac{S}{k} -\beta \, H.
+  $$
+  This also means that
+  the entropy can be found from
+  $$
+  S/k = \beta \overline H + \ln \Delta,
+  $$
+  and
+  $$
+  \left(
+  \frac{ \partial (S/k) }
+       { \partial \beta } \right)_p
+  =
+  \left(
+  \frac{ \partial (\beta \overline H) }
+       { \partial \beta } \right)_p
+  -
+  \left(
+  \frac{ \partial \ln \Delta }
+       { \partial \beta } \right)_p
+  =
+  \beta
+  \left(
+    \frac{ \partial \overline H } { \partial \beta }
+  \right)_p.
+  $$
+  Thus
+  \begin{align*}
+    \left(
+      \frac{ \partial \overline H } { \partial \beta }
+    \right)_p
+    =
+    T \left( \frac{ \partial S } { \partial \beta } \right)_p
+    =
+    -
+    kT^3 \left( \frac{ \partial S } { \partial T} \right)_p
+    =
+    -kT^2 C_p.
+  \end{align*}
+
+\end{solution}
 
 \section{Lecture 10: Fluctuations}
 
@@ -1515,6 +1877,7 @@ to get fluctuations of $E$ and $N$:
   \sigma_N^2
   &= \left( \frac{ \partial \overline N } { \partial \mu^* } \right)_{\beta, V}
   = \frac{ \partial^2 \ln \Xi } { \partial \mu^{*2} }
+  \tag{3-50}
   \label{eq:varN}
   ,
   \\
@@ -1524,6 +1887,10 @@ to get fluctuations of $E$ and $N$:
   \label{eq:covEN}
   .
 \end{align}
+The derivation of Eq. \eqref{eq:varE}
+is similart to that for Eq. (3-41) in the textbook;
+The derivation for Eq. \eqref{eq:varN}
+is on page 61 of the textbook.
 
 Now the heat capacity in the grand canonical ensemble can be defined as
 %
@@ -2949,7 +3316,7 @@ or replace $q$ by $|q|$.
 
 \section{Lecture 17: Crystals, Glasses, and Polymers}
 
-\subsection{Problem 11.11}
+\subsection{Problem 11-11}
 
 \subsection{Entropy of a Debye crystal at low temperature}
 \begin{problem}
