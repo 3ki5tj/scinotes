@@ -45,16 +45,17 @@
 
 \numberwithin{equation}{section}
 
-% define the problem and solution environments
+% define the problem environment
 \definecolor{problue}{rgb}{0.2,0.2,0.5}
 \newenvironment{problem}
 {\par\medskip\sffamily \color{problue}
   \textbf{Problem. }\ignorespaces}
 {\medskip}
 
-\newenvironment{solution}
+% define the solution environment
+\newenvironment{solution}[1][\empty]
 {\par\medskip
-  \textbf{Solution. }\ignorespaces}
+  \textbf{\ifx\empty#1{Solution.}\relax\else{#1}\fi} \ignorespaces}
 {\medskip}
 
 
@@ -224,15 +225,18 @@ $$
   \left( \frac{ \partial S } { \partial V } \right)_T
   \left( \frac{ \partial V } { \partial p } \right)_T dp.
 $$
-Compare this to Eq. \eqref{eq:dS_Tp}, we get
-$$
+Comparing this to Eq. \eqref{eq:dS_Tp}, we get
+%
+\begin{equation}
   \left( \frac{ \partial S } { \partial T } \right)_p
   =
   \left( \frac{ \partial S } { \partial T } \right)_V
   +
   \left( \frac{ \partial S } { \partial V } \right)_T
   \left( \frac{ \partial V } { \partial T } \right)_p.
-$$
+  \label{eq:dSdT_pV}
+\end{equation}
+%
 After multiplying $T$,
   and recognizing
   $C_p = (dQ/dT)_p = T (\partial S/\partial T)_p$
@@ -341,7 +345,7 @@ dA = d(E-TS) = - S \, dT - p \, dV,
 $$
 which shows
 \begin{align*}
-  \frac{\partial A } { \partial T} &= -S, \quad 
+  \frac{\partial A } { \partial T} &= -S, \quad
   \frac{\partial A } { \partial V} = -p, \\
   \frac{\partial^2 A } { \partial V \partial T}
   &=
@@ -1563,15 +1567,11 @@ Indeed, we have
   - \frac{\mu^*}{\beta} \frac{ \partial \overline E } { \partial \overline N} \sigma_N^2
   ,
 \end{align}
+\end{solution}
 
 
-
-\paragraph*{Second interpretation.}
-
+\begin{solution}[Second interpretation.]
 About the second interpretation, Eq. \eqref{eq:prob3-22b},
-we will use the advanced technique of transforming thermodynamic variables
-(i.e. chain rule),
-so please ignore this section if it sounds unfamiliar.
 %
 Similar to Eq. \eqref{eq:CV_def},
 the heat capacity in the canonical ensemble is defined as
@@ -1591,28 +1591,26 @@ will be denoted as
   \label{eq:CVmu_def}
 \end{equation}
 %
-Using the technique of determinants for transforming variables, we have
-\begin{align*}
+we will use the advanced technique of transforming thermodynamic variables
+(i.e. chain rule),
+so please ignore this section if it sounds unfamiliar.
+%
+We can show by the technique of determinants (see the additional notes),
+or by the procedure used for solving Problem 1-28, that
+\begin{align}
   \left( \frac{ \partial S } {\partial \beta } \right)_{\mu^*}
-  &=
-  \frac{ \partial (S, \mu^*) } { \partial (\beta, \mu^*) }
-  =
-  \left.
-  \frac{ \partial (S, \mu^*) } { \partial (\beta, N) }
-  \middle/
-  \frac{ \partial (\beta, \mu^*) } { \partial (\beta, N) }
-  \right.
-  \\
   &=
   \left( \frac{ \partial S } {\partial \beta } \right)_{N}
   -
-  \left.
-  \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
-  \left( \frac{ \partial S } {\partial N } \right)_{\beta}
-  \middle/
-  \left( \frac{ \partial \mu^* } {\partial N } \right)_{\beta}
-  \right.
-\end{align*}
+  \frac{
+    \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
+    \left( \frac{ \partial S } {\partial N } \right)_{\beta}
+  }{
+    \left( \frac{ \partial \mu^* } {\partial N } \right)_{\beta}
+  }
+  .
+  \label{eq:dSdb_muN}
+\end{align}
 From Eq. \eqref{eq:firstlaw_bVN}, we have
 \begin{align*}
   \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
@@ -1671,9 +1669,181 @@ as
 $\left( \partial \overline E / \partial \overline N \right)_{T, V}$,
 we recover Eq. \eqref{eq:prob3-22b}.
 Note that we have implicitly assumed that $V$ is fixed in the above derivation.
+
 \end{solution}
 
 
+\paragraph*{Changing variables using the determinants}
+
+
+We will show Eq. \eqref{eq:dSdb_muN}
+using the technique of
+transforming thermodynamic variables.
+%
+The technique is extremely useful
+and it can be found in \emph{Statistical Physics}
+by Landau and Lifshitz.
+
+For two functions $f(x,y)$ and $g(x,y)$
+of independent variables $x$ and $y$,
+the determinant is defined as
+%
+\begin{equation}
+\frac{ \partial (f, g) } {\partial (x, y) }
+\equiv
+  \left( \frac{ \partial f } {\partial x } \right)_{y}
+  \left( \frac{ \partial g } {\partial y } \right)_{x}
+-
+  \left( \frac{ \partial f } {\partial y } \right)_{x}
+  \left( \frac{ \partial g } {\partial x } \right)_{y}
+.
+\label{eq:det_def}
+\end{equation}
+%
+
+The determinant has several useful properties.
+%
+First, it is antisymmetric to $f$ and $g$,
+as well as to $x$ and $y$:
+\begin{equation}
+\frac{ \partial (f, g) } {\partial (x, y) }
+=
+-\frac{ \partial (g, f) } {\partial (x, y) }
+=
+-\frac{ \partial (f, g) } {\partial (y, x) }.
+  \label{eq:det_antisym}
+\end{equation}
+%
+If $f$ and $g$ are defined for independent variables
+$u$ and $v$, which are themselves functions of $x$ and $y$,
+and we want to know what $f$ and $g$ look like
+if they were defined for $x$ and $y$,
+then we can use the chain rule:
+\begin{equation}
+  \frac{ \partial (f, g) } {\partial (u, v) }
+  =
+  \left.
+    \frac{ \partial (f, g) } {\partial (x, y) }
+  \middle/
+    \frac{ \partial (u, v) } {\partial (x, y) }
+  \right.
+  .
+  \label{eq:det_ratio}
+\end{equation}
+%
+If $f$ coincides with $x$,
+or if $g$ coincides with $y$,
+the determinant is reduced to a partial derivative
+\begin{equation}
+  \frac{ \partial (x, g) } {\partial (x, y) }
+  =\left( \frac{ \partial g } {\partial y } \right)_{x}
+  ,
+  \qquad
+  \frac{ \partial (f, y) } {\partial (x, y) }
+  =\left( \frac{ \partial f } {\partial x } \right)_{y}
+  ,
+  \label{eq:det_parder}
+\end{equation}
+which can be shown directly by using Eq. \eqref{eq:det_def}.
+%
+In practice, we often inversely use this relation
+to convert the partial derivative we want
+to a determinant, and then use the other properties,
+such as Eqs. \eqref{eq:det_ratio} and \eqref{eq:det_antisym},
+to reach the result we want.
+
+In our case,
+we will use this technique to show Eq. \eqref{eq:dSdb_muN}.
+%
+We want to build a connection between
+$(\partial S/\partial \beta)_{\mu^*}$
+and
+$(\partial S/\partial \beta)_{N}$.
+Then,
+\begin{align*}
+  &\left( \frac{ \partial S } {\partial \beta } \right)_{\mu^*}
+  =
+  \frac{ \partial (S, \mu^*) } { \partial (\beta, \mu^*) }
+  \\
+  &=
+  \left.
+  \frac{ \partial (S, \mu^*) } { \partial (\beta, N) }
+  \middle/
+  \frac{ \partial (\beta, \mu^*) } { \partial (\beta, N) }
+  \right.
+  \\
+  &=
+  \left.
+  \left[
+  \left( \frac{ \partial S } {\partial \beta } \right)_{N}
+  \left( \frac{ \partial \mu^* } {\partial N } \right)_{\beta}
+  -
+  \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
+  \left( \frac{ \partial S } {\partial N } \right)_{\beta}
+  \right]
+  \middle/
+  \left( \frac{ \partial \mu^* } {\partial N } \right)_{\beta}
+  \right.
+  \\
+  &=
+  \left( \frac{ \partial S } {\partial \beta } \right)_{N}
+  -
+  \left.
+  \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
+  \left( \frac{ \partial S } {\partial N } \right)_{\beta}
+  \middle/
+  \left( \frac{ \partial \mu^* } {\partial N } \right)_{\beta}
+  \right.
+  .
+\end{align*}
+Here, on the first line, we have used Eq. \eqref{eq:det_parder}
+to convert the desired partial derivative,
+$(\partial S/\partial \beta)_{\mu^*}$,
+to a determinant.
+%
+On the next line, we have used Eq. \eqref{eq:det_ratio}
+to change the independent variables from $\beta$ and $\mu^*$
+to $\beta$ and $N$,
+this will later build a connection
+to the other target partial derivative,
+$(\partial S/\partial \beta)_N$.
+%
+On the third line, we have used the definition,
+Eq. \eqref{eq:det_def},
+to expand the determinants on the numerator and denominator,
+and for the latter,
+we can use Eq. \eqref{eq:det_parder} as a shortcut.
+%
+The last line provides the final clean-up.
+
+We can also show Eq. \eqref{eq:dSdb_muN}
+by a procedure we used for solving Problem 1-28.
+%
+Similar to Eq. \eqref{eq:dSdT_pV}, we have
+$$
+  \left( \frac{ \partial S } {\partial \beta } \right)_{\mu^*}
+  =
+  \left( \frac{ \partial S } {\partial \beta } \right)_{N}
+  -
+  \left( \frac{ \partial S } {\partial \mu^* } \right)_{\beta}
+  \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
+  .
+$$
+This can be alternatively reach
+with the following substitution:
+$T \to \beta$, $V \to \mu^*$, and $p \to N$.
+%
+Then by recognizing that
+$$
+\left( \frac{ \partial S } { \partial \mu^* } \right)_\beta
+=
+\frac{
+  (\partial S / \partial N)_{\beta}
+} {
+  (\partial \mu^* / \partial N)_{\beta}
+},
+$$
+we also reach Eq. \eqref{eq:dSdb_muN}.
 
 
 \subsection{Problem 3-23}
@@ -2039,8 +2209,7 @@ which is much larger than the thermal De Broglie wavelength.
 \end{problem}
 
 \begin{solution}
-Consider the following process.
-We have two boxes of different gas
+Initially, we have two boxes of different gases
 separated by a dividing partition.
 %
 There are $N_1$ particles of type $1$ in the first box of volume $V_1$,
@@ -2068,21 +2237,48 @@ From Eq. \eqref{eq:Sstd}, we have
   \label{eq:Smix1}
 \end{align}
 %
-If we define the molar fractions
-$$x_i = \frac{ N_i } { N } = \frac{ N_i } { N_1 + N_2 }$$
-for $i = 1, 2$,
+If we define, for types $i = 1$ and $2$, the molar fractions
+$$x_i = \frac{ N_i } { N } = \frac{ N_i } { N_1 + N_2 },$$
 and assume that the volume fractions are the same
 $$x_i = \frac{ V_i } { V } = \frac{ V_i } { V_1 + V_2 },$$
 then Eq. \eqref{eq:Smix1} can be rewritten as
-$$
-\Delta S = -k \, N (x_1 \ln x_1 + x_2 \ln x_2),
-$$
+\begin{equation}
+  \Delta S = -k \, N (x_1 \ln x_1 + x_2 \ln x_2),
+  \label{eq:Smix}
+\end{equation}
 which is standard formula for the entropy of mixing.
 [Cf. Terrell L. Hill,
   \emph{An Introduction to Statistical Thermodynamics},
   pages 81 and 85. ]
 \end{solution}
 
+\begin{solution}[Combinatorial solution.]
+There is an combinatorial interpretation.
+%
+Assuming equal number densities in the two boxes,
+we know that after mixing the average number of particles
+in box $1$ will still be $N_1$,
+but its content can be a mixture of gases of both types.
+%
+The initial non-mixture state corresponds to
+one of the ${N \choose N_1}$ possibilities
+with all type $1$ particles being in box $1$.
+%
+Thus, the entropy of mixing is
+$$
+\Delta S =  k \ln{N \choose N_1}
+  = k \ln\left( \frac{ N! } { N_1! \, N_2! } \right).
+$$
+If we use the Stirling approximation,
+$\ln N! \approx N\ln N - N$, then
+\begin{align*}
+  \Delta S
+  &=  k (N\ln N - N_1 \ln N_1 - N_2 \ln N_2)
+  \\
+  &=-N_1 \ln \frac{N_1}{N} - N_2 \ln \frac{N_2}{N},
+\end{align*}
+which is the same as Eq. \eqref{eq:Smix}.
+\end{solution}
 
 \section{Lecture 13: Ideal Diatomic Gas}
 
@@ -2394,6 +2590,7 @@ is the Boltzmann-Maxwell distribution.
 
 The velocities in $\mathrm{m/s}$ are listed below:
 \begin{table}[h]
+  \def\arraystretch{1.4}\tabcolsep=5pt
 \begin{tabular}{c | c c c}
   \hline \hline
   & $v_{mp}$  & $\langle v \rangle$ & $\langle v^2 \rangle^{1/2}$\\
@@ -2402,6 +2599,7 @@ The velocities in $\mathrm{m/s}$ are listed below:
   $1.57\times10^3$ &
   $1.77\times10^3$ &
   $1.92\times10^3$\\
+  \hline
   $\mathrm N_2$ &
   $421$ &
   $475$ &
@@ -2444,9 +2642,10 @@ The velocities in $\mathrm{m/s}$ are listed below:
   %
   Neglecting the polarizability fo the molecules,
   the potential energy is
-  $$
-  U = -\mu \mathscr E \, \cos\theta
-  $$
+  \begin{equation}
+    U = -\mu \mathscr E \, \cos\theta
+    \label{eq:U_muE}
+  \end{equation}
   where $\theta$ is the angle between $\pmb\mu$
   and $\mathscr E$.
   %
@@ -2484,8 +2683,8 @@ for the angular degrees of freedom becomes
   .
 \end{align*}
 For the average energy we have
-$$
-  \overline E
+\begin{equation}
+  \overline U
   =
   - \frac{ \partial \, \ln q_{\mathscr E} }
          { \partial \, \beta }
@@ -2497,12 +2696,13 @@ $$
     \frac{1}{\beta \, \mu \, \mathscr E}
   \right]
   ,
-$$
+  \label{eq:Uav_muE}
+\end{equation}
 and for the heat capacity,
   \begin{align*}
   C_V
   =-\frac{ 1 } { k T^2 }
-    \frac{ \partial \overline E }
+    \frac{ \partial \overline U }
     {\partial \beta }
   =
   \frac{ \mu^2 \mathscr E^2 } { kT^2 }
@@ -2512,6 +2712,22 @@ and for the heat capacity,
     \frac{1}{\sinh^2(\beta \, \mu \, \mathscr E)}
   \right].
   \end{align*}
+
+\paragraph*{Another solution.}
+
+We can rewrite Eq. \eqref{eq:U_muE} as
+a dot product
+$U = -\pmb\mu \cdot \mathscr E$.
+%
+Then after averaging, we get
+$\overline U = -\overline{ \pmb\mu} \cdot \mathscr E$.
+%
+But the average dipole moment, $\pmb\mu$, as a vector
+is parallel to the external field, $\mathscr E$,
+so
+$\overline U = -\overline{ \mu} \, \mathscr E$.
+If we use Eq. \eqref{eq:mubar} for $\overline\mu$,
+we immediately recover Eq. \eqref{eq:Uav_muE}.
 \end{solution}
 
 
