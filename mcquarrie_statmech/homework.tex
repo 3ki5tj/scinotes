@@ -3318,18 +3318,258 @@ or replace $q$ by $|q|$.
 
 \subsection{Problem 11-11}
 
+\begin{problem}
+  Show that in a monatomic crystal the high-temperature limiting form
+  of the heat capacity depends only on the existence of a cutoff frequency
+  and is given by the law of Dulong and Petit.
+  That is, assume only that the distribution of frequencies
+  $$
+  g(\nu) = 0, \qquad \mbox{for $\nu > \nu_\mathrm{max}$}
+  $$
+\end{problem}
+
+\begin{solution}
+  We start from
+  \begin{equation}
+    C_V = k
+    \int_0^\infty
+      \frac{ (h\nu/kT)^2 e^{-h\nu/kT} g(\nu) \, d\nu }
+           { (1 - e^{-h\nu/kT})^2 }
+    \tag{11-10}
+  \end{equation}
+  If there is a cutoff frequency, the upper limit of the integral
+  can be reduced to $\nu_\mathrm{max}$, and
+  at high temperature,
+  we have $e^{-h\nu/kT} \approx 1 - h\nu/kT$.
+  \begin{align*}
+    C_V
+    &= k
+    \int_0^{\nu_\mathrm{max}}
+      \frac{ (h\nu/kT)^2 e^{-h\nu/kT} g(\nu) \, d\nu }
+           { (1 - e^{-h\nu/kT})^2 }
+    \\
+    &= k
+    \int_0^{\nu_\mathrm{max}}
+      \frac{ (h\nu/kT)^2 \cdot 1 \cdot g(\nu) \, d\nu }
+           { [1 - (1-h\nu/kT))^2 }
+    \\
+    &= k \int_0^{\nu_\mathrm{max}} g(\nu) \, d\nu
+    = 3 \, k \, N.
+  \end{align*}
+\end{solution}
+
 \subsection{Entropy of a Debye crystal at low temperature}
+
 \begin{problem}
   Show that the entropy of a Debye crystal at low
   temperature is given by
   $$
-  S = \frac{4}{5} \pi^4 N k \left(\frac{kT}{h\nu}\right)^3
+  S = \frac{4}{5} \pi^4 N k \left(\frac{kT}{h\nu_D}\right)^3
   $$
 \end{problem}
-%\section{Lecture 18: Imperfect Gases}
+
+\begin{solution}
+  At a low temperature,
+  the heat-capacity of a Debye crystal is given by
+  \begin{equation}
+    C_V \to \frac{ 12 \pi^4} { 5}
+    N k \left( \frac{ T } { \Theta_D } \right)^3
+    \tag{11-31}
+  \end{equation}
+  But we know that $C_V = TdS/dT$ and $S = 0$ at $T = 0$.
+  So
+  \begin{align*}
+    S &= \int_0^T C_V(T') \frac{dT'}{T'}
+    =
+    \frac{ 4 \pi^4}{5}
+    N k \left( \frac{T}{\Theta_D} \right)^3
+    =
+    \frac{ 4 \pi^4}{5}
+    N k \left( \frac{k T}{h \nu_D} \right)^3
+    .
+  \end{align*}
+  where we have used the definition
+  \begin{equation}
+    \Theta_D = \frac{ h \nu_D } { k}
+    \tag{11-27}
+  \end{equation}
+  in the last step.
+\end{solution}
+
+\section{Lecture 18: Imperfect Gases}
+
+\subsection{Problem 12-1}
+
+\begin{problem}
+  The usual form of a virial expansion is
+  \begin{equation}
+    \frac{pV}{RT}
+    =
+    1 + \frac{B(T)} {V} + \frac{C(T)}{V^2} + \cdots
+    \label{eq:vir_invV}
+  \end{equation}
+  Some workers, however, prefer to express their data
+  by expanding the compressibility factor
+  in power series in the pressure
+  $$
+  \frac{ pV}{RT}
+  =
+  1+ B'(T) p + C'(T') \, p^2 + \cdots
+  $$
+  Find the relations between the two sets of virial coefficients.
+\end{problem}
+
+\begin{solution}
+  For convenience, we will denote $P = p/RT$, $\Lambda = 1/V$.
+  Then Eq. \eqref{eq:vir_invV} shows that
+  \begin{align*}
+    \Lambda
+    &=
+    \frac{ P } { 1 + B \, \Lambda + C \, \Lambda^2 + \cdots}
+    \\
+    &=
+    \frac{ P } { 1 + B \, \frac{ P } { 1 + B \Lambda + \dots}
+    + C \, \left( \frac{P}{1+B\,\Lambda+\cdots} \right)^2 + \cdots}
+    .
+  \end{align*}
+  To the second order, we have
+  \begin{align*}
+    \Lambda
+    &\approx
+    \frac{ P } { 1 + B \, P}
+    \approx
+    P - B \, P^2
+    .
+  \end{align*}
+  Using this in Eq. \eqref{eq:vir_invV}, we get
+  \begin{align*}
+  \frac{pV}{RT}
+  &\approx
+  1 + B (P - B P^2) + C P^2 + \cdots
+  \\
+  &=
+  1 + B P + (C-B^2) P^2 + \cdots
+  \end{align*}
+  Thus,
+  \begin{align*}
+    B' &= \frac{B}{RT}, \\
+    C' &= \frac{C - B^2}{(RT)^2}.
+  \end{align*}
+  For reference, we have for the next order
+  $$
+  D' = (D -3BC+2B^3)/(RT)^3.
+  $$
+\end{solution}
+
+\begin{solution}[To higher orders.]
+  Here we give a more general mathematical technique
+  to extend the result to higher orders.
+  %
+  Then the usual form is
+  $$
+  P = V^{-1} \left(1 + \sum_{n=1}^\infty B_n \, V^{-n}\right),
+  $$
+  where $B_1 = B(T)$, $B_2 = C(T)$, \dots.
+  %
+  In the pressure expansion, we have
+  $$
+  P V = 1 + \sum_{n=1}^\infty B'_n \, p^n,
+  $$
+  where $B'_1 = B'(T)$, $B'_2 = C'(T)$, \dots.
+  %
+  For $n > 1$, we have
+  %
+  $$
+  B'_n
+  =
+  \oint \frac{ P V } { p^{n+1} } \frac{d p}{2\pi i}
+  =\frac{(RT)^{-n}}{2\pi i}
+  \oint \frac{ V \, d P } { P^n }
+  ,
+  $$
+  where the integral is carried around a small circle
+  enclosing the origin of the complex plane.
+  \begin{align*}
+    B'_n
+    &= -\frac{(RT)^{-n}}{2\pi i (n-1)} \oint V \, d \left( \frac{ 1 } { P^{n-1} } \right)
+    \\
+    &= \frac{(RT)^{-n}}{2\pi i (n-1)} \oint \frac{ d V } { P^{n-1} }
+    \\
+    &= -\frac{(RT)^{-n}}{2\pi i (n-1)} \oint \frac{ d \Lambda } { P^{n-1} \Lambda^2 }
+    \\
+    &= -\frac{(RT)^{-n}}{2\pi i (n-1)} \oint
+    \frac{ d \Lambda } { (1+\sum_{m=1}^\infty B_m \Lambda^m )^{n-1} \Lambda^{n+1} }
+    \\
+    &= -\frac{(RT)^{-n}}{(n-1)}
+      \left.
+      \frac{d^n}{n! d \Lambda^n}
+      \left[
+        \left(1+\sum_{m=1}^\infty B_m \Lambda^m \right)^{1-n}
+      \right]
+      \right|_{\Lambda = 0}
+    ,
+  \end{align*}
+  where we have defined $\Lambda = V^{-1}$.
+  %
+  The last expression is understood
+  as the $n$th coefficient of the series expansion
+  of $(1+\sum_{m=1}^\infty B_m \Lambda^m)^{1-n}$
+  in $\Lambda$.
+  For example, for $n = 2$, we have
+  to the leading order,
+  $$
+  (1 + B_1 \Lambda + B_2 \Lambda^2 + \cdots)^{-1}
+  =
+  1 - B_1 \Lambda + (B_1^2 - B_2) \Lambda^2 + \cdots
+  $$
+  and we have
+  $$
+  B_2' = \frac{-1}{(RT)^2} (B_1^2 - B_2)
+  = \frac{ C - B^2 } { (RT)^2 }.
+  $$
+  And for $n = 3$, we have
+  to the leading order,
+  \begin{align*}
+  &(1 + B_1 \Lambda + B_2 \Lambda^2 + B_3 \Lambda^3 \cdots)^{-2}
+  \\
+  &=
+  1 - 2B_1 \Lambda + (2 B_1^2 - 3 B_2) \Lambda^2
+    -2(B_3 - 3B_2 B_1 + 2B_1^3) \Lambda^3
+    + \cdots
+  \end{align*}
+  and we have
+  $$
+  B_3' = \frac{1}{(RT)^3} (B_3 - 3 B_2 B_1 + 2 B_1^3)
+  = \frac{ D - 3 B C + 2 B^3 } { (RT)^3 }.
+  $$
+\end{solution}
+
+\subsection{Problem 12-10}
+
+
+\section{Lecture 19: Classical Monatomic liquids}
+
+\subsection{Law of corresponding states}
+
+\begin{problem}
+Law of corresponding states: Take van der Waale's
+equation for $n = 1$
+$$
+(p + a/V^2)(V - b) = RT
+$$
+and write in terms of reduced variables of
+the critical point $T/T_c$, $p/p_c$, $V/V_c$.
 %
-%\section{Lecture 19: Classical Monatomic liquids}
-%
+Substitute $V_c = 3b$ and $p_c = a/(27b^2)$
+and find the law of corresponding states for gases.
+\end{problem}
+
+
+
+\subsection{Problem 13-4}
+
+\subsection{Problem 13-7}
+
 %\section{Lecture 20: Density Distributions and Correlation Functions}
 %
 %\section{Lecture 21: Evaluating Correlation Functions}
