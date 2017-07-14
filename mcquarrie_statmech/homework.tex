@@ -3116,7 +3116,8 @@ for the angular degrees of freedom becomes
   &=
   \int e^{-\beta U} \sin\theta d\theta \, d\phi
   =
-  \int_0^\pi \int_0^{2\pi}
+  \int_0^\pi
+  \int_0^{2\pi}
   e^{\beta \mu \mathscr E \cos\theta}
   \sin\theta \, d\theta \, d\phi
   \\
@@ -3420,21 +3421,21 @@ or replace $q$ by $|q|$.
 \end{problem}
 
 \begin{solution}
-  For convenience, we will denote $P = p/RT$, $\Lambda = 1/V$.
+  For convenience, we will denote $P = p/RT$, $\rho = 1/V$.
   Then Eq. \eqref{eq:vir_invV} shows that
   \begin{align*}
-    \Lambda
+    \rho
     &=
-    \frac{ P } { 1 + B \, \Lambda + C \, \Lambda^2 + \cdots}
+    \frac{ P } { 1 + B \, \rho + C \, \rho^2 + \cdots}
     \\
     &=
-    \frac{ P } { 1 + B \, \frac{ P } { 1 + B \Lambda + \dots}
-    + C \, \left( \frac{P}{1+B\,\Lambda+\cdots} \right)^2 + \cdots}
+    \frac{ P } { 1 + B \, \frac{ P } { 1 + B \rho + \dots}
+    + C \, \left( \frac{P}{1+B\,\rho+\cdots} \right)^2 + \cdots}
     .
   \end{align*}
   To the second order, we have
   \begin{align*}
-    \Lambda
+    \rho
     &\approx
     \frac{ P } { 1 + B \, P}
     \approx
@@ -3467,20 +3468,20 @@ or replace $q$ by $|q|$.
   %
   Then the usual form is
   $$
-  P = V^{-1} \left(1 + \sum_{n=1}^\infty B_n \, V^{-n}\right),
+  P = V^{-1} \left(1 + \sum_{n=1}^\infty B_{n+1} \, V^{-n}\right),
   $$
-  where $B_1 = B(T)$, $B_2 = C(T)$, \dots.
+  where $B_2 = B(T)$, $B_3 = C(T)$, \dots.
   %
   In the pressure expansion, we have
   $$
-  P V = 1 + \sum_{n=1}^\infty B'_n \, p^n,
+  P V = 1 + \sum_{n=1}^\infty B'_{n+1} \, p^n,
   $$
-  where $B'_1 = B'(T)$, $B'_2 = C'(T)$, \dots.
+  where $B'_2 = B'(T)$, $B'_3 = C'(T)$, \dots.
   %
-  For $n > 1$, we have
+  For $n > 0$, we have
   %
   $$
-  B'_n
+  B'_{n+1}
   =
   \oint \frac{ P V } { p^{n+1} } \frac{d p}{2\pi i}
   =\frac{(RT)^{-n}}{2\pi i}
@@ -3489,63 +3490,122 @@ or replace $q$ by $|q|$.
   $$
   where the integral is carried around a small circle
   enclosing the origin of the complex plane.
+  %
   \begin{align*}
-    B'_n
-    &= -\frac{(RT)^{-n}}{2\pi i (n-1)} \oint V \, d \left( \frac{ 1 } { P^{n-1} } \right)
+    B'_{n+1}
+    &= -\frac{(RT)^{-n}}{n-1}
+    \frac{1}{2\pi i} \oint V \, d \left( \frac{ 1 } { P^{n-1} } \right)
     \\
-    &= \frac{(RT)^{-n}}{2\pi i (n-1)} \oint \frac{ d V } { P^{n-1} }
+    &= \frac{(RT)^{-n}}{n-1}
+    \frac{1}{2\pi i} \oint \frac{ d V } { P^{n-1} }
     \\
-    &= -\frac{(RT)^{-n}}{2\pi i (n-1)} \oint \frac{ d \Lambda } { P^{n-1} \Lambda^2 }
+    &= -\frac{(RT)^{-n}}{n-1}
+    \frac{1}{2\pi i} \oint \frac{ d \rho } { P^{n-1} \rho^2 }
     \\
-    &= -\frac{(RT)^{-n}}{2\pi i (n-1)} \oint
-    \frac{ d \Lambda } { (1+\sum_{m=1}^\infty B_m \Lambda^m )^{n-1} \Lambda^{n+1} }
+    &=
+    -\frac{(RT)^{-n}}{n-1}
+    \frac{1}{2\pi i} \oint
+    \frac{ d \rho } { (1+\sum_{m=1}^\infty B_m \rho^m )^{n-1} \rho^{n+1} }
     \\
     &= -\frac{(RT)^{-n}}{(n-1)}
-      \left.
-      \frac{d^n}{n! d \Lambda^n}
       \left[
-        \left(1+\sum_{m=1}^\infty B_m \Lambda^m \right)^{1-n}
-      \right]
-      \right|_{\Lambda = 0}
+        \left(1+\sum_{m=1}^\infty B_m \rho^m \right)^{1-n}
+      \right]_n
     ,
   \end{align*}
-  where we have defined $\Lambda = V^{-1}$.
+  %
+  where
+  we have integrated by parts on the second line,
+  $\bigl[ R(\rho) \bigr]_n$
+  means the coefficient of $\rho^n$ of the polynomial $R(\rho)$.
   %
   The last expression is understood
   as the $n$th coefficient of the series expansion
-  of $(1+\sum_{m=1}^\infty B_m \Lambda^m)^{1-n}$
-  in $\Lambda$.
+  of $\left(1+\sum_{m=1}^\infty B_{m+1} \rho^m \right)^{1-n}$
+  in $\rho$.
+  %
   For example, for $n = 2$, we have
   to the leading order,
   $$
-  (1 + B_1 \Lambda + B_2 \Lambda^2 + \cdots)^{-1}
+  (1 + B_2 \rho + B_3 \rho^2 + \cdots)^{-1}
   =
-  1 - B_1 \Lambda + (B_1^2 - B_2) \Lambda^2 + \cdots
+  1 - B_2 \rho + (B_2^2 - B_3) \rho^2 + \cdots
   $$
   and we have
   $$
-  B_2' = \frac{-1}{(RT)^2} (B_1^2 - B_2)
+  B_2' = \frac{-1}{(RT)^2} (B_2^2 - B_3)
   = \frac{ C - B^2 } { (RT)^2 }.
   $$
   And for $n = 3$, we have
   to the leading order,
   \begin{align*}
-  &(1 + B_1 \Lambda + B_2 \Lambda^2 + B_3 \Lambda^3 \cdots)^{-2}
+  &\left( 1 + B_2 \rho + B_3 \rho^2 + B_4 \rho^3 \cdots \right)^{-2}
   \\
   &=
-  1 - 2B_1 \Lambda + (2 B_1^2 - 3 B_2) \Lambda^2
-    -2(B_3 - 3B_2 B_1 + 2B_1^3) \Lambda^3
+  1 - 2 B_2 \rho + (2 B_2^2 - 3 B_3) \rho^2
+    - 2 (B_4 - 3 B_3 B_2 + 2B_2^3) \rho^3
     + \cdots
   \end{align*}
   and we have
   $$
-  B_3' = \frac{1}{(RT)^3} (B_3 - 3 B_2 B_1 + 2 B_1^3)
+  B_4' = \frac{1}{(RT)^3} (B_4 - 3 B_3 B_2 + 2 B_2^3)
   = \frac{ D - 3 B C + 2 B^3 } { (RT)^3 }.
   $$
 \end{solution}
 
 \subsection{Problem 12-10}
 
+\begin{problem}
+  Show that
+  $$
+  B_2 =
+  -\frac{1}{6kT}
+  \int_0^\infty
+  r \frac{ du(r) } { dr } e^{-u(r)/kT} 4 \pi r^2 \, dr
+  $$
+  is equivalent to
+  $$
+  B_2
+  =
+  -\frac{1}{2}
+  \int_0^\infty
+  (e^{-\beta u(r)} - 1)
+  4 \, \pi r^2 \, dr
+  $$
+  State the condition on $u(r)$ that is necessary.
+\end{problem}
+
+\begin{solution}
+  From the first expression, we have
+  \begin{align*}
+  B_2 &=
+  -\frac{1}{6kT}
+  \int_0^\infty
+  r \frac{ du(r) } { dr } e^{-u(r)/kT} 4 \pi r^2 \, dr
+  \\
+    &=
+  -\frac{1}{6}
+  \int_0^\infty
+    4 \pi r^3 \frac{ d(1- e^{-u(r)/kT}) } { dr } \, dr
+  \\
+  &=
+  \left.
+    -\frac{ 4 \pi }{6} r^3 \, (1- e^{-u(r)/kT})
+  \right|_{r=0}^{\infty}
+  +
+  \frac{1}{2}
+  \int 4 \pi r^2 \, (1- e^{-u(r)/kT}) \, dr
+  ,
+  \end{align*}
+  where we have integrated by parts on the third line.
+  If $u(r)$ tends to $0$ quicker than $1/r^3$ as $r \to \infty$
+  then
+  $$
+  4\pi r^3 (1 - e^{-u(r)/kT}) \approx 4 \pi r^3 u(r)/kT \to 0,
+  $$
+  and we can drop the first expression on the right,
+  and reach the second expression.
+\end{solution}
 
 \section{Lecture 19: Classical Monatomic liquids}
 
@@ -3555,20 +3615,287 @@ or replace $q$ by $|q|$.
 Law of corresponding states: Take van der Waale's
 equation for $n = 1$
 $$
-(p + a/V^2)(V - b) = RT
+\left( p + a/V^2 \right)(V - b) = RT
 $$
 and write in terms of reduced variables of
 the critical point $T/T_c$, $p/p_c$, $V/V_c$.
 %
-Substitute $V_c = 3b$ and $p_c = a/(27b^2)$
+Substitute
+  $T_c = 8a/(27bR)$
+  $p_c = a/(27b^2)$,
+  and
+  $V_c = 3b$, 
 and find the law of corresponding states for gases.
 \end{problem}
 
+\begin{solution}
+  In terms of reduced variables,
+  $$
+  \left( p_c p^* + \frac{ a } { V_c^2 {V^*}^2 } \right)
+  (V_c V^* - b) = R T_c T^*.
+  $$
+  With
+  $T_c = 8a/(27bR)$,
+  $p_c = a/(27b^2)$,
+  and
+  $V_c = 3 \, b$,
+  $$
+  \left( p^* + \frac{ 3 } { {V^*}^2 } \right)
+  \left(V^* - \frac{1}{3} \right)
+  = \frac{8}{3} \, T^*.
+  $$
+  Cf. Problem 14-1.
+\end{solution}
 
 
 \subsection{Problem 13-4}
 
+\begin{problem}
+  Show that the fugacity is related to the intermolecular potential by
+  $$
+  \ln f
+  =
+  \ln(\rho k T)
+  +
+  \frac{ \rho }{ k T }
+  \int_0^\infty
+  \int_0^1
+  u(r) g(r, \rho, \xi) 4 \pi r^2 \, dr \, d\xi
+  $$
+  Using this formula, derive a virial expansion for $f$.
+\end{problem}
+
+\begin{solution}
+  Fugacity is defined as
+  \begin{align*}
+    f = p^\mathrm{i.g.} \, e^{(\mu - \mu^\mathrm{i.g.})/kT}
+      = \frac{ k T } { \Lambda^3 } e^{\beta \, \mu}.
+  \end{align*}
+  where $p^\mathrm{i.g.}$ and $\mu^\mathrm{i.g.}$
+  are the pressure and chemical potential of
+  the corresponding ideal gas, and
+  in the grand canonical ensemble
+  $$
+  p^\mathrm{i.g.}/kT
+  = \frac{1}{V} \ln \left[
+    \sum_{N=0}^\infty \frac{V^N}{\Lambda^{3N}}e^{\mu^\mathrm{i.g.} N/kT}
+    \right]
+  = \frac{ e^{\mu^\mathrm{i.g.}/kT} }{ \Lambda^3 }.
+  $$
+  From Eq. (13-34), we have
+  \begin{equation}
+    \frac{\mu}{kT}
+    =
+    \ln(\rho\Lambda^3)
+    +
+    \frac{\rho}{kT}
+    \int_0^1
+    \left( \int_0^\infty
+    u(r) \, g(r; \xi) 4 \pi r^2 \, dr \right) \, d\xi
+    \tag{13-34}
+  \end{equation}
+  So
+  \begin{equation*}
+    \ln f
+    =
+    \ln(\rho kT)
+    +
+    \frac{\rho}{kT}
+    \int_0^\infty
+    \int_0^1
+    u(r) \, g(r, \rho, \xi) 4 \pi r^2 \, dr \, d\xi.
+  \end{equation*}
+
+  For the virial expansion, we first expand $\ln[f/(\rho kT)]$ as
+  $$
+  \ln \frac{ f }{ \rho k T} = \sum_{j=1} b_j \rho^j.
+  $$
+  We have, similar to Eq. (13-87),
+  \begin{align*}
+  g(r, \rho, \xi)
+    &=
+    e^{-\xi u(r)/kT}
+    y(r, \rho, \xi)
+    \\
+    &=
+    e^{-\xi u(r)/kT}
+    \left(
+    1 + \rho g_1(r, \xi)
+    + \rho^2 g_2(r, \xi) + \cdots
+    \right)
+    .
+  \end{align*}
+  Then
+  \begin{align*}
+    \ln \frac{ f } { \rho k T }
+    &=
+    \sum_{j=1}^\infty
+    \rho^{j+1}
+    \int_0^\infty
+    \int_0^1
+    \frac{u(r)} {kT} \, e^{-\xi u(r)/kT}
+    g_j(r, \xi) 4 \pi r^2 \, dr \, d\xi.
+  \end{align*}
+  Thus,
+  \begin{align*}
+    b_{j+1}
+    &=
+    \int_0^\infty
+    \int_0^1
+    \frac{u(r)} {kT} \, e^{-\xi u(r)/kT}
+    g_j(r, \xi) 4 \pi r^2 \, dr \, d\xi
+    .
+  \end{align*}
+
+  Alternatively,
+  we have
+  \begin{align*}
+    \ln \frac{ f } { \rho k T }
+    &=
+    \rho
+    \int_0^\infty
+    \left(
+      \int_0^1
+      \frac{u(r)} {kT} \, e^{-\xi u(r)/kT}
+      y(r, \rho, \xi) \, d\xi \right)
+     4 \pi r^2 \, dr
+    \\
+    &=
+    \rho
+    \int_0^\infty
+    \left(
+      \int_0^1
+      \frac{ \partial (1 - e^{-\xi u(r)/kT}) } { \partial \xi }
+      y(r, \rho, \xi) \, d\xi
+    \right)
+     4 \pi r^2 \, dr
+    \\
+    &=
+    \rho
+    \int_0^\infty
+      (1 - e^{-u(r)/kT})
+      y(r, \rho)
+     4 \pi r^2 \, dr
+    \\
+    &+\rho
+    \int_0^\infty
+    \left(
+      \int_0^1
+      \frac{ \partial y(r, \rho, \xi) } { \partial \xi}
+      (e^{-\xi u(r)/kT} - 1)
+      \, d\xi \right)
+     4 \pi r^2 \, dr
+    .
+  \end{align*}
+  where we have integrated by parts in the last step.
+  So
+  \begin{align*}
+    b_{j+1}
+    &=
+    \int_0^\infty
+      g_j(r, 1) (1 - e^{-u(r)/kT})
+      \, 4 \pi r^2 \, dr
+    \\
+    &+
+    \int_0^\infty
+      \left(
+        \int_0^1 \frac{ \partial g_j(r, \xi) } { \partial \xi}
+        (e^{-\xi u(r)/kT} - 1) \, d\xi
+      \right)
+    4 \pi r^2 \, dr
+    .
+  \end{align*}
+  Once we have $b_j$'s, we can exponentiate the series
+  $$
+  f = \rho k T \exp\left( \sum_{j=1} b_j\rho^j \right).
+  $$
+\end{solution}
+
+
 \subsection{Problem 13-7}
+
+\begin{problem}
+  Show that $V^n N! / N^n (N-n)!$
+  can be written as $V^n[1 + \mathcal O(N^{-1})]$.
+  This factor occurs in Eq. (13-9)
+  \begin{align}
+    g^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
+    &=
+    \frac{ V^n N! } { N^n (N-n)! } \cdot
+    \frac{
+      \int\cdots\int e^{-\beta U_N} \, d\mathbf r_{n+1}\cdots d\mathbf r_N
+    } { Z_N }
+    \notag
+    \\
+    &=
+    V^n(1 + \mathcal O(N^{-1}))
+    \frac{
+      \int\cdots\int e^{-\beta U_N} \, d\mathbf r_{n+1}\cdots d\mathbf r_N
+    } { Z_N }
+    \tag{13-9}
+  \end{align}
+  for $g^{(n)}(\mathbf r_1, \dots, \mathbf r_n)$.
+  Show that this implies that
+  $g^{(2)} \to 1 + \mathcal O(N^{-1})$ as $r \to \infty$.
+\end{problem}
+
+\begin{solution}
+  \begin{align*}
+    \frac{ N! } { N^n (N-n)! }
+    &=
+    \frac{ N(N-1)\cdots (N-n+1) }
+      { N^n }
+    \\
+    &=
+    \left(1 - \frac{1}{N}\right)
+    \cdots
+    \left(1 - \frac{n-1}{N}\right)
+  \end{align*}
+  Since $N \gg n$, we have
+  $1/N \sim \mathcal O(N^{-1})$,
+  $(n-1)/N \sim \mathcal O(N^{-1})$,
+  and
+  \begin{align*}
+    \left(1 - \frac{1}{N}\right)
+    \cdots
+    \left(1 - \frac{n-1}{N}\right)
+    &\approx
+    1-\left(
+    \frac{1}{N}
+    + \cdots +
+    \frac{n-1}{N}
+    \right)
+    \\
+    &\sim
+    1 + \mathcal O(N^{-1}).
+  \end{align*}
+  
+  Using the above result for $g^{(2)}$, we have
+  \begin{align*}
+    g^{(2)}(\mathbf r_1, \mathbf r_2)
+    =
+    V^2(1 + \mathcal O(N^{-1}))
+    \frac{
+      \int\cdots\int e^{-\beta U_N} \, d\mathbf r_{3}\cdots d\mathbf r_N
+    } { Z_N }
+    .
+  \end{align*}
+  The integral in the above expression
+  would be independent of
+  $|\mathbf r_1 - \mathbf r_2| = r_{12} = r$
+  for a sufficiently large distance.
+  \begin{align*}
+    g^{(2)}(r)
+    &\approx
+    (1 + \mathcal O(N^{-1}))
+    \frac{\int d\mathbf r_1 \int d\mathbf r_2
+      \int\cdots\int e^{-\beta U_N} \, d\mathbf r_{3}\cdots d\mathbf r_N
+    } { Z_N }
+    \\
+    &=
+    (1 + \mathcal O(N^{-1})).
+  \end{align*}
+\end{solution}
 
 %\section{Lecture 20: Density Distributions and Correlation Functions}
 %
