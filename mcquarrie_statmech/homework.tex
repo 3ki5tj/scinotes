@@ -3148,19 +3148,20 @@ For the average energy we have
   \label{eq:Uav_muE}
 \end{equation}
 and for the heat capacity,
-  \begin{align*}
+\begin{align*}
   C_V
   =-\frac{ 1 } { k T^2 }
     \frac{ \partial \overline U }
     {\partial \beta }
   =
-  \frac{ \mu^2 \mathscr E^2 } { kT^2 }
+  k
   \left[
-    \frac{1}{(\beta \, \mu \, \mathscr E)^2}
+    1
     -
-    \frac{1}{\sinh^2(\beta \, \mu \, \mathscr E)}
+    \frac{ ( \beta \, \mu \, \mathscr E)^2}
+     {\sinh^2(\beta \, \mu \, \mathscr E)}
   \right].
-  \end{align*}
+\end{align*}
 
 \paragraph*{Another solution.}
 
@@ -3284,6 +3285,163 @@ is infinite at the two walls,
 and $e^{-\beta H}$ would also vanish
 at the lower and upper limits of $x_j$.
 \end{solution}
+
+\begin{solution}[Solution 2.]
+Here we present a different solution.
+%
+If $x_i$ and $x_j$ are both momenta, and $i = j$,
+then we have the usual equipartition theorem
+\begin{align*}
+  \left\langle
+    p_i \frac{ \partial H } { \partial p_i }
+  \right\rangle
+  =
+  \left\langle
+    \frac{ p_i^2 } { m_i }
+  \right\rangle
+  =
+  \frac{
+    \int
+    \frac{ p_i^2 } { m_i }
+    \exp\left(-\frac{\beta p_i^2}{2m_i}\right) \, d p_i
+  }
+  {
+    \int \exp(-\frac{\beta p_i^2}{2m_i}) \, d p_i
+  }
+  =
+  kT
+  .
+\end{align*}
+If $i \ne j$ the average is zero by parity:
+\begin{align*}
+  \left\langle
+    p_i \frac{ \partial H } { \partial p_j }
+  \right\rangle
+  =
+  \left\langle
+    p_i
+  \right\rangle
+  \left\langle
+    \frac{ \partial H } { \partial p_j }
+  \right\rangle
+  =
+  0
+  ,
+\end{align*}
+since $\langle p_i \rangle = 0$.
+
+For a coordinate component,
+consider the scaling transformation
+\begin{align*}
+  q_i &= q'_i \, s, \\
+  p_i &= p'_i / s, \\
+  q_j &= q'_j \qquad (j\ne i), \\
+  p_j &= p'_j \qquad (j\ne i),
+\end{align*}
+Clear we have $dp_i dq_i = dp'_i dq'_i$, and
+$d\mathbf p d\mathbf q = d\mathbf p' d\mathbf q'$.
+%
+The partition function can be written in the new coordinates,
+%
+\begin{align*}
+  Q
+  &= \iint
+  \exp\left[
+    -\beta H\left(\dots, p_i, \dots, q_i, \dots\right)
+    \right]
+  d\mathbf p d\mathbf q
+  \\
+  &= \iint
+  \exp\left[
+    -\beta H\left(\dots, \frac{p'_i}{s}, \dots, q'_i\, s, \dots\right)
+    \right]
+  d\mathbf p' d\mathbf q'.
+\end{align*}
+%
+Now we can consider the partition function as a function of
+the scaling factor, $s$, although this would be a constant function,
+so
+\begin{align*}
+  0=\frac{dQ}{ds}
+  &=
+  (-\beta) \iint
+  \left(
+  q'_i\frac{\partial H}{\partial q_i}
+  -
+  \frac{p'_i}{s^2}\frac{\partial H}{\partial p_i}
+  \right)
+  e^{ -\beta H }
+  d\mathbf p' d\mathbf q'
+  \\
+  &=
+  -\frac{\beta Q}{s}
+  \left\langle
+  q_i\frac{\partial H}{\partial q_i}
+  -
+  p_i\frac{\partial H}{\partial p_i}
+  \right\rangle,
+\end{align*}
+Thus,
+\begin{align*}
+  \left\langle
+    q_i \frac{ \partial H } { \partial q_i }
+  \right\rangle
+  =
+  \left\langle
+    p_i \frac{ \partial H } { \partial p_i }
+  \right\rangle
+  =
+  kT
+  .
+\end{align*}
+\end{solution}
+
+\begin{solution}[Solution 3.]
+A similar solution is to convert the ensemble average to the time average.
+\begin{align*}
+  \langle A \rangle
+  \to
+  \overline A
+  \equiv
+  \lim_{T\to\infty}
+  \frac{1}{T}\int_0^T A(t) \, dt
+\end{align*}
+%
+If $A(t)$ is a total differential $dB/dt$, then
+\begin{equation}
+  \overline A
+  =
+  \overline{ \left( \frac{ dB}{dt} \right) }
+  =\lim_{T\to\infty} \frac{1}{T} \left[ B(T) - B(0) \right]
+  \to 0.
+  \label{eq:timeav_totaldiff}
+\end{equation}
+%
+Then we have
+\begin{align*}
+  \overline{\left( q_i \frac{ \partial H } { \partial q_j } \right)}
+  &=
+  -\overline{\left( q_i \frac{ d p_j } { dt } \right)}
+  =
+  -\overline{\frac{ d (q_i p_j) } { dt } }
+  +\overline{\left( p_j \frac{ d q_i } { dt }  \right)}
+  \\
+  &=
+  -\overline{\frac{ d (q_i p_j) } { dt } }
+  +\overline{\left( p_j \frac{ \partial H } { \partial p_i } \right)}
+  =
+  \delta_{ij} kT.
+\end{align*}
+where
+in the last step we have dropped the first term
+by Eq. \eqref{eq:timeav_totaldiff}
+and use the usual equipartition theorem
+for the momenta.
+\end{solution}
+
+
+
+\subsection{Equipartition for power law potential}
 
 \begin{problem}
   Given a potential
