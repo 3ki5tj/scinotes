@@ -69,11 +69,11 @@
 
 \tableofcontents
 
-\section*{Notes}
+%\section*{Notes}
+%
+%In this section, we collect a few results that are helpful in problem solving.
 
-In this section, we collect a few results that are helpful in problem solving.
-
-\subsection{Physical constants}
+\subsection*{Physical constants}
 
 \begin{table}[h]\centering\small
   \begin{tabular}{l l}
@@ -147,16 +147,16 @@ its time dependence lies in $p_j$ and $q_j$
   \left( \frac{ \partial H } { \partial p_j} \right)
   = 0,
 \end{align*}
-where we have used Newton's equation
-on the second line
+where we have used Hamilton's equations
+on the second line:
 \begin{align*}
   \frac{ d p_j } { d t }
-  &=
+  =
   - \frac{ \partial H } { \partial q_j}
   ,
-  \\
+  \qquad
   \frac{ d q_j } { d t }
-  &= \frac{ \partial H } { \partial p_j}
+  = \frac{ \partial H } { \partial p_j}
   .
 \end{align*}
 This means the energy is conserved.
@@ -741,6 +741,7 @@ Thus,
   e^{- \frac{(x-N)^2}{2N} } dx
   =
   e^{N(\ln N - 1)} \sqrt{2\pi N}
+  .
 \end{align*}
 %
 Taking the logarithm, we get Eq. \eqref{eq:Stirling1}.
@@ -1096,7 +1097,10 @@ and interpret it.
 \begin{solution}
 With $A = -kT \ln Q$, we have
 $$
-M = N \bar \mu = kT \frac{ \partial \ln Q } { \partial \mathscr E }
+M
+ = N \bar \mu
+ = -\frac{ \partial A } { \partial \mathscr E }
+ = kT \frac{ \partial \ln Q } { \partial \mathscr E }
  = N kT \frac{ \partial \ln q } { \partial \mathscr E }.
 $$
 Since
@@ -1106,14 +1110,54 @@ $$
   + \mathrm{constant \; of \; \mathscr E},
 $$
 we have
-$$
-\frac{ \partial \ln q } { \partial \mathscr E }
-  = \left[
+\begin{align*}
+  \frac{ \partial \ln q } { \partial \mathscr E }
+  &=
+  \left[
     \coth(\beta \, \mu \, \mathscr E)
   - \frac{1}{ \beta \mu \, \mathscr E}
-  \right] \beta \, \mu,
-$$
-which lead to Eq. \eqref{eq:mubar}.
+  \right] \beta \, \mu
+  ,
+\end{align*}
+so
+\begin{align*}
+  \bar\mu
+  =
+  \frac{M}{N}
+  =
+  kT \frac{ \partial \ln q } { \partial \mathscr E }
+  =
+  \mu \left[
+    \coth(\beta\mu\mathscr E) - \frac{1}{\beta\mu\mathscr E}
+  \right]
+  ,
+\end{align*}
+which is Eq. \eqref{eq:mubar}.
+
+For small $\mathscr E$ or $\beta$, we have by series expansion
+\begin{align*}
+  \bar\mu
+  =
+  \left[
+    \frac{\beta \, \mu \, \mathscr E}
+         {\tanh(\beta \, \mu \, \mathscr E) }
+  - 1
+  \right] \frac{1}{\beta \mathscr E}
+  \approx
+  \frac{ \beta \mathscr E \mu^2 } { 3 }
+  ,
+\end{align*}
+which means that $\mu$ increases linearly with $\mathscr E$.
+%
+For large $\mathscr E$ or $\beta$,
+we have $\coth(\beta\mu\mathscr E) \to 1$,
+and
+\begin{align*}
+  \bar\mu
+  \approx
+  \mu\,\left(1 - \frac{1}{\beta\mu\mathscr E} \right)
+  .
+\end{align*}
 
 \begin{figure}[h]\centering
 \begin{tikzpicture}[scale=0.4]
@@ -1131,6 +1175,42 @@ which lead to Eq. \eqref{eq:mubar}.
 \end{figure}
 
 \end{solution}
+
+
+%\subsection{\label{sec:hyperfunc}
+\paragraph*{On hyperbolic functions.}
+
+The hyperbolic functions are defined as
+%
+\begin{align*}
+  \sinh(x) &\equiv \frac{ e^x - e^{-x} } { 2 }, \\
+  \cosh(x) &\equiv \frac{ e^x + e^{-x} } { 2 }, \\
+  \tanh(x) &\equiv \frac{ \sinh(x) } { \cosh(x)}  = \frac{ e^x - e^{-x} } { e^x + e^{-x} }, \\
+  \coth(x) &\equiv \frac{ \cosh(x) } { \sinh(x) }  = \frac{ e^x + e^{-x} } { e^x - e^{-x} }.
+\end{align*}
+Additionally, we have
+$\mathrm{csch}(x) = 1/\sinh(x)$ and
+$\mathrm{sech}(x) = 1/\cosh(x)$.
+%
+We can readily verify the following derivatives:
+\begin{align*}
+  \sinh'(x) &= \cosh(x), &\qquad
+  \tanh'(x) &= \frac{ 1 } { \cosh^2(x) }, \\
+  \cosh'(x) &= \sinh(x), &\qquad 
+  \coth'(x) &= \frac{ 1 } { \sinh^2(x) }.
+\end{align*}
+%
+For small $x$, we have
+\begin{align*}
+  \sinh(x) &= x + \frac{x^3}{3!} + \frac{x^5}{5!} + \cdots, \\
+  \cosh(x) &= 1 + \frac{x^2}{2!} + \frac{x^4}{4!} + \cdots, \\
+  \tanh(x) &= x - \frac{x^3}{3} + \frac{2x^5}{15} + \cdots, \\
+  \frac{x}{\tanh(x)} &= 1 + \frac{x^2}{3} - \frac{x^4}{45} + \cdots.
+\end{align*}
+For large $x$, it is helpful to remember that
+$\sinh(x)$ and $\cosh(x)$ tend to $\infty$,
+but $\tanh(x)$ and $\coth(x)$ tend to $1$.
+
 
 \subsection{Problem 2-17}
 
@@ -2262,7 +2342,7 @@ to expand the determinants on the numerator and denominator,
 and for the latter,
 we can use Eq. \eqref{eq:det_parder} as a shortcut.
 %
-The last line provides the final clean-up.
+%The last line provides the final clean-up.
 
 We can also show Eq. \eqref{eq:dSdb_muN}
 by a procedure we used for solving Problem 1-28.
@@ -2703,22 +2783,22 @@ which is standard formula for the entropy of mixing.
 \begin{solution}[Combinatorial solution.]
 There is an combinatorial interpretation.
 %
-Assuming equal number densities in the two boxes,
-we know that after mixing the average number of particles
-in box $1$ will still be $N_1$,
-but its content can be a mixture of gases of both types.
+We will assume equal number densities in the two boxes.
+Then, after mixing, box $1$ still has
+$N_1$ particles on average,
+although they can be of either type. 
 %
 The initial non-mixture state corresponds to
 one of the ${N \choose N_1}$ possibilities
-with all type $1$ particles being in box $1$.
+where all particles in box $1$ are of type $1$.
 %
 Thus, the entropy of mixing is
 $$
 \Delta S =  k \ln{N \choose N_1}
   = k \ln\left( \frac{ N! } { N_1! \, N_2! } \right).
 $$
-If we use the Stirling approximation,
-$\ln N! \approx N\ln N - N$, then
+Using Stirling's approximation,
+$\ln N! \approx N\ln N - N$, we get
 \begin{align*}
   \Delta S
   &=  k (N\ln N - N_1 \ln N_1 - N_2 \ln N_2)
@@ -2775,8 +2855,6 @@ Show that when $kT \gg h\nu$, $q_\mathrm{vib} = kT/(h\nu)$.
 \end{problem}
 
 \begin{solution}
-  (\emph{Due to Alec Fraser.})
-
 We start from the quantum mechanical expression,
 $$
 q_\mathrm{vib} = \frac{e^{-\beta h\nu/2}}{1- e^{-\beta h\nu}}.
@@ -3037,8 +3115,8 @@ the distribution of $v_x$
 is the Boltzmann-Maxwell distribution.
 
 The velocities in $\mathrm{m/s}$ are listed below:
-\begin{table}[h]
-  \def\arraystretch{1.4}\tabcolsep=5pt
+\begin{table}[h]\centering
+  \def\arraystretch{1.2}\tabcolsep=7pt
 \begin{tabular}{c | c c c}
   \hline \hline
   & $v_{mp}$  & $\langle v \rangle$ & $\langle v^2 \rangle^{1/2}$\\
@@ -3066,7 +3144,6 @@ The velocities in $\mathrm{m/s}$ are listed below:
 \end{problem}
 
 \begin{solution}
-  [Due to Dr. Pettitt.]
   The Maxwell-Boltzmann distribution along the $x$ direction is
   $$
   f(v_x) d v_x = \sqrt{\frac{2\pi m }{kT}} e^{-m v_x^2/2kT} d v_x,
@@ -3163,7 +3240,47 @@ and for the heat capacity,
   \right].
 \end{align*}
 
-\paragraph*{Another solution.}
+\paragraph*{Discussion on the heat capacity.}
+At low temperature, $\sinh(\beta\mu\mathscr E)$ rapidly approaches $+\infty$,
+and $C_V \approx k$.
+%
+In this case, the dipole moment
+is almost aligned with the external field, $\mathscr E$,
+and its direction can only slightly deviate
+from the direction of $\mathscr E$.
+%
+We can describe the motion of the direction
+by small vibrations in the two perpendicular directions,
+and apply the equipartition theorem
+with two degrees of freedom,
+and $C_V = 2 \times (k/2) = k$.
+
+At high temperature, $\beta \to 0$, we have
+$$
+\frac{\beta\mu\mathscr E}
+{\sinh(\beta\mu\mathscr E)} \approx 1 - \frac{(\beta\mu\mathscr E)^2}{6}.
+$$
+and $C_V \propto \beta^2 \propto T^{-2}$
+decreases with temperature $T$,
+and the energy fluctuation
+$\sigma_E^2 = k T^2 C_V$
+is roughly a constant.
+
+\begin{figure}[h]\centering
+\begin{tikzpicture}[scale=2.8]
+  \draw[->, thick] (0,0) -- (2,0) node[right] {$T$};
+  \draw[->, thick] (0,0) -- (0,1.2) node[above] {$C_V$};
+  \draw[scale=1.0, domain=0.01:2.0, variable=\x, blue!50!black, very thick]
+    plot ({\x}, {(1-(2/\x*exp(-1/\x)/(1-exp(-2/\x)))^2)} );
+  %\draw[dashed] (0.0, 8.0) -- (16.0, 8.0);
+  \draw[] ( 0.0, 0.1) -- ( 0.0, 0.0) node[below] {$0.0$};
+  \draw[] ( 1.0, 0.03) -- ( 1.0, 0.0) node[below] {$\mu\,\mathscr E/k$};
+  \draw[] ( 0.1, 1.0) -- ( 0.0, 1.0) node[left] {$k$};
+\end{tikzpicture}
+\end{figure}
+
+
+\paragraph*{A shortcut.}
 
 We can rewrite Eq. \eqref{eq:U_muE} as
 a dot product
@@ -3178,6 +3295,8 @@ so
 $\overline U = -\overline{ \mu} \, \mathscr E$.
 If we use Eq. \eqref{eq:mubar} for $\overline\mu$,
 we immediately recover Eq. \eqref{eq:Uav_muE}.
+
+
 \end{solution}
 
 
@@ -3286,16 +3405,22 @@ and $e^{-\beta H}$ would also vanish
 at the lower and upper limits of $x_j$.
 \end{solution}
 
+
+
 \begin{solution}[Solution 2.]
-Here we present a different solution.
+Here we present a less standard solution.
+First, let us review the usual equipartition theorem for momentum.
 %
-If $x_i$ and $x_j$ are both momenta, and $i = j$,
-then we have the usual equipartition theorem
+In this case, $x_i$ and $x_j$ are both momentum components,
+$x_i \to p_i$, $x_j \to p_j$.
+%
+If $i = j$, since $\partial H/\partial p_i = p_i/m_i$,
+we have
 \begin{align*}
   \left\langle
     p_i \frac{ \partial H } { \partial p_i }
   \right\rangle
-  =
+  &=
   \left\langle
     \frac{ p_i^2 } { m_i }
   \right\rangle
@@ -3308,6 +3433,28 @@ then we have the usual equipartition theorem
   {
     \int \exp(-\frac{\beta p_i^2}{2m_i}) \, d p_i
   }
+  \\
+  &=
+  \frac{
+    (-2)
+    \frac{ \partial } { \partial \beta }
+    \int
+    \exp\left(-\frac{\beta p_i^2}{2m_i}\right) \, d p_i
+  }
+  {
+    \int \exp(-\frac{\beta p_i^2}{2m_i}) \, d p_i
+  }
+  \\
+  &=
+  -2
+  \frac{ \partial } { \partial \beta }
+  \ln \int
+  \exp\left(-\frac{\beta p_i^2}{2m_i}\right) \, d p_i
+  \\
+  &=
+  -2
+  \frac{ \partial } { \partial \beta }
+  \ln \sqrt{\frac{2\pi m_i} { \beta } }
   =
   kT
   .
@@ -3328,17 +3475,70 @@ If $i \ne j$ the average is zero by parity:
   0
   ,
 \end{align*}
-since $\langle p_i \rangle = 0$.
+since both $\langle p_i \rangle = 0$
+and $\langle \partial H/\partial p_j \rangle = \langle p_j/m_j \rangle = 0$.
+%
+We can similarly show that if either $x_i$ or $x_j$ is a momentum,
+but the other is a coordinate, the average is also zero.
 
-For a coordinate component,
-consider the scaling transformation
+Now for the coordinate components,
+we will convert the ensemble average to the time average.
+\begin{align*}
+  \langle a \rangle
+  \to
+  \overline a
+  \equiv
+  \lim_{T\to\infty}
+  \frac{1}{T}\int_0^T a(t) \, dt
+  .
+\end{align*}
+%
+If $a(t)$ is a total time differential $dA/dt$, then
+\begin{equation}
+  \overline a
+  =
+  \overline{ \left( \frac{ dA}{dt} \right) }
+  =\lim_{T\to\infty} \frac{1}{T} \left[ A(T) - A(0) \right]
+  \to 0.
+  \label{eq:timeav_totaldiff}
+\end{equation}
+%
+So
+\begin{align*}
+  \overline{\left( q_i \frac{ \partial H } { \partial q_j } \right)}
+  &=
+  -\overline{\left( q_i \frac{ d p_j } { dt } \right)}
+  \\
+  &=
+  -\overline{\frac{ d (q_i p_j) } { dt } }
+  +\overline{\left( p_j \frac{ d q_i } { dt }  \right)}
+  \\
+  &=
+  -\overline{\frac{ d (q_i p_j) } { dt } }
+  +\overline{\left( p_j \frac{ \partial H } { \partial p_i } \right)}
+  =
+  \delta_{ij} kT.
+\end{align*}
+where
+we have integrated by parts on the second line,
+and in the last step we have dropped the first term
+by Eq. \eqref{eq:timeav_totaldiff}
+and use the usual equipartition theorem
+for the momenta.
+\end{solution}
+
+
+\paragraph*{Further discussion.}
+
+If $x_i$ and $x_j$ are the same coordinate component,
+we can prove the result by considering the scaling transformation
 \begin{align*}
   q_i &= q'_i \, s, \\
   p_i &= p'_i / s, \\
   q_j &= q'_j \qquad (j\ne i), \\
   p_j &= p'_j \qquad (j\ne i),
 \end{align*}
-Clear we have $dp_i dq_i = dp'_i dq'_i$, and
+Clearly, we have $dp_i dq_i = dp'_i dq'_i$, and
 $d\mathbf p d\mathbf q = d\mathbf p' d\mathbf q'$.
 %
 The partition function can be written in the new coordinates,
@@ -3358,17 +3558,21 @@ The partition function can be written in the new coordinates,
   d\mathbf p' d\mathbf q'.
 \end{align*}
 %
-Now we can consider the partition function as a function of
-the scaling factor, $s$, although this would be a constant function,
-so
+Although the partition function will not be affected
+by this change of variables,
+we can nonetheless consider it as a function of
+the scaling factor, $s$.
+%
+Since this results in a constant function of $s$, we have
 \begin{align*}
-  0=\frac{dQ}{ds}
+  0=\frac{\partial Q}{\partial s}
   &=
   (-\beta) \iint
   \left(
-  q'_i\frac{\partial H}{\partial q_i}
   -
   \frac{p'_i}{s^2}\frac{\partial H}{\partial p_i}
+  +
+  q'_i\frac{\partial H}{\partial q_i}
   \right)
   e^{ -\beta H }
   d\mathbf p' d\mathbf q'
@@ -3376,9 +3580,10 @@ so
   &=
   -\frac{\beta Q}{s}
   \left\langle
-  q_i\frac{\partial H}{\partial q_i}
   -
   p_i\frac{\partial H}{\partial p_i}
+  +
+  q_i\frac{\partial H}{\partial q_i}
   \right\rangle,
 \end{align*}
 Thus,
@@ -3394,51 +3599,6 @@ Thus,
   kT
   .
 \end{align*}
-\end{solution}
-
-\begin{solution}[Solution 3.]
-A similar solution is to convert the ensemble average to the time average.
-\begin{align*}
-  \langle A \rangle
-  \to
-  \overline A
-  \equiv
-  \lim_{T\to\infty}
-  \frac{1}{T}\int_0^T A(t) \, dt
-\end{align*}
-%
-If $A(t)$ is a total differential $dB/dt$, then
-\begin{equation}
-  \overline A
-  =
-  \overline{ \left( \frac{ dB}{dt} \right) }
-  =\lim_{T\to\infty} \frac{1}{T} \left[ B(T) - B(0) \right]
-  \to 0.
-  \label{eq:timeav_totaldiff}
-\end{equation}
-%
-Then we have
-\begin{align*}
-  \overline{\left( q_i \frac{ \partial H } { \partial q_j } \right)}
-  &=
-  -\overline{\left( q_i \frac{ d p_j } { dt } \right)}
-  =
-  -\overline{\frac{ d (q_i p_j) } { dt } }
-  +\overline{\left( p_j \frac{ d q_i } { dt }  \right)}
-  \\
-  &=
-  -\overline{\frac{ d (q_i p_j) } { dt } }
-  +\overline{\left( p_j \frac{ \partial H } { \partial p_i } \right)}
-  =
-  \delta_{ij} kT.
-\end{align*}
-where
-in the last step we have dropped the first term
-by Eq. \eqref{eq:timeav_totaldiff}
-and use the usual equipartition theorem
-for the momenta.
-\end{solution}
-
 
 
 \subsection{Equipartition for power law potential}
@@ -3517,7 +3677,7 @@ or replace $q$ by $|q|$.
   \end{align*}
 \end{solution}
 
-\subsection{Entropy of a Debye crystal at low temperature}
+\subsection{Problem 7-31}
 
 \begin{problem}
   Show that the entropy of a Debye crystal at low
@@ -3611,8 +3771,9 @@ or replace $q$ by $|q|$.
   \end{align*}
   Thus,
   \begin{align*}
-    B' &= \frac{B}{RT}, \\
-    C' &= \frac{C - B^2}{(RT)^2}.
+    B' = \frac{B}{RT},
+    \qquad
+    C' = \frac{C - B^2}{(RT)^2}.
   \end{align*}
   For reference, we have for the next order
   $$
@@ -3656,8 +3817,7 @@ or replace $q$ by $|q|$.
     \\
     &= \frac{(RT)^{-n}}{n-1}
     \frac{1}{2\pi i} \oint \frac{ d V } { P^{n-1} }
-    \\
-    &= -\frac{(RT)^{-n}}{n-1}
+    = -\frac{(RT)^{-n}}{n-1}
     \frac{1}{2\pi i} \oint \frac{ d \rho } { P^{n-1} \rho^2 }
     \\
     &=
@@ -3677,13 +3837,13 @@ or replace $q$ by $|q|$.
   $\bigl[ R(\rho) \bigr]_n$
   means the coefficient of $\rho^n$ of the polynomial $R(\rho)$.
   %
-  The last expression is understood
-  as the $n$th coefficient of the series expansion
-  of $\left(1+\sum_{m=1}^\infty B_{m+1} \rho^m \right)^{1-n}$
-  in $\rho$.
+  The last expression means
+  the $n$th coefficient of $\rho^n$
+  in the series expansion
+  of $\left(1+\sum_{m=1}^\infty B_{m+1} \rho^m \right)^{1-n}$.
   %
   For example, for $n = 2$, we have
-  to the leading order,
+  to the leading orders,
   $$
   (1 + B_2 \rho + B_3 \rho^2 + \cdots)^{-1}
   =
@@ -3695,12 +3855,14 @@ or replace $q$ by $|q|$.
   = \frac{ C - B^2 } { (RT)^2 }.
   $$
   And for $n = 3$, we have
-  to the leading order,
+  to the leading orders,
   \begin{align*}
   &\left( 1 + B_2 \rho + B_3 \rho^2 + B_4 \rho^3 \cdots \right)^{-2}
   \\
   &=
   1 - 2 B_2 \rho + (2 B_2^2 - 3 B_3) \rho^2
+  \\
+  &\qquad
     - 2 (B_4 - 3 B_3 B_2 + 2B_2^3) \rho^3
     + \cdots
   \end{align*}
@@ -3750,7 +3912,9 @@ or replace $q$ by $|q|$.
   \left.
     -\frac{ 4 \pi }{6} r^3 \, (1- e^{-u(r)/kT})
   \right|_{r=0}^{\infty}
-  +
+  \\
+  &\quad
+    +
   \frac{1}{2}
   \int 4 \pi r^2 \, (1- e^{-u(r)/kT}) \, dr
   ,
@@ -3964,9 +4128,15 @@ and find the law of corresponding states for gases.
     .
   \end{align*}
   Once we have $b_j$'s, we can exponentiate the series
-  $$
-  f = \rho k T \exp\left( \sum_{j=1} b_j\rho^j \right).
-  $$
+  \begin{align*}
+    \frac{f}{kT}
+    &=
+    \rho \, \exp\left( \sum_{j=1}^\infty b_j\rho^j \right)
+    =
+    \rho + b_1 \rho^2 + \left(b_2 + \frac{b_1^2}{2} \right) \rho^3
+    + \cdots
+    .
+  \end{align*}
 \end{solution}
 
 
@@ -3998,6 +4168,7 @@ and find the law of corresponding states for gases.
 \end{problem}
 
 \begin{solution}
+  We start with
   \begin{align*}
     \frac{ N! } { N^n (N-n)! }
     &=
@@ -4007,12 +4178,23 @@ and find the law of corresponding states for gases.
     &=
     \left(1 - \frac{1}{N}\right)
     \cdots
-    \left(1 - \frac{n-1}{N}\right)
+    \left(1 - \frac{n-1}{N}\right).
   \end{align*}
   Since $N \gg n$, we have
-  $1/N \sim \mathcal O(N^{-1})$,
-  $(n-1)/N \sim \mathcal O(N^{-1})$,
-  and
+  $1/N \sim \mathcal O(N^{-1})$, \dots,
+  $(n-1)/N \sim \mathcal O(N^{-1})$.
+  %
+  Now for two small $x_1$ and $x_2$
+  of $\mathcal O(N^{-1})$, we have
+  $(1+x_1)(1+x_2) \approx 1 + (x_1+x_2)$,
+  with the truncation error for $x_1 x_2$
+  being $\mathcal O(N^{-2})$.
+  Generally,
+  $$
+  (1+x_1)(1+x_2) \cdots
+  \approx 1 + (x_1+x_2+\cdots) + \mathcal O(N^{-2}).
+  $$
+  Thus,
   \begin{align*}
     \left(1 - \frac{1}{N}\right)
     \cdots
