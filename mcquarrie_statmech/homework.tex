@@ -48,13 +48,13 @@
 % define the problem environment
 \definecolor{problue}{rgb}{0.2,0.2,0.5}
 \newenvironment{problem}
-{\par\medskip\sffamily \color{problue}
+{\par\medskip \color{problue}
   \textbf{Problem. }\ignorespaces}
 {\medskip}
 
 % define the solution environment
 \newenvironment{solution}[1][\empty]
-{\par\medskip
+{\par\medskip\sffamily
   \textbf{\ifx\empty#1{Solution.}\relax\else{#1}\fi} \ignorespaces}
 {\medskip}
 
@@ -1196,7 +1196,7 @@ We can readily verify the following derivatives:
 \begin{align*}
   \sinh'(x) &= \cosh(x), &\qquad
   \tanh'(x) &= \frac{ 1 } { \cosh^2(x) }, \\
-  \cosh'(x) &= \sinh(x), &\qquad 
+  \cosh'(x) &= \sinh(x), &\qquad
   \coth'(x) &= \frac{ 1 } { \sinh^2(x) }.
 \end{align*}
 %
@@ -2786,7 +2786,7 @@ There is an combinatorial interpretation.
 We will assume equal number densities in the two boxes.
 Then, after mixing, box $1$ still has
 $N_1$ particles on average,
-although they can be of either type. 
+although they can be of either type.
 %
 The initial non-mixture state corresponds to
 one of the ${N \choose N_1}$ possibilities
@@ -3946,7 +3946,7 @@ Substitute
   $T_c = 8a/(27bR)$
   $p_c = a/(27b^2)$,
   and
-  $V_c = 3b$, 
+  $V_c = 3b$,
 and find the law of corresponding states for gases.
 \end{problem}
 
@@ -4147,11 +4147,11 @@ and find the law of corresponding states for gases.
   can be written as $V^n[1 + \mathcal O(N^{-1})]$.
   This factor occurs in Eq. (13-9)
   \begin{align}
-    g^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
-    &=
-    \frac{ V^n N! } { N^n (N-n)! } \cdot
+    &g^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
+    =
+    \frac{ V^n N! } { N^n (N-n)! }
     \frac{
-      \int\cdots\int e^{-\beta U_N} \, d\mathbf r_{n+1}\cdots d\mathbf r_N
+      \int\cdots\int e^{-\beta U_N} d\mathbf r_{n+1}\cdots d\mathbf r_N
     } { Z_N }
     \notag
     \\
@@ -4160,6 +4160,7 @@ and find the law of corresponding states for gases.
     \frac{
       \int\cdots\int e^{-\beta U_N} \, d\mathbf r_{n+1}\cdots d\mathbf r_N
     } { Z_N }
+    \label{eq:gn_def}
     \tag{13-9}
   \end{align}
   for $g^{(n)}(\mathbf r_1, \dots, \mathbf r_n)$.
@@ -4209,7 +4210,7 @@ and find the law of corresponding states for gases.
     &\sim
     1 + \mathcal O(N^{-1}).
   \end{align*}
-  
+
   Using the above result for $g^{(2)}$, we have
   \begin{align*}
     g^{(2)}(\mathbf r_1, \mathbf r_2)
@@ -4237,15 +4238,564 @@ and find the law of corresponding states for gases.
   \end{align*}
 \end{solution}
 
-%\section{Lecture 20: Density Distributions and Correlation Functions}
+\section{Lecture 20: Density Distributions and Correlation Functions}
+
+\subsection{Problem 13-11}
+
+\begin{problem}
+  Derive a superposition approximation for $g^{(4)}$
+  by assuming that the potential of mean force $w^{(4)}$
+  is pair-wise additive.
+\end{problem}
+
+\begin{solution}
+  In analogous to Eqs. (13-44) and (13-45),
+  if the potential of mean force is pair-wise additive:
+  \begin{align*}
+    w^{(4)}(1,2,3,4)
+    &=
+    w^{(2)}(1,2)
+    +w^{(2)}(1,3)
+    +w^{(2)}(1,4)
+    \\
+    &+w^{(2)}(2,3)
+    +w^{(2)}(2,4)
+    +w^{(2)}(3,4)
+    ,
+  \end{align*}
+  and by definition Eq. (13-41)
+  \begin{align*}
+    g^{(4)}(1, 2, 3, 4)
+    =
+    e^{-\beta w^{(4)}(1, 2, 3, 4)}
+    ,
+  \end{align*}
+  we have
+  \begin{align*}
+    g^{(4)}(1,2,3,4)
+    &=
+    g^{(2)}(1,2) \,
+    g^{(2)}(1,3) \,
+    g^{(2)}(1,4)
+    \\
+    &\times
+    g^{(2)}(2,3) \,
+    g^{(2)}(2,4) \,
+    g^{(2)}(3,4)
+    .
+  \end{align*}
+\end{solution}
+
+\begin{problem}
+  Derive the second member of the Born-Green-Yvon hierarchy.
+\end{problem}
+
+\begin{solution}
+In class, we have derived (slide 12),
+\begin{align*}
+-kT \nabla_1\rho^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
+=
+\sum_{i=2}^n \nabla_1 u(\mathbf r_{1i})
+\rho^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
+\\
+  +
+\int
+\nabla_1 u(\mathbf r_{1, n+1})
+\rho^{(n+1)}(\mathbf r_1, \dots, \mathbf r_{n+1}) \,
+d\mathbf r_{n+1}
+.
+\end{align*}
+With $n = 2$, we have
+\begin{align*}
+-kT \nabla_1\rho^{(2)}(\mathbf r_1, \mathbf r_2)
+=
+\nabla_1 u(\mathbf r_{12})
+\rho^{(2)}(\mathbf r_1, \mathbf r_2)
+\\
+  +
+\int
+\nabla_1 u(\mathbf r_{1, 3})
+\rho^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3}) \,
+d\mathbf r_3
+.
+\end{align*}
 %
-%\section{Lecture 21: Evaluating Correlation Functions}
+Dividing both sides by $-\rho^{(2)}(\mathbf r_1, \mathbf r_2)$, we get
+\begin{align}
+kT \, &\nabla_1 \ln \rho^{(2)}(\mathbf r_1, \mathbf r_2)
+  \notag
+  \\
+&=
+-\nabla_1 u(\mathbf r_{12})
+-
+\int
+\nabla_1 u(\mathbf r_{1, 3})
+  \frac{
+    \rho^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3})
+  }{
+    \rho^{(2)}(\mathbf r_1, \mathbf r_2)
+  }
+  \,
+  d\mathbf r_3
+.
+  \label{eq:BGY2a}
+\end{align}
 %
-%\section{Lecture 22: Equilibria and Multi-Component Systems}
+Since $-kT\ln\rho^{(2)}(\mathbf r_1, \mathbf r_2)$
+is the potential of mean force
+$w^{(2)}(\mathbf r_1, \mathbf r_2)$,
+the left-hand side is its derivative, the mean force.
 %
-%\section{Lecture 23: Thermodynamic Perturbation Theory}
+The right-hand side is a sum of two components,
+a direct force, $-\nabla_1 u(\mathbf r_{12})$,
+and an indirect force
+from a third particle $3$, $-\nabla_1 u(\mathbf r_{13}$.
 %
-%\section{Lecture 24: Electrolyte Solutions}
+The ratio
+$\rho^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_3)/\rho^{(2)}(\mathbf r_1, \mathbf r_2) \, d\mathbf r_3$
+gives the conditional probability of finding a third particle at
+a small cube $d\mathbf r_3$ at $\mathbf r_3$
+given that the first two particles are at $\mathbf r_1$ and $\mathbf r_2$, respectively.
+%
+
+\paragraph*{Superposition approximation.}
+
+Although Eq. \eqref{eq:BGY2a} is exact,
+it is not very useful
+since it expresses the derivative of the unknown $\rho^{(2)}$
+in terms of another unknown $\rho^{(3)}$.
+%
+We can, however, obtain an approximation equation
+for $\rho^{(2)}$ along by means of the superposition approximation.
+
+Let us first rewrite
+Eq. \eqref{eq:BGY2a}
+in terms of $g^{(n)} = \rho^{(n)}/\rho^n$:
+\begin{align*}
+kT \, & \nabla_1 \ln g^{(2)}(\mathbf r_1, \mathbf r_2)
+\\
+  &=
+-\nabla_1 u(\mathbf r_{12})
+-
+\rho \int
+\nabla_1 u(\mathbf r_{1, 3})
+  \frac{
+    g^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3})
+  }{
+    g^{(2)}(\mathbf r_1, \mathbf r_2)
+  }
+  \,
+d\mathbf r_3
+,
+\end{align*}
+%
+If we assume the superposition approximation,
+\begin{align}
+  g^{(3)}(\mathbf r_1,\mathbf r_2,\mathbf r_3)
+  &=
+  g^{(2)}(\mathbf r_1,\mathbf r_2) \,
+  g^{(2)}(\mathbf r_1,\mathbf r_3) \,
+  g^{(2)}(\mathbf r_2,\mathbf r_3)
+  ,
+  \tag{13-45}
+\end{align}
+then we have an integro-differential equation for $g^{(2)}$
+\begin{align}
+  -kT \, & \nabla_1 \ln g^{(2)}(\mathbf r_1, \mathbf r_2)
+  =
+  \nabla_1 u(\mathbf r_{12})
+  \notag
+  \\
+  &+
+  \rho
+  \int
+  \nabla_1 u(\mathbf r_{13})
+    g^{(2)}(\mathbf r_1,\mathbf r_3) \,
+    g^{(2)}(\mathbf r_2,\mathbf r_3)
+    d\mathbf r_3
+  .
+  \label{eq:g2_BGYa}
+\end{align}
+Note that the $\nabla_1$ gives a vector,
+and the scalar form will be derived in Problem 13-13.
+\end{solution}
+
+\subsection{*Problem 13-13}
+
+\begin{problem}
+  Derive the Born-Green-Yvon integral equation [Eq. (13-47)]
+  \begin{align}
+    &-\frac{\partial}{\partial r}
+    [kT \, \ln g(r, \xi) + \xi u(r)]
+    \notag
+    \\
+    &=
+    \pi\xi\rho\int_0^\infty u'(s) g(s, \xi) ds
+    \int_{|r-s|}^{r+s}
+    \frac{ s^2 + r^2 - R^2 }{ r^2 }
+    R \,  g(R) \, dR
+    \tag{13-47}
+  \end{align}
+  by taking the gradient with respect to the position of particle $1$
+  in Eq. \eqref{eq:gn_def}
+  for $\rho^{(n)}$ and then manipulating much in the same manner
+  as in the derivation of the Kirkwood equation.
+  [See T. L. Hill, \textit{Statistical Mechanics}, Section 33.]
+\end{problem}
+
+\begin{solution}
+  For simplicity, we will derive the $\xi = 1$ case,
+  \begin{align}
+    -&\frac{\partial}{\partial r}
+    [kT \, \ln g(r) + u(r)]
+    \notag
+    \\
+    &=
+    \pi\rho\int_0^\infty u'(s) g(s) ds
+    \int_{|r-s|}^{r+s}
+    \frac{ s^2 + r^2 - R^2 }{ r^2 }
+    R \,  g(R) \, dR.
+   \label{eq:g2_BGYb}
+  \end{align}
+  Starting from Eq. \eqref{eq:g2_BGYa},
+  we first note that for spherical function $f(\mathbf r_{1j}) = f(r_{1j})$
+  $$
+  \nabla_1 f(\mathbf r_{1j})
+  = f'(r_{1j}) \nabla_1 \mathbf r_{1j}
+  = f'(r_{1j}) \frac{ \mathbf r_{1j} } { r_{1j} }
+  \equiv f'(r_{1j}) \, \hat{\mathbf r}_{1j}
+  ,
+  $$
+  where we have introduced the unit vector
+  $\hat{\mathbf r} \equiv \mathbf r/r$.
+%
+If we abbreviate $g^{(2)}(\mathbf r)$ as $g(r) = g(|\mathbf r|)$,
+Eq. \eqref{eq:g2_BGYa} becomes
+\begin{align*}
+  -\hat{ \mathbf r}_{12}
+  \frac{\partial }{\partial r_{12} }[kT \, & \ln g(r_{12}) + u(r_{12})]
+  \notag
+  \\
+  &=
+  \rho
+  \int
+    \hat{ \mathbf r}_{13}
+    u'(r_{13})
+    g(r_{13}) \,
+    g(r_{23})
+    d\mathbf r_3
+  .
+\end{align*}
+Since the vector on the left-hand side points along $\hat{\mathbf r}_{12}$,
+so should be the integral on the right-hand side.
+%
+Thus, we only need to consider the scalar along this direction,
+by multiplying (in the sense of dot product) $\hat{\mathbf r}_{12}$
+to both sides, and
+\begin{align}
+  -&\frac{\partial }{\partial r_{12} }[kT \, \ln g(r_{12}) + u(r_{12})]
+  \notag
+  \\
+  &=
+  \rho
+  \int
+    (\hat{\mathbf r}_{12} \cdot \hat{ \mathbf r}_{13}) \,
+    u'(r_{13})
+    g(r_{13}) \,
+    g(r_{23})
+    d\mathbf r_3
+  \equiv
+  \rho \, I
+  .
+  \label{eq:g2_BGYc}
+\end{align}
+
+\begin{figure}
+  \begin{tikzpicture}[very thick]
+    \draw (0, 0) ++(0:0.8) arc (0:22:.8);
+    \node at (1.2, 0.2) {$\theta$};
+    \draw[->, >=stealth, thick] (0, 0)
+      node[left] {$\mathbf r_1$}
+      -- node[below] {$\mathbf r = \mathbf r_{21}$}
+      (7,0) node[right] {$\mathbf r_2$};
+    \draw[->, >=stealth, thick] (0, 0)
+      -- node[above left] {$\mathbf s = \mathbf r_{31}$}
+      (5,2) node[above] {$\mathbf r_3$};
+    \draw[->, >=stealth, thick] (7, 0)
+      -- node[right] {$\mathbf R = \mathbf r_{21}$} (5,2);
+  \end{tikzpicture}
+\end{figure}
+
+
+For the integral of $\mathbf r_3$,
+we will use the polar coordinates
+with the origin set at $\mathbf r_1$:
+$$
+\int \mathbf r_3 = \int \mathbf r_{31}
+=
+\int_0^\infty \int_0^\pi \int_0^{2\pi} r_{31}^2 dr_{31} \sin\theta d\theta d\phi,
+$$
+and since
+$\hat{\mathbf r}_{12} \cdot \hat{ \mathbf r}_{13}=\cos\theta$,
+we have
+\begin{align*}
+  I &=
+  \int_0^\infty \int_0^\pi \int_0^{2\pi}
+  \cos\theta \,
+  u'(r_{13}) g(r_{13}) g(r_{23})
+  r_{31}^2 dr_{31}
+  \sin\theta d\theta d\phi
+  \\
+  &=
+  2 \, \pi \int_0^\infty \int_{-1}^{1}
+  \cos\theta \,
+  u'(r_{13}) g(r_{13}) g(r_{23})
+  r_{13}^2 dr_{13}
+  d(\cos\theta).
+\end{align*}
+At this point, it is helpful to convert the variables of integration
+from $r_{13}$ and $\cos\theta$ to $r_{13}$ and $r_{23}$,
+and by the law of cosines:
+$$
+\cos\theta
+=
+\frac{ r_{12}^2 + r_{13}^2 - r_{23}^2 }
+{ 2 \, r_{12} \, r_{13} },
+$$
+we have the Jacobian of transformation
+$$
+\frac{ \partial( r_{13}, \cos\theta ) }
+{ \partial( r_{13}, r_{23} ) }
+=
+\left( \frac{ \partial \cos\theta } { \partial \, r_{23} } \right)_{r_{13}}
+=
+-\frac{r_{23}}{r_{12} \, r_{13}},
+$$
+So the integral can be written as
+\begin{align*}
+  I
+  =
+  -2 \, \pi \int_0^\infty \int_{?}^{?} &
+\frac{ r_{12}^2 + r_{13}^2 - r_{23}^2 }
+{ 2 \, r_{12} \, r_{13} } \,
+  u'(r_{13}) g(r_{13}) g(r_{23})
+  r_{13}^2
+  \\
+  &
+  \times \frac{r_{23} }{r_{12} \, r_{13} }
+  d r_{13}
+  d r_{23}
+  .
+\end{align*}
+%
+With $r_{12} \to r$, $r_{13} \to s$, $r_{23} \to R$,
+we have
+\begin{align*}
+  I&=
+  -\pi \int_0^\infty
+  u'(s) g(s)
+  d s
+  \int_{?}^{?}
+\frac{ r^2 + s^2 - R^2 }
+{ r^2 } \,
+  R g(R) \, d R
+  .
+\end{align*}
+The upper and lower limits of the second integral
+can be determined as follows.
+As $\cos\theta = -1$ or $\theta = \pi$, $R = s + r$,
+and as $\cos\theta = 1$ or $\theta = 0$, $R = |r - s|$,
+thus
+\begin{align*}
+  I&=
+  \pi \int_0^\infty
+  u'(s) g(s)
+  d s
+  \int_{|r-s|}^{r+s}
+\frac{ r^2 + s^2 - R^2 }
+{ r^2 } \,
+  R g(R) \, d R
+  .
+\end{align*}
+Using this in Eq. \eqref{eq:g2_BGYc} yields Eq. \eqref{eq:g2_BGYb}.
+%
+\end{solution}
+
+
+\section{Lecture 21: Evaluating Correlation Functions}
+
+(No problem.)
+
+\section{Lecture 22: Equilibria and Multi-Component Systems}
+
+\subsection{Problem 9-1}
+
+\begin{problem}
+  Consider the reaction
+  $\mathrm{A} \rightleftharpoons 2\mathrm{B}$.
+  The canonical ensemble partition function for an ideal binary mixture is
+  $$
+  Q(N_A, N_B, V, T)
+  =
+  \frac{ q_A^{N_A} q_B^{N_B} }
+  { N_A! N_B! }
+  $$
+  Minimize the Helmholtz free energy with the stoichiometric constraint
+  $2N_A + N_B = \mathrm{constant}$
+  to show that
+  \begin{equation}
+    \frac{ N_B^{*2} } { N_A^* }
+    =
+    \frac{ q_B^2 } { q_A }
+    \label{eq:NBNA}
+  \end{equation}
+  where $N_A^*$ and $N_B^*$ are the equilibrium numbers of $A$ and $B$.
+  Can you generalize this approach to the reaction
+  $\nu_A \mathrm{A} + \mu_B \mathrm{B} \rightleftharpoons \nu_C \mathrm{C} + \nu_D \mathrm{D}$
+  and derive Eq. (9-7)?
+  \begin{align}
+    \frac{ N_C^{\nu_C} N_D^{\nu_D} }
+         { N_A^{\nu_A} N_B^{\nu_B} }
+    =
+    \frac{ q_C^{\nu_C} q_D^{\nu_D} }
+         { q_A^{\nu_A} q_B^{\nu_B} }
+    \tag{9-7}
+    \label{eq:chemeqABCD}
+  \end{align}
+\end{problem}
+
+\begin{solution}
+  The Helmholtz free energy is $-kT \ln Q$,
+  and the constraint $2 N_A + N_B$ can be handled by a Lagrange multiplier, $\lambda$.
+  So we will minimize
+  \begin{align*}
+  F(N_A, N_B)
+    &= -k T \ln Q + \lambda(2 N_A + N_B)
+    \\
+    &\approx -kT (N_A \ln q_A - N_A \ln N_A + N_A \\
+    &
+              +   N_B \ln q_B - N_B \ln N_B + N_B)
+            + \lambda \, (2 N_A + N_B)
+    ,
+  \end{align*}
+  where we have used the Stirling approximation,
+  $\ln N! \approx N\ln N - N$, in the second step.
+  %
+  Differentiating it with respect to $N_j$, where $j = A, B$,
+  we get a condition of the equilibrium numbers
+  \begin{align*}
+    kT (\ln q_A - \ln N_A^*) &= 2 \, \lambda, \\
+    kT (\ln q_B - \ln N_B^*) &= \lambda.
+  \end{align*}
+  Eliminating $\lambda$ from the above equations, we get
+  $$
+  \ln\left(\frac{q_A}{N_A^*}\right) = 2 \ln\left(\frac{q_B}{N_B^*}\right),
+  $$
+  which is equivalent to Eq. \eqref{eq:NBNA}.
+
+  For the generalization, we have
+  $$
+  Q(N_A, N_B, V, T)
+  =
+  \frac{ q_A^{N_A} q_B^{N_B} q_C^{N_C} q_D^{N_D} }
+  { N_A! N_B! N_C! N_D!}
+  =
+  \prod_j \frac{ q_j^{N_j} } { N_j! }.
+  $$
+  To build a full set of constraints,
+  let us denote by $M$ the number of times that the reaction has happened.
+  In each time, we will lose $\nu_A$ of $A$ and $\nu_B$ of $B$,
+  and gain $\nu_C$ of $C$ and $\nu_D$ of $D$.
+  %
+  Thus, $N_A + \nu_A \, M$ is equal to the number of $A$ at the beginning,
+  $N_{A,0}$, which is a constant.
+  This serves as a constraint, and similarly, we have
+  \begin{align*}
+    N_A + \nu_A \, M &= N_{A,0}, \\
+    N_B + \nu_B \, M &= N_{B,0}, \\
+    N_C - \nu_C \, M &= N_{C,0}, \\
+    N_D - \nu_D \, M &= N_{D,0},
+  \end{align*}
+  where the initial numbers of molecules,
+  $N_{A,0}$, $N_{B,0}$, $N_{C,0}$, and $N_{D,0}$ are constants.
+  %
+  As in the textbook, we can write these constraints as
+  $$
+  N_j - \nu_j \, M = N_{j,0},
+  $$
+  %
+  where $\nu_j$ carries the positive sign for the products, $C$ and $D$,
+  but a negative sign for the reactants, $A$ and $B$.
+  %
+  For the previous special case, $\mathrm{A} \rightleftharpoons 2\mathrm{B}$,
+  we can verify that the new equations
+  $N_A + M = N_{A,0}$, $N_B - 2 \, M = N_{B,0}$
+  is equivalent to the old constraint
+  $2 N_A + N_B = 2 N_{A, 0} + N_{B,0} = \mathrm{constant}$.
+  %
+  However, the new equations introduce a new variable, $M$
+  which should also be treated as an independent variable
+  in the minimization process.
+  %
+  Now the problem is to minimize
+  \begin{align*}
+    &F(N_A, N_B, N_C, N_D, M)
+    \equiv -k T \ln Q
+    + \sum_j\lambda_j (N_j - \nu_j M)
+    \\
+    &\approx
+    -kT \sum_j (N_j \ln q_j - N_j \ln N_j + N_j)
+    + \sum_j \lambda_j (N_j - \nu_j M)
+    ,
+  \end{align*}
+  where $j$ goes through $A$, $B$, $C$, and $D$ in the sums.
+%
+  Differentiating this expression with respect to $N_j$ and $M$ yields
+  \begin{align*}
+    kT (\ln q_j - \ln N_j) &= \lambda_j, \\
+    \sum_{j}
+    \nu_j \, \lambda_j
+    &=
+    0
+    .
+  \end{align*}
+  Eliminating all $\lambda_j$'s yields
+  \begin{align*}
+    \sum_j \nu_j \ln\left( \frac{q_j}{N_j} \right)
+    &=
+    0
+    ,
+  \end{align*}
+  or, in our case,
+  $$
+    \nu_A \ln\left( \frac{q_A}{N_A} \right) +
+    \nu_B \ln\left( \frac{q_B}{N_B} \right)
+    =
+    \nu_C \ln\left( \frac{q_C}{N_C} \right) +
+    \nu_D \ln\left( \frac{q_D}{N_D} \right)
+    .
+  $$
+  Exponentiating both sides yields
+  $$
+    \frac{q_A^{\nu_A}}{N_A^{\nu_A}}
+    \frac{q_B^{\nu_B}}{N_B^{\nu_B}}
+    =
+    \frac{q_C^{\nu_C}}{N_C^{\nu_C}}
+    \frac{q_D^{\nu_D}}{N_D^{\nu_D}}
+    ,
+  $$
+  which is equivalent to Eq. \eqref{eq:chemeqABCD}.
+\end{solution}
+
+\section{Lecture 23: Thermodynamic Perturbation Theory}
+
+\subsection{Problem 9-6}
+
+Derive Eq. (9-24).
+
+\section{Lecture 24: Electrolyte Solutions}
+
+(No problem.)
 
 \end{document}
 
