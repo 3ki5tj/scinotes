@@ -205,7 +205,7 @@ But if we choose $V$ and $T$ as independent variables, then
   \label{eq:dS_TV}
 \end{equation}
 In the latter case,
-we may write $V$ as a function of $p$ and $T$, as
+we may write $V$ as a function of $p$ and $T$:
 $$
   dV =
   \left( \frac{ \partial V } { \partial T } \right)_p dT
@@ -281,24 +281,66 @@ the first law under independent variables $T$ and $V$,
 Using Eq. \eqref{eq:TdSdV} in Eq. \eqref{eq:CpCV2},
 we get Eq. \eqref{eq:CpCV1}.
 
-%\begin{align*}
-%\frac{ \partial (S, V) }
-%     { \partial (T, V) }
-%&=
-%\frac{ \partial (S, V) / \partial(T, p) }
-%     { \partial (T, V) / \partial(T, p) }
-%\\
-%&=
-%\left( \frac{ \partial S } { \partial T } \right)_p
-%-
-%\left.
-%  \left( \frac{ \partial S } { \partial p } \right)_T
-%  \left( \frac{ \partial V } { \partial T } \right)_p
-%\middle/
-%  \left( \frac{ \partial p } { \partial V } \right)_T
-%\right.
-%\end{align*}
+For an ideal gas,
+$E = \frac 3 2 N k T$,
+so
+$( \partial E / \partial V )_T = 0$.
+The equation of state is
+$V = NkT/p$,
+so $(\partial V/\partial T)_p = Nk/p$.
+Thus,
+$$
+C_p - C_V = p \cdot \frac{Nk}{p} = N k.
+$$
+
+For a van der Waals gas,
+$$
+E = \frac{3}{2} N k T  - \frac{ N^2 } { V } a,
+$$
+so
+$$
+\left( \frac{ \partial E } {\partial V } \right)_T = \frac{ N^2 } { V^2 } a.
+$$
+The pressure equation of state is
+$$
+p = \frac{ N k T } { V - N \, b } - \frac{N^2 }{ V^2 } a.
+$$
+By fixing $p$ and varying $T$ and $V$ we have
+$$
+\frac{ N k } { V - N \, b } dT
++
+\left(
+- \frac{ N k T } { (V - N \, b)^2 }
++ \frac{ 2 \, a \, N^2 } { V^3 } \right) dV = 0.
+$$
+So
+$$
+\left(
+\frac{ \partial V } { \partial T }
+\right)_p
+=
+\frac{1}{T} \frac{ V - N \, b }
+{1 - \frac{ 2 N a }{ V k T } \left(1 - \frac{N b}{V} \right)^2 }
+.
+$$
+Thus,
+\begin{align*}
+C_p - C_V
+  &=
+\frac{ N k T } { V - N \, b } \cdot
+\frac{1}{T} \frac{ V - N \, b }
+{1 - \frac{ 2 N a }{ V k T } \left(1 - \frac{N b}{V} \right)^2 }
+  \\
+  &=
+\frac{ N k }
+{1 - \frac{ 2 N a }{ V k T } \left(1 - \frac{N b}{V} \right)^2 }
+.
+\end{align*}
+
 \end{solution}
+
+
+
 
 \subsection{Problem 1-30}
 
@@ -2533,7 +2575,7 @@ The second equation can be shown by swapping the indices for $1$ and $2$.
 
 \section{Lecture 12: Ideal Monatomic Gas}
 
-\subsection{Derive the thermodynamic potential for $(\mu, p, T)$}
+\subsection{Thermodynamic potential for $(\mu, p, T)$}
 
 \begin{problem}
 Derive the thermodynamic potential for the $(\mu, p, T)$ ensemble.
@@ -3929,13 +3971,13 @@ or replace $q$ by $|q|$.
   and reach the second expression.
 \end{solution}
 
-\section{Lecture 19: Classical Monatomic liquids}
+\section{Lecture 19: Classical Monatomic Liquids}
 
 \subsection{Law of corresponding states}
 
 \begin{problem}
-Law of corresponding states: Take van der Waale's
-equation for $n = 1$
+Law of corresponding states:
+Take the van der Waals equation for $n = 1$
 $$
 \left( p + a/V^2 \right)(V - b) = RT
 $$
@@ -4042,8 +4084,8 @@ and find the law of corresponding states for gases.
     &=
     e^{-\xi u(r)/kT}
     \left(
-    1 + \rho g_1(r, \xi)
-    + \rho^2 g_2(r, \xi) + \cdots
+    1 + \rho y_1(r, \xi)
+    + \rho^2 y_2(r, \xi) + \cdots
     \right)
     .
   \end{align*}
@@ -4056,7 +4098,7 @@ and find the law of corresponding states for gases.
     \int_0^\infty
     \int_0^1
     \frac{u(r)} {kT} \, e^{-\xi u(r)/kT}
-    g_j(r, \xi) 4 \pi r^2 \, dr \, d\xi.
+    y_j(r, \xi) 4 \pi r^2 \, dr \, d\xi.
   \end{align*}
   Thus,
   \begin{align*}
@@ -4065,9 +4107,96 @@ and find the law of corresponding states for gases.
     \int_0^\infty
     \int_0^1
     \frac{u(r)} {kT} \, e^{-\xi u(r)/kT}
-    g_j(r, \xi) 4 \pi r^2 \, dr \, d\xi
+    y_j(r, \xi) 4 \pi r^2 \, dr \, d\xi
     .
   \end{align*}
+
+  Once we have $b_j$'s, we can exponentiate the series
+  \begin{align}
+    \frac{f}{kT}
+    &=
+    \rho \,
+    \exp\left( \sum_{j=1}^\infty b_j\rho^j \right)
+    \notag \\
+    &=
+    \rho + b_1 \rho^2 + \left(b_2 + \frac{b_1^2}{2} \right) \rho^3
+    + \cdots
+    .
+    \label{eq:f_series}
+  \end{align}
+
+\paragraph*{Exponentiating a power series.}
+  If we want to compute more terms in Eq. \eqref{eq:f_series},
+  or more $f_n$'s in
+  \begin{align}
+    \frac{ f } { k T \rho }
+    =
+    \exp\left( \sum_{j=1}^\infty b_j\rho^j \right)
+    =
+    \sum_{n = 0}^\infty f_{n+1} \, \rho^n
+    ,
+    \label{eq:f_series1}
+  \end{align}
+  we can derive a recurrence relation among $f_n$'s.
+  %
+  Differentiating Eq. \eqref{eq:f_series1}
+  with respect to $\rho$, we get
+  \begin{align*}
+    \frac{\partial}{\partial \rho}
+    \left( \frac{ f } { k T \rho } \right)
+    &=
+    \exp\left( \sum_{j=1}^\infty b_j\rho^j \right)
+    \sum_{j=1}^\infty j \, b_j\rho^{j-1}
+    \\
+    &=
+    \sum_{m=0}^\infty f_{m+1} \, \rho^m
+    \cdot
+    \sum_{j=1}^\infty j \, b_j \, \rho^{j-1}
+    \\
+    &=
+    \sum_{n=0}^\infty
+    \left(
+    \sum_{j=1}^n
+    j \, b_j \, f_{n-j+1}
+    \right)
+    \, \rho^{n - 1}
+    .
+  \end{align*}
+  On the other hand,
+  by differentiating the second expression of Eq. \eqref{eq:f_series1},
+  we get
+  \begin{align*}
+    \frac{\partial}{\partial \rho}
+    \left( \frac{ f } { k T \rho } \right)
+    &=
+    \sum_{n=1}^\infty
+    n \, f_{n+1} \, \rho^{n-1}
+    .
+  \end{align*}
+  The two expansion must coincide, so we have
+  \begin{align}
+    f_{n+1}
+    =
+    \frac{1}{n}
+    \sum_{j=1}^n
+    j \, b_j \, f_{n-j+1}
+    ,
+    \label{eq:f_recur}
+  \end{align}
+  for $n \ge 1$.
+  For example, we know that  $f_1$ = 1 from Eq. \eqref{eq:f_series}.
+  Then,
+  \begin{align*}
+  f_2 &= b_1 f_1 = b_1, \\
+  f_3 &= \frac{1}{2}( b_1 f_2 + 2 b_2 f_1) = \frac{b_1^2}{2} + b_2, \\
+  f_4 &= \frac{1}{3}( b_1 f_3 + 2 b_2 f_2 + 3 b_3 f_1)
+    = \frac{b_1^3}{6} + b_1 b_2 + b_3, \\
+  &\dots
+  \end{align*}
+  the first two of which are in agreement with the previous result.
+
+
+\paragraph*{Alternative expansion.}
 
   Alternatively,
   we have
@@ -4115,26 +4244,16 @@ and find the law of corresponding states for gases.
     b_{j+1}
     &=
     \int_0^\infty
-      g_j(r, 1) (1 - e^{-u(r)/kT})
+      y_j(r, 1) (1 - e^{-u(r)/kT})
       \, 4 \pi r^2 \, dr
     \\
     &+
     \int_0^\infty
       \left(
-        \int_0^1 \frac{ \partial g_j(r, \xi) } { \partial \xi}
+        \int_0^1 \frac{ \partial y_j(r, \xi) } { \partial \xi}
         (e^{-\xi u(r)/kT} - 1) \, d\xi
       \right)
     4 \pi r^2 \, dr
-    .
-  \end{align*}
-  Once we have $b_j$'s, we can exponentiate the series
-  \begin{align*}
-    \frac{f}{kT}
-    &=
-    \rho \, \exp\left( \sum_{j=1}^\infty b_j\rho^j \right)
-    =
-    \rho + b_1 \rho^2 + \left(b_2 + \frac{b_1^2}{2} \right) \rho^3
-    + \cdots
     .
   \end{align*}
 \end{solution}
@@ -4190,10 +4309,12 @@ and find the law of corresponding states for gases.
   $(1+x_1)(1+x_2) \approx 1 + (x_1+x_2)$,
   with the truncation error for $x_1 x_2$
   being $\mathcal O(N^{-2})$.
+  %
   Generally,
+  we can show by mathematical induction that
   $$
-  (1+x_1)(1+x_2) \cdots
-  \approx 1 + (x_1+x_2+\cdots) + \mathcal O(N^{-2}).
+  (1+x_1)(1+x_2) \cdots (1 + x_k)
+  \approx 1 + (x_1+x_2+\cdots + x_k) + \mathcal O(N^{-2}).
   $$
   Thus,
   \begin{align*}
@@ -4214,29 +4335,66 @@ and find the law of corresponding states for gases.
   Using the above result for $g^{(2)}$, we have
   \begin{align*}
     g^{(2)}(\mathbf r_1, \mathbf r_2)
-    =
-    V^2(1 + \mathcal O(N^{-1}))
+    &=
+    V^2 \, [1 + \mathcal O(N^{-1})]
     \frac{
       \int\cdots\int e^{-\beta U_N} \, d\mathbf r_{3}\cdots d\mathbf r_N
     } { Z_N }
+    \\
+    &\equiv
+    V^2 \, [1 + \mathcal O(N^{-1})]
+    \frac{ I(\mathbf r_1, \mathbf r_2) } { Z_N }
     .
   \end{align*}
-  The integral in the above expression
-  would be independent of
-  $|\mathbf r_1 - \mathbf r_2| = r_{12} = r$
-  for a sufficiently large distance.
+  The integral $I(\mathbf r_1, \mathbf r_2)$
+  in the above expression
+  depends on $\mathbf r_1$ and $\mathbf r_2$
+  only through $r = |\mathbf r_{21}| = |\mathbf r_2 - \mathbf r_1|$,
+  and at a large distance,
+  we expect the dependence to vanish
+  and the integral to be a constant.
+  %
+  If this is so, we can replace $I(\mathbf r_1, \mathbf r_2)$
+  by its spatial average
+  %
+  \begin{align*}
+    I(\mathbf r_1, \mathbf r_2)
+    &\approx
+    \overline I
+    =
+    \frac{
+      \iint
+      I(\mathbf r_1, \mathbf r_2)
+      \, d\mathbf r_1 d\mathbf r_2
+    }
+    { \iint d\mathbf r_1 d\mathbf r_2 }
+    \\
+    &=
+    \frac{
+      \int \cdots \int
+      e^{-\beta U_N}
+      \, d\mathbf r_1 d\mathbf r_2 \cdots d\mathbf r_N
+    }
+    { \iint d\mathbf r_1 d\mathbf r_2 }
+    =
+    \frac{ Z_N } { V^2 }
+    .
+  \end{align*}
+  %
+  Thus,
   \begin{align*}
     g^{(2)}(r)
     &\approx
     (1 + \mathcal O(N^{-1}))
-    \frac{\int d\mathbf r_1 \int d\mathbf r_2
-      \int\cdots\int e^{-\beta U_N} \, d\mathbf r_{3}\cdots d\mathbf r_N
-    } { Z_N }
-    \\
-    &=
-    (1 + \mathcal O(N^{-1})).
+    V^2
+    \frac{ \overline{ I } } { Z_N }
+    =
+    1 + \mathcal O(N^{-1})
+    .
   \end{align*}
 \end{solution}
+
+
 
 \section{Lecture 20: Density Distributions and Correlation Functions}
 
@@ -4250,7 +4408,8 @@ and find the law of corresponding states for gases.
 
 \begin{solution}
   In analogous to Eqs. (13-44) and (13-45),
-  if the potential of mean force is pair-wise additive:
+  if the potential of mean force is pair-wise additive,
+  we would have
   \begin{align*}
     w^{(4)}(1,2,3,4)
     &=
@@ -4261,13 +4420,27 @@ and find the law of corresponding states for gases.
     &+w^{(2)}(2,3)
     +w^{(2)}(2,4)
     +w^{(2)}(3,4)
-    ,
+    .
   \end{align*}
-  and by definition Eq. (13-41)
+  Here, we have used the shorthand notation
+  $w^{(4)}(1, 2, 3, 4)$
+  means
+  $w^{(4)}(\mathbf r_1, \mathbf r_2, \mathbf r_3, \mathbf r_4)$,
+  and
+  $w^{(2)}(1, 2)$
+  means
+  $w^{(2)}(\mathbf r_1, \mathbf r_2)$,
+  etc.
+  %
+  By definition Eq. (13-41)
   \begin{align*}
     g^{(4)}(1, 2, 3, 4)
-    =
+    &=
     e^{-\beta w^{(4)}(1, 2, 3, 4)}
+    \\
+    g^{(2)}(i, j)
+    &=
+    e^{-\beta w^{(2)}(i, j)}
     ,
   \end{align*}
   we have
@@ -4291,53 +4464,55 @@ and find the law of corresponding states for gases.
 \end{problem}
 
 \begin{solution}
-In class, we have derived (slide 12),
-\begin{align*}
--kT \nabla_1\rho^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
-=
-\sum_{i=2}^n \nabla_1 u(\mathbf r_{1i})
-\rho^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
-\\
-  +
-\int
-\nabla_1 u(\mathbf r_{1, n+1})
-\rho^{(n+1)}(\mathbf r_1, \dots, \mathbf r_{n+1}) \,
-d\mathbf r_{n+1}
-.
-\end{align*}
+In class, we have derived the BGY hierarchy (slide 12, see also the note below),
+\begin{align}
+  -kT &\nabla_1\rho^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
+  =
+  \sum_{i=2}^n \nabla_1 u(\mathbf r_{1i})
+  \rho^{(n)}(\mathbf r_1, \dots, \mathbf r_n)
+  \notag
+  \\
+  &+ \int
+  \nabla_1 u(\mathbf r_{1, n+1})
+  \rho^{(n+1)}(\mathbf r_1, \dots, \mathbf r_{n+1}) \,
+  d\mathbf r_{n+1}
+  .
+  \label{eq:rhon_BGY}
+\end{align}
+%
 With $n = 2$, we have
-\begin{align*}
--kT \nabla_1\rho^{(2)}(\mathbf r_1, \mathbf r_2)
-=
-\nabla_1 u(\mathbf r_{12})
-\rho^{(2)}(\mathbf r_1, \mathbf r_2)
-\\
-  +
-\int
-\nabla_1 u(\mathbf r_{1, 3})
-\rho^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3}) \,
-d\mathbf r_3
-.
-\end{align*}
+\begin{align}
+  -kT \, & \nabla_1\rho^{(2)}(\mathbf r_1, \mathbf r_2)
+  =
+  \nabla_1 u(\mathbf r_{12})
+  \rho^{(2)}(\mathbf r_1, \mathbf r_2)
+  \notag \\
+  &+
+  \int
+  \nabla_1 u(\mathbf r_{1, 3})
+  \rho^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3}) \,
+  d\mathbf r_3
+  .
+  \notag
+\end{align}
 %
 Dividing both sides by $-\rho^{(2)}(\mathbf r_1, \mathbf r_2)$, we get
 \begin{align}
-kT \, &\nabla_1 \ln \rho^{(2)}(\mathbf r_1, \mathbf r_2)
-  \notag
-  \\
-&=
--\nabla_1 u(\mathbf r_{12})
--
-\int
-\nabla_1 u(\mathbf r_{1, 3})
-  \frac{
-    \rho^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3})
-  }{
-    \rho^{(2)}(\mathbf r_1, \mathbf r_2)
-  }
-  \,
-  d\mathbf r_3
-.
+  &kT \, \nabla_1 \ln \rho^{(2)}(\mathbf r_1, \mathbf r_2)
+  \notag \\
+  &=
+  -\nabla_1 u(\mathbf r_{12})
+  -
+  \int
+  \nabla_1 u(\mathbf r_{1, 3})
+    \frac{
+      \rho^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3})
+    }{
+      \rho^{(2)}(\mathbf r_1, \mathbf r_2)
+    }
+    \,
+    d\mathbf r_3
+  .
   \label{eq:BGY2a}
 \end{align}
 %
@@ -4356,7 +4531,168 @@ $\rho^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_3)/\rho^{(2)}(\mathbf r_1, \math
 gives the conditional probability of finding a third particle at
 a small cube $d\mathbf r_3$ at $\mathbf r_3$
 given that the first two particles are at $\mathbf r_1$ and $\mathbf r_2$, respectively.
+
+
+\paragraph*{Derivation of Eq. \eqref{eq:rhon_BGY}.}
+
+We start from the definition
+$$
+  \rho^{(n)}(\mathbf r_1, \cdots, \mathbf r_n)
+  \equiv
+  \frac{N!}{(N-n)!}
+  \frac{
+    \idotsint
+    e^{-\beta U_N} d\mathbf r_{n+1} \cdots d\mathbf r_N
+  }
+  { Z_N }
+  .
+$$
+Differentiating both sides with respect to $\mathbf r_1$,
+we get
+\begin{align*}
+  &-kT \, \nabla_1 \rho^{(n)}(\mathbf r_1, \cdots, \mathbf r_n)
+  \\
+  &=
+  \frac{N!}{(N-n)!}
+  \frac{
+  \idotsint
+  \nabla_1 U_N
+  e^{-\beta U_N} d\mathbf r_{n+1} \cdots d\mathbf r_N
+  }
+  { Z_N }
+  .
+\end{align*}
+Since $U_N$ is pairwise additive,
+$U_N = \sum_{i<j} u(\mathbf r_{ij})$,
+we have
+\begin{align*}
+  \nabla_1 U_N
+  &= \nabla_1 \sum_{j > 1} u(\mathbf r_{1j})
+  \\
+  &= \sum_{j=2}^n \nabla_1 u(\mathbf r_{1j})
+  + \sum_{j=n+1}^N \nabla_1 u(\mathbf r_{1j})
+  ,
+\end{align*}
+On the second line, we have split the sum to
+two parts,
+in the first part, $j$ is the index
+of a particle with given coordinates,
+and in the second part,
+$\mathbf r_j$ is to be integrated.
 %
+Thus,
+\begin{align}
+  &-kT \, \nabla_1 \rho^{(n)}(\mathbf r_1, \cdots, \mathbf r_n)
+  \notag \\
+  &=
+  \sum_{j=2}^n
+  \frac{ N! } { (N-n)! }
+  \frac{
+    \idotsint
+    \nabla_1 u(\mathbf r_{1j}) \,
+    e^{-\beta U_N} d\mathbf r_{n+1} \cdots d\mathbf r_N
+  }{ Z_N }
+  \notag \\
+  &+
+  \sum_{j=n+1}^N
+  \frac{ N! } { (N-n)! }
+  \frac{
+    \idotsint
+    \nabla_1 u(\mathbf r_{1j})
+    e^{-\beta U_N} d\mathbf r_{n+1} \cdots d\mathbf r_N
+  } { Z_N }
+  .
+  \label{eq:rhon_BGYb}
+\end{align}
+%
+For the first part,
+we can use the fact that $\nabla_1 u(\mathbf r_{1j})$
+does not depend on the variables of integration,
+$\mathbf r_{n+1}, \dots, \mathbf r_{N}$,
+and thus can be taken outside of the integrand,
+and the remaining integral is the same as $\rho^{(n)}$.
+%
+Thus,
+\begin{align}
+  &\sum_{j=2}^n
+  \frac{ N! } { (N-n)! }
+  \frac{
+    \idotsint
+    \nabla_1 u(\mathbf r_{1j}) \,
+    e^{-\beta U_N} d\mathbf r_{n+1} \cdots d\mathbf r_N
+  }{ Z_N }
+  \notag \\
+  &=
+  \left[
+    \sum_{j=2}^n
+    \nabla_1 u(\mathbf r_{1j})
+  \right]
+  \cdot
+  \frac{ N! } { (N-n)! }
+  \frac{
+    \idotsint
+    e^{-\beta U_N} d\mathbf r_{n+1} \cdots d\mathbf r_N
+  }{ Z_N }
+  \notag \\
+  &=
+  \left[
+    \sum_{j=2}^n
+    \nabla_1 u(\mathbf r_{1j})
+  \right]
+  \cdot
+  \rho^{(n)}(\mathbf r_1, \dots, \mathbf r_N)
+  .
+  \label{eq:rhon_BGYb_part1}
+\end{align}
+%
+For the second part,
+we note that each term of the sum
+would yield the same result,
+and the sum can by replaced by the term for $j = n+1$
+multiplied by $N-n$:
+\begin{align}
+  &\sum_{j=n+1}^N
+  \frac{ N! } { (N-n)! }
+  \frac{
+    \idotsint
+    \nabla_1 u(\mathbf r_{1j})
+    e^{-\beta U_N} d\mathbf r_{n+1} \cdots d\mathbf r_N
+  } { Z_N }
+  \notag \\
+  &=
+  \frac{ (N-n) \cdot N! } { (N-n)! }
+  \frac{
+    \idotsint
+    \nabla_1 u(\mathbf r_{1,n+1})
+    e^{-\beta U_N} d\mathbf r_{n+1} \cdots d\mathbf r_N
+  } { Z_N }
+  \notag \\
+  &=
+  \int d\mathbf r_{n+1}
+  \nabla_1 u(\mathbf r_{1,n+1})
+  \frac{ N! } { (N-n-1)! }
+  \frac{
+    \idotsint
+    e^{-\beta U_N} d\mathbf r_{n+2}\cdots d\mathbf r_N
+  } { Z_N }
+  \notag \\
+  &=
+  \int d\mathbf r_{n+1}
+  \nabla_1 u(\mathbf r_{1,n+1})
+  \rho^{(n+1)}(\mathbf r_1, \dots, \mathbf r_{n+1})
+  ,
+  .
+  \label{eq:rhon_BGYb_part2}
+\end{align}
+where we have singled out the integral for $\mathbf r_{n+1}$
+on the third line,
+and used the definition for $\rho^{(n+1)}$
+on the last line.
+%
+Using Eqs. \eqref{eq:rhon_BGYb_part1}
+and \eqref{eq:rhon_BGYb_part2} in Eq. \eqref{eq:rhon_BGYb},
+we get Eq. \eqref{eq:rhon_BGY}.
+
 
 \paragraph*{Superposition approximation.}
 
@@ -4365,8 +4701,8 @@ it is not very useful
 since it expresses the derivative of the unknown $\rho^{(2)}$
 in terms of another unknown $\rho^{(3)}$.
 %
-We can, however, obtain an approximation equation
-for $\rho^{(2)}$ along by means of the superposition approximation.
+We can, however, obtain an approximation but self-contained equation
+for $\rho^{(2)}$ by means of the superposition approximation.
 
 Let us first rewrite
 Eq. \eqref{eq:BGY2a}
@@ -4378,7 +4714,7 @@ kT \, & \nabla_1 \ln g^{(2)}(\mathbf r_1, \mathbf r_2)
 -\nabla_1 u(\mathbf r_{12})
 -
 \rho \int
-\nabla_1 u(\mathbf r_{1, 3})
+\nabla_1 u(\mathbf r_{13})
   \frac{
     g^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3})
   }{
@@ -4397,7 +4733,8 @@ If we assume the superposition approximation,
   g^{(2)}(\mathbf r_1,\mathbf r_3) \,
   g^{(2)}(\mathbf r_2,\mathbf r_3)
   ,
-  \tag{13-45}
+  \notag
+  %\tag{13-45}
 \end{align}
 then we have an integro-differential equation for $g^{(2)}$
 \begin{align}
@@ -4510,7 +4847,7 @@ to both sides, and
   \label{eq:g2_BGYc}
 \end{align}
 
-\begin{figure}
+\begin{figure}[h]
   \begin{tikzpicture}[very thick]
     \draw (0, 0) ++(0:0.8) arc (0:22:.8);
     \node at (1.2, 0.2) {$\theta$};
@@ -4553,7 +4890,8 @@ we have
   r_{13}^2 dr_{13}
   d(\cos\theta).
 \end{align*}
-At this point, it is helpful to convert the variables of integration
+%
+We now change the variables of integration
 from $r_{13}$ and $\cos\theta$ to $r_{13}$ and $r_{23}$,
 and by the law of cosines:
 $$
@@ -4693,7 +5031,13 @@ Using this in Eq. \eqref{eq:g2_BGYc} yields Eq. \eqref{eq:g2_BGYb}.
   $$
   which is equivalent to Eq. \eqref{eq:NBNA}.
 
-  For the generalization, we have
+  For the generalized reaction,
+  $$
+  \nu_A \, \mathrm{A} + \nu_B \, \mathrm{B}
+  \rightleftharpoons
+  \nu_C \, \mathrm{C} + \nu_D \, \mathrm{D},
+  $$
+  we have
   $$
   Q(N_A, N_B, V, T)
   =
@@ -4702,14 +5046,16 @@ Using this in Eq. \eqref{eq:g2_BGYc} yields Eq. \eqref{eq:g2_BGYb}.
   =
   \prod_j \frac{ q_j^{N_j} } { N_j! }.
   $$
-  To build a full set of constraints,
+  To establish the equations for the constraints,
   let us denote by $M$ the number of times that the reaction has happened.
-  In each time, we will lose $\nu_A$ of $A$ and $\nu_B$ of $B$,
+  Every time this reaction happens,
+  we will lose $\nu_A$ of $A$ and $\nu_B$ of $B$,
   and gain $\nu_C$ of $C$ and $\nu_D$ of $D$.
   %
   Thus, $N_A + \nu_A \, M$ is equal to the number of $A$ at the beginning,
   $N_{A,0}$, which is a constant.
-  This serves as a constraint, and similarly, we have
+  This serves as a constraint.
+  More generally,
   \begin{align*}
     N_A + \nu_A \, M &= N_{A,0}, \\
     N_B + \nu_B \, M &= N_{B,0}, \\
@@ -4791,7 +5137,259 @@ Using this in Eq. \eqref{eq:g2_BGYc} yields Eq. \eqref{eq:g2_BGYb}.
 
 \subsection{Problem 9-6}
 
+\begin{problem}
 Derive Eq. (9-24).
+It is easy to derive a general expression
+for the equilibrium constant of such reactions
+by expanding the complete expression for $K(T)$
+in a power series in $\Delta/M$,
+where $\Delta$ is the difference
+in atomic mass between the two isotopes,
+and $M$ is the atomic mass of the heavier isotope.
+To order $(\Delta/M)^2$, the result is
+\begin{equation}
+  K(T)
+  =
+  4\left( 1 + \frac{\Delta^2}{8M^2} \right)
+  \, e^{-\Delta^2 \Theta_{M,\mathrm{vib}}/32M^2T}
+  \tag{9-24}
+  \label{eq:K_iso_MDelta}
+\end{equation}
+\end{problem}
+
+\begin{solution}
+  We will start from Eq. (9-17).
+  \begin{align}
+    &K(T)
+    =
+    \frac{ m_\mathrm{HD}^3 }
+    { (m_{\mathrm{H}_2} m_{\mathrm{D}_2} )^{3/2} }
+    \frac{ 4 \Theta_{r, \mathrm{H}_2} \Theta_{r, \mathrm{D}_2} }
+    { \Theta_{r, \mathrm{HD}}^2 }
+    \notag \\
+    &\frac{
+      \left( 1 - e^{-\Theta_{v,\mathrm{H}_2}/T} \right)
+      \left( 1 - e^{-\Theta_{v,\mathrm{D}_2}/T} \right)
+    } {
+      \left( 1 - e^{-\Theta_{v,\mathrm{HD}}/T} \right)^2
+    }
+    e^{
+      -( 2\Theta_{v, \mathrm{HD}}
+        - \Theta_{v, \mathrm{H}_2}
+        - \Theta_{v, \mathrm{D}_2} ) /2T
+      }
+    \tag{9-17}
+    \label{eq:K_iso}
+  \end{align}
+  Here ``$\mathrm{H}$'' and ``$\mathrm{D}$'' are understood as
+  the lighter and heavier isotopes, respectively.
+  For example, they can be $\mathrm{N}^{14}$ and $\mathrm{N}^{15}$,
+  respectively.
+
+  \paragraph*{Vibrational part.}
+
+  The vibrational temperature, $\Theta_v$,
+  is proportional to the inverse square root
+  of the reduced mass of the molecule, cf. Eq. (9-18).
+  So we have
+  \begin{align*}
+    \frac{ \Theta_{v, \mathrm{HD}  } }
+         { \Theta_{v, \mathrm{D}_2 } }
+    &=
+    \left(
+    \frac{ \mu_{\mathrm{D}_2} }
+    { \mu_\mathrm{HD} }
+    \right)^{1/2}
+    =
+    \left(
+    \frac{
+      m_\mathrm{D} /  2
+    }
+    {
+      \frac{ m_\mathrm{H} m_\mathrm{D} }
+           { m_\mathrm{H} + m_\mathrm{D} }
+    }
+    \right)^{1/2}
+    \\
+    &=
+    \left(
+    \frac{ M/2 }
+    { \frac{M(M-\Delta)}{2M-\Delta} }
+    \right)^{1/2}
+    ,
+  \end{align*}
+  and
+  \begin{align*}
+    \Theta_{v, \mathrm{HD}}
+    =
+    \left(
+    \frac{ 1 - \frac{\Delta}{2M} }
+         { 1 - \frac{\Delta}{M} }
+    \right)^{1/2}
+    \Theta_{v, \mathrm{D}_2}
+    .
+  \end{align*}
+  Similarly, we have
+  \begin{align*}
+    \Theta_{v, \mathrm{H}_2}
+    &=
+    \left(
+    \frac{ 1 }
+         { 1-\frac{\Delta}{M} }
+    \right)^{1/2}
+    \Theta_{v, \mathrm{D}_2}
+    .
+  \end{align*}
+  By series expansion for $\Delta/M \ll 1$,
+  we have
+  \begin{align*}
+    \left( 1 - \frac{\Delta}{M} \right)^{-1/2}
+    &=
+    1 + \frac{\Delta}{2M} + \frac{3\Delta^2}{8M^2} + \cdots,
+    \\
+    \left( 1 - \frac{\Delta}{2M} \right)^{1/2}
+    &=
+    1 - \frac{\Delta}{4M} - \frac{\Delta^2}{32M^2} + \cdots,
+    \\
+    \left(
+    \frac{ 1 - \frac{\Delta}{2M} }
+         { 1 - \frac{\Delta}{M} }
+    \right)^{1/2}
+    &=
+    1 + \frac{\Delta}{4M} + \frac{7\Delta^2}{32M^2} + \cdots,
+  \end{align*}
+  So
+  \begin{align*}
+    \left(
+    2\Theta_{v, \mathrm{HD}}
+    -\Theta_{v, \mathrm{H}_2}
+    -\Theta_{v, \mathrm{D}_2}
+    \right)/(2T)
+    =
+    \frac{\Delta^2
+    \Theta_{v, \mathrm{D}_2 }
+    }{32M^2 T}
+    ,
+  \end{align*}
+  and $\Theta_{v, \mathrm{D}_2}$
+  is the $\Theta_{M, \mathrm{vib}}$
+  in the problem.
+  %
+  For $\Theta_v$ around $3000$K,
+  at room temperature, $T \approx 300$K,
+  $$
+  1 - e^{-\Theta_v/T} \approx 1,
+  $$
+  Thus, the last two factors of Eq. \eqref{eq:K_iso}
+  is approximately
+  $$
+    e^{-\frac{\Delta^2
+    \Theta_{M, \mathrm{vib} }
+    }{32M^2 T}}
+    .
+  $$
+
+  \paragraph*{Rotational part.}
+  For the rotational part,
+  we have
+  $\Theta_r = h^2/(8\pi^2Ik) = h^2/(8\pi^2\mu r_e^2 k)$,
+  with $r_e$
+  being the internuclear separation.
+  So $\Theta_r$ is inversely proportional to
+  the reduced mass $\mu$.
+  %
+  Similar to the vibrational case, we have
+  \begin{align*}
+    \Theta_{r, \mathrm{HD}}
+    &=
+    \left(
+    \frac{ 1 - \frac{\Delta}{2M} }
+         { 1 - \frac{\Delta}{M} }
+    \right)
+    \Theta_{r, \mathrm{D}_2}
+    ,
+    \\
+    \Theta_{r, \mathrm{H}_2}
+    &=
+    \left(
+    \frac{ 1 }
+         { 1-\frac{\Delta}{M} }
+    \right)
+    \Theta_{r, \mathrm{D}_2}
+    ,
+  \end{align*}
+  and
+  \begin{align*}
+    \frac{
+      4 \Theta_{r, \mathrm{H}_2}
+      \Theta_{r, \mathrm{D}_2}
+    } {
+      \Theta_{r, \mathrm{HD}}^2
+    }
+    &=
+    4\frac{ 1 - \frac{\Delta}{M} }
+         { (1 - \frac{\Delta}{2M})^2 }
+    \approx
+    4\left(1 - \frac{ \Delta^2 } { 4 M^2 } \right)
+    .
+  \end{align*}
+
+  \paragraph*{Translational part.}
+
+  \begin{align*}
+    \frac{
+      m_{\mathrm{HD}}^3
+    } {
+      \left(
+      m_{\mathrm{H}_2}
+      m_{\mathrm{D}_2}
+      \right)^{3/2}
+    }
+    &=
+    \left(
+    \frac{
+      m_{\mathrm{HD}}^2
+    } {
+      m_{\mathrm{H}_2}
+      m_{\mathrm{D}_2}
+    }
+    \right)^{3/2}
+    \\
+    &=
+    \left(
+    \frac{ (2M-\Delta)^2 }
+     { 2M(2M-2\Delta) }
+    \right)^{3/2}
+    \\
+    &=
+    \left(
+    \frac{ (1-\frac{\Delta}{2M})^2 }
+     { 1-\frac{\Delta}{M} }
+    \right)^{3/2}
+    \approx
+    1 + \frac{3}{2} \frac{\Delta^2}{4M^2}
+    .
+  \end{align*}
+
+  \paragraph*{Putting everything together.}
+
+  Multiplying the three components, we get
+  \begin{align*}
+    K(T)
+    &\approx
+    \left( 1 + \frac{3}{2} \frac{\Delta^2}{4M^2} \right)
+    4\left(1 - \frac{\Delta^2}{4M^2} \right)
+    e^{-\frac{ \Delta^2 \, \Theta_{M, \mathrm{vib}} }
+             { 32 M^2 T } }
+    \\
+    &\approx
+    4 \left( 1 + \frac{\Delta^2}{8M^2} \right)
+    e^{-\frac{ \Delta^2 \, \Theta_{M, \mathrm{vib}} }
+             { 32 M^2 T } }
+    ,
+  \end{align*}
+  which is the desired result, Eq. \eqref{eq:K_iso_MDelta}.
+\end{solution}
 
 \section{Lecture 24: Electrolyte Solutions}
 
