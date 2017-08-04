@@ -4033,18 +4033,26 @@ and find the law of corresponding states for gases.
   Fugacity is defined as
   \begin{align*}
     f = p^\mathrm{i.g.} \, e^{(\mu - \mu^\mathrm{i.g.})/kT}
-      = \frac{ k T } { \Lambda^3 } e^{\beta \, \mu}.
+      = \frac{ k T } { \Lambda^3 } e^{\mu/kT}.
   \end{align*}
   where $p^\mathrm{i.g.}$ and $\mu^\mathrm{i.g.}$
   are the pressure and chemical potential of
-  the corresponding ideal gas, and
-  in the grand canonical ensemble
+  the corresponding ideal gas.
+  %
+  The second equation can be readily derived
+  from the partition function of the grand canonical ensemble
   $$
-  p^\mathrm{i.g.}/kT
-  = \frac{1}{V} \ln \left[
+  \exp\left( \frac{p^\mathrm{i.g.}V}{kT} \right)
+  =
     \sum_{N=0}^\infty \frac{V^N}{\Lambda^{3N}}e^{\mu^\mathrm{i.g.} N/kT}
-    \right]
-  = \frac{ e^{\mu^\mathrm{i.g.}/kT} }{ \Lambda^3 }.
+  = \exp\left[
+    \frac{ V \, e^{\mu^\mathrm{i.g.}/kT} }{ \Lambda^3 }
+    \right].
+  $$
+  Taking the logarithm, we get
+  $$
+  p^\mathrm{i.g.}
+  = \frac{ kT \, e^{\mu^\mathrm{i.g.}/kT} }{ \Lambda^3 }.
   $$
   From Eq. (13-34), we have
   \begin{equation}
@@ -4193,7 +4201,7 @@ and find the law of corresponding states for gases.
     = \frac{b_1^3}{6} + b_1 b_2 + b_3, \\
   &\dots
   \end{align*}
-  the first two of which are in agreement with the previous result.
+  The first two agree with the previous results.
 
 
 \paragraph*{Alternative expansion.}
@@ -4692,70 +4700,115 @@ on the last line.
 Using Eqs. \eqref{eq:rhon_BGYb_part1}
 and \eqref{eq:rhon_BGYb_part2} in Eq. \eqref{eq:rhon_BGYb},
 we get Eq. \eqref{eq:rhon_BGY}.
-
+\end{solution}
 
 \paragraph*{Superposition approximation.}
 
 Although Eq. \eqref{eq:BGY2a} is exact,
-it is not very useful
-since it expresses the derivative of the unknown $\rho^{(2)}$
+it cannot be used to solve $\rho^{(2)}$
+as it expresses the derivative of the unknown $\rho^{(2)}$
 in terms of another unknown $\rho^{(3)}$.
 %
-We can, however, obtain an approximation but self-contained equation
-for $\rho^{(2)}$ by means of the superposition approximation.
+We can, however, obtain an approximate but self-sufficient equation
+for $\rho^{(2)}$ by the superposition approximation.
 
 Let us first rewrite
 Eq. \eqref{eq:BGY2a}
 in terms of $g^{(n)} = \rho^{(n)}/\rho^n$:
-\begin{align*}
-kT \, & \nabla_1 \ln g^{(2)}(\mathbf r_1, \mathbf r_2)
-\\
+\begin{align}
+  & kT \, \nabla_1 \ln g^{(2)}(\mathbf r_1, \mathbf r_2)
+  \notag \\
   &=
--\nabla_1 u(\mathbf r_{12})
--
-\rho \int
-\nabla_1 u(\mathbf r_{13})
-  \frac{
-    g^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3})
-  }{
-    g^{(2)}(\mathbf r_1, \mathbf r_2)
-  }
-  \,
-d\mathbf r_3
-,
-\end{align*}
+  -\nabla_1 u(\mathbf r_{12})
+  -
+  \rho \int
+  \nabla_1 u(\mathbf r_{13})
+    \frac{
+      g^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_{3})
+    }{
+      g^{(2)}(\mathbf r_1, \mathbf r_2)
+    }
+    \,
+  d\mathbf r_3
+  ,
+  \label{eq:g2_BGYd}
+\end{align}
 %
 If we assume the superposition approximation,
-\begin{align}
+\begin{align*}
   g^{(3)}(\mathbf r_1,\mathbf r_2,\mathbf r_3)
   &=
   g^{(2)}(\mathbf r_1,\mathbf r_2) \,
   g^{(2)}(\mathbf r_1,\mathbf r_3) \,
   g^{(2)}(\mathbf r_2,\mathbf r_3)
+  \\
+  &=
+  g(r_{12}) \, g(r_{13}) \, g(r_{23})
   ,
-  \notag
   %\tag{13-45}
-\end{align}
-then we have an integro-differential equation for $g^{(2)}$
+\end{align*}
+where in the second step
+we have assumed that $g^{(2)}(\mathbf r_1, \mathbf r_2$
+depends on the two coordinates only via $r = |\mathbf r_{12}|$
+(i.e., a homogeneous and isotropic fluid).
+%
+Thus, we have an integro-differential equation for $g(r)$
 \begin{align}
-  -kT \, & \nabla_1 \ln g^{(2)}(\mathbf r_1, \mathbf r_2)
+  -kT \, & \nabla_1 \ln g(r_{12})
   =
-  \nabla_1 u(\mathbf r_{12})
+  \nabla_1 u(r_{12})
   \notag
   \\
   &+
   \rho
   \int
-  \nabla_1 u(\mathbf r_{13})
-    g^{(2)}(\mathbf r_1,\mathbf r_3) \,
-    g^{(2)}(\mathbf r_2,\mathbf r_3)
+  \nabla_1 u(r_{13}) \,
+    g(r_{13}) \,
+    g(r_{23}) \,
     d\mathbf r_3
   .
   \label{eq:g2_BGYa}
 \end{align}
 Note that the $\nabla_1$ gives a vector,
 and the scalar form will be derived in Problem 13-13.
-\end{solution}
+%
+A common variant of Eq. \eqref{eq:g2_BGYa}
+is to replace $g(r_{23})$ by
+$h(r_{23}) = g(r_{23}) - 1$.
+%
+Here we should take advantage of the fact that
+$$
+  \int \nabla_1 u(r_{13}) \,
+    g(r_{13}) \,
+    d\mathbf r_3
+  =
+  -\int \frac{\mathbf r_{31}} {r_{31}} \,
+    u'(r_{31}) \,
+    g(r_{31}) \,
+    d\mathbf r_{31}
+  ,
+$$
+and the integrand is an odd function of $\mathbf r_{31}$,
+which must vanish after integration over the entire space,
+i.e., the contribution from the volume element at $-\mathbf r_{31}$
+will cancel that from the volume element at $\mathbf r_{31}$.
+Thus,
+\begin{align}
+  -kT \, & \nabla_1 \ln g(r_{12})
+  =
+  \nabla_1 u(r_{12})
+  \notag
+  \\
+  &+
+  \rho
+  \int
+  \nabla_1 u(r_{13}) \,
+    g(r_{13}) \,
+    h(r_{23}) \,
+    d\mathbf r_3
+  .
+  \label{eq:g2_BGYh}
+\end{align}
 
 \subsection{*Problem 13-13}
 
@@ -5031,12 +5084,15 @@ Using this in Eq. \eqref{eq:g2_BGYc} yields Eq. \eqref{eq:g2_BGYb}.
   $$
   which is equivalent to Eq. \eqref{eq:NBNA}.
 
-  For the generalized reaction,
-  $$
+  \paragraph*{Generalization.}
+
+  For the general reaction,
+  \begin{equation}
   \nu_A \, \mathrm{A} + \nu_B \, \mathrm{B}
   \rightleftharpoons
   \nu_C \, \mathrm{C} + \nu_D \, \mathrm{D},
-  $$
+    \label{eq:chemreact_ABCD}
+  \end{equation}
   we have
   $$
   Q(N_A, N_B, V, T)
@@ -5046,7 +5102,107 @@ Using this in Eq. \eqref{eq:g2_BGYc} yields Eq. \eqref{eq:g2_BGYb}.
   =
   \prod_j \frac{ q_j^{N_j} } { N_j! }.
   $$
-  To establish the equations for the constraints,
+  In this case, we have \emph{three}
+  constraints that tie down the number of particles
+  between
+  $A$ and $B$,
+  $A$ and $C$,
+  as well as
+  $A$ and $D$.
+  %
+  For example, for $A$ and $B$,
+  since each reaction uses $\nu_A$ molecule $A$,
+  and $\nu_B$ molecule $B$,
+  the quantity
+  \begin{equation}
+    M_{AB} = \frac{ N_A } {\nu_A } - \frac{N_B}{\nu_B}
+    \label{eq:M_AB}
+  \end{equation}
+  will change by
+  $$
+  \delta M_{AB} = \frac{ -\nu_A } {\nu_A } - \frac{ -\nu_B } {\nu_B} = 0,
+  $$
+  i.e., $M_{AB}$ is a constant,
+  and Eq. \eqref{eq:M_AB} serves as a constraint.
+  Similarly, for $A$ and $C$,
+  since each reaction uses $\nu_A$ molecule $A$
+  and produces $\nu_C$ molecule $C$,
+  \begin{equation}
+    M_{AC} = \frac{ N_A }{ \nu_A } + \frac{N_C}{\nu_C}
+    \label{eq:M_AC}
+  \end{equation}
+  is also a constant, so is
+  \begin{equation}
+    M_{AD} = \frac{ N_A }{ \nu_A } + \frac{N_D}{\nu_D}
+    .
+    \label{eq:M_AD}
+  \end{equation}
+  %
+  We can write the above three constraints as
+  $$
+  \frac{N_A}{\nu_A} + \frac{N_j}{\nu_j} = \mathrm{constant},
+  $$
+  with $\nu_j$ being positive for products
+  and negative for reactants.
+  %
+  We will now minimize
+  \begin{align*}
+    &F(N_A, N_B, N_C, N_D)
+    \equiv -k T \ln Q
+    - {\sum_j}'
+    \lambda_j \left( \frac{N_A}{\nu_A} + \frac{N_j}{\nu_j} \right)
+    \\
+    &\approx
+    -kT \sum_j \left(N_j \ln\frac{ q_j}{ N_j} + N_j\right)
+    - {\sum_j}' \lambda_j \left( \frac{N_A}{\nu_A} + \frac{N_j}{\nu_j} \right)
+    ,
+  \end{align*}
+  where the prime $'$ means to exclude $A$ in the sum.
+  Differentiating this function with respect to $N_j$ yields
+  \begin{align*}
+    -kT \ln \frac{q_A}{N_A}
+    &= \frac{1}{\nu_A} {\sum_j}' \lambda_j,
+    \\
+    -kT \ln \frac{q_j}{N_j}
+    &= \frac{ \lambda_j } {\nu_j }
+    \qquad \mathrm{for\;} j \ne A.
+  \end{align*}
+  Eliminating $\lambda_j$'s, we get
+  \begin{align*}
+    -kT \ln \frac{q_A}{N_A}
+    &= -kT\frac{1}{\nu_A} {\sum_j}' \nu_j \ln \frac{q_j}{N_j},
+  \end{align*}
+  or, if we multiply both sides by $\nu_A$
+  and move the left-hand side to the right,
+  \begin{align*}
+    {\sum_j} \nu_j \ln \frac{q_j}{N_j} = 0.
+  \end{align*}
+  This means,
+  \begin{align*}
+    \nu_A \ln \frac{q_A}{N_A}
+    +
+    \nu_B \ln \frac{q_B}{N_B}
+    =
+    \nu_C \ln \frac{q_C}{N_C}
+    +
+    \nu_D \ln \frac{q_D}{N_D},
+  \end{align*}
+  or
+  \begin{align*}
+    \frac{q_A^{\nu_A}}{N_A^{\nu_A}}
+    \frac{q_B^{\nu_B}}{N_B^{\nu_B}}
+    =
+    \frac{q_C^{\nu_C}}{N_C^{\nu_C}}
+    \frac{q_D^{\nu_D}}{N_D^{\nu_D}},
+  \end{align*}
+  which is equivalent to Eq. \eqref{eq:chemeqABCD}.
+\end{solution}
+
+\begin{solution}[Solution 2.]
+  There is another way to establish a set \emph{homogeneous} equations
+  for the constraints.
+  %
+  For the chemical reaction, \eqref{eq:chemreact_ABCD},
   let us denote by $M$ the number of times that the reaction has happened.
   Every time this reaction happens,
   we will lose $\nu_A$ of $A$ and $\nu_B$ of $B$,
@@ -5087,24 +5243,38 @@ Using this in Eq. \eqref{eq:g2_BGYc} yields Eq. \eqref{eq:g2_BGYb}.
   \begin{align*}
     &F(N_A, N_B, N_C, N_D, M)
     \equiv -k T \ln Q
-    + \sum_j\lambda_j (N_j - \nu_j M)
+    - \sum_j\lambda_j (N_j - \nu_j M)
     \\
     &\approx
     -kT \sum_j (N_j \ln q_j - N_j \ln N_j + N_j)
-    + \sum_j \lambda_j (N_j - \nu_j M)
+    - \sum_j \lambda_j (N_j - \nu_j M)
     ,
   \end{align*}
   where $j$ goes through $A$, $B$, $C$, and $D$ in the sums.
 %
   Differentiating this expression with respect to $N_j$ and $M$ yields
-  \begin{align*}
-    kT (\ln q_j - \ln N_j) &= \lambda_j, \\
+  \begin{align}
+    -kT (\ln q_j - \ln N_j) &= \lambda_j,
+    \label{eq:lambda_mu}
+    \\
     \sum_{j}
     \nu_j \, \lambda_j
     &=
     0
     .
-  \end{align*}
+    \label{eq:lambda_balance}
+  \end{align}
+  Equation \eqref{eq:lambda_mu} shows that
+  the Lagrange multiplier, $\lambda_j$,
+  is just the chemical potential of substance $j$,
+  cf. Eq. (9-6).
+  %
+  Then Eq. \eqref{eq:lambda_balance} is
+  equivalent to the condition that
+  the total chemical potential of all reactants
+  must be equal to the total chemical potential
+  of all products, Eq. (9-4).
+  %
   Eliminating all $\lambda_j$'s yields
   \begin{align*}
     \sum_j \nu_j \ln\left( \frac{q_j}{N_j} \right)
@@ -5112,28 +5282,10 @@ Using this in Eq. \eqref{eq:g2_BGYc} yields Eq. \eqref{eq:g2_BGYb}.
     0
     ,
   \end{align*}
-  or, in our case,
-  $$
-    \nu_A \ln\left( \frac{q_A}{N_A} \right) +
-    \nu_B \ln\left( \frac{q_B}{N_B} \right)
-    =
-    \nu_C \ln\left( \frac{q_C}{N_C} \right) +
-    \nu_D \ln\left( \frac{q_D}{N_D} \right)
-    .
-  $$
-  Exponentiating both sides yields
-  $$
-    \frac{q_A^{\nu_A}}{N_A^{\nu_A}}
-    \frac{q_B^{\nu_B}}{N_B^{\nu_B}}
-    =
-    \frac{q_C^{\nu_C}}{N_C^{\nu_C}}
-    \frac{q_D^{\nu_D}}{N_D^{\nu_D}}
-    ,
-  $$
-  which is equivalent to Eq. \eqref{eq:chemeqABCD}.
+  which is the same as in the previous solution.
 \end{solution}
 
-\section{Lecture 23: Thermodynamic Perturbation Theory}
+\section{Lecture 23: Multi-Component Liquid }
 
 \subsection{Problem 9-6}
 
@@ -5319,7 +5471,7 @@ To order $(\Delta/M)^2$, the result is
     ,
   \end{align*}
   and
-  \begin{align*}
+  \begin{align}
     \frac{
       4 \Theta_{r, \mathrm{H}_2}
       \Theta_{r, \mathrm{D}_2}
@@ -5332,7 +5484,8 @@ To order $(\Delta/M)^2$, the result is
     \approx
     4\left(1 - \frac{ \Delta^2 } { 4 M^2 } \right)
     .
-  \end{align*}
+    \label{eq:ratio_rot}
+  \end{align}
 
   \paragraph*{Translational part.}
 
@@ -5389,11 +5542,245 @@ To order $(\Delta/M)^2$, the result is
     ,
   \end{align*}
   which is the desired result, Eq. \eqref{eq:K_iso_MDelta}.
+
+  \paragraph*{Tip on the Taylor expansion.}
+
+  In developing series expansions,
+  it is sometimes more convenient to a work with the logarithm.
+  %
+  For example for the rotational part,
+  we need the series expansion of
+  $$
+  R = \frac{ 1 - x } { \left(1 - \frac x 2 \right)^2 },
+  $$
+  where $x = \Delta/M$.
+  %
+  Consider the logarithm 
+  $$
+  \ln R = \ln(1-x) - 2\ln\left(1 - \frac x 2 \right),
+  $$
+  Since
+  \begin{align*}
+    \ln(1- x) &= -x - \frac{x^2}{2} - \cdots, \\
+    \ln\left(1 - \frac x 2 \right) &=
+    -\frac{x}{2} - \frac{x^2}{8},
+  \end{align*}
+  we have
+  $$
+  \ln R = -\frac{x^2}{4} - \cdots,
+  $$
+  and
+  $$
+  R = \exp\left( -\frac{x^2}{4} - \cdots \right) \approx 1 - \frac{x^2}{4},
+  $$
+  in agreement with Eq. \eqref{eq:ratio_rot}.
 \end{solution}
 
-\section{Lecture 24: Electrolyte Solutions}
 
-(No problem.)
+\section{Lecture 24: Thermodynamic Perturbation Theory}
+
+\subsection{Problem 12-26}
+
+\begin{problem}
+  Derive an expression for the third virial coefficient
+  without assuming the intermolecular potential is pairwise
+  additive. Let $U_3(\mathbf r_1, \mathbf r_2, \mathbf r_3)$ be
+  $$
+  U_3(\mathbf r_1, \mathbf r_2, \mathbf r_3)
+  =
+  u(r_{12}) + u(r_{13}) + u(r_{23})
+  + \Delta(r_{12}, r_{13}, r_{23})
+  $$
+\end{problem}
+
+\begin{solution}
+  We first find out the $Z_i$'s:
+  \begin{align}
+    Z_1 &= \int d\mathbf r_1 = V
+    \tag{12-20} \\
+    Z_2 &= \iint e^{-U_2/kT} \, d\mathbf r_1 \, d\mathbf r_2
+    = V \int e^{-u(r)/kT} \, d\mathbf r
+    \tag{12-21} \\
+    Z_3 &= \iiint e^{-U_3/kT} d\mathbf r_1 \, d\mathbf r_2 \, d\mathbf r_3
+    \notag \\
+    &=
+    V \iint e^{-U_3(\mathbf r_1, \mathbf r_2, \mathbf r_3)/kT}
+    d\mathbf r_{21} \, d\mathbf r_{31}
+    ,
+    \notag
+  \end{align}
+  Then, for the $b_i$'s:
+  \begin{align*}
+    b_2 &= (2! \, V)^{-1} (Z_2 -Z_1^2)
+    = \frac{1}{2} \int f_{12} \, d\mathbf r_2
+    \\
+    b_3 &= (3! \, V)^{-1}(Z_3 - 3 Z_2 Z_1 +2 Z_1^3)
+    \\
+    &=
+    \frac{1}{6} \iint
+    (e^{-U_3/kT} -3 \, e^{-u(r_2)/kT} + 2)
+    \, d\mathbf r_2 \, d\mathbf r_3
+    \\
+    &=
+    \frac{1}{6} \iint
+    [e_{12} \, e_{13} \, e_{23} \, (f_{123} + 1)
+    - 3 \, (f_{12} + 1) + 2]
+    \, d\mathbf r_2 \, d\mathbf r_3
+    \\
+    &=
+    \frac{1}{6} \iint
+    (e_{12} \, e_{13} \, e_{23} \, f_{123}
+     + f_{12} \, f_{13} \, f_{23}
+     + 3 f_{12} \, f_{13})
+    \, d\mathbf r_2 \, d\mathbf r_3
+    ,
+  \end{align*}
+  where we have fixed particle $1$ at the origin and
+  \begin{align*}
+    e_{ij} &\equiv e^{-u(r_{ij})/kT}, \\
+    f_{ij} &\equiv e^{-u(r_{ij})/kT} - 1, \\
+    f_{123} &\equiv e^{-\Delta(r_{12}, r_{13}, r_{23})/kT} - 1.
+  \end{align*}
+  Finally, for the virial coefficients
+  \begin{align}
+    B_2 &= -b_2
+    = -\frac{1}{2} \int f_{12} \, d\mathbf r_2
+    \tag{12-16}
+    \\
+    B_3
+    &=
+    4 \, b_2^2 - 2 \, b_3
+    \tag{12-17}
+    \\
+    &=
+    -\frac{1}{3} \iint
+    (e_{12} \, e_{13} \, e_{23} \, f_{123}
+     + f_{12} \, f_{13} \, f_{23})
+    \, d\mathbf r_2 \, d\mathbf r_3
+    .
+    \notag
+  \end{align}
+\end{solution}
+
+\subsection{Problem 13-32}
+
+\begin{problem}
+  Prove generally that the superposition approximation
+  yields the correct third virial coefficient.
+\end{problem}
+
+\begin{solution}
+  From the pressure equation (13-23),
+  \begin{equation}
+    \frac{p}{kT}
+    =
+    \rho - \frac{\rho^2}{6kT}
+    \int_0^\infty r \, u'(r) \, g^{(2)}(r) \, 4 \pi r^2 dr
+    ,
+    \tag{13-23}
+  \end{equation}
+  we see that to get the exact third virial coefficient, $B_3$
+  in the density expansion of pressure,
+  $$
+  \frac{p}{kT} = \rho + B_2 \rho^2 + B_3 \rho^3 + \cdots,
+  $$
+  we need the correct expansion of $g^{(2)}(r)$
+  up to the first order of $\rho$.
+
+  Either in the BGY equation, Eq. \eqref{eq:g2_BGYd}
+  or in the Kirkwood equation
+  \begin{align}
+    &-kT \ln g^{(2)}(1, 2, \xi)
+    =
+    \xi u(r_{12})
+    \notag \\
+    &+
+    \rho\int_0^\xi
+    \int_V u(r_{13})
+    \left[
+      \frac{g^{(3)}(1, 2, 3, \xi')}{g^{(2)}(1,2,\xi')}
+      -
+      g^{(2)}(1, 3, \xi')
+      \right] d\mathbf r_3 d\xi'
+    ,
+    \tag{13-40}
+  \end{align}
+  $g^{(3)}$ contributes to $g^{(2)}$
+  with a pre-factor of $\rho$.
+  This means that to compute $g^{(2)}$ correctly
+  to $\mathcal O(\rho)$,
+  $g^{(3)}$ only needs to be exact
+  to $\mathcal O(1)$ in the density expansion.
+
+  But we know that the exact expansion of $g^{(3)}$ is
+  [cf. Eq. (13-75) and (13-76)]
+  $$
+  g^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_3)
+  =
+  e^{-\beta [u(\mathbf r_{12}) + u(\mathbf r_{13}) + u(\mathbf r_{23})]}
+  + \mathcal O(\rho)
+  ,
+  $$
+  and for the exact expansion of $g^{(2)}$, we have
+  [cf. Eq. (13-66)]
+  $$
+  g^{(2)}(\mathbf r_i, \mathbf r_j)
+  =
+  e^{-\beta u(\mathbf r_{ij})}
+  + \mathcal O(\rho)
+  .
+  $$
+  So we have, as an exact relation,
+  $$
+  g^{(3)}(\mathbf r_1, \mathbf r_2, \mathbf r_3)
+  =
+  g^{(2)}(\mathbf r_1, \mathbf r_2)
+  g^{(2)}(\mathbf r_1, \mathbf r_3)
+  g^{(2)}(\mathbf r_2, \mathbf r_3)
+  + \mathcal O(\rho).
+  $$
+  If we truncate the $\mathcal O(\rho)$ term,
+  we get the superposition principle.
+  %
+  This shows that the superposition principle
+  is exact for the third virial coefficient.
+\end{solution}
+
+\subsection{Problem 13-34}
+
+\begin{problem}
+  The entropy per molecule of a monatomic ideal gas is given by
+  $$
+  Ts = kT\ln v - kT \ln\Lambda^3 + \tfrac{5}{2}kT
+  $$
+  Define an excess entropy per molecule $s_v^E$ at any volume $v$ by
+  $$
+  s = k \ln v - k \ln \Lambda^3 + \tfrac{5}{2}k + s_v^E
+  $$
+  Show that
+  $$
+  s_v^E = - \int_v^\infty \left[
+    \left( \frac{ \partial p } { \partial T }
+    \right)_v - \frac{k}{v} \right] \, dv
+  $$
+  by integrating the thermodynamic equation
+  $$
+  ds = \left(\frac{\partial p}{\partial T} \right) \, dv
+  \qquad T \mathrm{\; constant}
+  $$
+  between $v$ and $v^0$ where $v^0 \to \infty$.
+  See T. L. Hill, \textit{Statistical Mechanics},
+  Section 36, in ``Additional Reading,''
+  for an application of this equation.
+\end{problem}
+
+\section{Lecture 25: Electrolyte Solutions}
+
+\subsection{Problem 15-12}
+
+\subsection{Problem 15-17}
+
+\subsection{Problem 15-25}
 
 \end{document}
 
