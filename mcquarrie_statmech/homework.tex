@@ -46,9 +46,9 @@
 \numberwithin{equation}{section}
 
 % define the problem environment
-\definecolor{problue}{rgb}{0.2,0.2,0.5}
+\definecolor{problemblue}{rgb}{0.1,0.1,0.3}
 \newenvironment{problem}
-{\par\medskip \color{problue}
+{\par\medskip \color{problemblue}
   \textbf{Problem. }\ignorespaces}
 {\medskip}
 
@@ -600,34 +600,19 @@ Plot the distributions as histograms using only $10$ points on the $x$-axis.
 \end{problem}
 
 \begin{solution}
-Here is a sample code in Python.
+Here is a sample code written in Python.
+%
 \begin{lstlisting}[language=Python]
-import random
-def randsum(ntimes):
-    # initialize an empty histogram of 10 bins
-    hist = [0]*10
-    dx = 2.0/10 # set the bin width
-    for t in range(ntimes):
-        # add 10 random numbers between -1 and 1
-        s = 0
-        for i in range(10):
-            s += random.random()*2 - 1
-        s /= 10 # divide the sum by 10
-        # find the bin index
-        binid = int((s + 1) / dx)
-        # update the histogram
-        hist[binid] += 1
-    # compute the distribution and plot it
-    print "\nDistribution, %d trials:" % ntimes
-    for binid in range(10):
-        y = hist[binid]/(ntimes*dx) # normalize
-        bar = "#" * int(y*50)
-        print "%10.8f%s" % (y, bar)
+from numpy import random
+import matplotlib.pyplot as plt
 
-randsum(100)
-randsum(1000)
-randsum(100000)
+def rand_sum(ntimes):
+    return random.uniform(-1, 1, (ntimes, 10)).sum(axis=1)/10
+
+plt.hist(rand_sum(1000), bins=10)
+plt.show()
 \end{lstlisting}
+%
 \end{solution}
 
 
@@ -656,7 +641,7 @@ The sum is equal to $\Sigma = (1+x)^M$ by the binomial theorem,
 and $\ln \Sigma = M \ln(1+x)$.
 
 To find the maximum term,
-we compute the ratio of two successful terms,
+we compute the ratio of two consecutive terms,
 $$
   \frac{ T_N } { T_{N - 1} }
   =
@@ -666,12 +651,22 @@ If the ratio is greater/less than $1$,
 the term is increasing/decreasing.
 Thus the maximum is reached when
   $T_N/T_{N-1} \ge 1 \ge T_{N+1}/T_N$, or
+%
 $$
   \frac{ M - N + 1} { N } x
   \ge 1 \ge
-  \frac{ M - N } { N + 1 } x,
+  \frac{ M - N } { N + 1 } x.
 $$
-which $N \approx M x /(1+x)$.
+%
+With $N, M \gg 1$, we may drop the ``$+1$'''s and
+say that the maximum is reached when
+%
+$$
+  \frac{M - N}{N} x \approx 1,
+$$
+%
+which means $N \approx M x /(1+x)$.
+%
 The logarithm of the maximum term is
 \begin{align*}
   \ln T_N
@@ -928,21 +923,18 @@ A sample Python program is listed below.
 The error should scale
 with the number of sampling points, $N$,
 as $1/\sqrt N$.
-
+%
 \begin{lstlisting}[language=Python]
-import math, random
-def estpi(n):
-    hits = 0
-    for i in range(n):
-        x = random.random() * 2 - 1
-        y = random.random() * 2 - 1
-        if x*x + y*y < 1:
-            hits += 1
-    p = 4.0*hits/n
-    print "pi %g, error %g" % (p, p - math.pi)
+from numpy import random
 
-estpi(10000)
+def estimate_pi(n):
+    r2 = (random.uniform(-1, 1, (n, 2))**2).sum(axis=1)
+    hits = (r2 < 1).sum()
+    return 4.0*hits/n
+
+print (estimate_pi(10000))
 \end{lstlisting}
+%
 \end{solution}
 
 
@@ -1344,7 +1336,7 @@ C_V
 \subsection{Problem 3-4}
 
 \begin{problem}
-  Sate and use Euler's theorem to show
+  State and use Euler's theorem to show
   \begin{equation}
   p
   = kT \left(
@@ -1363,8 +1355,8 @@ We can use the first law for the grand canonical ensemble
 $$
 d\ln\Xi = -\overline E \, d\beta + \beta \, p \, d V + N \, d(\beta\mu).
 $$
-Here $\beta$ and $\beta\,\mu$
-are intensive quantities, and $V$ is extensive.
+Here, $\beta$ and $\beta\,\mu$
+are intensive, $V$ is extensive.
 %
 The first equality of Eq. \eqref{eq:pV_lnXi}
 follows directly from the first law.
@@ -1829,7 +1821,7 @@ $$
 $$
 \end{problem}
 
-\paragraph*{Interpretations.}
+\paragraph*{A typo and two corrections.}
 
 There is probably a typo here, since the units do not match.
 %
@@ -2009,6 +2001,7 @@ to get fluctuations of $E$ and $N$:
   \label{eq:covEN}
   .
 \end{align}
+%
 The derivation of Eq. \eqref{eq:varE}
 is similart to that for Eq. (3-41) in the textbook;
 The derivation for Eq. \eqref{eq:varN}
@@ -2286,8 +2279,8 @@ the determinant is defined as
 
 The determinant has several useful properties.
 %
-First, it is antisymmetric to $f$ and $g$,
-as well as to $x$ and $y$:
+First, it is antisymmetric with respect to $f$ and $g$,
+as well as with respect to $x$ and $y$:
 \begin{equation}
 \frac{ \partial (f, g) } {\partial (x, y) }
 =
@@ -2329,7 +2322,7 @@ the determinant is reduced to a partial derivative
 \end{equation}
 which can be shown directly by using Eq. \eqref{eq:det_def}.
 %
-In practice, we often inversely use this relation
+In practice, we often use this relation
 to convert the partial derivative we want
 to a determinant, and then use the other properties,
 such as Eqs. \eqref{eq:det_ratio} and \eqref{eq:det_antisym},
@@ -2412,7 +2405,7 @@ $$
   \left( \frac{ \partial \mu^* } {\partial \beta } \right)_{N}
   .
 $$
-This can be alternatively reach
+This can be alternatively reached
 with the following substitution:
 $T \to \beta$, $V \to \mu^*$, and $p \to N$.
 %
@@ -2586,6 +2579,8 @@ The second equation can be shown by swapping the indices for $1$ and $2$.
 
 (No problem.)
 
+
+
 \section{Lecture 12: Ideal Monatomic Gas}
 
 \subsection{Thermodynamic potential for $(\mu, p, T)$}
@@ -2739,14 +2734,14 @@ and hence cannot represent a physical thermodynamic potential.
 \subsection{Problem 5-9}
 
 \begin{problem}
-  Calculate the De Broglie wavelength of an argon atom at $25^{\circ}$C
+  Calculate the de Broglie wavelength of an argon atom at $25^{\circ}$C
   and compare this with the average interatomic spacing at $1$atm.
 \end{problem}
 
 \begin{solution}
 The atomic weight of an Argon atom is
 $39.948 \mathrm{g/mol} = 6.63352136\times 10^{-26} \mathrm{kg}$,
-and the (thermal) De Broglie wavelength
+and the (thermal) de Broglie wavelength
 \begin{align*}
 \Lambda
   &= \frac{h}{ \sqrt{2\,\pi\,m_\mathrm{Ar}\,k\,T} }
@@ -2771,7 +2766,7 @@ where the volume follows the ideal-gas-law $pV = kT$:
   &\approx 3.4\times10^{-9} \mathrm{m}
   = 34\mathrm{\AA},
 \end{align*}
-which is much larger than the thermal De Broglie wavelength.
+which is much larger than the thermal de Broglie wavelength.
 %
 \end{solution}
 
@@ -6192,7 +6187,7 @@ To order $(\Delta/M)^2$, the result is
   |q_+ q_-| \, (\nu_+ + \nu_-)
   ,
   $$
-  Dividing both sides with $\nu_+ + \nu_-$,
+  Dividing both sides by $\nu_+ + \nu_-$,
   we get Eq. \eqref{eq:prob15-17}.
 \end{solution}
 
